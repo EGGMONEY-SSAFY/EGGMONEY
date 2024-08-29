@@ -1,0 +1,7 @@
+version: '3'
+services:
+  check-bot:
+    image: check-bot:latest
+    ports:
+      - "8080:8080"
+    restart: always
