@@ -20,7 +20,4 @@ logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type: trace
 
-#jwt:
-#  salt: ${JWT_SALT}
-#  access-token.expirationtime: 600000
-#  refresh-token.expirationtime: 604800000
+
