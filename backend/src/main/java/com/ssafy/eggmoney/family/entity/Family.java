@@ -1,4 +1,4 @@
-package com.ssafy.eggmoney.loan.entity;
+package com.ssafy.eggmoney.family.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,9 +10,9 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
-@Table(name = "loans")
+@Table(name = "families")
 @NoArgsConstructor(access = PROTECTED)
-public class Loan {
+public class Family {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
