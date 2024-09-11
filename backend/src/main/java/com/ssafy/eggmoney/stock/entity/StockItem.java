@@ -10,9 +10,9 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@Table(name = "stock_items")
+@Table(name = "stock_item")
 @NoArgsConstructor(access = PROTECTED)
-public class StockItem  extends BaseTime {
+public class StockItem extends BaseTime {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "stock_id")
