@@ -22,7 +22,8 @@ public class LoanLog extends BaseTime {
     @JoinColumn(name = "loan_id")
     private Loan loan;
 
-    private int paymentMoney;
+    private int balance;
 
+    // 상환일시 : created_at
 
 }

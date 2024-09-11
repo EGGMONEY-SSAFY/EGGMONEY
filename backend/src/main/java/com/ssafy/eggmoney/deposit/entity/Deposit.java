@@ -33,4 +33,7 @@ public class Deposit extends BaseTime {
 
     private int depositMoney;
 
+    // 가입기간 : created_at
+
+
 }

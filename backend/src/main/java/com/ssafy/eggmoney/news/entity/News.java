@@ -21,4 +21,6 @@ public class News extends BaseTime {
     private String newsTitle;
     private String newsContent;
     private String newsLink;
+
+    // 발행일시 : created_at
 }

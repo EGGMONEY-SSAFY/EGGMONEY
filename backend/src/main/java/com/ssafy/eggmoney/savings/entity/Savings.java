@@ -35,4 +35,7 @@ public class Savings extends BaseTime {
     private LocalDateTime paymentDate;
 
     private int paymentMoney;
+
+    // 가입일시 : created_at
+
 }

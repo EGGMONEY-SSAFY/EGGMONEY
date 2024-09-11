@@ -24,4 +24,5 @@ public class SavingsLog extends BaseTime {
 
     private int paymentMoney;
 
+    // 납입일시 : created_at
 }
