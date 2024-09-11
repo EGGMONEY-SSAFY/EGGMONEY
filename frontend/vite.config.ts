@@ -20,7 +20,8 @@ export default defineConfig({
         name: 'My Vue App',
         short_name: 'VueApp',
         description: 'My awesome Vue application!',
-        theme_color: '#ffffff',
+        theme_color: '#FF5A00',
+        background_color: '#F3F4F6',
         icons: [
           {
             src: 'img/icons/android-chrome-192x192.png',
