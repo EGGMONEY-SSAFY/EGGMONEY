@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: secrets
+  datasource:
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 500
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: trace
+
+#jwt:
+#  salt: ${JWT_SALT}
+#  access-token.expirationtime: 600000
+#  refresh-token.expirationtime: 604800000
