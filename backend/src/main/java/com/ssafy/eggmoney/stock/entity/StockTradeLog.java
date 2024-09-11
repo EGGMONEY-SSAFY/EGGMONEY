@@ -10,7 +10,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@Table(name = "stock_trade_logs")
+@Table(name = "stock_trade_log")
 @NoArgsConstructor(access = PROTECTED)
 public class StockTradeLog extends BaseTime {
     @Id
@@ -21,6 +21,7 @@ public class StockTradeLog extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_holding_id")
     private StockHodings stockHoldings;
+
     private int tradeStatus;
     private String tradeType;
     private int tradeAmount;

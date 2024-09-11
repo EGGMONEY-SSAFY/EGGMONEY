@@ -1,23 +1,24 @@
 package com.ssafy.eggmoney.news.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.ssafy.eggmoney.common.entity.BaseTime;
+import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.*;
 
+@Getter
 @Entity
 @Table(name = "news")
 @NoArgsConstructor(access = PROTECTED)
-public class News {
+public class News extends BaseTime {
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "news_id")
     private Long id;
 
-    private String title;
-    private String content;
-    private String link;
+    private String newsTitle;
+    private String newsContent;
+    private String newsLink;
 }
