@@ -1,6 +1,6 @@
 spring:
-  config:
-    import: application-secrets.yml
+#  config:
+#    import: application-secrets.yml
 
   profiles:
     active: secrets
