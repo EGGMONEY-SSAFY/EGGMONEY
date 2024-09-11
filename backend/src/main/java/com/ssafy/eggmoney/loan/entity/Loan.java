@@ -21,10 +21,12 @@ public class Loan extends BaseTime {
     private int loanAmount;
     private String loanType;
     private int loanDate;
-    private int paymentMoney;
+    private int balance;
     private String loanReason;
     private String refuseReason;
     private int loanStatus;
     private Double loanRate;
+
+    // 신청일시 : created_at
 
 }

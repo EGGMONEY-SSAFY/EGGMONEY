@@ -27,4 +27,5 @@ public class AccountLog extends BaseTime {
     private int tradePrice;
     private String tradeTarget;
 
+    // 거래일시 : created_at
 }
