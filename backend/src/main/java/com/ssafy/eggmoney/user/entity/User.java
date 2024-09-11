@@ -1,10 +1,9 @@
 package com.ssafy.eggmoney.user.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.ssafy.eggmoney.family.entity.Family;
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -15,5 +14,20 @@ import static lombok.AccessLevel.PROTECTED;
 public class User {
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "user_id")
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "family_id")
+    private Family family;
+
+    private String email;
+    private String name;
+    private int role;
+    private String realAccount;
+    private String bank;
+    private String pwd;
+
+    @ColumnDefault("50")
+    private int stockRatio;
 }
