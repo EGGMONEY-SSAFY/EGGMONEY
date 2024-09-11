@@ -1,4 +1,7 @@
 spring:
+  config:
+    import: application-secrets.yml
+
   profiles:
     active: secrets
   datasource:
@@ -8,7 +11,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true

@@ -19,11 +19,11 @@ public class Notification extends BaseTime {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "pub_user_id")
     private User pub;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name ="user_id")
+    @JoinColumn(name ="sub_user_id")
     private User sub;
 
     private String message;
