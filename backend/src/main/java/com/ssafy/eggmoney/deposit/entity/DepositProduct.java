@@ -20,8 +20,6 @@ public class DepositProduct extends BaseTime {
     @Column(name = "deposit_product_id")
     private Long id;
 
-    private LocalDateTime depositDate;
+    private int depositDate;
     private Double depositRate;
-
-
 }

@@ -33,7 +33,9 @@ pipeline {
                 changeset "**/backend/**"
             }
             steps {
-                buildBackend()
+    
+                    buildBackend()
+
             }
         }
 
@@ -42,7 +44,9 @@ pipeline {
                 changeset "**/backend/**"
             }
             steps {
-                buildDockerImage('backend', BACKEND_IMAGE)
+     
+                    buildDockerImage('backend', BACKEND_IMAGE)
+                
             }
         }
 
@@ -51,8 +55,10 @@ pipeline {
                 changeset "**/backend/**"
             }
             steps {
-                pushDockerImage(BACKEND_IMAGE)
-                deployBackend()
+     
+                    pushDockerImage(BACKEND_IMAGE)
+                    deployBackend()
+                
             }
         }
 
@@ -61,7 +67,9 @@ pipeline {
                 changeset "**/frontend/**"
             }
             steps {
-                buildDockerImage('frontend', FRONTEND_IMAGE)
+    
+                    buildDockerImage('frontend', FRONTEND_IMAGE)
+                
             }
         }
 
@@ -70,8 +78,10 @@ pipeline {
                 changeset "**/frontend/**"
             }
             steps {
-                pushDockerImage(FRONTEND_IMAGE)
-                deployFrontend()
+               
+                    pushDockerImage(FRONTEND_IMAGE)
+                    deployFrontend()
+                
             }
         }
     }
