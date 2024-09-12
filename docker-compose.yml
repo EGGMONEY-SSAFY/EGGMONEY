@@ -3,7 +3,7 @@ version: '3'
 services:
   frontend:
     build:
-      context: ./front
+      context: ./frontend
     ports:
       - "80:80"
     depends_on:
@@ -13,7 +13,7 @@ services:
 
   backend:
     build:
-      context: ./back
+      context: ./backend
     ports:
       - "8081:8080"
     image: soyo/eggmoney_back  # Docker Hub에 푸시할 백 이미지
