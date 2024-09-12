@@ -132,3 +132,4 @@ def deployBackend() {
 def deployFrontend() {
     sh 'ssh deployuser@j11c204.p.ssafy.io "bash /home/deployuser/deploy_front.sh"'
 }
+
