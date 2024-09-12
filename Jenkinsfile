@@ -33,7 +33,9 @@ pipeline {
                 changeset "**/backend/**"
             }
             steps {
-                buildBackend()
+                node {
+                    buildBackend()
+                }
             }
         }
 
@@ -42,7 +44,9 @@ pipeline {
                 changeset "**/backend/**"
             }
             steps {
-                buildDockerImage('backend', BACKEND_IMAGE)
+                node {
+                    buildDockerImage('backend', BACKEND_IMAGE)
+                }
             }
         }
 
@@ -51,8 +55,10 @@ pipeline {
                 changeset "**/backend/**"
             }
             steps {
-                pushDockerImage(BACKEND_IMAGE)
-                deployBackend()
+                node {
+                    pushDockerImage(BACKEND_IMAGE)
+                    deployBackend()
+                }
             }
         }
 
@@ -61,7 +67,9 @@ pipeline {
                 changeset "**/frontend/**"
             }
             steps {
-                buildDockerImage('frontend', FRONTEND_IMAGE)
+                node {
+                    buildDockerImage('frontend', FRONTEND_IMAGE)
+                }
             }
         }
 
@@ -70,8 +78,10 @@ pipeline {
                 changeset "**/frontend/**"
             }
             steps {
-                pushDockerImage(FRONTEND_IMAGE)
-                deployFrontend()
+                node {
+                    pushDockerImage(FRONTEND_IMAGE)
+                    deployFrontend()
+                }
             }
         }
     }
@@ -132,4 +142,3 @@ def deployBackend() {
 def deployFrontend() {
     sh 'ssh deployuser@j11c204.p.ssafy.io "bash /home/deployuser/deploy_front.sh"'
 }
-
