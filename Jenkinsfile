@@ -30,7 +30,7 @@ pipeline {
 
         stage('Build Backend') {
             when {
-                changeset "**/backend/**"
+                changeset "**/back/**"
             }
             steps {
                 buildBackend()
@@ -39,7 +39,7 @@ pipeline {
 
         stage('Build Backend Docker Image') {
             when {
-                changeset "**/backend/**"
+                changeset "**/back/**"
             }
             steps {
                 buildDockerImage('backend', BACKEND_IMAGE)
@@ -48,7 +48,7 @@ pipeline {
 
         stage('Push Backend Docker Image') {
             when {
-                changeset "**/backend/**"
+                changeset "**/back/**"
             }
             steps {
                 pushDockerImage(BACKEND_IMAGE)
@@ -58,7 +58,7 @@ pipeline {
 
         stage('Build Frontend Docker Image') {
             when {
-                changeset "**/frontend/**"
+                changeset "**/front/**"
             }
             steps {
                 buildDockerImage('frontend', FRONTEND_IMAGE)
@@ -67,7 +67,7 @@ pipeline {
 
         stage('Push Frontend Docker Image') {
             when {
-                changeset "**/frontend/**"
+                changeset "**/front/**"
             }
             steps {
                 pushDockerImage(FRONTEND_IMAGE)
