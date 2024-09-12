@@ -21,9 +21,12 @@ public class AccountService {
     private final UserRepository userRepository;
 
 //    내 메인 계좌 조회
-    public GetAccountResponseDto getAccount() {
-//        일단 user 고정값 입력해둠
-        Optional<User> ou =  userRepository.findById(1L);
+    public GetAccountResponseDto getAccount(Long userId) {
+        Optional<User> ou =  userRepository.findById(userId);
+
+        if ( ou.isEmpty() )
+            throw new RuntimeException();
+
         User us = ou.get();
         Account ac = accountRepository.findByUserId(us.getId()).get();
         GetAccountResponseDto getAccountResponseDto = GetAccountResponseDto.builder()
@@ -32,5 +35,16 @@ public class AccountService {
                 .build();
 
         return getAccountResponseDto;
+    }
+
+//    메인 계좌 생성
+    public void createAccount(Long userId) {
+        System.out.println("user "+ userId + "의 메인 계좌 생성 완료");
+        accountRepository.save(Account
+                .builder()
+                        .user(userRepository.findById(userId).get())
+                        .balance(0)
+                .build()
+        );
     }
 }

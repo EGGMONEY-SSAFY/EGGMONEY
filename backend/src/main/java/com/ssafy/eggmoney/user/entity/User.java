@@ -40,8 +40,8 @@ public class User extends BaseTime {
                  String pwd) {
         this.email = email;
         this.name = name;
-        this.realAccount = realAccount;
         this.role = role;
+        this.realAccount = realAccount;
         this.bank = bank;
         this.pwd = pwd;
     }
@@ -54,6 +54,11 @@ public class User extends BaseTime {
 //    간편비밀번호 설정
     public void setPwd(String pwd){
         this.pwd = pwd;
+    }
+
+//    주식 제한 비율 설정
+    public void setStockRatio(int ratio) {
+        this.stockRatio = ratio;
     }
 
 }
