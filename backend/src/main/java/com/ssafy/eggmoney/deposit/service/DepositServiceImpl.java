@@ -3,6 +3,7 @@ package com.ssafy.eggmoney.deposit.service;
 import com.ssafy.eggmoney.account.entity.Account;
 import com.ssafy.eggmoney.account.repository.AccountRepository;
 import com.ssafy.eggmoney.deposit.dto.requestdto.DepositCreateRequestDto;
+import com.ssafy.eggmoney.deposit.dto.responsedto.ProductListResponseDto;
 import com.ssafy.eggmoney.deposit.dto.responsedto.DepositResponseDto;
 import com.ssafy.eggmoney.deposit.dto.depositProductDto;
 import com.ssafy.eggmoney.deposit.entity.Deposit;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +32,20 @@ public class DepositServiceImpl implements DepositService {
     private final DepositProductRepository depositProductRepository;
     private final AccountRepository accountRepository;
 
+    @Override
+    public List<ProductListResponseDto> getDepositProducts() {
+        List<DepositProduct> productList = depositProductRepository.findAll();
+
+        List<ProductListResponseDto> productListDto = productList.stream().map(
+                (product) -> ProductListResponseDto.builder()
+                        .productId(product.getId())
+                        .depositDate(product.getDepositDate())
+                        .depositRate(product.getDepositRate())
+                        .build())
+                .collect(Collectors.toList());
+
+        return productListDto;
+    }
     @Override
     @Transactional
     public void createDeposit(DepositCreateRequestDto requestDto){
@@ -62,6 +80,8 @@ public class DepositServiceImpl implements DepositService {
                 .build();
 
         Deposit savedDeposit = depositRepository.save(deposit);
+
+        // return 저장된 예금 정보?
 
     }
 

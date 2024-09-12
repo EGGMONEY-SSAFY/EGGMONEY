@@ -1,12 +1,9 @@
 package com.ssafy.eggmoney.deposit.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
