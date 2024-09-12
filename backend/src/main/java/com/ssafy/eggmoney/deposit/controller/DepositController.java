@@ -2,12 +2,15 @@ package com.ssafy.eggmoney.deposit.controller;
 
 
 import com.ssafy.eggmoney.deposit.dto.requestdto.DepositCreateRequestDto;
+import com.ssafy.eggmoney.deposit.dto.responsedto.ProductListResponseDto;
 import com.ssafy.eggmoney.deposit.dto.responsedto.DepositResponseDto;
 import com.ssafy.eggmoney.deposit.service.DepositService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -16,6 +19,16 @@ import org.springframework.web.bind.annotation.*;
 public class DepositController {
 
     private final DepositService depositService;
+
+    /**
+     * 전체 예금 상품 조회
+     * return DepositProductResponseDto
+     * */
+    @GetMapping("/product")
+    public ResponseEntity<List<ProductListResponseDto>> getAllDepositProduct() {
+        List<ProductListResponseDto> result = depositService.getDepositProducts();
+        return ResponseEntity.ok().body(result);
+    }
 
 
     /**
@@ -33,7 +46,7 @@ public class DepositController {
     /**
      * 개인 예금 조회
      * @param userId
-     * return
+     * return DepositResponseDto
     * */
     @GetMapping("/{userId}")
     public ResponseEntity<DepositResponseDto> getDeposits(@PathVariable long userId) {
