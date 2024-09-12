@@ -1,10 +1,10 @@
 package com.ssafy.eggmoney.family.service;
 
-import com.ssafy.eggmoney.family.controller.FamilyController;
+import com.ssafy.eggmoney.family.dto.request.ConnectFamilyRequestDto;
+import com.ssafy.eggmoney.family.dto.request.CreateFamilyRequestDto;
 import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
 import com.ssafy.eggmoney.family.entity.Family;
 import com.ssafy.eggmoney.family.repository.FamilyRepository;
-import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,11 +16,8 @@ public class FamilyServcie {
     private final UserRepository userRepository;
 
 //    가족 조회
-    public GetFamilyResponseDto getFamily(){
-//    일단 고정값 넣어놓음
-        User user = userRepository.findById(1L).get();
-
-        Family fam = familyRepository.findById(user.getFamily().getId()).get();
+    public GetFamilyResponseDto getFamily(Long familyId){
+        Family fam = familyRepository.findById(familyId).get();
         GetFamilyResponseDto getFamilyResponseDto = GetFamilyResponseDto.builder()
                 .presentId(fam.getPresentId())
                 .intro(fam.getIntro())
@@ -30,6 +27,20 @@ public class FamilyServcie {
         return getFamilyResponseDto;
     }
 
-    public
+//    가족 생성
+    public void createFamily(CreateFamilyRequestDto dto) {
+        familyRepository.save(Family.builder()
+                .intro(dto.getIntro())
+                .qrCode(dto.getQrCode())
+                .presentId(dto.getPresentId())
+                .build());
+    }
+
+//    가족 연결
+    public void connectFamily(Long familyId, ConnectFamilyRequestDto dto){
+        Family fam = familyRepository.findById(familyId).get();
+        fam.setPresentId(dto.getUserId());
+        familyRepository.save(fam);
+    }
 
 }
