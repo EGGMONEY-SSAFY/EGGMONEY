@@ -3,6 +3,7 @@ package com.ssafy.eggmoney.account.entity;
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import com.ssafy.eggmoney.user.entity.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +24,12 @@ public class Account extends BaseTime {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private int balance;
+    private Integer balance;
+
+    @Builder
+    private Account(User user, Integer balance) {
+        this.user = user;
+        this.balance = balance;
+    }
 
 }
