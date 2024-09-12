@@ -78,7 +78,7 @@ pipeline {
 
     post {
         success {
-            node('master') {  // Specify a label for the node here
+             node('Built-In Node') {  // Specify a label for the node here
                 script {
                     sendNotification('good', '빌드 성공')
                     cleanWs()
@@ -86,7 +86,7 @@ pipeline {
             }
         }
         failure {
-            node('master') {  // Specify a label for the node here
+             node('Built-In Node') {  // Specify a label for the node here
                 script {
                     sendNotification('danger', '빌드 실패')
                     cleanWs()
