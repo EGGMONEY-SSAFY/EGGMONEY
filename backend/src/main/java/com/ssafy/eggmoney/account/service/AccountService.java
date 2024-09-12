@@ -44,7 +44,7 @@ public class AccountService {
         System.out.println("user "+ userId + "의 메인 계좌 생성 완료");
         accountRepository.save(Account
                 .builder()
-                        .user(userRepository.findById(userId).get())
+                        .user(userRepository.findById(userId).orElse(null))
                         .balance(0)
                 .build()
         );
