@@ -116,8 +116,8 @@ def sendNotification(String color, String status) {
         커밋 작성자 👨‍💻: ${gitCommitterName}
         커밋 메시지 📩: ${gitCommitMessage}
         (<${env.BUILD_URL}|Details>)""",
-        endpoint: MATTERMOST_ENDPOINT,
-        channel: MATTERMOST_CHANNEL
+        endpoint: 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a',
+        channel: 'Jenkins'
     )
 }
 
