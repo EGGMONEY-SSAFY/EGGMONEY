@@ -33,9 +33,7 @@ pipeline {
                 changeset "**/backend/**"
             }
             steps {
-    
-                    buildBackend()
-
+                buildBackend()
             }
         }
 
@@ -44,9 +42,7 @@ pipeline {
                 changeset "**/backend/**"
             }
             steps {
-     
-                    buildDockerImage('backend', BACKEND_IMAGE)
-                
+                buildDockerImage('backend', BACKEND_IMAGE)
             }
         }
 
@@ -55,10 +51,8 @@ pipeline {
                 changeset "**/backend/**"
             }
             steps {
-     
-                    pushDockerImage(BACKEND_IMAGE)
-                    deployBackend()
-                
+                pushDockerImage(BACKEND_IMAGE)
+                deployBackend()
             }
         }
 
@@ -67,9 +61,7 @@ pipeline {
                 changeset "**/frontend/**"
             }
             steps {
-    
-                    buildDockerImage('frontend', FRONTEND_IMAGE)
-                
+                buildDockerImage('frontend', FRONTEND_IMAGE)
             }
         }
 
@@ -78,17 +70,15 @@ pipeline {
                 changeset "**/frontend/**"
             }
             steps {
-               
-                    pushDockerImage(FRONTEND_IMAGE)
-                    deployFrontend()
-                
+                pushDockerImage(FRONTEND_IMAGE)
+                deployFrontend()
             }
         }
     }
 
     post {
         success {
-            node {
+            node('master') {  // Specify a label for the node here
                 script {
                     sendNotification('good', '빌드 성공')
                     cleanWs()
@@ -96,7 +86,7 @@ pipeline {
             }
         }
         failure {
-            node {
+            node('master') {  // Specify a label for the node here
                 script {
                     sendNotification('danger', '빌드 실패')
                     cleanWs()
