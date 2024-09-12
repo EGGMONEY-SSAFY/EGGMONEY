@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
+        DOCKERHUB_CREDENTIALS = credentials('ribbon03')
         MATTERMOST_ENDPOINT = 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a'
         MATTERMOST_CHANNEL = 'Jenkins'
         BACKEND_IMAGE = 'soyo/eggmoney_back'
@@ -112,9 +112,9 @@ def sendNotification(String color, String status) {
     
     mattermostSend(
         color: color,
-        message: """${status}: Egg Money 🐤🍀 #${env.BUILD_NUMBER}
-        커밋 작성자 👨‍💻: ${gitCommitterName}
-        커밋 메시지 📩: ${gitCommitMessage}
+        message: """${status}: 에그머니 🐥⭐ #${env.BUILD_NUMBER}
+        커밋 작성자 : ${gitCommitterName}
+        커밋 메시지 : ${gitCommitMessage}
         (<${env.BUILD_URL}|Details>)""",
         endpoint: 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a',
         channel: 'Jenkins'
