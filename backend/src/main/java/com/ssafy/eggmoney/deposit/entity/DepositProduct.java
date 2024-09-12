@@ -1,5 +1,6 @@
 package com.ssafy.eggmoney.deposit.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Table(name = "deposit_products")
 @NoArgsConstructor(access = PROTECTED)
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class DepositProduct extends BaseTime {
     @Id
     @GeneratedValue(strategy = IDENTITY)

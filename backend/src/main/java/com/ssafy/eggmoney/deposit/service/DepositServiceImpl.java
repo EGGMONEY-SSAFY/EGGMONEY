@@ -2,6 +2,7 @@ package com.ssafy.eggmoney.deposit.service;
 
 import com.ssafy.eggmoney.deposit.dto.requestdto.DepositCreateRequestDto;
 import com.ssafy.eggmoney.deposit.dto.responsedto.DepositResponseDto;
+import com.ssafy.eggmoney.deposit.dto.depositProductDto;
 import com.ssafy.eggmoney.deposit.entity.Deposit;
 import com.ssafy.eggmoney.deposit.entity.DepositProduct;
 import com.ssafy.eggmoney.deposit.repository.DepositProductRepository;
@@ -11,6 +12,7 @@ import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -24,9 +26,12 @@ public class DepositServiceImpl implements DepositService {
     private final DepositProductRepository depositProductRepository;
 
     @Override
+    @Transactional
     public void createDeposit(DepositCreateRequestDto requestDto){
         User user = userRepository.findById(requestDto.getUserId()).get();
         DepositProduct depositProduct = depositProductRepository.findById(requestDto.getDepositProductId()).get();
+
+        // 메인 계좌의 돈 깎여야함.
 
         LocalDateTime expiration = LocalDateTime.now().plusMonths(depositProduct.getDepositDate());
 
@@ -50,14 +55,28 @@ public class DepositServiceImpl implements DepositService {
 
     }
 
-//    @Override
-//    public DepositResponseDto getDeposit(long id){
-//        User user = userRepository.findById(id).get();
-//        int accountId = 1;
-//        if(user.getRole().equals("자녀")){
-//
-//        }
-//        Deposit deposit = depositRepository.findById().get();
-//    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DepositResponseDto getDeposits(long userId){
+        Deposit deposit = depositRepository.findByUserId(userId).orElse(null);
+
+        if(deposit == null){
+            log.info("가입된 예금 상품이 없습니다.");
+        }
+        DepositProduct depositProduct = deposit.getDepositProduct();
+        depositProductDto testDipositProduct = depositProductDto.builder()
+                .id(depositProduct.getId())
+                .rate(depositProduct.getDepositRate())
+                .date(depositProduct.getDepositDate()).build();
+        log.info(deposit.getDepositProduct().toString());
+
+        return DepositResponseDto.builder()
+                .depositProduct(testDipositProduct)
+                .expireDate(deposit.getExpireDate())
+                .depositMoney(deposit.getDepositMoney())
+                .depositMoney(deposit.getDepositMoney())
+                .build();
+    }
 
 }
