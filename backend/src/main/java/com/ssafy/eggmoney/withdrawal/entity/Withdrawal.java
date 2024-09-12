@@ -5,6 +5,7 @@ import com.ssafy.eggmoney.user.entity.User;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -17,12 +18,12 @@ public class Withdrawal extends BaseTime {
     @Column(name = "withdrawal_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    private int withdrawalPrice;
-    private String withdrawalStatus;
+    private int price;
 
-
+    @Enumerated(value = EnumType.STRING)
+    private WithdrawalStatus withdrawalStatus;
 }

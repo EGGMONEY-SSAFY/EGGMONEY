@@ -20,9 +20,7 @@ public class SavingsLog extends BaseTime {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "savings_id" )
-    private Savings savingsId;
+    private Savings savings;
 
-    private int paymentMoney;
-
-    // 납입일시 : created_at
+    private int balance;
 }

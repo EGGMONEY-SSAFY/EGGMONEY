@@ -1,25 +1,27 @@
-package com.ssafy.eggmoney.deposit.entity;
+package com.ssafy.eggmoney.stock.entity;
 
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-@Getter
 @Entity
-@Table(name = "deposit_products")
+@Getter
+@Table(name = "stocks")
 @NoArgsConstructor(access = PROTECTED)
-public class DepositProduct extends BaseTime {
+public class Stock extends BaseTime {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "deposit_product_id")
+    @Column(name = "stock_id")
     private Long id;
 
-    private int depositDate;
-    private Double depositRate;
+    @Enumerated(value = EnumType.STRING)
+    private StockItem stockItem;
+
+    private String stockCode;
+    private int price;
+    private int previousPrice;
 }
