@@ -1,5 +1,6 @@
 package com.ssafy.eggmoney.family.controller;
 
+import com.ssafy.eggmoney.family.dto.request.ChangeFamilyPresentRequestDto;
 import com.ssafy.eggmoney.family.dto.request.ConnectFamilyRequestDto;
 import com.ssafy.eggmoney.family.dto.request.CreateFamilyRequestDto;
 import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
@@ -33,4 +34,11 @@ public class FamilyController {
         System.out.println("family 연결 Controller");
         familyServcie.connectFamily(familyId, dto);
     }
+
+//    가족 대표 변경
+    @PostMapping("/change")
+    public void changeFamilyPresent(@RequestBody ChangeFamilyPresentRequestDto dto) {
+        familyServcie.changeFamilyPresent(dto);
+    }
+
 }
