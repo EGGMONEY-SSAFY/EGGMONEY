@@ -30,6 +30,8 @@ public class User extends BaseTime {
     private String role;
     private String realAccount;
     private String bank;
+
+
     private String pwd;
 
     @ColumnDefault("50")
