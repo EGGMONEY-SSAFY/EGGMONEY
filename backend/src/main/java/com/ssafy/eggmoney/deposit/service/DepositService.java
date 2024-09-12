@@ -5,5 +5,5 @@ import com.ssafy.eggmoney.deposit.dto.responsedto.DepositResponseDto;
 
 public interface DepositService {
     void createDeposit(DepositCreateRequestDto requestDto);
-//    DepositResponseDto getDeposit(long id);
+    DepositResponseDto getDeposits(long id);
 }

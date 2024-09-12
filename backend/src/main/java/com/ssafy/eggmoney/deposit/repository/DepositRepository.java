@@ -8,5 +8,5 @@ import java.util.Optional;
 
 
 public interface DepositRepository extends JpaRepository<Deposit, Long> {
-    Optional<Long> findByUserId(Long userId);
+    Optional<Deposit> findByUserId(Long userId);
 }
