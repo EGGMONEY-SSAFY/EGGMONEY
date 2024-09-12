@@ -57,12 +57,11 @@ public class DepositServiceImpl implements DepositService {
 
         // 메인 계좌의 돈 깎여야함.
         Account account = accountRepository.findByUserId(requestDto.getUserId()).orElse(null);
-        Account updateAccount = Account.builder()
-                .id(account.getId())
+        Account updateAccount = account.toBuilder()
                 .balance(account.getBalance() - requestDto.getDepositMoney())
                 .build();
 
-        accountLogService.createAccountLog(user.getId(), AccountLogType.DEPOSIT_PAY, requestDto.getDepositMoney());
+        accountLogService.createAccountLog(user.getId(), AccountLogType.DEPOSIT_PAY, -1 * requestDto.getDepositMoney());
         accountRepository.save(updateAccount);
 
         LocalDateTime expiration = LocalDateTime.now().plusMonths(depositProduct.getDepositDate());
@@ -71,6 +70,7 @@ public class DepositServiceImpl implements DepositService {
             // 에러발생
             log.error("예금 가입 권한이 없는 유저입니다.");
         }
+
         if(depositRepository.findByUserId(requestDto.getUserId()).isPresent()){
             // 에러발생
             log.error("이미 사용자가 예금상품을 가지고 있습니다.");
