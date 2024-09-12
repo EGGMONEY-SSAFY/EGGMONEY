@@ -32,4 +32,8 @@ public class Account extends BaseTime {
         this.user = user;
         this.balance = balance;
     }
+
+    public void setBalance(int balance){
+        this.balance = balance;
+    }
 }
