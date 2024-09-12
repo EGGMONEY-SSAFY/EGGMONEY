@@ -41,6 +41,6 @@ public class Withdrawal extends BaseTime {
         this.withdrawalStatus = withdrawalStatus;
     }
 
-    @Enumerated(value = EnumType.STRING)
-    private WithdrawalStatus withdrawalStatus;
+//    @Enumerated(value = EnumType.STRING)
+//    private WithdrawalStatus withdrawalStatus;
 }
