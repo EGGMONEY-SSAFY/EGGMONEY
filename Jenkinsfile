@@ -5,7 +5,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
         MATTERMOST_ENDPOINT = 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a'
         MATTERMOST_CHANNEL = 'Jenkins'
-        BACKEND_IMAGE = 'soyou/eggmoney_back'
+        BACKEND_IMAGE = 'soyo/eggmoney_back'
         FRONTEND_IMAGE = 'soyo/eggmoney_front'
     }
 
