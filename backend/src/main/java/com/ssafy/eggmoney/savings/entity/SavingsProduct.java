@@ -23,6 +23,6 @@ public class SavingsProduct extends BaseTime {
     private int savingsDate;
     private Double savingsRate;
 
-    @ColumnDefault("500_000")
+    @ColumnDefault("500000")
     private int max_price;
 }

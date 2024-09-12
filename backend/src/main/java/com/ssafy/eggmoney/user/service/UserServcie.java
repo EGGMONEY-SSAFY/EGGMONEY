@@ -51,7 +51,7 @@ public class UserServcie {
                 .role(dto.getRole())
                 .realAccount(dto.getRealAccount())
                 .bank(dto.getBank())
-                .pwd(dto.getPwd())
+                .simplePwd(dto.getPwd())
                 .build();
 //        자녀 주식제한비율 설정
         if ( dto.getRole().equals("자녀") )
