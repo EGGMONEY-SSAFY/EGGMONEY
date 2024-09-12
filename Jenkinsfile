@@ -88,19 +88,15 @@ pipeline {
 
     post {
         success {
-             node('Built-In Node') {  // Specify a label for the node here
-                script {
-                    sendNotification('good', '빌드 성공')
-                    cleanWs()
-                }
+            script {
+                sendNotification('good', '빌드 성공')
+                cleanWs()
             }
         }
         failure {
-             node('Built-In Node') {  // Specify a label for the node here
-                script {
-                    sendNotification('danger', '빌드 실패')
-                    cleanWs()
-                }
+            script {
+                sendNotification('danger', '빌드 실패')
+                cleanWs()
             }
         }
     }
