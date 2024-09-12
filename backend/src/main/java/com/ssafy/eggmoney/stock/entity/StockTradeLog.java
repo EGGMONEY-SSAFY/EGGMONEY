@@ -19,11 +19,13 @@ public class StockTradeLog extends BaseTime {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stock_holding_id")
-    private StockHodings stockHoldings;
+    @JoinColumn(name = "stock_user_id")
+    private StockUser stockUser;
 
-    private int tradeStatus;
-    private String tradeType;
+    @Enumerated(value = EnumType.STRING)
+    private TradeType tradeType;
+
+    private boolean isExecution;
     private int tradeAmount;
-    private int tradePrice;
+    private int price;
 }

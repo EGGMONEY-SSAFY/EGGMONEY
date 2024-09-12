@@ -1,7 +1,6 @@
 package com.ssafy.eggmoney.user.service;
 
 import com.ssafy.eggmoney.account.service.AccountService;
-import com.ssafy.eggmoney.family.entity.Family;
 import com.ssafy.eggmoney.family.repository.FamilyRepository;
 import com.ssafy.eggmoney.user.dto.reqeust.CreateUserReqeusetDto;
 import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
@@ -9,7 +8,6 @@ import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +30,7 @@ public class UserServcie {
                 .role(user.getRole())
                 .realAccount(user.getRealAccount())
                 .bank(user.getBank())
-                .pwd(user.getPwd())
+                .pwd(user.getSimplePwd())
                 .build();
         return getUserResponseDto;
     }

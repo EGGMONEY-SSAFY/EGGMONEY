@@ -13,7 +13,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Table(name = "stock_hodings")
 @NoArgsConstructor(access = PROTECTED)
-public class StockHodings extends BaseTime {
+public class StockUser extends BaseTime {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "stock_holding_id")
@@ -21,7 +21,7 @@ public class StockHodings extends BaseTime {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id")
-    private StockItem stockItem;
+    private Stock stockItem;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -29,5 +29,4 @@ public class StockHodings extends BaseTime {
 
     private int stockAmount;
     private int stockAverage;
-
 }

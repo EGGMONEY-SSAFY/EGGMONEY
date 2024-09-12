@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -21,7 +22,7 @@ public class User extends BaseTime {
     @Column(name = "user_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "family_id")
     private Family family;
 
@@ -30,20 +31,20 @@ public class User extends BaseTime {
     private String role;
     private String realAccount;
     private String bank;
-    private String pwd;
+    private String simplePwd;
 
     @ColumnDefault("50")
     private int stockRatio;
 
     @Builder
     private User(String email, String name, String role, String realAccount, String bank,
-                 String pwd) {
+                 String simplePwd) {
         this.email = email;
         this.name = name;
         this.role = role;
         this.realAccount = realAccount;
         this.bank = bank;
-        this.pwd = pwd;
+        this.simplePwd = simplePwd;
     }
 
 //    가족 넣기
@@ -52,8 +53,8 @@ public class User extends BaseTime {
     }
 
 //    간편비밀번호 설정
-    public void setPwd(String pwd){
-        this.pwd = pwd;
+    public void setSimplePwd(String simplePwd){
+        this.simplePwd = simplePwd;
     }
 
 //    주식 제한 비율 설정

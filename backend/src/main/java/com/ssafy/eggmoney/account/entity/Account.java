@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -20,16 +21,15 @@ public class Account extends BaseTime {
     @Column(name = "account_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    private Integer balance;
+    private int balance;
 
     @Builder
     private Account(User user, Integer balance) {
         this.user = user;
         this.balance = balance;
     }
-
 }
