@@ -1,6 +1,8 @@
 package com.ssafy.eggmoney.user.service;
 
 import com.ssafy.eggmoney.account.service.AccountService;
+import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
+import com.ssafy.eggmoney.family.entity.Family;
 import com.ssafy.eggmoney.family.repository.FamilyRepository;
 import com.ssafy.eggmoney.user.dto.reqeust.CreateUserReqeusetDto;
 import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
@@ -20,12 +22,17 @@ public class UserServcie {
 //    유저 조회
     public GetUserResponseDto getUser(Long userId) {
         User user = userRepository.findById(userId).get();
-//        Family fam = familyRepository.findById(user.getFamily().getId()).get();
-//        System.out.println(fam.getClass());
+        Family fam = user.getFamily();
 
         GetUserResponseDto getUserResponseDto = GetUserResponseDto.builder()
                 .email(user.getEmail())
-                .family(user.getFamily())
+                .getFamilyResponseDto(GetFamilyResponseDto
+                        .builder()
+                        .intro(fam.getIntro())
+                        .presentId(fam.getPresentId())
+                        .qrcode(fam.getQrCode())
+                        .build()
+                )
                 .name(user.getName())
                 .role(user.getRole())
                 .realAccount(user.getRealAccount())

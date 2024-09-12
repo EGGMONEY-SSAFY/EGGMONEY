@@ -2,6 +2,7 @@ package com.ssafy.eggmoney.account.service;
 
 import com.ssafy.eggmoney.account.dto.responseDto.GetAccountResponseDto;
 import com.ssafy.eggmoney.account.entity.Account;
+import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.repository.AccountLogRepository;
 import com.ssafy.eggmoney.account.repository.AccountRepository;
 import com.ssafy.eggmoney.user.entity.User;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class AccountService {
     private final AccountRepository accountRepository;
     private final AccountLogRepository accountLogRepository;
+    private final AccountLogService accountLogService;
     private final UserRepository userRepository;
 
 //    내 메인 계좌 조회
@@ -47,4 +49,15 @@ public class AccountService {
                 .build()
         );
     }
+
+//    메인 계좌 입출금
+    public void updateAccount(AccountLogType type, Long userId, int price) {
+//        로그 생성
+        accountLogService.createAccountLog(userId, type, price);
+//        계좌에 입출금 반영
+        Account account = accountRepository.findByUserId(userId).get();
+        account.setBalance( account.getBalance() - price );
+        accountRepository.save(account);
+    }
+
 }

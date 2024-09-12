@@ -14,7 +14,6 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Table(name = "families")
 @NoArgsConstructor(access = PROTECTED)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Family extends BaseTime {
     @Id
     @GeneratedValue(strategy = IDENTITY)
