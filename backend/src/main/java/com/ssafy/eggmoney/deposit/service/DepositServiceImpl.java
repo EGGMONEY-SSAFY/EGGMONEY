@@ -1,5 +1,7 @@
 package com.ssafy.eggmoney.deposit.service;
 
+import com.ssafy.eggmoney.account.entity.Account;
+import com.ssafy.eggmoney.account.repository.AccountRepository;
 import com.ssafy.eggmoney.deposit.dto.requestdto.DepositCreateRequestDto;
 import com.ssafy.eggmoney.deposit.dto.responsedto.DepositResponseDto;
 import com.ssafy.eggmoney.deposit.dto.depositProductDto;
@@ -24,14 +26,22 @@ public class DepositServiceImpl implements DepositService {
     private final UserRepository userRepository;
     private final DepositRepository depositRepository;
     private final DepositProductRepository depositProductRepository;
+    private final AccountRepository accountRepository;
 
     @Override
     @Transactional
     public void createDeposit(DepositCreateRequestDto requestDto){
-        User user = userRepository.findById(requestDto.getUserId()).get();
+        User user = userRepository.findById(requestDto.getUserId()).orElse(null);
         DepositProduct depositProduct = depositProductRepository.findById(requestDto.getDepositProductId()).get();
 
         // 메인 계좌의 돈 깎여야함.
+        Account account = accountRepository.findByUserId(requestDto.getUserId()).orElse(null);
+        Account updateAccount = Account.builder()
+                .id(account.getId())
+                .balance(account.getBalance() - requestDto.getDepositMoney())
+                .build();
+
+        accountRepository.save(updateAccount);
 
         LocalDateTime expiration = LocalDateTime.now().plusMonths(depositProduct.getDepositDate());
 
