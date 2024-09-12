@@ -88,19 +88,15 @@ pipeline {
 
     post {
         success {
-            node {
-                script {
-                    sendNotification('good', '빌드 성공')
-                    cleanWs()
-                }
+            script {
+                sendNotification('good', '빌드 성공')
+                cleanWs()
             }
         }
         failure {
-            node {
-                script {
-                    sendNotification('danger', '빌드 실패')
-                    cleanWs()
-                }
+            script {
+                sendNotification('danger', '빌드 실패')
+                cleanWs()
             }
         }
     }
