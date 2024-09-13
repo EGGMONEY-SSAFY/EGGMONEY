@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('ribbon03')
-        MATTERMOST_ENDPOINT = 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a'
+        MATTERMOST_ENDPOINT = 'https://meeting.ssafy.com/hooks/s383baqpftgk7ddehjbkagyn7c'
         MATTERMOST_CHANNEL = 'Jenkins'
         BACKEND_IMAGE = 'soyo/eggmoney_back'
         FRONTEND_IMAGE = 'soyo/eggmoney_front'
@@ -24,59 +24,84 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git', branch: 'develop', credentialsId: 'bayleaf07'
+                git url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git', branch: 'back/infra', credentialsId: 'bayleaf07'
             }
         }
 
         stage('Build Backend') {
+            when {
+                changeset "**/backend/**"
+            }
             steps {
-                buildBackend()
+    
+                    buildBackend()
+
             }
         }
 
         stage('Build Backend Docker Image') {
+            when {
+                changeset "**/backend/**"
+            }
             steps {
-                buildDockerImage('backend', BACKEND_IMAGE)
+     
+                    buildDockerImage('backend', BACKEND_IMAGE)
+                
             }
         }
 
         stage('Push Backend Docker Image') {
+            when {
+                changeset "**/backend/**"
+            }
             steps {
-                pushDockerImage(BACKEND_IMAGE)
-                deployBackend()
+     
+                    pushDockerImage(BACKEND_IMAGE)
+                    deployBackend()
+                
             }
         }
 
         stage('Build Frontend Docker Image') {
+            when {
+                changeset "**/frontend/**"
+            }
             steps {
-                buildDockerImage('frontend', FRONTEND_IMAGE)
+    
+                    buildDockerImage('frontend', FRONTEND_IMAGE)
+                
             }
         }
 
         stage('Push Frontend Docker Image') {
+            when {
+                changeset "**/frontend/**"
+            }
             steps {
-                pushDockerImage(FRONTEND_IMAGE)
-                deployFrontend()
+               
+                    pushDockerImage(FRONTEND_IMAGE)
+                    deployFrontend()
+                
             }
         }
     }
 
     post {
         success {
-            node('master') {  // Specify a label for the node here
+           
                 script {
                     sendNotification('good', '빌드 성공')
                     cleanWs()
                 }
-            }
+            
         }
         failure {
-            node('master') {  // Specify a label for the node here
+            
                 script {
                     sendNotification('danger', '빌드 실패')
                     cleanWs()
                 }
-            }
+            
         }
     }
 }
@@ -87,8 +112,11 @@ def sendNotification(String color, String status) {
     
     mattermostSend(
         color: color,
-        message: "${status}: 에그머니 🐥⭐ #${env.BUILD_NUMBER}\n        커밋 작성자 : ${gitCommitterName}\n        커밋 메시지 : ${gitCommitMessage}\n        (<${env.BUILD_URL}|Details>)",
-        endpoint: 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a',
+        message: """${status}: 에그머니 🐥⭐ #${env.BUILD_NUMBER}
+        커밋 작성자 : ${gitCommitterName}
+        커밋 메시지 : ${gitCommitMessage}
+        (<${env.BUILD_URL}|Details>)""",
+        endpoint: 'https://meeting.ssafy.com/hooks/s383baqpftgk7ddehjbkagyn7c',
         channel: 'Jenkins'
     )
 }
