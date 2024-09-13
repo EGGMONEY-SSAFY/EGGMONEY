@@ -28,6 +28,16 @@ pipeline {
             }
         }
 
+        stage('secret.yml download') {
+            steps {
+                withCredentials([file(credentialsId: 'secret', variable: 'dbConfigFile')]) {
+                    script {
+                        sh 'cp $dbConfigFile S11P21C204/backend/src/main/resources/application-secrets.yml'
+                    }
+                }
+            }
+        }
+
         stage('Build Backend') {
             when {
                 changeset "**/backend/**"
