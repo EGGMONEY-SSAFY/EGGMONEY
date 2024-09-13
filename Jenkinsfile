@@ -31,7 +31,7 @@ pipeline {
         stage('secret.yml download') {
             withCredentials([file(credentialsId: 'dbConfigFile', variable: 'dbConfigFile')]) {
                 script {
-                    sh 'cp $dbConfigFile backend/src/main/resources/application-secrets.yml'
+                    sh 'cp $dbConfigFile ./src/main/resources/application-secrets.yml'
                 }
             }
         }
