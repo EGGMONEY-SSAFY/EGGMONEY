@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('ribbon03')
-        MATTERMOST_ENDPOINT = 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a'
+        MATTERMOST_ENDPOINT = 'https://meeting.ssafy.com/hooks/s383baqpftgk7ddehjbkagyn7c'
         MATTERMOST_CHANNEL = 'Jenkins'
         BACKEND_IMAGE = 'soyo/eggmoney_back'
         FRONTEND_IMAGE = 'soyo/eggmoney_front'
@@ -24,7 +24,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git', branch: 'develop', credentialsId: 'bayleaf07'
+                git url: 'https://meeting.ssafy.com/hooks/s383baqpftgk7ddehjbkagyn7c', branch: 'back/infra', credentialsId: 'bayleaf07'
             }
         }
 
@@ -116,7 +116,7 @@ def sendNotification(String color, String status) {
         커밋 작성자 : ${gitCommitterName}
         커밋 메시지 : ${gitCommitMessage}
         (<${env.BUILD_URL}|Details>)""",
-        endpoint: 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a',
+        endpoint: 'https://meeting.ssafy.com/hooks/s383baqpftgk7ddehjbkagyn7c',
         channel: 'Jenkins'
     )
 }
