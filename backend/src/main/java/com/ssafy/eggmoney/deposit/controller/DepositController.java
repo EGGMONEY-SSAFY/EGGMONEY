@@ -2,7 +2,7 @@ package com.ssafy.eggmoney.deposit.controller;
 
 
 import com.ssafy.eggmoney.deposit.dto.requestdto.DepositCreateRequestDto;
-import com.ssafy.eggmoney.deposit.dto.responsedto.ProductListResponseDto;
+import com.ssafy.eggmoney.deposit.dto.responsedto.DepositProductListResponseDto;
 import com.ssafy.eggmoney.deposit.dto.responsedto.DepositResponseDto;
 import com.ssafy.eggmoney.deposit.service.DepositService;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +25,8 @@ public class DepositController {
      * return DepositProductResponseDto
      * */
     @GetMapping("/product")
-    public ResponseEntity<List<ProductListResponseDto>> getAllDepositProduct() {
-        List<ProductListResponseDto> result = depositService.getDepositProducts();
+    public ResponseEntity<List<DepositProductListResponseDto>> getAllDepositProduct() {
+        List<DepositProductListResponseDto> result = depositService.getDepositProducts();
         return ResponseEntity.ok().body(result);
     }
 
