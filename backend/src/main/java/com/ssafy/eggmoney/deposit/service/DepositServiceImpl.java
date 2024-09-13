@@ -103,7 +103,6 @@ public class DepositServiceImpl implements DepositService {
                 .id(depositProduct.getId())
                 .rate(depositProduct.getDepositRate())
                 .date(depositProduct.getDepositDate()).build();
-        log.info(deposit.getDepositProduct().toString());
 
         return DepositResponseDto.builder()
                 .depositProduct(testDipositProduct)
