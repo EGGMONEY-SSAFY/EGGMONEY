@@ -1,7 +1,7 @@
 <template>
   <div class="main-container w-[393px] h-[1285px] bg-[#f3f4f6] relative mx-auto my-0">
     <div class="flex flex-col items-center w-full h-full p-4 gap-5 bg-[#f3f4f6]">
-      <div class="w-full max-w-[393px] bg-[#fff] rounded-lg p-4">
+      <div class="w-full max-w-[393px] rounded-lg p-4">
         <!-- Settings Section -->
         <div class="flex flex-col items-start bg-[#fff] rounded-lg p-3">
           <div class="flex items-center w-full h-[32px] mb-4 justify-between">
@@ -122,7 +122,14 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11l-6 6-6-6" />
             </svg>
           </div>
+
         </div>
+
+        <!-- logout -->
+        <div class="relative w-[145px] h-[33px] mt-[150px] mx-auto">
+            <span class="flex w-[120px] h-[33px] justify-center items-center font-['D2Coding'] text-[16px] font-bold leading-[17px] text-[#000] tracking-[-0.3px] absolute top-0 left-0 text-center z-[71]">로그아웃</span>
+            <div class="w-[25%] h-[109%] bg-[url(../assets/all/logout.png)] bg-[length:100%_100%] bg-no-repeat absolute top-[-3%] left-[70%] z-[70]"></div>
+          </div>
       </div>
     </div>
   </div>
