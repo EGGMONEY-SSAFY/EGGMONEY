@@ -60,7 +60,7 @@ public class DepositServiceImpl implements DepositService {
                 .balance(account.getBalance() - requestDto.getDepositMoney())
                 .build();
 
-        accountLogService.createAccountLog(user.getId(), AccountLogType.DEPOSIT_PAY, -1 * requestDto.getDepositMoney());
+        accountLogService.createAccountLog(user.getId(), AccountLogType.DEPOSIT, -1 * requestDto.getDepositMoney());
         accountRepository.save(updateAccount);
 
         LocalDateTime expiration = LocalDateTime.now().plusMonths(depositProduct.getDepositDate());

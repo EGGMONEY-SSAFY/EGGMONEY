@@ -3,6 +3,7 @@ package com.ssafy.eggmoney.savings.entity;
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import com.ssafy.eggmoney.user.entity.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.cglib.core.Local;
@@ -32,7 +33,17 @@ public class Savings extends BaseTime {
     private SavingsProduct savingsProduct;
 
     private LocalDateTime expireDate;
-    private LocalDateTime paymentDate;
+    private int paymentDate;
     private int paymentMoney;
     private int balance;
+
+    @Builder(toBuilder = true)
+    public Savings(User user, SavingsProduct savingsProduct, LocalDateTime expireDate, int paymentDate, int paymentMoney, int balance) {
+        this.user = user;
+        this.savingsProduct = savingsProduct;
+        this.expireDate = expireDate;
+        this.paymentDate = paymentDate;
+        this.paymentMoney = paymentMoney;
+        this.balance = balance;
+    }
 }
