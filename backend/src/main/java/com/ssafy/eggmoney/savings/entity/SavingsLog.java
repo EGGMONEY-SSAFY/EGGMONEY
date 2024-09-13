@@ -23,4 +23,5 @@ public class SavingsLog extends BaseTime {
     private Savings savings;
 
     private int balance;
+    // 변경이 있습니다요
 }
