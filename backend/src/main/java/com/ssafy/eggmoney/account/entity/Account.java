@@ -27,7 +27,7 @@ public class Account extends BaseTime {
 
     private int balance;
 
-    @Builder
+    @Builder(toBuilder = true)
     private Account(User user, Integer balance) {
         this.user = user;
         this.balance = balance;
