@@ -132,7 +132,7 @@ public class WithdrawalService {
 //      승인
         if ( judge.equals("승인") ) {
             with.setWithdrawalStatus(WithdrawalStatus.APPROVAL);
-            accountService.updateAccount(AccountLogType.STOCK_BUY, with.getUser().getId(), -with.getWithdrawalPrice());
+            accountService.updateAccount(AccountLogType.WITHDRAWL, with.getUser().getId(), -with.getWithdrawalPrice());
         }
 
 //      거절
