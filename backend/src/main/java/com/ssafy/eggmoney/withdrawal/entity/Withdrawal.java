@@ -29,20 +29,6 @@ public class Withdrawal extends BaseTime {
     private int withdrawalPrice;
 
     private WithdrawalType withdrawalStatus;
-<<<<<<< HEAD
-
-    @Builder
-    private Withdrawal(User user, WithdrawalType withdrawalStatus, int withdrawalPrice) {
-        this.user = user;
-        this.withdrawalPrice = withdrawalPrice;
-        this.withdrawalStatus = withdrawalStatus;
-    }
-
-    public void setWithdrawalStatus(WithdrawalType withdrawalStatus) {
-        this.withdrawalStatus = withdrawalStatus;
-    }
-=======
->>>>>>> 4623fecf79d2759f2d9b9c869f488990a64fcb6b
 
     @Builder
     private Withdrawal(User user, WithdrawalType withdrawalStatus, int withdrawalPrice) {
