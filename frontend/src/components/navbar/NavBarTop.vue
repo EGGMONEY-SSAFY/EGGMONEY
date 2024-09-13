@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useVariableStore } from "@/stores/variable"
-import { RouterLink, RouterView, useRoute, useRouter } from "vue-router"
+import { useRouter } from "vue-router"
 import { computed } from "vue"
 
 const store = useVariableStore()
@@ -13,7 +13,7 @@ const goBack = () => {
 </script>
 
 <template>
-  <div class="w-full max-w-[393px] fixed bg-white top-0 h-14 grid grid-cols-12">
+  <div class="w-full max-w-[393px] fixed bg-white top-0 h-12 grid grid-cols-12">
     <div class="cursor-pointer col-span-2 flex justify-center self-center" @click="goBack">
       <svg
         width="12"
