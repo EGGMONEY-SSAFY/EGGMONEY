@@ -42,11 +42,7 @@ public class WithdrawalService {
                                     .email(child.getEmail())
                                     .role(child.getRole())
                                     .bank(child.getBank())
-<<<<<<< HEAD
-                                    .pwd(child.getPwd())
-=======
                                     .pwd(child.getSimplePwd())
->>>>>>> 4623fecf79d2759f2d9b9c869f488990a64fcb6b
                                     .realAccount(child.getRealAccount())
                                     .name(child.getName())
                                     .stockRatio(child.getStockRatio())
@@ -57,11 +53,7 @@ public class WithdrawalService {
                             .email(parent.getEmail())
                             .role(parent.getRole())
                             .bank(parent.getBank())
-<<<<<<< HEAD
-                            .pwd(parent.getPwd())
-=======
                             .pwd(parent.getSimplePwd())
->>>>>>> 4623fecf79d2759f2d9b9c869f488990a64fcb6b
                             .realAccount(parent.getRealAccount())
                             .name(parent.getName())
                             .stockRatio(parent.getStockRatio())
