@@ -22,7 +22,7 @@ public class Family extends BaseTime {
 
     private String intro;
     private String qrCode;
-    private long presentId;
+    private Long presentId;
 
 //    대표 ID 설정하기
     public void setPresentId(Long userId) {

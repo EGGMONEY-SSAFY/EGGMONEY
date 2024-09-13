@@ -1,12 +1,12 @@
 package com.ssafy.eggmoney.account.entity;
 
 import com.ssafy.eggmoney.common.entity.BaseTime;
-import com.ssafy.eggmoney.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -20,7 +20,7 @@ public class AccountLog extends BaseTime {
     @Column(name = "account_log_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "account_id")
     private Account account;
 
