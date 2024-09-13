@@ -26,13 +26,6 @@ public class Account extends BaseTime {
 
     private Integer balance;
 
-//    @Builder(toBuilder = true)
-//    public Account(Long id, User user, Integer balance) {
-//        this.id = id;
-//        this.user = user;
-//        this.balance = balance;
-//    }
-
     @Builder(toBuilder = true)
     private Account(User user, Integer balance) {
         this.user = user;
