@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
+        DOCKERHUB_CREDENTIALS = credentials('ribbon03')
         MATTERMOST_ENDPOINT = 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a'
         MATTERMOST_CHANNEL = 'Jenkins'
-        BACKEND_IMAGE = 'soyou/eggmoney_back'
+        BACKEND_IMAGE = 'soyo/eggmoney_back'
         FRONTEND_IMAGE = 'soyo/eggmoney_front'
     }
 
@@ -24,7 +24,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git', branch: 'develop', credentialsId: 'gitlab'
+                git url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git', branch: 'develop', credentialsId: 'bayleaf07'
             }
         }
 
@@ -88,16 +88,20 @@ pipeline {
 
     post {
         success {
-            script {
-                sendNotification('good', '빌드 성공')
-                cleanWs()
-            }
+           
+                script {
+                    sendNotification('good', '빌드 성공')
+                    cleanWs()
+                }
+            
         }
         failure {
-            script {
-                sendNotification('danger', '빌드 실패')
-                cleanWs()
-            }
+            
+                script {
+                    sendNotification('danger', '빌드 실패')
+                    cleanWs()
+                }
+            
         }
     }
 }
@@ -108,12 +112,12 @@ def sendNotification(String color, String status) {
     
     mattermostSend(
         color: color,
-        message: """${status}: Egg Money 🐤🍀 #${env.BUILD_NUMBER}
-        커밋 작성자 👨‍💻: ${gitCommitterName}
-        커밋 메시지 📩: ${gitCommitMessage}
+        message: """${status}: 에그머니 🐥⭐ #${env.BUILD_NUMBER}
+        커밋 작성자 : ${gitCommitterName}
+        커밋 메시지 : ${gitCommitMessage}
         (<${env.BUILD_URL}|Details>)""",
-        endpoint: MATTERMOST_ENDPOINT,
-        channel: MATTERMOST_CHANNEL
+        endpoint: 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a',
+        channel: 'Jenkins'
     )
 }
 

@@ -23,7 +23,4 @@ public class LoanLog extends BaseTime {
     private Loan loan;
 
     private int balance;
-
-    // 상환일시 : created_at
-
 }

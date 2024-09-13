@@ -18,9 +18,7 @@ public class News extends BaseTime {
     @Column(name = "news_id")
     private Long id;
 
-    private String newsTitle;
-    private String newsContent;
-    private String newsLink;
-
-    // 발행일시 : created_at
+    private String title;
+    private String content;
+    private String link;
 }

@@ -1,5 +1,5 @@
 package com.ssafy.eggmoney.stock.entity;
 
-public enum StockItem {
-    KOSPI;
+public enum TradeType {
+    BUY,SELL;
 }

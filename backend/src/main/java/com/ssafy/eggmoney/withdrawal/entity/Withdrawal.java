@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -21,13 +22,27 @@ public class Withdrawal extends BaseTime {
     @Column(name = "withdrawal_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     private int withdrawalPrice;
 
     private WithdrawalType withdrawalStatus;
+<<<<<<< HEAD
+
+    @Builder
+    private Withdrawal(User user, WithdrawalType withdrawalStatus, int withdrawalPrice) {
+        this.user = user;
+        this.withdrawalPrice = withdrawalPrice;
+        this.withdrawalStatus = withdrawalStatus;
+    }
+
+    public void setWithdrawalStatus(WithdrawalType withdrawalStatus) {
+        this.withdrawalStatus = withdrawalStatus;
+    }
+=======
+>>>>>>> 4623fecf79d2759f2d9b9c869f488990a64fcb6b
 
     @Builder
     private Withdrawal(User user, WithdrawalType withdrawalStatus, int withdrawalPrice) {
@@ -40,4 +55,6 @@ public class Withdrawal extends BaseTime {
         this.withdrawalStatus = withdrawalStatus;
     }
 
+//    @Enumerated(value = EnumType.STRING)
+//    private WithdrawalStatus withdrawalStatus;
 }

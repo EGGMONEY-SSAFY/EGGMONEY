@@ -10,7 +10,6 @@ import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +37,7 @@ public class UserServcie {
                 .role(user.getRole())
                 .realAccount(user.getRealAccount())
                 .bank(user.getBank())
-                .pwd(user.getPwd())
+                .pwd(user.getSimplePwd())
                 .build();
         return getUserResponseDto;
     }
@@ -52,7 +51,7 @@ public class UserServcie {
                 .role(dto.getRole())
                 .realAccount(dto.getRealAccount())
                 .bank(dto.getBank())
-                .pwd(dto.getPwd())
+                .simplePwd(dto.getPwd())
                 .build();
 //        자녀 주식제한비율 설정
         if ( dto.getRole().equals("자녀") )
