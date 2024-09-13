@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class depositProductDto {
+public class DepositProductDto {
     private long id;
     private double rate;
     private int date;

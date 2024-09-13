@@ -5,9 +5,9 @@ import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.repository.AccountRepository;
 import com.ssafy.eggmoney.account.service.AccountLogService;
 import com.ssafy.eggmoney.deposit.dto.requestdto.DepositCreateRequestDto;
-import com.ssafy.eggmoney.deposit.dto.responsedto.ProductListResponseDto;
+import com.ssafy.eggmoney.deposit.dto.responsedto.DepositProductListResponseDto;
 import com.ssafy.eggmoney.deposit.dto.responsedto.DepositResponseDto;
-import com.ssafy.eggmoney.deposit.dto.depositProductDto;
+import com.ssafy.eggmoney.deposit.dto.DepositProductDto;
 import com.ssafy.eggmoney.deposit.entity.Deposit;
 import com.ssafy.eggmoney.deposit.entity.DepositProduct;
 import com.ssafy.eggmoney.deposit.repository.DepositProductRepository;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,11 +35,11 @@ public class DepositServiceImpl implements DepositService {
     private final AccountLogService accountLogService;
 
     @Override
-    public List<ProductListResponseDto> getDepositProducts() {
+    public List<DepositProductListResponseDto> getDepositProducts() {
         List<DepositProduct> productList = depositProductRepository.findAll();
 
-        List<ProductListResponseDto> productListDto = productList.stream().map(
-                (product) -> ProductListResponseDto.builder()
+        List<DepositProductListResponseDto> productListDto = productList.stream().map(
+                (product) -> DepositProductListResponseDto.builder()
                         .productId(product.getId())
                         .depositDate(product.getDepositDate())
                         .depositRate(product.getDepositRate())
@@ -99,7 +98,7 @@ public class DepositServiceImpl implements DepositService {
             log.info("가입된 예금 상품이 없습니다.");
         }
         DepositProduct depositProduct = deposit.getDepositProduct();
-        depositProductDto testDipositProduct = depositProductDto.builder()
+        DepositProductDto testDipositProduct = DepositProductDto.builder()
                 .id(depositProduct.getId())
                 .rate(depositProduct.getDepositRate())
                 .date(depositProduct.getDepositDate()).build();
