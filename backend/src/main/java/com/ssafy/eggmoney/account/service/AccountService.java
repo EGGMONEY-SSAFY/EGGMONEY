@@ -56,7 +56,7 @@ public class AccountService {
         accountLogService.createAccountLog(userId, type, price);
 //        계좌에 입출금 반영
         Account account = accountRepository.findByUserId(userId).get();
-        account.setBalance( account.getBalance() - price );
+        account.setBalance( account.getBalance() + price );
         accountRepository.save(account);
     }
 
