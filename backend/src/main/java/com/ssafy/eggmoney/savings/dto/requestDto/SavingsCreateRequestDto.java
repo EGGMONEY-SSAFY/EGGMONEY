@@ -7,9 +7,7 @@ import lombok.Getter;
 public class SavingsCreateRequestDto {
     private long userId;
     private long savingsProductId;
-    private int paymentDate;
     private int paymentMoney;
-    private int price;
 
 
 }
