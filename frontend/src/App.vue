@@ -12,7 +12,8 @@ import { computed } from "vue"
       <NavBarTop />
       <RouterView class="mt-14 mb-16" />
       <p>변경이 있습니다요dhdhdxfgsfdgdddddddddddddsdfgh</p>
-      <p>코드를 ㅂㅁ냐어릳</p>
+      <p>코드를 ㅂㅁ냐어ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ릳</p>
+      <p>djjdjdj</p>
       <NavBar />
     </div>
   </div>
