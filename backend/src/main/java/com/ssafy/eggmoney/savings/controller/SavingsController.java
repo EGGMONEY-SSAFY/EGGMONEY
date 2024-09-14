@@ -3,6 +3,7 @@ package com.ssafy.eggmoney.savings.controller;
 import com.ssafy.eggmoney.deposit.dto.responsedto.DepositProductListResponseDto;
 import com.ssafy.eggmoney.savings.dto.requestDto.SavingsCreateRequestDto;
 import com.ssafy.eggmoney.savings.dto.responseDto.SavingsProductListResponseDto;
+import com.ssafy.eggmoney.savings.dto.responseDto.SavingsResponseDto;
 import com.ssafy.eggmoney.savings.service.SavingService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class SavingsController {
 
     /**
      * 적금상품 전체 조회
-     * return savingsProductDto
+     * return SavingsProductListResponseDto
     * */
     @GetMapping("/product")
     public ResponseEntity<List<SavingsProductListResponseDto>> productList(){
@@ -39,6 +40,27 @@ public class SavingsController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 개인적금 조회
+     * @param userId
+     * return SavingsResponseDto
+    * */
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<SavingsResponseDto> getSavings(@PathVariable Long userId){
+        SavingsResponseDto result = savingService.getSavings(userId);
+
+        return ResponseEntity.ok().body(result);
+    }
+
+    /**
+     * 적금납입
+     *
+     * */
+    @GetMapping("/send/{userId}")
+    public ResponseEntity<?> sendSavings(@PathVariable Long userId){
+        savingService.sendSavings(userId);
+        return ResponseEntity.ok().build();
+    }
 
 }
