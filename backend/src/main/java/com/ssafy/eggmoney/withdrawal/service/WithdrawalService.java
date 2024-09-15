@@ -103,7 +103,7 @@ public class WithdrawalService {
         withdrawalRepository.save(
                 Withdrawal.builder()
                     .user(user)
-                    .withdrawalStatus(WithdrawalType.CHECK)
+                    .withdrawalStatus(WithdrawalStatus.APPROVAL)
                     .withdrawalPrice(dto.getPrice())
                 .build()
         );
