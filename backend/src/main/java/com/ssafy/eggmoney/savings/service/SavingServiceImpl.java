@@ -3,6 +3,7 @@ package com.ssafy.eggmoney.savings.service;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
 import com.ssafy.eggmoney.savings.dto.requestDto.SavingsCreateRequestDto;
+import com.ssafy.eggmoney.savings.dto.responseDto.SavingsLogResponseDto;
 import com.ssafy.eggmoney.savings.dto.responseDto.SavingsProductListResponseDto;
 import com.ssafy.eggmoney.savings.dto.responseDto.SavingsResponseDto;
 import com.ssafy.eggmoney.savings.entity.Savings;
@@ -140,6 +141,19 @@ public class SavingServiceImpl implements SavingService {
         savingsLogRepository.save(savingsLog);
     }
 
+    @Override
+    public List<SavingsLogResponseDto> getSavingsLogs(Long savingsId) {
 
+        List<SavingsLog> savingsLogs = savingsLogRepository.findAllBySavingsIdOrderByCreatedAtDesc(savingsId);
 
+        List<SavingsLogResponseDto> logDto = savingsLogs.stream().map(
+                (savingsLog) -> SavingsLogResponseDto.builder()
+                        .paymentMoney(savingsLog.getSavings().getPaymentMoney())
+                        .balance(savingsLog.getBalance())
+                        .createdAt(savingsLog.getCreatedAt())
+                        .build()
+        ).collect(Collectors.toList());
+
+        return logDto;
+    }
 }

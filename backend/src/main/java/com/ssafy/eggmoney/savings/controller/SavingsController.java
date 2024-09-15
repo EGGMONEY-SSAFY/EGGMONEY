@@ -2,8 +2,10 @@ package com.ssafy.eggmoney.savings.controller;
 
 import com.ssafy.eggmoney.deposit.dto.responsedto.DepositProductListResponseDto;
 import com.ssafy.eggmoney.savings.dto.requestDto.SavingsCreateRequestDto;
+import com.ssafy.eggmoney.savings.dto.responseDto.SavingsLogResponseDto;
 import com.ssafy.eggmoney.savings.dto.responseDto.SavingsProductListResponseDto;
 import com.ssafy.eggmoney.savings.dto.responseDto.SavingsResponseDto;
+import com.ssafy.eggmoney.savings.entity.SavingsLog;
 import com.ssafy.eggmoney.savings.service.SavingService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +47,6 @@ public class SavingsController {
      * @param userId
      * return SavingsResponseDto
     * */
-
     @GetMapping("/{userId}")
     public ResponseEntity<SavingsResponseDto> getSavings(@PathVariable Long userId){
         SavingsResponseDto result = savingService.getSavings(userId);
@@ -55,12 +56,27 @@ public class SavingsController {
 
     /**
      * 적금납입
-     *
+     * @param userId
      * */
-    @GetMapping("/send/{userId}")
+    @PostMapping("/send/{userId}")
     public ResponseEntity<?> sendSavings(@PathVariable Long userId){
         savingService.sendSavings(userId);
         return ResponseEntity.ok().build();
     }
+
+    /**
+     * 적금로그 조회
+     * @param savingsId
+     * return List<SavingsLogResponseDto>
+     * */
+    @GetMapping("/log/{savingsId}")
+    public ResponseEntity<List<SavingsLogResponseDto>> getSavingsLogs(@PathVariable Long savingsId){
+
+        List<SavingsLogResponseDto> result = savingService.getSavingsLogs(savingsId);
+
+
+        return ResponseEntity.ok().body(result);
+    }
+
 
 }
