@@ -32,7 +32,7 @@ public class KakaoAuthController {
 
         // 로그 출력
         System.out.println("Kakao Token Response: " + response);
-        return null;
-//        return ResponseEntity.ok(response);
+        //return null;
+        return ResponseEntity.ok(response);
     }
 }
