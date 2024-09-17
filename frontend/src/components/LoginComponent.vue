@@ -14,7 +14,11 @@ import {ref, onMounted} from 'vue';
 
 declare const Kakao: any;
 const tokenResult = ref<string | null>(null);
-
+function clearUrlParams() {
+  const url = new URL(window.location.href);
+  url.searchParams.delete('code');
+  window.history.replaceState({}, '', url.toString());
+}
 onMounted(()=>{
     Kakao.init('4a3017157e71beff602c22df21edc91f');
     displayToken();
@@ -29,7 +33,8 @@ onMounted(()=>{
                 // 토큰 또는 사용자 데이터 처리
                 console.log('Token Response:', data);
                 tokenResult.value = 'login success, token: ' + data.access_token;
-            })
+                clearUrlParams(); // URL 파라미터 제거
+              })
             .catch(error => console.error('Error fetching token:', error));
     }
 })
@@ -40,20 +45,28 @@ onMounted(()=>{
     });
   }
   function requestUserInfo() {
-  Kakao.API.request({
-    url: '/v2/user/me',
-  })
-    .then((res: any) => {
-      alert('User info: ' + JSON.stringify(res));
+  const token = Kakao.Auth.getAccessToken();
+  if (token) {
+    Kakao.API.request({
+      url: '/v2/user/me',
     })
-    .catch((err: any) => {
-      alert('Failed to request user information: ' + JSON.stringify(err));
-    });
+      .then((res: any) => {
+        alert('User info: ' + JSON.stringify(res));
+        console.log(JSON.stringify(res))
+      })
+      .catch((err: any) => {
+        alert('Failed to request user information: ' + JSON.stringify(err));
+      });
+  } else {
+    alert('No access token available');
+  }
+  
 }
   // 아래는 데모를 위한 UI 코드입니다.
   function displayToken() {
+  console.log(1)
     const token = getCookie('authorize-access-token');
-
+console.log(token)
     if(token) {
       Kakao.Auth.setAccessToken(token);
       Kakao.Auth.getStatusInfo()
