@@ -3,6 +3,7 @@ import AssetView from "../views/AssetView.vue"
 import AllView from "@/views/AllView.vue"
 import FinView from "@/views/FinView.vue"
 import StockView from "@/views/StockView.vue"
+import FamilyView from "@/views/FamilyView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
       name: "StockView",
       component: StockView,
     },
+    {
+      path:"/family",
+      name:"FamilyView",
+      component:FamilyView,
+    }
   ],
 })
 
