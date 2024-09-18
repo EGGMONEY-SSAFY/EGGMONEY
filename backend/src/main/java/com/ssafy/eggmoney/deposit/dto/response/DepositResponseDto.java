@@ -1,4 +1,4 @@
-package com.ssafy.eggmoney.deposit.dto.responsedto;
+package com.ssafy.eggmoney.deposit.dto.response;
 
 import com.ssafy.eggmoney.deposit.dto.DepositProductDto;
 import lombok.Builder;

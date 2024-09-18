@@ -3,6 +3,7 @@ package com.ssafy.eggmoney.loan.entity;
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import com.ssafy.eggmoney.user.entity.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -37,4 +38,18 @@ public class Loan extends BaseTime {
     private String loanReason;
     private String refuseReason;
     private Double loanRate;
+
+    @Builder(toBuilder = true)
+    public Loan(Long id, User user, LoanType loanType, LoanStatus loanStatus, int loanAmount, int loanDate, int balance, String loanReason, String refuseReason, Double loanRate) {
+        this.id = id;
+        this.user = user;
+        this.loanType = loanType;
+        this.loanStatus = loanStatus;
+        this.loanAmount = loanAmount;
+        this.loanDate = loanDate;
+        this.balance = balance;
+        this.loanReason = loanReason;
+        this.refuseReason = refuseReason;
+        this.loanRate = loanRate;
+    }
 }
