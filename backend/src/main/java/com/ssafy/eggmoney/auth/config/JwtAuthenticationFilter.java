@@ -1,6 +1,6 @@
-package com.ssafy.eggmoney.user.config;
+package com.ssafy.eggmoney.auth.config;
 
-import com.ssafy.eggmoney.user.service.AuthService;
+import com.ssafy.eggmoney.auth.service.AuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,11 +20,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.authService = authService;
     }
 
-    @Override
+
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken(request);
-        if (token != null && jwtTokenProvider.validateToken(token)){
+        if (token != null && jwtTokenProvider.validateToken(token)) {
             SecurityContextHolder.getContext().setAuthentication(authService.getAuthentication(token));
         }
         chain.doFilter(request, response);
