@@ -3,8 +3,10 @@ package com.ssafy.eggmoney.savings.entity;
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import com.ssafy.eggmoney.user.entity.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
@@ -32,7 +34,20 @@ public class Savings extends BaseTime {
     private SavingsProduct savingsProduct;
 
     private LocalDateTime expireDate;
-    private LocalDateTime paymentDate;
-    private int paymentMoney;
-    private int balance;
+    private int paymentDate; // 납입 횟수
+    private int paymentMoney; // 정액 적금 금액
+    private int balance; // 납부금
+
+
+    @Builder(toBuilder = true)
+    public Savings(Long id, User user, SavingsProduct savingsProduct, LocalDateTime expireDate, int paymentDate, int paymentMoney, int balance) {
+        this.id = id;
+        this.user = user;
+        this.savingsProduct = savingsProduct;
+        this.expireDate = expireDate;
+        this.paymentDate = paymentDate;
+        this.paymentMoney = paymentMoney;
+        this.balance = balance;
+    }
+
 }
