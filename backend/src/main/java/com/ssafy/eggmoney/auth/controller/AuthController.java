@@ -1,9 +1,9 @@
-package com.ssafy.eggmoney.controller;
+package com.ssafy.eggmoney.auth.controller;
 
-import com.ssafy.eggmoney.dto.JwtResponse;
-import com.ssafy.eggmoney.dto.LoginRequest;
-import com.ssafy.eggmoney.dto.RefreshTokenRequest;
-import com.ssafy.eggmoney.service.AuthService;
+import com.ssafy.eggmoney.auth.dto.response.JwtResponse;
+import com.ssafy.eggmoney.auth.dto.request.LoginRequest;
+import com.ssafy.eggmoney.auth.dto.request.RefreshTokenRequest;
+import com.ssafy.eggmoney.auth.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

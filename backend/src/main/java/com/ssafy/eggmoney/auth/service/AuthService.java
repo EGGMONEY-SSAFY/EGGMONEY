@@ -1,11 +1,11 @@
-package com.ssafy.eggmoney.service;
+package com.ssafy.eggmoney.auth.service;
 
-import com.ssafy.eggmoney.dto.JwtResponse;
-import com.ssafy.eggmoney.dto.LoginRequest;
-import com.ssafy.eggmoney.dto.RefreshTokenRequest;
-import com.ssafy.eggmoney.model.User;
-import com.ssafy.eggmoney.repository.UserRepository;
-import com.ssafy.eggmoney.config.JwtTokenProvider;
+import com.ssafy.eggmoney.auth.dto.response.JwtResponse;
+import com.ssafy.eggmoney.auth.dto.request.LoginRequest;
+import com.ssafy.eggmoney.auth.dto.request.RefreshTokenRequest;
+import com.ssafy.eggmoney.user.entity.User;
+import com.ssafy.eggmoney.user.repository.UserRepository;
+import com.ssafy.eggmoney.auth.config.JwtTokenProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

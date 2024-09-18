@@ -1,38 +1,49 @@
-package com.ssafy.eggmoney.user.controller;
+package com.ssafy.eggmoney.auth.controller;
 
+import com.ssafy.eggmoney.auth.service.KakaoAuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
-@CrossOrigin(origins = "*")
+@RequestMapping("/kakao")
 public class KakaoAuthController {
 
     @Value("${kakao.client.id}")
     private String kakaoClientId;
 
-//    @Value("${kakao.client.secret}")
-//    private String KakaoClientIdSecret;
-
     @Value("${kakao.redirect.uri}")
     private String kakaoRedirectUri;
 
-    @GetMapping("api/v1/kakao-callback")
-    public ResponseEntity<String> kakaoCallback(@RequestParam String code){
-        String tokenUrl = "https://kauth.kakao.com/oauth/token";
-        String requestUrl = tokenUrl+"?grant_type=authorization_code&client_id="+kakaoClientId
-                + "&redirect_uri="+kakaoRedirectUri +"&code="+code;
+    @Autowired
+    private KakaoAuthService kakaoService;
 
-        RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.postForObject(requestUrl, null, String.class);
+    @GetMapping("/login")
+    public ResponseEntity<Void> kakaoLogin() {
+        // 카카오 로그인 URL로 리다이렉트
+        String kakaoAuthUrl = kakaoService.getKakaoAuthUrl();
+        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(kakaoAuthUrl)).build();
+    }
 
-        // 로그 출력
-        System.out.println("Kakao Token Response: " + response);
-        //return null;
-        return ResponseEntity.ok(response);
+    @GetMapping("/callback")
+    public ResponseEntity<String> kakaoCallback(@RequestParam String code) {
+        System.out.println("Received Kakao Callback with code: " + code);
+
+        try {
+            String accessToken = kakaoService.getAccessToken(code);
+            System.out.println("Kakao Token Response: " + accessToken);
+
+            kakaoService.handleUserLogin(accessToken);
+
+            return ResponseEntity.ok("Successfully authenticated with Kakao");
+        } catch (Exception e) {
+            System.err.println("Error occurred while calling Kakao API: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while calling Kakao API");
+        }
     }
 }
