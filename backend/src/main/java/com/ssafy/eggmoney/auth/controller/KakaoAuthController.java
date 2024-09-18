@@ -21,7 +21,7 @@ public class KakaoAuthController {
     @Value("${kakao.redirect.uri}")
     private String kakaoRedirectUri;
 
-    @GetMapping("/kakao-callback")
+    @GetMapping("api/v1/kakao-callback")
     public ResponseEntity<String> kakaoCallback(@RequestParam String code){
         String tokenUrl = "https://kauth.kakao.com/oauth/token";
         String requestUrl = tokenUrl+"?grant_type=authorization_code&client_id="+kakaoClientId
