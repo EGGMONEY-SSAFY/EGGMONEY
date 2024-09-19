@@ -1,11 +1,15 @@
 package com.ssafy.eggmoney.loan.service;
 
+import com.ssafy.eggmoney.account.entity.AccountLogType;
+import com.ssafy.eggmoney.account.service.AccountService;
 import com.ssafy.eggmoney.loan.dto.request.LoanCreateRequestDto;
 import com.ssafy.eggmoney.loan.dto.request.LoanEvaluationRequestDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanDetailResponseDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanPrivateListResponseDto;
 import com.ssafy.eggmoney.loan.entity.Loan;
+import com.ssafy.eggmoney.loan.entity.LoanLog;
 import com.ssafy.eggmoney.loan.entity.LoanStatus;
+import com.ssafy.eggmoney.loan.entity.LoanType;
 import com.ssafy.eggmoney.loan.repository.LoanLogRepository;
 import com.ssafy.eggmoney.loan.repository.LoanRepository;
 import com.ssafy.eggmoney.user.entity.User;
@@ -28,6 +32,8 @@ public class LoanServiceImpl implements LoanService {
     private final UserRepository userRepository;
     private final LoanRepository loanRepository;
     private final LoanLogRepository loanLogRepository;
+    private final AccountService accountService;
+
 
     @Override
     @Transactional
@@ -133,5 +139,39 @@ public class LoanServiceImpl implements LoanService {
 
         loanRepository.save(updateLoan);
         log.info("대출 심사 성공");
+    }
+
+    @Override
+    @Transactional
+    public void sendRepayment(long loanId) {
+        Loan loan = loanRepository.findById(loanId).orElse(null);
+
+        double interest = loan.getLoanAmount() * loan.getLoanRate() / loan.getLoanDate();
+        int repayment = (loan.getLoanType() == LoanType.EQUALR) ? loan.getLoanAmount() / loan.getLoanDate() : 0;
+
+        if(loan.getBalance() == 0){
+            repayment = 0;
+        }else if(loan.getBalance() < repayment){
+            repayment = loan.getBalance();
+        }
+
+        accountService.updateAccount(AccountLogType.LOAN, loan.getUser().getId(), -1 * ((int) (interest) + repayment));
+
+        log.info("이자: {interest}, 원리금: {repayment}", interest, repayment);
+
+        Loan updateLoan = loan.toBuilder()
+                .balance(loan.getBalance() - repayment) // 상환한 금액 차감
+                .build();
+
+        loanRepository.save(updateLoan);
+
+        LoanLog loanLog = LoanLog.builder()
+                .loan(updateLoan)
+                .balance(updateLoan.getBalance())
+                .build();
+
+        loanLogRepository.save(loanLog);
+
+        log.info("대출 상환");
     }
 }

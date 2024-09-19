@@ -65,4 +65,15 @@ public class LoanController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 대출금상환
+     * @param loanId
+     * return
+     * */
+    @PostMapping("/send/{loanId}")
+    public ResponseEntity<?> repayment(@PathVariable long loanId) {
+        loanService.sendRepayment(loanId);
+
+        return ResponseEntity.ok().build();
+    }
 }
