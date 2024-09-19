@@ -1,29 +1,24 @@
 <script setup lang="ts">
-import { RouterLink, RouterView, useRoute, useRouter } from "vue-router"
+import { RouterView } from "vue-router"
 import NavBar from "./components/navbar/NavBar.vue"
 import NavBarTop from "./components/navbar/NavBarTop.vue"
-import { useVariableStore } from "./stores/variable"
-import { computed } from "vue"
 </script>
 
 <template>
   <div class="flex justify-center bg-gray-800">
     <div class="main-container bg-gray-200">
       <NavBarTop />
-      <RouterView class="mt-14 mb-16" />
-      <p>변경이 있습니다요asdfasdfdhdhdxfgsfdgdddddddddddddsdfgh</p>
-      <p>코드asdf를 ㅂㅁ냐어aㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ릳</p>
-      <p>djjdjasdfdj</p>
+      <RouterView class="mt-12 mb-16" />
       <NavBar />
     </div>
   </div>
 </template>
 
-<style sc>
+<style scoped>
 .main-container {
   width: 100%;
   height: 100%;
-  min-height: 100vh;
+  min-height: 101vh;
 }
 
 @media (min-width: 393px) {
