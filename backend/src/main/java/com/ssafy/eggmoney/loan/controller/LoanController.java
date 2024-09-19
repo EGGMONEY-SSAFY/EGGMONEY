@@ -78,14 +78,16 @@ public class LoanController {
         return ResponseEntity.ok().build();
     }
 
-//    /**
-//     * 대출금 납입 로그 조회
-//     * @param loanId
-//     * return List<LoanLogListResponseDto>
-//     * */
-//    public ResponseEntity<List<LoanLogListResponseDto>> getLoanLogs(@PathVariable long loanId) {
-//        loanService.getLoanLogs(loanId);
-//    }
+    /**
+     * 대출금 납입 로그 조회
+     * @param loanId
+     * return List<LoanLogListResponseDto>
+     * */
+    @GetMapping("/log/{loanId}")
+    public ResponseEntity<List<LoanLogListResponseDto>> getLoanLogs(@PathVariable long loanId) {
+        List<LoanLogListResponseDto> result = loanService.getLoanLogs(loanId);
+        return ResponseEntity.ok().body(result);
+    }
 
 
 }

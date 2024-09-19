@@ -156,7 +156,7 @@ public class LoanServiceImpl implements LoanService {
     public void sendRepayment(long loanId) {
         Loan loan = loanRepository.findById(loanId).orElse(null);
 
-        double interest = loan.getLoanAmount() * loan.getLoanRate() / loan.getLoanDate();
+        int interest = (int) (loan.getLoanAmount() * loan.getLoanRate() / loan.getLoanDate());
         int repayment = (loan.getLoanType() == LoanType.EQUALR) ? loan.getLoanAmount() / loan.getLoanDate() : 0;
 
         if(loan.getBalance() == 0){
@@ -165,12 +165,12 @@ public class LoanServiceImpl implements LoanService {
             repayment = loan.getBalance();
         }
 
-        accountService.updateAccount(AccountLogType.LOAN, loan.getUser().getId(), -1 * ((int) (interest) + repayment));
+        accountService.updateAccount(AccountLogType.LOAN, loan.getUser().getId(), -1 * (interest) + repayment);
 
         log.info("이자: {interest}, 원리금: {repayment}", interest, repayment);
 
         Loan updateLoan = loan.toBuilder()
-                .balance(loan.getBalance() - repayment) // 상환한 금액 차감
+                .balance(loan.getBalance() - repayment - interest) // 상환한 금액 차감
                 .build();
 
         loanRepository.save(updateLoan);
@@ -178,6 +178,7 @@ public class LoanServiceImpl implements LoanService {
         LoanLog loanLog = LoanLog.builder()
                 .loan(updateLoan)
                 .balance(updateLoan.getBalance())
+                .repayment(repayment + interest)
                 .build();
 
         loanLogRepository.save(loanLog);
@@ -185,9 +186,20 @@ public class LoanServiceImpl implements LoanService {
         log.info("대출 상환");
     }
 
-//    @Override
-//    public List<LoanLogListResponseDto> getLoanLogs(long loanId) {
-//        loanLogRepository.
-//        return List.of();
-//    }
+    @Override
+    @Transactional(readOnly = true)
+    public List<LoanLogListResponseDto> getLoanLogs(long loanId) {
+        List<LoanLog> loanLogs = loanLogRepository.findAllByLoanIdOrderByCreatedAtDesc(loanId);
+
+        List<LoanLogListResponseDto> logList = loanLogs.stream().map(
+                (loanLog) -> LoanLogListResponseDto.builder()
+                        .id(loanLog.getId())
+                        .createdAt(loanLog.getCreatedAt())
+                        .repayment(loanLog.getRepayment())
+                        .build()
+                ).collect(Collectors.toList());
+
+
+        return logList;
+    }
 }
