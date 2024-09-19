@@ -36,7 +36,7 @@ public class Loan extends BaseTime {
 
     private int loanAmount;
     private int loanDate; // 개월 수
-    private int balance; // 만기일시상환 시에는 0
+    private int balance; // 만기일시상환 시에는 loanAmount와 동일
     private String loanReason;
     private String refuseReason;
     private Double loanRate;

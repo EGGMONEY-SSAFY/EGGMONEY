@@ -11,6 +11,5 @@ public class LoanCreateRequestDto {
     LoanType loanType;
     int loanAmount;
     int loanDate;
-    int balance;
     String loanReason;
 }
