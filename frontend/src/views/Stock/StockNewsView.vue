@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import NavBarTab from "@/components/navbar/NavBarTab.vue"
 import { useVariableStore } from "@/stores/variable"
-import { computed, onBeforeMount } from "vue"
-import { useRoute, useRouter } from "vue-router"
+import { computed } from "vue"
+import { useRoute } from "vue-router"
 
 const route = useRoute()
 const path = computed(() => {
