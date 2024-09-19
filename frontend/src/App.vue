@@ -11,7 +11,8 @@ import { computed } from "vue"
     <div class="main-container bg-gray-200">
       <NavBarTop />
       <RouterView class="mt-14 mb-16" />
-      <p>하이</p>
+      <p>변경이 있습니다요dhdhdxfgsfdgdddddddddddddsdfgh</p>
+      <p>코드를 ㅂㅁ냐어릳</p>
       <NavBar />
     </div>
   </div>
