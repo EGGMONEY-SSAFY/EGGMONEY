@@ -22,25 +22,29 @@ public class Withdrawal extends BaseTime {
     @Column(name = "withdrawal_id")
     private Long id;
 
+//    인출하는 사용자
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
+//    인출 금액
     private int withdrawalPrice;
 
-    private WithdrawalType withdrawalStatus;
+//    인출 상태(진행중, 승인, 거절)
+//    private WithdrawalType withdrawalStatus;
 
-    @Builder
-    private Withdrawal(User user, WithdrawalType withdrawalStatus, int withdrawalPrice) {
+    @Builder(toBuilder = true)
+    private Withdrawal(User user, WithdrawalStatus withdrawalStatus, int withdrawalPrice) {
         this.user = user;
         this.withdrawalPrice = withdrawalPrice;
+//        this.withdrawalStatus = withdrawalStatus;
         this.withdrawalStatus = withdrawalStatus;
     }
 
-    public void setWithdrawalStatus(WithdrawalType withdrawalStatus) {
+    public void setWithdrawalStatus(WithdrawalStatus withdrawalStatus) {
         this.withdrawalStatus = withdrawalStatus;
     }
 
-//    @Enumerated(value = EnumType.STRING)
-//    private WithdrawalStatus withdrawalStatus;
+    @Enumerated(value = EnumType.STRING)
+    private WithdrawalStatus withdrawalStatus;
 }
