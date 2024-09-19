@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -14,6 +12,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Table(name = "deposit_products")
 @NoArgsConstructor(access = PROTECTED)
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class DepositProduct extends BaseTime {
     @Id
     @GeneratedValue(strategy = IDENTITY)
