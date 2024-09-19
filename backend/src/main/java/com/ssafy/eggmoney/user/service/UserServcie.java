@@ -26,7 +26,7 @@ public class UserServcie {
 
         GetUserResponseDto getUserResponseDto = GetUserResponseDto.builder()
                 .email(user.getEmail())
-                .getFamilyResponseDto(GetFamilyResponseDto
+                .family(GetFamilyResponseDto
                         .builder()
                         .intro(fam.getIntro())
                         .presentId(fam.getPresentId())
