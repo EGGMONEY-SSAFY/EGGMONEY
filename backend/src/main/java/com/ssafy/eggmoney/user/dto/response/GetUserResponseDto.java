@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class GetUserResponseDto {
     String email;
-    GetFamilyResponseDto family;
+    GetFamilyResponseDto getFamilyResponseDto;
     String name;
     String role;
     String realAccount;
