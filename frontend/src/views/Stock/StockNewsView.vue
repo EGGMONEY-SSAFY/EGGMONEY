@@ -14,7 +14,7 @@ store.setTitle("뉴스")
 </script>
 
 <template>
-  <div class="">
+  <div>
     <NavBarTab :path="path" />
     <h1>This is an news page</h1>
     <h1>{{ path }}</h1>
