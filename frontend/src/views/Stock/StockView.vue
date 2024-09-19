@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import BoxItem from "@/components/box/boxItem.vue"
 import NavBarTab from "@/components/navbar/NavBarTab.vue"
-import StockChart from "@/components/StockChart.vue";
+import StockChart from "@/components/cart/StockChart.vue"
 import { useVariableStore } from "@/stores/variable"
-
-
 
 const store = useVariableStore()
 store.setTitle("증권")
@@ -14,6 +12,6 @@ store.setTitle("증권")
   <div>
     <NavBarTab />
     <BoxItem />
-    <StockChart/>
+    <StockChart />
   </div>
 </template>
