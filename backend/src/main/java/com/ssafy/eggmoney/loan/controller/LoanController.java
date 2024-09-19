@@ -3,6 +3,7 @@ package com.ssafy.eggmoney.loan.controller;
 import com.ssafy.eggmoney.loan.dto.request.LoanCreateRequestDto;
 import com.ssafy.eggmoney.loan.dto.request.LoanEvaluationRequestDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanDetailResponseDto;
+import com.ssafy.eggmoney.loan.dto.response.LoanLogListResponseDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanPrivateListResponseDto;
 import com.ssafy.eggmoney.loan.service.LoanService;
 import lombok.RequiredArgsConstructor;
@@ -76,4 +77,15 @@ public class LoanController {
 
         return ResponseEntity.ok().build();
     }
+
+//    /**
+//     * 대출금 납입 로그 조회
+//     * @param loanId
+//     * return List<LoanLogListResponseDto>
+//     * */
+//    public ResponseEntity<List<LoanLogListResponseDto>> getLoanLogs(@PathVariable long loanId) {
+//        loanService.getLoanLogs(loanId);
+//    }
+
+
 }

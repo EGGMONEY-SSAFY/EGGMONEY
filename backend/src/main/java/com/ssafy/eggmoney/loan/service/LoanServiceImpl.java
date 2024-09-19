@@ -5,6 +5,7 @@ import com.ssafy.eggmoney.account.service.AccountService;
 import com.ssafy.eggmoney.loan.dto.request.LoanCreateRequestDto;
 import com.ssafy.eggmoney.loan.dto.request.LoanEvaluationRequestDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanDetailResponseDto;
+import com.ssafy.eggmoney.loan.dto.response.LoanLogListResponseDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanPrivateListResponseDto;
 import com.ssafy.eggmoney.loan.entity.Loan;
 import com.ssafy.eggmoney.loan.entity.LoanLog;
@@ -35,12 +36,13 @@ public class LoanServiceImpl implements LoanService {
     private final AccountService accountService;
 
 
+    // 대출 생성하기
     @Override
     @Transactional
     public void createLoan(LoanCreateRequestDto requestDto) {
 
         User user = userRepository.findById(requestDto.getUserId()).orElse(null);
-        if(user.getRole().equals("부모")){
+        if(!user.getRole().equals("자녀")){
             log.error("대출생성 권한이 없습니다.");
         }
 
@@ -61,6 +63,7 @@ public class LoanServiceImpl implements LoanService {
 
     }
 
+    // 개인 대출 내역 조회하기(부모면 자녀 것 모두, 자녀는 본인 것)
     @Override
     @Transactional(readOnly = true)
     public List<LoanPrivateListResponseDto> getPrivateLoans(long userId) {
@@ -106,6 +109,7 @@ public class LoanServiceImpl implements LoanService {
         return list;
     }
 
+    // 상세대출내역 조회
     @Override
     @Transactional(readOnly = true)
     public LoanDetailResponseDto getDetailLoan(long loanId) {
@@ -126,10 +130,15 @@ public class LoanServiceImpl implements LoanService {
         return loanDetail;
     }
 
+    // 대출심사하기
     @Override
     @Transactional
     public void loanEvaluation(long loanId, LoanEvaluationRequestDto requestDto) {
         Loan loan = loanRepository.findById(loanId).orElse(null);
+
+        if(!loan.getUser().getRole().equals("부모")){
+            log.error("대출심사 권한이 없습니다.");
+        }
 
         Loan updateLoan = loan.toBuilder()
                 .loanStatus(requestDto.getLoanStatus())
@@ -141,6 +150,7 @@ public class LoanServiceImpl implements LoanService {
         log.info("대출 심사 성공");
     }
 
+    // 대출금 상환하기
     @Override
     @Transactional
     public void sendRepayment(long loanId) {
@@ -174,4 +184,10 @@ public class LoanServiceImpl implements LoanService {
 
         log.info("대출 상환");
     }
+
+//    @Override
+//    public List<LoanLogListResponseDto> getLoanLogs(long loanId) {
+//        loanLogRepository.
+//        return List.of();
+//    }
 }
