@@ -2,7 +2,7 @@
 import NavBarTab from "@/components/navbar/NavBarTab.vue"
 import { useVariableStore } from "@/stores/variable"
 import { computed } from "vue"
-import { useRoute, useRouter } from "vue-router"
+import { useRoute } from "vue-router"
 
 const route = useRoute()
 const path = computed(() => {
