@@ -1,13 +1,10 @@
 package com.ssafy.eggmoney.deposit.service;
 
-import com.ssafy.eggmoney.account.entity.Account;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
-import com.ssafy.eggmoney.account.repository.AccountRepository;
-import com.ssafy.eggmoney.account.service.AccountLogService;
 import com.ssafy.eggmoney.account.service.AccountService;
-import com.ssafy.eggmoney.deposit.dto.requestdto.DepositCreateRequestDto;
-import com.ssafy.eggmoney.deposit.dto.responsedto.DepositProductListResponseDto;
-import com.ssafy.eggmoney.deposit.dto.responsedto.DepositResponseDto;
+import com.ssafy.eggmoney.deposit.dto.request.DepositCreateRequestDto;
+import com.ssafy.eggmoney.deposit.dto.response.DepositProductListResponseDto;
+import com.ssafy.eggmoney.deposit.dto.response.DepositResponseDto;
 import com.ssafy.eggmoney.deposit.dto.DepositProductDto;
 import com.ssafy.eggmoney.deposit.entity.Deposit;
 import com.ssafy.eggmoney.deposit.entity.DepositProduct;
