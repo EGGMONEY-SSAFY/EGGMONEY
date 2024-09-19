@@ -58,9 +58,10 @@
             </div>
           </div>
           <!-- Family Management Items -->
+           <!-- 연습용 !!! -->
           <RouterLink to="/asset">
             <div class="flex items-center justify-between h-[25px] px-4 mb-2 cursor-pointer">
-              <span class="text-[12px] font-bold text-[#000] w-[75px]">내 가족</span>
+              <span class="text-[12px] font-bold text-[#000] w-[75px]">변화 내 가족</span>
               <svg class="w-[380px] h-[20px] text-[#1d0c0c] rotate-[-90deg]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11l-6 6-6-6" />
               </svg>
