@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import NavBarTab from "@/components/navbar/NavBarTab.vue"
-import { useVariableStore } from "@/stores/variable";
+import { useVariableStore } from "@/stores/variable"
 import { computed, onBeforeMount } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
@@ -11,7 +11,6 @@ const path = computed(() => {
 
 const store = useVariableStore()
 store.setTitle("뉴스")
-
 </script>
 
 <template>
