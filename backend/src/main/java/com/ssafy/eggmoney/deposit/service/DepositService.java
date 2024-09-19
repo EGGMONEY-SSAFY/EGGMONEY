@@ -1,8 +1,8 @@
 package com.ssafy.eggmoney.deposit.service;
 
-import com.ssafy.eggmoney.deposit.dto.requestdto.DepositCreateRequestDto;
-import com.ssafy.eggmoney.deposit.dto.responsedto.DepositProductListResponseDto;
-import com.ssafy.eggmoney.deposit.dto.responsedto.DepositResponseDto;
+import com.ssafy.eggmoney.deposit.dto.request.DepositCreateRequestDto;
+import com.ssafy.eggmoney.deposit.dto.response.DepositProductListResponseDto;
+import com.ssafy.eggmoney.deposit.dto.response.DepositResponseDto;
 
 import java.util.List;
 
