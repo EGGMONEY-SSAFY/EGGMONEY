@@ -28,11 +28,21 @@ pipeline {
         //     }
         // }
 
+        // stage('Checkout') {
+        //     steps {
+        //         checkout([$class: 'GitSCM',
+        //             branches: [[name: 'back/infra']],
+        //             userRemoteConfigs: [[url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git', credentialsId: 'egg2']]
+        //         ])
+        //     }
+        // }
+
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM',
-                    branches: [[name: 'back/infra']],
-                    userRemoteConfigs: [[url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git', credentialsId: 'egg2']]
+                checkout([
+                    $class: 'GitSCM',
+                    userRemoteConfigs: [[url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git', credentialsId: 'egg2']],
+                    branches: [[name: 'back/infra']]
                 ])
             }
         }
