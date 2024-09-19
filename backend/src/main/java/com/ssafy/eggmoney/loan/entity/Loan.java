@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -33,14 +35,16 @@ public class Loan extends BaseTime {
     private LoanStatus loanStatus;
 
     private int loanAmount;
-    private int loanDate;
-    private int balance;
+    private int loanDate; // 개월 수
+    private int balance; // 만기일시상환 시에는 0
     private String loanReason;
     private String refuseReason;
     private Double loanRate;
+    private LocalDateTime expirationDate;
+
 
     @Builder(toBuilder = true)
-    public Loan(Long id, User user, LoanType loanType, LoanStatus loanStatus, int loanAmount, int loanDate, int balance, String loanReason, String refuseReason, Double loanRate) {
+    public Loan(Long id, User user, LoanType loanType, LoanStatus loanStatus, int loanAmount, int loanDate, int balance, String loanReason, String refuseReason, Double loanRate, LocalDateTime expirationDate) {
         this.id = id;
         this.user = user;
         this.loanType = loanType;
@@ -51,5 +55,6 @@ public class Loan extends BaseTime {
         this.loanReason = loanReason;
         this.refuseReason = refuseReason;
         this.loanRate = loanRate;
+        this.expirationDate = expirationDate;
     }
 }
