@@ -1,6 +1,5 @@
-package com.ssafy.eggmoney.savings.dto.requestDto;
+package com.ssafy.eggmoney.savings.dto.request;
 
-import com.ssafy.eggmoney.savings.entity.SavingsProduct;
 import lombok.Getter;
 
 @Getter
