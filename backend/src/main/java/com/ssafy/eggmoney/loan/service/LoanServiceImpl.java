@@ -199,7 +199,7 @@ public class LoanServiceImpl implements LoanService {
                         .build()
                 ).collect(Collectors.toList());
 
-
+        log.info("대출 로그 조회");
         return logList;
     }
 }
