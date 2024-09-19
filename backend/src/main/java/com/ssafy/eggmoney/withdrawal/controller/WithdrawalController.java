@@ -14,24 +14,24 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("api/v1/asset/withdrawal")
 public class WithdrawalController {
-    private final WithdrawalService withdrawalService;
+    private WithdrawalService withDrawalService;
 
 //    출금 요청 로그 조회
     @GetMapping("/log")
     public List<GetWithdrawalResponseDto> getWithdrawalLogs(@RequestBody GetWithdrawalRequestDto dto){
-        return withdrawalService.getWithdrawalLogs(dto);
+        return withDrawalService.getWithdrawalLogs(dto);
     }
 
 //    출금 요청 심사
     @PostMapping("/judge/{withdrawal_id}")
     public void judgeWithdrawal(@PathVariable("withdrawal_id")Long Wid, @RequestBody JudgeWithdrawalRequestDto dto){
-        withdrawalService.judgeWithdrawal(Wid, dto);
+        withDrawalService.judgeWithdrawal(Wid, dto);
     }
 
 //    출금 요청 생성
     @PostMapping("/create")
     public void createWithdrawal(@RequestBody CreateWithdrawalRequestDto dto){
-        withdrawalService.createWithdrawal(dto);
+        withDrawalService.createWithdrawal(dto);
     }
 
 }
