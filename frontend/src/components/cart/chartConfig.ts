@@ -9,13 +9,7 @@ export const data = {
 
 export const options = {
   responsive: true,
-  maintainAspectRatio: true,
-  hoverOffset: 50,
+  maintainAspectRatio: false,
+  hoverOffset: 20,
   borderDashOffset: 10,
-  layout: {
-    padding: {
-      top: 100,
-      bottom: 140,
-    },
-  },
 }
