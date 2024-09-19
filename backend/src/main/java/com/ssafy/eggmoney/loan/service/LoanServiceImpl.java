@@ -1,6 +1,7 @@
 package com.ssafy.eggmoney.loan.service;
 
 import com.ssafy.eggmoney.loan.dto.request.LoanCreateRequestDto;
+import com.ssafy.eggmoney.loan.dto.response.LoanDetailResponseDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanPrivateListResponseDto;
 import com.ssafy.eggmoney.loan.entity.Loan;
 import com.ssafy.eggmoney.loan.entity.LoanStatus;
@@ -35,7 +36,6 @@ public class LoanServiceImpl implements LoanService {
         if(user.getRole().equals("부모")){
             log.error("대출생성 권한이 없습니다.");
         }
-        int balance = requestDto.getBalance();
 
         Loan loan = Loan.builder()
                 .user(user)
@@ -43,7 +43,7 @@ public class LoanServiceImpl implements LoanService {
                 .loanStatus(LoanStatus.PROGRESS)
                 .loanAmount(requestDto.getLoanAmount())
                 .loanDate(requestDto.getLoanDate())
-                .balance(balance)
+                .balance(requestDto.getLoanAmount())
                 .loanReason(requestDto.getLoanReason())
                 .expirationDate(LocalDateTime.now().plusMonths(requestDto.getLoanDate()))
                 .build();
@@ -73,8 +73,11 @@ public class LoanServiceImpl implements LoanService {
 
         return loanList;
     }
+
+    // 자녀의 대출 리스트 조회
     public List<LoanPrivateListResponseDto> addLoanList(long userId, List<LoanPrivateListResponseDto> list) {
-        List<Loan> loans = loanRepository.findAllByUserIdOrderByCreatedAtDesc(userId).orElse(null);
+        List<Loan> loans = loanRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
+
         List<LoanPrivateListResponseDto> loanList = loans.stream().map(
                 loan -> LoanPrivateListResponseDto.builder()
                         .loanId(loan.getId())
@@ -94,5 +97,24 @@ public class LoanServiceImpl implements LoanService {
         list.addAll(loanList);
 
         return list;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public LoanDetailResponseDto getDetailLoan(long loanId) {
+
+        Loan loan = loanRepository.findById(loanId).orElse(null);
+
+        LoanDetailResponseDto loanDetail = LoanDetailResponseDto.builder()
+                .createdAt(loan.getCreatedAt())
+                .expirationDate(loan.getExpirationDate())
+                .loanAmount(loan.getLoanAmount())
+                .balance(loan.getBalance())
+                .refuseReason(loan.getRefuseReason())
+                .loanRate(loan.getLoanRate())
+                .loanType(loan.getLoanType())
+                .build();
+
+        return loanDetail;
     }
 }
