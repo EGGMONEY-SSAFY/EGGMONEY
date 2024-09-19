@@ -14,6 +14,7 @@ import { computed } from "vue"
       <NavBar />
     </div>
   </div>
+  <!-- asdf -->
 </template>
 
 <style sc>
