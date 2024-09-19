@@ -13,7 +13,7 @@ store.setTitle("거래내역")
 </script>
 
 <template>
-  <div>
+  <div class="">
     <NavBarTab :path="path" />
     <h1>This is an history page</h1>
   </div>
