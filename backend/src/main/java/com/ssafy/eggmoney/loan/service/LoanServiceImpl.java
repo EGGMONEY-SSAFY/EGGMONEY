@@ -1,6 +1,7 @@
 package com.ssafy.eggmoney.loan.service;
 
 import com.ssafy.eggmoney.loan.dto.request.LoanCreateRequestDto;
+import com.ssafy.eggmoney.loan.dto.request.LoanEvaluationRequestDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanDetailResponseDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanPrivateListResponseDto;
 import com.ssafy.eggmoney.loan.entity.Loan;
@@ -115,6 +116,22 @@ public class LoanServiceImpl implements LoanService {
                 .loanType(loan.getLoanType())
                 .build();
 
+        log.info("대출 상세 조회 성공");
         return loanDetail;
+    }
+
+    @Override
+    @Transactional
+    public void loanEvaluation(long loanId, LoanEvaluationRequestDto requestDto) {
+        Loan loan = loanRepository.findById(loanId).orElse(null);
+
+        Loan updateLoan = loan.toBuilder()
+                .loanStatus(requestDto.getLoanStatus())
+                .loanRate(requestDto.getLoanRate())
+                .refuseReason(requestDto.getRefuseReason())
+                .build();
+
+        loanRepository.save(updateLoan);
+        log.info("대출 심사 성공");
     }
 }

@@ -1,9 +1,9 @@
 package com.ssafy.eggmoney.loan.controller;
 
 import com.ssafy.eggmoney.loan.dto.request.LoanCreateRequestDto;
+import com.ssafy.eggmoney.loan.dto.request.LoanEvaluationRequestDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanDetailResponseDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanPrivateListResponseDto;
-import com.ssafy.eggmoney.loan.entity.Loan;
 import com.ssafy.eggmoney.loan.service.LoanService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -53,5 +53,16 @@ public class LoanController {
         return ResponseEntity.ok().body(result);
     }
 
-    /**/
+    /**
+     * 대출심사
+     * @param loanId, requestDto
+     * return
+     * */
+    @PostMapping("/judge/{loanId}")
+    public ResponseEntity<?> evaluation(@PathVariable long loanId, @RequestBody LoanEvaluationRequestDto requestDto ) {
+        loanService.loanEvaluation(loanId, requestDto);
+
+        return ResponseEntity.ok().build();
+    }
+
 }
