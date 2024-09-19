@@ -30,12 +30,22 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                checkout scmGit(
+                checkout([$class: 'GitSCM',
                     branches: [[name: 'back/infra']],
                     userRemoteConfigs: [[url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git', credentialsId: 'egg2']]
-                )
+                ])
             }
         }
+
+
+        // stage('Checkout') {
+        //     steps {
+        //         checkout scmGit(
+        //             branches: [[name: 'back/infra']],
+        //             userRemoteConfigs: [[url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git', credentialsId: 'egg2']]
+        //         )
+        //     }
+        // }
 
 
         stage('Build Backend') {
