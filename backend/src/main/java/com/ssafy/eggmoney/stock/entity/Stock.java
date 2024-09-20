@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -21,7 +24,12 @@ public class Stock extends BaseTime {
     @Enumerated(value = EnumType.STRING)
     private StockItem stockItem;
 
-    private String stockCode;
     private int price;
-    private int previousPrice;
+    private LocalDate date;
+
+    public Stock(StockItem stockItem, BigDecimal price, LocalDate date) {
+        this.stockItem = stockItem;
+        this.price = price.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+        this.date = date;
+    }
 }
