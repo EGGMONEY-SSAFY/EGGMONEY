@@ -14,7 +14,7 @@ import { computed } from "vue"
       <NavBar />
     </div>
   </div>
-  <!-- aasdfasdddddddfdf sddddddadfdddd-->
+  <!-- aasdfaddd-->
 </template>
 
 <style sc>
