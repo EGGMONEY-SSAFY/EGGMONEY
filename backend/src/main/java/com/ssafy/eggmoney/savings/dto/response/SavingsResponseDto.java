@@ -1,6 +1,5 @@
-package com.ssafy.eggmoney.savings.dto.responseDto;
+package com.ssafy.eggmoney.savings.dto.response;
 
-import com.ssafy.eggmoney.savings.entity.SavingsProduct;
 import lombok.Builder;
 import lombok.Getter;
 
