@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import BoxItem from "@/components/box/BoxItem.vue"
+import BoxItem from "@/components/box/BoxAvailInvest.vue"
 import NavBarTab from "@/components/navbar/NavBarTab.vue"
-import StockChart from "@/components/cart/StockChart.vue"
+import HeldStocksChart from "@/components/cart/HeldStocksChart.vue"
 import { useVariableStore } from "@/stores/variable"
 import BoxStock from "@/components/box/BoxStock.vue"
 
@@ -16,8 +16,7 @@ const preData = { 코스피: 28000, 코스닥: 21000, 반도체: 7000, 바이오
   <div>
     <NavBarTab />
     <BoxItem />
-    <StockChart :total="total" />
-
+    <HeldStocksChart :total="total" />
     <div v-for="(price, stock) in data" :key="stock">
       <BoxStock :price="price" :stock="stock" :prePrice="preData[stock]" />
     </div>
