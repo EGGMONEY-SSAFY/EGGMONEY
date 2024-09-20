@@ -8,7 +8,7 @@ import NavBarTop from "./components/navbar/NavBarTop.vue"
   <div class="flex justify-center bg-gray-800">
     <div class="main-container bg-gray-200">
       <NavBarTop />
-      <RouterView class="mt-12 mb-16" />
+      <RouterView class="mt-12 mb-24" />
       <NavBar />
     </div>
   </div>
@@ -21,9 +21,9 @@ import NavBarTop from "./components/navbar/NavBarTop.vue"
   min-height: 101vh;
 }
 
-@media (min-width: 393px) {
+@media (min-width: 400px) {
   .main-container {
-    max-width: 393px;
+    max-width: 400px;
   }
 }
 </style>
