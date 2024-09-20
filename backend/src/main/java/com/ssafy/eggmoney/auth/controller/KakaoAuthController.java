@@ -7,9 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
+@CrossOrigin(origins="localhost:5173")
 @RestController
 @RequestMapping("/kakao")
 public class KakaoAuthController {
@@ -26,24 +30,36 @@ public class KakaoAuthController {
     @GetMapping("/login")
     public ResponseEntity<Void> kakaoLogin() {
         // 카카오 로그인 URL로 리다이렉트
-        String kakaoAuthUrl = kakaoService.getKakaoAuthUrl();
-        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(kakaoAuthUrl)).build();
+        String kakaoAuthUrl = kakaoService.getKakaoAuthUrl().block();  // URL을 가져오는 부분
+        ResponseEntity<Void> response = ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create(kakaoAuthUrl))  // 리다이렉트 URL 설정
+                .build();
+
+        // 요청 결과를 출력해보기
+        System.out.println("Response: " + response);
+        System.out.println("Location header: " + kakaoAuthUrl);
+        return response;
     }
 
     @GetMapping("/callback")
-    public ResponseEntity<String> kakaoCallback(@RequestParam String code) {
-        System.out.println("Received Kakao Callback with code: " + code);
-
-        try {
-            String accessToken = kakaoService.getAccessToken(code);
-            System.out.println("Kakao Token Response: " + accessToken);
-
-            kakaoService.handleUserLogin(accessToken);
-
-            return ResponseEntity.ok("Successfully authenticated with Kakao");
-        } catch (Exception e) {
-            System.err.println("Error occurred while calling Kakao API: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while calling Kakao API");
-        }
+    public ResponseEntity<?> callbakc(@RequestParam("code") String code){
+        System.out.println("!");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+//    public Mono<ResponseEntity<Map<String,String>>> kakaoCallback() {
+//        String code="i-Cqxp6gYhVxayIAcM-Zuvuo_yFq6aqJowaYDGMsfSJ4Xff2-uBAWwAAAAQKKiWPAAABkg5sWKAtjdRiIM79qQ";
+//        System.out.println("Received Kakao Callback with code: " + code);
+//
+//        return kakaoService.handleUserLogin(code)
+//                .map(user -> {
+//                    Map<String, String> response = new HashMap<>();
+//                    return ResponseEntity.ok(response);
+//                })
+//                .onErrorResume(e -> {
+//                    System.err.println("Kakao API 에러: "+ e.getMessage());
+//                    Map<String, String> errorResponse = new HashMap<>();
+//                    return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse));
+//                });
+//    }
+
 }
