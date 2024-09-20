@@ -52,7 +52,7 @@ pipeline {
             steps {
                 checkout scmGit(
                     branches: [[name: 'back/infra']],
-                    userRemoteConfigs: [[ credentialsId: 'egg2', url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git']]
+                    userRemoteConfigs: [[ credentialsId: 'egg3', url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git']]
                 )
             }
         }
