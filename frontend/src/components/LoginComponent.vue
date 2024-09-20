@@ -12,21 +12,22 @@
 
 <script setup lang="ts" >
 import {ref, onMounted} from 'vue';
+import axios from 'axios';
 
-// declare const Kakao: any;
+declare const Kakao: any;
 const tokenResult = ref<string | null>(null);
   function redirectToLogin() {
   // 백엔드의 카카오 로그인 URL로 리다이렉트
   window.location.href = 'http://localhost:8080/kakao/login'; // 백엔드 로그인 URL
 }
-// interface KakaoTokenResponse {
-//   access_token: string;
-//   token_type: string;
-//   refresh_token: string;
-//   expires_in: number;
-//   scope: string;
-//   refresh_token_expires_in: number;
-// }
+interface KakaoTokenResponse {
+  access_token: string;
+  token_type: string;
+  refresh_token: string;
+  expires_in: number;
+  scope: string;
+  refresh_token_expires_in: number;
+}
 function clearUrlParams() {
   const url = new URL(window.location.href);
   url.searchParams.delete('code');
@@ -35,23 +36,22 @@ function clearUrlParams() {
 onMounted(()=>{
     // Kakao.init('4a3017157e71beff602c22df21edc91f');
     
-    // const urlParams = new URLSearchParams(window.location.search);
-    // const code = urlParams.get('code');
-
-    // if (code) {
-    //     // 코드를 Spring Boot 백엔드로 전송
-    //     fetch('http://localhost:8080/kakao-callback?code=' + code)
-    //     .then(response => response.json())
-    // .then((data: KakaoTokenResponse) => {
-    //   Kakao.Auth.setAccessToken(data.access_token);
-    //     console.log('Response Data:', data);
-    //     displayToken();
-    clearUrlParams();
-    // })
-    // .catch(error => {
-    //     console.error('Error:', error);
-    // });
-    // }
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    console.log(code)
+    if (code) {
+        // 코드를 Spring Boot 백엔드로 전송
+        axios
+        .get<KakaoTokenResponse>(`http://localhost:8080/kakao/callback`)
+    .then((response) => {
+        console.log('Response Data:', response.data);
+        Kakao.Auth.setAccessToken(response.data.access_token);
+        clearUrlParams();
+    })
+    .catch(error => {
+        console.error('Error:', error);  // 에러 처리
+    });
+    }
 })
     
 //   function loginWithKakao() {
