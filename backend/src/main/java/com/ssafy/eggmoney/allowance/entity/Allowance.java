@@ -10,7 +10,7 @@ import static jakarta.persistence.EnumType.*;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
-// 백엔드 테스트 22222
+// 백엔드 테스트 222dddddd22
 
 @Getter
 @Entity
