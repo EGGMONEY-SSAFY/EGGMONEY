@@ -12,19 +12,14 @@ import * as chartConfig from "./chartConfig.js"
 ChartJS.register(ArcElement, Tooltip, Legend, Colors)
 
 export default {
+  props: {
+    total: Number,
+  },
   name: "App",
   components: {
     Doughnut,
   },
-  options: {
-    plugins: {
-      legend: {
-        labels: {
-          color: "rgb(255, 99, 132)",
-        },
-      },
-    },
-  },
+
   data() {
     return chartConfig
   },

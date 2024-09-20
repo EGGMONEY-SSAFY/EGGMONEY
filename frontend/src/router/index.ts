@@ -5,6 +5,7 @@ import FinView from "@/views/Fin/FinView.vue"
 import StockView from "@/views/Stock/StockView.vue"
 import StockHistoryView from "@/views/Stock/StockHistoryView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
+import StockDetail from "@/views/Stock/StockDetail/StockDetail.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,11 @@ const router = createRouter({
       path: "/stock/news",
       name: "StockNewsView",
       component: StockNewsView,
+    },
+    {
+      path: "/stock/:stock",
+      name: "StockDetail",
+      component: StockDetail,
     },
   ],
 })

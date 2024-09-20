@@ -8,7 +8,7 @@ import BoxStock from "@/components/box/BoxStock.vue"
 const store = useVariableStore()
 store.setTitle("증권")
 const data = { 코스피: 30000, 코스닥: 20000, 반도체: 10000, 바이오: 5000 }
-const total = {}
+const total = Object.values(data).reduce((acc, value) => acc + value, 0)
 const preData = { 코스피: 28000, 코스닥: 21000, 반도체: 7000, 바이오: 10000 }
 </script>
 
@@ -16,7 +16,7 @@ const preData = { 코스피: 28000, 코스닥: 21000, 반도체: 7000, 바이오
   <div>
     <NavBarTab />
     <BoxItem />
-    <StockChart />
+    <StockChart :total="total" />
 
     <div v-for="(price, stock) in data" :key="stock">
       <BoxStock :price="price" :stock="stock" :prePrice="preData[stock]" />
