@@ -16,7 +16,7 @@ public class AccountController {
     private final AccountService accountService;
     private final AccountLogService accountLogService;
 
-// 테스트fs
+// 테스트fddds
 //    메인계좌 조회
     @GetMapping("/{userId}")
     public GetAccountResponseDto getAccount(@PathVariable("userId") Long userId){
