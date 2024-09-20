@@ -10,7 +10,7 @@ import IconRightArrow from "../icons/IconRightArrow.vue"
     </div>
 
     <div class="m-4 flex justify-center items-center">
-      <IconRightArrow class="size-6"/>
+      <IconRightArrow class="size-6" />
     </div>
   </div>
 </template>
