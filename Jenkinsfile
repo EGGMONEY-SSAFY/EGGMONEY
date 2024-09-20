@@ -89,7 +89,7 @@ pipeline {
                 changeset "**/frontend/**"
             }
             steps {
-    
+                    echo 'Building Frontend Docker Image: ' + FRONTEND_IMAGE
                     buildDockerImage('frontend', FRONTEND_IMAGE)
                 
             }
@@ -146,17 +146,19 @@ def sendNotification(String color, String status) {
 def buildBackend() {
     dir('backend') {
         sh 'chmod +x ./gradlew'
-        sh './gradlew clean build'
+        sh './gradlew clean build --info' 
     }
 }
 
 def buildDockerImage(String dirPath, String imageName) {
     dir(dirPath) {
+        sh "echo 'Building Docker image: ${imageName}'"
         sh "docker build --no-cache -t ${imageName} ."
     }
 }
 
 def pushDockerImage(String imageName) {
+    sh 'echo $DOCKERHUB_CREDENTIALS_USR'
     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
     sh "docker push ${imageName}"
 }
