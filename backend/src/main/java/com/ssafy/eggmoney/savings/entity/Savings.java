@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
-
+// 백엔드 테스트
 @Getter
 @Entity
 @Table(name = "savings")
