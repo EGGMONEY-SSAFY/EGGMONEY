@@ -41,13 +41,13 @@ pipeline {
             }
         }
 
-        stage('List Directory Structure') {
-            steps {
-                script {
-                    sh 'find .'
-                }
-            }
-        }
+        // stage('List Directory Structure') {
+        //     steps {
+        //         script {
+        //             sh 'find .'
+        //         }
+        //     }
+        // }
 
 
         stage('Build Backend') {
