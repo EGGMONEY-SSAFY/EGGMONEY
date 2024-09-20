@@ -52,7 +52,6 @@ public class DepositController {
     @GetMapping("/{userId}")
     public ResponseEntity<DepositResponseDto> getDeposits(@PathVariable long userId) {
         DepositResponseDto result = depositService.getDeposits(userId);
-        log.info(result.toString());
         return ResponseEntity.ok().body(result);
     }
 
@@ -60,7 +59,7 @@ public class DepositController {
     /**
      * 예금삭제
      * @param depositId
-     * return
+     * return DeleteDepositResponseDto
     */
     @PostMapping("/delete/{depositId}")
     public ResponseEntity<DeleteDepositResponseDto> deleteDeposit(@PathVariable long depositId) {
