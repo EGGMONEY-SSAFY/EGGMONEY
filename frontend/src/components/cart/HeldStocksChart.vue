@@ -4,24 +4,11 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from "chart.js"
 import { Doughnut } from "vue-chartjs"
-import * as chartConfig from "./chartConfig.js"
+import * as chartConfig from "./HeldStocksChartConfig.js"
 
+const { data, options } = chartConfig
 ChartJS.register(ArcElement, Tooltip, Legend, Colors)
-
-export default {
-  props: {
-    total: Number,
-  },
-  name: "App",
-  components: {
-    Doughnut,
-  },
-
-  data() {
-    return chartConfig
-  },
-}
 </script>
