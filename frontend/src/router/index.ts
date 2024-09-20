@@ -6,6 +6,10 @@ import StockView from "@/views/Stock/StockView.vue"
 import StockHistoryView from "@/views/Stock/StockHistoryView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
 
+import WonAuthView from "@/views/WonAuthView.vue"
+import StockDetail from "@/views/Stock/StockDetail/StockDetail.vue"
+
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -43,6 +47,17 @@ const router = createRouter({
       name: "StockNewsView",
       component: StockNewsView,
     },
+    {
+      path:"/won",
+      name: "WonAuthView",
+      component: WonAuthView,
+    },
+    {
+      path: "/stock/:stock",
+      name: "StockDetail",
+      component: StockDetail,
+    },
+
   ],
 })
 
