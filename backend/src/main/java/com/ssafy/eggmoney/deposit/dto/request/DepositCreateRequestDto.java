@@ -1,4 +1,4 @@
-package com.ssafy.eggmoney.deposit.dto.requestdto;
+package com.ssafy.eggmoney.deposit.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

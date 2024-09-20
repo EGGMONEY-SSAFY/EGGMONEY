@@ -2,6 +2,7 @@ package com.ssafy.eggmoney.loan.entity;
 
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +22,14 @@ public class LoanLog extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "loan_id")
     private Loan loan;
-
+    private int repayment; // 상환금액
     private int balance;
+
+    @Builder
+    public LoanLog(Long id, Loan loan, int balance, int repayment) {
+        this.id = id;
+        this.loan = loan;
+        this.balance = balance;
+        this.repayment = repayment;
+    }
 }

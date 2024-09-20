@@ -13,7 +13,7 @@
             </div>
           </div>
           <!-- Settings Items -->
-          <RouterLink to="/asset">
+          <RouterLink to="/assets">
             <div class="flex items-center justify-between h-[25px] px-4 mb-2 cursor-pointer">
               <span class="text-[12px] font-bold text-[#000] w-[75px]">간편비밀번호</span>
               <svg
@@ -32,7 +32,7 @@
               </svg>
             </div>
           </RouterLink>
-          <RouterLink to="/asset">
+          <RouterLink to="/assets">
             <div class="flex items-center justify-between h-[25px] px-4 mb-2 cursor-pointer">
               <span class="text-[12px] font-bold text-[#000] w-[85px]">회원 정보 수정</span>
               <svg
@@ -51,7 +51,7 @@
               </svg>
             </div>
           </RouterLink>
-          <RouterLink to="/asset">
+          <RouterLink to="/assets">
             <div class="flex items-center justify-between h-[25px] px-4 mb-2 cursor-pointer">
               <span class="text-[12px] font-bold text-[#000] w-[75px]">용돈 확인</span>
               <svg
@@ -70,7 +70,7 @@
               </svg>
             </div>
           </RouterLink>
-          <RouterLink to="/asset">
+          <RouterLink to="/assets">
             <div class="flex items-center justify-between h-[25px] px-4 mb-2 cursor-pointer">
               <span class="text-[12px] font-bold text-[#000] w-[75px]">입금계좌등록</span>
               <svg
@@ -102,7 +102,7 @@
             </div>
           </div>
           <!-- Family Management Items -->
-          <RouterLink to="/asset">
+          <RouterLink to="/assets">
             <div class="flex items-center justify-between h-[25px] px-4 mb-2 cursor-pointer">
               <span class="text-[12px] font-bold text-[#000] w-[75px]">내 가족</span>
               <svg
@@ -121,7 +121,7 @@
               </svg>
             </div>
           </RouterLink>
-          <RouterLink to="/asset">
+          <RouterLink to="/assets">
             <div class="flex items-center justify-between h-[25px] px-4 mb-2 cursor-pointer">
               <span class="text-[12px] font-bold text-[#000] w-[75px]">가족 연결</span>
               <svg
@@ -153,7 +153,7 @@
             </div>
           </div>
           <!-- Asset Items -->
-          <RouterLink to="/asset">
+          <RouterLink to="/assets">
             <div class="flex items-center justify-between h-[25px] px-4 mb-2 cursor-pointer">
               <span class="text-[12px] font-bold text-[#000] w-[75px]">자산</span>
               <svg
@@ -172,7 +172,7 @@
               </svg>
             </div>
           </RouterLink>
-          <RouterLink to="/asset">
+          <RouterLink to="/assets">
             <div class="flex items-center justify-between h-[25px] px-4 mb-2 cursor-pointer">
               <span class="text-[12px] font-bold text-[#000] w-[75px]">출금 요청</span>
               <svg
@@ -204,7 +204,7 @@
             </div>
           </div>
           <!-- Finance Items -->
-          <RouterLink to="/asset">
+          <RouterLink to="/assets">
             <div class="flex items-center justify-between h-[25px] px-4 mb-2 cursor-pointer">
               <span class="text-[12px] font-bold text-[#000] w-[75px]">자산 관리</span>
               <svg
@@ -223,7 +223,7 @@
               </svg>
             </div>
           </RouterLink>
-          <RouterLink to="/asset">
+          <RouterLink to="/assets">
             <div class="flex items-center justify-between h-[25px] px-4 mb-2 cursor-pointer">
               <span class="text-[12px] font-bold text-[#000] w-[75px]">부채 관리</span>
               <svg
@@ -255,7 +255,7 @@
             </div>
           </div>
           <!-- Transaction Items -->
-          <RouterLink to="/asset">
+          <RouterLink to="/assets">
             <div class="flex items-center justify-between h-[25px] px-4 mb-2 cursor-pointer">
               <span class="text-[12px] font-bold text-[#000] w-[75px]">입금내역</span>
               <svg
@@ -274,7 +274,7 @@
               </svg>
             </div>
           </RouterLink>
-          <RouterLink to="/asset">
+          <RouterLink to="/assets">
             <div class="flex items-center justify-between h-[25px] px-4 mb-2 cursor-pointer">
               <span class="text-[12px] font-bold text-[#000] w-[75px]">출금내역</span>
               <svg
@@ -296,7 +296,7 @@
         </div>
 
         <!-- Logout Section -->
-        <RouterLink to="/logout">
+        <RouterLink to="/">
           <div class="relative w-[145px] h-[33px] mt-[150px] mx-auto">
             <span
               class="flex w-[120px] h-[33px] justify-center items-center font-['D2Coding'] text-[16px] font-bold leading-[17px] text-[#000] tracking-[-0.3px] absolute top-0 left-0 text-center z-[71]"
@@ -312,7 +312,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { RouterLink } from "vue-router"
 
 export default {
