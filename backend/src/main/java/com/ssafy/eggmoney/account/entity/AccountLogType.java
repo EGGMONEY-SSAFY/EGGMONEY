@@ -1,5 +1,7 @@
 package com.ssafy.eggmoney.account.entity;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Getter;
 
 @Getter
@@ -17,6 +19,7 @@ public enum AccountLogType {
 //    증권
 //    전체
 
+    @Enumerated(value = EnumType.STRING)
     private String logType;
 
     AccountLogType(String logType) {

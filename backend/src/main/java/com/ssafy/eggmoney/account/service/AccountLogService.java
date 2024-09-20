@@ -1,5 +1,7 @@
 package com.ssafy.eggmoney.account.service;
 
+import com.ssafy.eggmoney.account.dto.responseDto.GetAccountLogResponseDto;
+import com.ssafy.eggmoney.account.dto.responseDto.GetAccountResponseDto;
 import com.ssafy.eggmoney.account.entity.Account;
 import com.ssafy.eggmoney.account.entity.AccountLog;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,8 +22,19 @@ public class AccountLogService {
 
 
 //    메인계좌 로그 조회
-    public List<AccountLog> getAccountLogs(Long userId){
-        return accountLogRepository.findLogsByAccountId(userId);
+    public List<GetAccountLogResponseDto> getAccountLogs(Long userId){
+        List<GetAccountLogResponseDto> dto = accountLogRepository.findLogsByAccountId(userId).stream()
+                .map( log -> GetAccountLogResponseDto.builder()
+                        .account(GetAccountResponseDto.builder()
+                                .userId(log.getAccount().getUser().getId())
+                                .balance(log.getAccount().getBalance())
+                                .build())
+                        .currentBalance(log.getCurrentBalance())
+                        .tradePrice(log.getTradePrice())
+                        .tradeTarget(log.getTradeTarget())
+                        .build())
+                .collect(Collectors.toList());
+        return dto;
     }
 
 //    메인계좌 로그 생성
