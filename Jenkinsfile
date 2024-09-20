@@ -161,13 +161,8 @@ def pushDockerImage(String imageName) {
     sh "docker push ${imageName}"
 }
 
-// def deployBackend() {
-//     sh 'ssh -o StrictHostKeyChecking=no deployuser@j11c204.p.ssafy.io "bash /home/deployuser/deploy_back.sh"'
-//     sh 'ssh deployuser@j11c204.p.ssafy.io "bash /home/deployuser/deploy_back.sh"'
-// }
-
 def deployBackend() {
-    sh 'ssh -o StrictHostKeyChecking=no deployuser@j11c204.p.ssafy.io "bash /home/deployuser/deploy_back.sh"'
+    sh 'ssh deployuser@j11c204.p.ssafy.io "bash /home/deployuser/deploy_back.sh"'
 }
 
 
