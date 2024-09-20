@@ -109,12 +109,12 @@ public class LoanServiceImpl implements LoanService {
         return list;
     }
 
-    // 상세대출내역 조회
+    // 상세대출내역 조회(승인 된 대출내역만)
     @Override
     @Transactional(readOnly = true)
     public LoanDetailResponseDto getDetailLoan(long loanId) {
 
-        Loan loan = loanRepository.findById(loanId).orElse(null);
+        Loan loan = loanRepository.findByIdAndLoanStatus(loanId, LoanStatus.APPROVAL).orElse(null);
 
         LoanDetailResponseDto loanDetail = LoanDetailResponseDto.builder()
                 .createdAt(loan.getCreatedAt())
@@ -130,7 +130,7 @@ public class LoanServiceImpl implements LoanService {
         return loanDetail;
     }
 
-    // 대출심사하기
+    // 대출 심사하기
     @Override
     @Transactional
     public void loanEvaluation(long loanId, LoanEvaluationRequestDto requestDto) {
@@ -154,7 +154,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional
     public void sendRepayment(long loanId) {
-        Loan loan = loanRepository.findById(loanId).orElse(null);
+        Loan loan = loanRepository.findByIdAndLoanStatus(loanId, LoanStatus.APPROVAL).orElse(null);
 
         int interest = (int) (loan.getLoanAmount() * loan.getLoanRate() / loan.getLoanDate());
         int repayment = (loan.getLoanType() == LoanType.EQUALR) ? loan.getLoanAmount() / loan.getLoanDate() : 0;
@@ -186,6 +186,7 @@ public class LoanServiceImpl implements LoanService {
         log.info("대출 상환");
     }
 
+    // 대출 로그 조회하기
     @Override
     @Transactional(readOnly = true)
     public List<LoanLogListResponseDto> getLoanLogs(long loanId) {
