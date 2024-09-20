@@ -5,8 +5,8 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('ribbon03')
         MATTERMOST_ENDPOINT = 'https://meeting.ssafy.com/hooks/s383baqpftgk7ddehjbkagyn7c'
         MATTERMOST_CHANNEL = 'Jenkins'
-        BACKEND_IMAGE = 'soyo/eggmoney_back'
-        FRONTEND_IMAGE = 'soyo/eggmoney_front'
+        BACKEND_IMAGE = 'ribbon03/backend'
+        FRONTEND_IMAGE = 'ribbon03/frontend'
     }
 
     options {
