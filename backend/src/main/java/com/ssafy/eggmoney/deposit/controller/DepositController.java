@@ -1,9 +1,10 @@
 package com.ssafy.eggmoney.deposit.controller;
 
 
-import com.ssafy.eggmoney.deposit.dto.requestdto.DepositCreateRequestDto;
-import com.ssafy.eggmoney.deposit.dto.responsedto.DepositProductListResponseDto;
-import com.ssafy.eggmoney.deposit.dto.responsedto.DepositResponseDto;
+import com.ssafy.eggmoney.deposit.dto.request.DepositCreateRequestDto;
+import com.ssafy.eggmoney.deposit.dto.response.DeleteDepositResponseDto;
+import com.ssafy.eggmoney.deposit.dto.response.DepositProductListResponseDto;
+import com.ssafy.eggmoney.deposit.dto.response.DepositResponseDto;
 import com.ssafy.eggmoney.deposit.service.DepositService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,5 +57,16 @@ public class DepositController {
     }
 
 
+    /**
+     * 예금삭제
+     * @param depositId
+     * return
+    */
+    @PostMapping("/delete/{depositId}")
+    public ResponseEntity<DeleteDepositResponseDto> deleteDeposit(@PathVariable long depositId) {
+        DeleteDepositResponseDto result = depositService.deleteDeposit(depositId);
+
+        return ResponseEntity.ok().body(result);
+    }
 
 }

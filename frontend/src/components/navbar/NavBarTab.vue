@@ -11,7 +11,7 @@ const isAtive = computed(() => {
 </script>
 
 <template>
-  <div class="flex justify-center p-4">
+  <div class="flex justify-center pt-4 pb-2">
     <RouterLink to="/stock" type="button" :class="isAtive('/stock')" class="px-4">홈</RouterLink>
     <RouterLink to="/stock/history" type="button" class="px-4" :class="isAtive('/stock/history')"
       >거래내역</RouterLink

@@ -1,7 +1,7 @@
 package com.ssafy.eggmoney.loan.entity;
 
 public enum LoanStatus {
-    PROGRESS,
-    APPROVAL,
-    REFUSAL;
+    PROGRESS, // 진행중
+    APPROVAL, // 승인
+    REFUSAL; // 거절
 }
