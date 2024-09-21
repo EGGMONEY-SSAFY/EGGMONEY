@@ -16,7 +16,7 @@ public class AccountController {
     private final AccountService accountService;
     private final AccountLogService accountLogService;
 
-//    메인계좌 조회fdddddddddddddddddddddddddd
+//    메인계좌 조회fdddddddddddfffddddddddddddddd
     @GetMapping("/{userId}")
     public GetAccountResponseDto getAccount(@PathVariable("userId") Long userId){
 
