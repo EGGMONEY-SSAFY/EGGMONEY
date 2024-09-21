@@ -21,9 +21,9 @@ import NavBarTop from "./components/navbar/NavBarTop.vue"
   min-height: 101vh;
 }
 
-@media (min-width: 400px) {
+@media (min-width: 393px) {
   .main-container {
-    max-width: 400px;
+    max-width: 393px;
   }
 }
 </style>
