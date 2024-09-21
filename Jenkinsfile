@@ -3,10 +3,10 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('ribbon03')
-        MATTERMOST_ENDPOINT = 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a'
+        MATTERMOST_ENDPOINT = 'https://meeting.ssafy.com/hooks/s383baqpftgk7ddehjbkagyn7c'
         MATTERMOST_CHANNEL = 'Jenkins'
-        BACKEND_IMAGE = 'soyo/eggmoney_back'
-        FRONTEND_IMAGE = 'soyo/eggmoney_front'
+        BACKEND_IMAGE = 'ribbon03/backend'
+        FRONTEND_IMAGE = 'ribbon03/frontend'
     }
 
     options {
@@ -22,11 +22,33 @@ pipeline {
             }
         }
 
+
+
         stage('Checkout') {
             steps {
-                git url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git', branch: 'develop', credentialsId: 'bayleaf07'
+                checkout scmGit(
+                    branches: [[name: 'back/infra']],
+                    userRemoteConfigs: [[ credentialsId: 'egg2', url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git']]
+                )
             }
         }
+
+        stage('secret.yml download') {
+            steps {
+                withCredentials([file(credentialsId: 'secret', variable: 'dbConfigFile')]) {
+                    sh 'cp $dbConfigFile backend/src/main/resources/application-secrets.yml'
+                }
+            }
+        }
+
+        // stage('List Directory Structure') {
+        //     steps {
+        //         script {
+        //             sh 'find .'
+        //         }
+        //     }
+        // }
+
 
         stage('Build Backend') {
             when {
@@ -67,7 +89,7 @@ pipeline {
                 changeset "**/frontend/**"
             }
             steps {
-    
+                    echo 'Building Frontend Docker Image: ' + FRONTEND_IMAGE
                     buildDockerImage('frontend', FRONTEND_IMAGE)
                 
             }
@@ -116,7 +138,7 @@ def sendNotification(String color, String status) {
         커밋 작성자 : ${gitCommitterName}
         커밋 메시지 : ${gitCommitMessage}
         (<${env.BUILD_URL}|Details>)""",
-        endpoint: 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a',
+        endpoint: 'https://meeting.ssafy.com/hooks/s383baqpftgk7ddehjbkagyn7c',
         channel: 'Jenkins'
     )
 }
@@ -124,17 +146,19 @@ def sendNotification(String color, String status) {
 def buildBackend() {
     dir('backend') {
         sh 'chmod +x ./gradlew'
-        sh './gradlew clean build'
+        sh './gradlew clean build --info' 
     }
 }
 
 def buildDockerImage(String dirPath, String imageName) {
     dir(dirPath) {
+        sh "echo 'Building Docker image: ${imageName}'"
         sh "docker build --no-cache -t ${imageName} ."
     }
 }
 
 def pushDockerImage(String imageName) {
+    sh 'echo $DOCKERHUB_CREDENTIALS_USR'
     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
     sh "docker push ${imageName}"
 }
@@ -143,6 +167,8 @@ def deployBackend() {
     sh 'ssh deployuser@j11c204.p.ssafy.io "bash /home/deployuser/deploy_back.sh"'
 }
 
+
 def deployFrontend() {
     sh 'ssh deployuser@j11c204.p.ssafy.io "bash /home/deployuser/deploy_front.sh"'
 }
+
