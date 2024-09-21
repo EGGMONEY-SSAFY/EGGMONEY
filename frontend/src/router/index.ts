@@ -7,6 +7,11 @@ import StockView from "@/views/StockView.vue"
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+
+    {
+      path: '/',
+      redirect: '/asset', 
+    },
     {
       path: "/asset",
       name: "AssetView",
