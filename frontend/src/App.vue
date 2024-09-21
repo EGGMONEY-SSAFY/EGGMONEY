@@ -11,10 +11,10 @@ import { computed } from "vue"
     <div class="main-container bg-gray-200">
       <NavBarTop />
       <RouterView class="mt-14 mb-16" />
+      <p>하이</p>
       <NavBar />
     </div>
   </div>
-<!-- dfgdddddddddddd -->
 </template>
 
 <style sc>
