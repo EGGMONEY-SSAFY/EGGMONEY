@@ -35,6 +35,8 @@ public class SavingsController {
     * */
     @PostMapping("/create")
     public ResponseEntity<?> createSaving(@RequestBody SavingsCreateRequestDto savingsCreateRequestDto){
+        System.out.println(savingsCreateRequestDto.getSavingsProductId());
+        System.out.println(savingsCreateRequestDto.getPaymentMoney());
         savingService.createSaving(savingsCreateRequestDto);
 
         return ResponseEntity.ok().build();
