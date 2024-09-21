@@ -11,7 +11,7 @@ import { computed } from "vue"
     <div class="main-container bg-gray-200">
       <NavBarTop />
       <RouterView class="mt-14 mb-16" />
-      <p>하이</p>
+      <p>하이fff</p>
       <NavBar />
     </div>
   </div>
