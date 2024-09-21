@@ -2,6 +2,7 @@ package com.ssafy.eggmoney.stock.entity;
 
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,15 +22,19 @@ public class Stock extends BaseTime {
     @Column(name = "stock_id")
     private Long id;
 
+    @NotNull
     @Enumerated(value = EnumType.STRING)
     private StockItem stockItem;
 
-    private int price;
+    @NotNull
+    private int stockPrice;
+
+    @NotNull
     private LocalDate date;
 
-    public Stock(StockItem stockItem, BigDecimal price, LocalDate date) {
+    public Stock(StockItem stockItem, BigDecimal stockPrice, LocalDate date) {
         this.stockItem = stockItem;
-        this.price = price.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+        this.stockPrice = stockPrice.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
         this.date = date;
     }
 }

@@ -7,25 +7,40 @@ import com.ssafy.eggmoney.stock.dto.response.StockTokenResponse;
 import com.ssafy.eggmoney.stock.entity.Stock;
 import com.ssafy.eggmoney.stock.entity.StockItem;
 import com.ssafy.eggmoney.stock.repository.StockRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
-@Slf4j
 public class StockServiceImpl implements StockService {
     private final StockApiConfig apiConfig;
     private final WebClient webClient;
     private final StockRepository stockRepository;
+    private final Map<String, StockItem> stockCodeNames;
 
     public StockServiceImpl(StockApiConfig stockApiConfig, WebClient.Builder webClientBuilder, StockRepository stockRepository) {
         this.apiConfig = stockApiConfig;
         this.webClient = webClientBuilder.baseUrl("https://openapi.koreainvestment.com:9443").build();
         this.stockRepository = stockRepository;
+
+        this.stockCodeNames = new HashMap<>();
+        stockCodeNames.put("0001", StockItem.KOSPI);
+        stockCodeNames.put("1001", StockItem.KOSDAQ);
+        stockCodeNames.put("4002", StockItem.AUTOMOTIVE);
+        stockCodeNames.put("4003", StockItem.SEMICONDUCTOR);
+        stockCodeNames.put("4004", StockItem.HEALTHCARE);
+        stockCodeNames.put("4005", StockItem.BANKING);
+        stockCodeNames.put("4007", StockItem.ENERGY_CHEMICAL);
+        stockCodeNames.put("4008", StockItem.STEEL);
+        stockCodeNames.put("4011", StockItem.CONSTRUCTION);
+        stockCodeNames.put("4016", StockItem.TRANSPORTATION);
+        stockCodeNames.put("4063", StockItem.MEDIA_ENTERTAINMENT);
+        stockCodeNames.put("4064", StockItem.IT);
+        stockCodeNames.put("4065", StockItem.UTILITIES);
     }
 
     @Override
@@ -42,13 +57,14 @@ public class StockServiceImpl implements StockService {
                 .block();
     }
 
-    public List<StockPriceResponse> getStockPrices(String token, String inputDate) {
+    @Override
+    public List<StockPriceResponse> getStockPrices(String token, String inputDate, String stockCode) {
         return this.webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/uapi/domestic-stock/v1/quotations/inquire-index-daily-price")
                         .queryParam("FID_PERIOD_DIV_CODE", "D")
                         .queryParam("FID_COND_MRKT_DIV_CODE", "U")
-                        .queryParam("FID_INPUT_ISCD", "0001")
+                        .queryParam("FID_INPUT_ISCD", stockCode)
                         .queryParam("FID_INPUT_DATE_1", inputDate)
                         .build())
                 .headers(headers -> {
@@ -66,10 +82,11 @@ public class StockServiceImpl implements StockService {
     }
 
     @Transactional
-    public void saveStockPrices() {
-        List<StockPriceResponse> stockPrices = getStockPrices(getAccessToken().getAccessToken(), "20240919");
+    @Override
+    public void saveStockPrices(String token, String inputDate, String stockCode) {
+        List<StockPriceResponse> stockPrices = getStockPrices(token, inputDate, stockCode);
         stockPrices.forEach(stockPrice -> {
-            Stock stock = new Stock(StockItem.KOSPI, stockPrice.getBstp_nmix_prpr(), stockPrice.getStck_bsop_date());
+            Stock stock = new Stock(stockCodeNames.get(stockCode), stockPrice.getBstp_nmix_prpr(), stockPrice.getStck_bsop_date());
             stockRepository.save(stock);
         });
     }
