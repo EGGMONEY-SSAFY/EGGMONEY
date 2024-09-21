@@ -1,9 +1,9 @@
 package com.ssafy.eggmoney.savings.service;
 
-import com.ssafy.eggmoney.savings.dto.requestDto.SavingsCreateRequestDto;
-import com.ssafy.eggmoney.savings.dto.responseDto.SavingsLogResponseDto;
-import com.ssafy.eggmoney.savings.dto.responseDto.SavingsProductListResponseDto;
-import com.ssafy.eggmoney.savings.dto.responseDto.SavingsResponseDto;
+import com.ssafy.eggmoney.savings.dto.request.SavingsCreateRequestDto;
+import com.ssafy.eggmoney.savings.dto.response.SavingsLogResponseDto;
+import com.ssafy.eggmoney.savings.dto.response.SavingsProductListResponseDto;
+import com.ssafy.eggmoney.savings.dto.response.SavingsResponseDto;
 
 import java.util.List;
 
