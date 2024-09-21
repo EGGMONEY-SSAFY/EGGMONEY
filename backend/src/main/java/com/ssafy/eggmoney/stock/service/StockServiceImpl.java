@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.HashMap;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -20,27 +21,11 @@ public class StockServiceImpl implements StockService {
     private final StockApiConfig apiConfig;
     private final WebClient webClient;
     private final StockRepository stockRepository;
-    private final Map<String, StockItem> stockCodeNames;
 
     public StockServiceImpl(StockApiConfig stockApiConfig, WebClient.Builder webClientBuilder, StockRepository stockRepository) {
         this.apiConfig = stockApiConfig;
         this.webClient = webClientBuilder.baseUrl("https://openapi.koreainvestment.com:9443").build();
         this.stockRepository = stockRepository;
-
-        this.stockCodeNames = new HashMap<>();
-        stockCodeNames.put("0001", StockItem.KOSPI);
-        stockCodeNames.put("1001", StockItem.KOSDAQ);
-        stockCodeNames.put("4002", StockItem.AUTOMOTIVE);
-        stockCodeNames.put("4003", StockItem.SEMICONDUCTOR);
-        stockCodeNames.put("4004", StockItem.HEALTHCARE);
-        stockCodeNames.put("4005", StockItem.BANKING);
-        stockCodeNames.put("4007", StockItem.ENERGY_CHEMICAL);
-        stockCodeNames.put("4008", StockItem.STEEL);
-        stockCodeNames.put("4011", StockItem.CONSTRUCTION);
-        stockCodeNames.put("4016", StockItem.TRANSPORTATION);
-        stockCodeNames.put("4063", StockItem.MEDIA_ENTERTAINMENT);
-        stockCodeNames.put("4064", StockItem.IT);
-        stockCodeNames.put("4065", StockItem.UTILITIES);
     }
 
     @Override
@@ -81,13 +66,40 @@ public class StockServiceImpl implements StockService {
                 .block();
     }
 
+    public BigDecimal getCurrentStockPrice(String token, String stockCode) {
+        return this.webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/uapi/domestic-stock/v1/quotations/inquire-index-price")
+                        .queryParam("FID_COND_MRKT_DIV_CODE", "U")
+                        .queryParam("FID_INPUT_ISCD", stockCode)
+                        .build())
+                .headers(headers -> {
+                    headers.set("content-type", "application/json");
+                    headers.set("authorization", "Bearer " + token);
+                    headers.set("appkey", apiConfig.getAppKey());
+                    headers.set("appsecret", apiConfig.getAppSecret());
+                    headers.set("tr_id", "FHPUP02120000");
+                    headers.set("custtype", "P");
+                })
+                .retrieve()
+                .bodyToMono(StockPriceResponse.class)
+                .map(StockPriceResponse::getBstp_nmix_prpr)
+                .block();
+    }
+
     @Transactional
     @Override
-    public void saveStockPrices(String token, String inputDate, String stockCode) {
-        List<StockPriceResponse> stockPrices = getStockPrices(token, inputDate, stockCode);
+    public void saveStockPrices(List<StockPriceResponse> stockPrices, StockItem stockItem) {
         stockPrices.forEach(stockPrice -> {
-            Stock stock = new Stock(stockCodeNames.get(stockCode), stockPrice.getBstp_nmix_prpr(), stockPrice.getStck_bsop_date());
+            Stock stock = new Stock(stockItem, stockPrice.getBstp_nmix_prpr(), stockPrice.getStck_bsop_date());
             stockRepository.save(stock);
         });
+    }
+
+    @Transactional
+    @Override
+    public void saveCurrentStockPrice(StockItem stockItem, BigDecimal currentStockPrice) {
+        Stock stock = new Stock(stockItem, currentStockPrice, LocalDate.now());
+        stockRepository.save(stock);
     }
 }
