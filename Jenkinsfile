@@ -164,11 +164,13 @@ def pushDockerImage(String imageName) {
 }
 
 def deployBackend() {
+    sh 'docker rm -f back_green || true'
     sh 'ssh deployuser@j11c204.p.ssafy.io "bash /home/deployuser/deploy_back.sh"'
 }
 
 
 def deployFrontend() {
+    sh 'docker rm -f front_green || true'
     sh 'ssh deployuser@j11c204.p.ssafy.io "bash /home/deployuser/deploy_front.sh"'
 }
 
