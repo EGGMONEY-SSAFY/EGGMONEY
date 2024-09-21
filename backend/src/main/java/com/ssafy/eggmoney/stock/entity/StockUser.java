@@ -6,24 +6,25 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@Table(name = "stock_hodings")
+@Table(name = "stock_users")
 @NoArgsConstructor(access = PROTECTED)
 public class StockUser extends BaseTime {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "stock_holding_id")
+    @Column(name = "stock_user_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "stock_id")
-    private Stock stockItem;
+    private Stock stock;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
