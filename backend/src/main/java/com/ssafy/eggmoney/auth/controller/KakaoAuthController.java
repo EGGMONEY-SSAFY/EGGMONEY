@@ -1,19 +1,22 @@
 package com.ssafy.eggmoney.auth.controller;
 
+import com.ssafy.eggmoney.auth.dto.response.TokenResponse;
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
+import com.ssafy.eggmoney.global.dto.ResponseApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins="localhost:5173")
+@CrossOrigin(origins="http://localhost:5173")
 @RestController
 @RequestMapping("/kakao")
 public class KakaoAuthController {
@@ -28,38 +31,37 @@ public class KakaoAuthController {
     private KakaoAuthService kakaoService;
 
     @GetMapping("/login")
-    public ResponseEntity<Void> kakaoLogin() {
-        // 카카오 로그인 URL로 리다이렉트
-        String kakaoAuthUrl = kakaoService.getKakaoAuthUrl().block();  // URL을 가져오는 부분
-        ResponseEntity<Void> response = ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(kakaoAuthUrl))  // 리다이렉트 URL 설정
-                .build();
+    public Mono<ResponseEntity<Void>> kakaoLogin() {
 
-        // 요청 결과를 출력해보기
-        System.out.println("Response: " + response);
-        System.out.println("Location header: " + kakaoAuthUrl);
-        return response;
+//        String kakaoAuthUrl = kakaoService.getKakaoAuthUrl().block();  // URL을 가져오는 부분
+//        ResponseEntity<Void> response = ResponseEntity.status(HttpStatus.FOUND)
+//                .location(URI.create(kakaoAuthUrl))  // 리다이렉트 URL 설정
+//                .build();
+        return kakaoService.getKakaoAuthUrl()
+                .map(kakaoAuthUrl -> ResponseEntity.status(HttpStatus.FOUND)
+                        .location(URI.create(kakaoAuthUrl))
+                        .build());
     }
 
-    @GetMapping("/callback")
-    public ResponseEntity<?> callbakc(@RequestParam("code") String code){
-        System.out.println("!");
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-//    public Mono<ResponseEntity<Map<String,String>>> kakaoCallback() {
-//        String code="i-Cqxp6gYhVxayIAcM-Zuvuo_yFq6aqJowaYDGMsfSJ4Xff2-uBAWwAAAAQKKiWPAAABkg5sWKAtjdRiIM79qQ";
-//        System.out.println("Received Kakao Callback with code: " + code);
+
+//    public ResponseEntity<?> callbakc(@RequestParam("code") String code){
 //
-//        return kakaoService.handleUserLogin(code)
-//                .map(user -> {
-//                    Map<String, String> response = new HashMap<>();
-//                    return ResponseEntity.ok(response);
-//                })
-//                .onErrorResume(e -> {
-//                    System.err.println("Kakao API 에러: "+ e.getMessage());
-//                    Map<String, String> errorResponse = new HashMap<>();
-//                    return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse));
-//                });
-//    }
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    })
+@GetMapping("/callback")
+public Mono<ResponseEntity<ResponseApi<TokenResponse>>> kakaoCallback(@RequestParam("code") String code) {
+//    System.out.println("callback with :" + code);
+//
+//    return kakaoService.handleUserLogin(code)
+//            .map(result -> {
+//                String redirectUrl = result.get("redirectUrl");
+//                return ResponseEntity.status(HttpStatus.FOUND)
+//                        .location(URI.create(redirectUrl))
+//                        .build();
+//            });
+    return kakaoService.handleUserLogin(code)
+            .map(tokens -> ResponseEntity.ok(ResponseApi.success(tokens)));
+}
+
 
 }
