@@ -8,8 +8,6 @@ import StockNewsView from "@/views/Stock/StockNewsView.vue"
 import WonAuthView from "@/views/WonAuthView.vue"
 import StockDetail from "@/views/Stock/StockDetail.vue"
 
-
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
