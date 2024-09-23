@@ -61,7 +61,7 @@ public class KakaoAuthService {
                         JsonNode jsonNode = objectMapper.readTree(responseBody);
                         String accessToken = jsonNode.get("access_token").asText();
                         String refreshToken = jsonNode.get("refresh_token").asText();
-                        return Mono.just(new TokenResponse(accessToken, refreshToken, null));
+                        return Mono.just(new TokenResponse(accessToken, refreshToken,null));
                     } catch (Exception e){
                         return Mono.error(new RuntimeException("엑세스토큰 파싱 실패"));
                     }
@@ -78,79 +78,52 @@ public class KakaoAuthService {
     }
 
 
-    public Mono<TokenResponse> handleUserLogin(String code){
+    public Mono<TokenResponse> handleUserLogin(String code) {
         return getAccessTokens(code)
                 .flatMap(tokens -> getUserInfo(tokens.getAccessToken())
-                        .flatMap(userInfo ->{
+                        .flatMap(userInfo -> {
                             String email = userInfo.getKakaoAccount().getEmail();
                             String name = userInfo.getKakaoAccount().getProfile().getNickname();
 
-                            return Mono.defer(()->{
+                            return Mono.defer(() -> {
                                 Optional<User> optionalUser = userRepository.findByEmail(email);
-                                String redirectURl;
-                                if(optionalUser.isPresent()){
-                                    redirectURl= "http://localhost:5173";
-                                }else {
+                                String redirectUrl;
+                                if (optionalUser.isPresent()) {
+                                    redirectUrl = "http://localhost:5173";
+                                } else {
                                     User newUser = User.builder()
                                             .email(email)
                                             .name(name)
                                             .build();
                                     userRepository.save(newUser);
-                                    redirectURl="http://localhost:5173/selectRole";
+                                    redirectUrl = "http://localhost:5173/selectRole";
                                 }
-                                return Mono.just(new TokenResponse(tokens.getAccessToken(), tokens.getRefreshToken(),redirectURl));
+                                // 최종적으로 TokenResponse 반환
+                                return Mono.just(new TokenResponse(tokens.getAccessToken(), tokens.getRefreshToken(), redirectUrl));
                             });
-
                         }));
     }
 
-    public Mono<TokenResponse> refreshAccessToken(String refreshToken){
-        return webClient.post()
-                .uri(KAKAO_TOKEN_URL)
-                .body(BodyInserters.fromFormData("grant_type","refresh_token")
-                        .with("client_id",clientId)
-                        .with("refresh_token",refreshToken))
-                .retrieve()
-                .bodyToMono(String.class)
-                .flatMap(responseBody->{
-                    try{
-                        ObjectMapper objectMapper =new ObjectMapper();
-                        JsonNode jsonNode = objectMapper.readTree(responseBody);
-                        String newAccessToken = jsonNode.get("access_token").asText();
-                        String newRefreshToken = jsonNode.has("refresh_token")?jsonNode.get("refresh_token").asText():refreshToken;
-                        return Mono.just(new TokenResponse(newAccessToken, newRefreshToken,null));
-                    }catch (Exception e){
-                        return Mono.error(new RuntimeException("Access Token 갱신 실패"));
-                    }
-                });
-    }
-    public Mono<Void> logout(String accessToken){
-        return webClient.post()
-                .uri("https://kapi.kakao.com/v1/user/logout")
-                .headers(headers->headers.setBearerAuth(accessToken))
-                .retrieve()
-                .bodyToMono(Void.class);
-    }
-    public Mono<User> handleUserLogin(String code) {
-        return getAccessToken(code)
-                .flatMap(this::getUserInfo)
-                .flatMap(userInfo -> {
-                    String email = userInfo.getKakaoAccount().getEmail();
-                    String name = userInfo.getKakaoAccount().getProfile().getNickname();
-
-                    return Mono.defer(() -> {
-                        Optional<User> optionalUser = userRepository.findByEmail(email);
-                        if (optionalUser.isPresent()) {
-                            return Mono.just(optionalUser.get());
-                        } else {
-                            User newUser = User.builder()
-                                    .email(email)
-                                    .name(name)
-                                    .build();
-                            return Mono.just(userRepository.save(newUser));
-                        }
-
-                    });
-                });
-    };
+//    public Mono<User> handleUserLogin(String code) {
+//        return getAccessToken(code)
+//                .flatMap(this::getUserInfo)
+//                .flatMap(userInfo -> {
+//                    String email = userInfo.getKakaoAccount().getEmail();
+//                    String name = userInfo.getKakaoAccount().getProfile().getNickname();
+//
+//                    return Mono.defer(() -> {
+//                        Optional<User> optionalUser = userRepository.findByEmail(email);
+//                        if (optionalUser.isPresent()) {
+//                            return Mono.just(optionalUser.get());
+//                        } else {
+//                            User newUser = User.builder()
+//                                    .email(email)
+//                                    .name(name)
+//                                    .build();
+//                            return Mono.just(userRepository.save(newUser));
+//                        }
+//
+//                    });
+//                });
+//    };
 }

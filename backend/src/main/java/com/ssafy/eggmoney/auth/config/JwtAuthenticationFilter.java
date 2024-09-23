@@ -17,15 +17,15 @@ import java.io.IOException;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-//    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 //    private final AuthService authService;
-//
-//    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, AuthService authService) {
-//        this.jwtTokenProvider = jwtTokenProvider;
+
+    public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider, AuthService authService) {
+        this.jwtTokenProvider = jwtTokenProvider;
 //        this.authService = authService;
-//    }
-//
-//
+    }
+
+
 //    public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 //            throws IOException, ServletException {
 //        String token = jwtTokenProvider.resolveToken(request);
@@ -34,23 +34,23 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 //        }
 //        chain.doFilter(request, response);
 //    }
-//
-//    private boolean validateKakaoToken(String token){
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Authorization","Bearer"+token);
-//        HttpEntity<String> entity = new HttpEntity<>(headers);
-//
-//        try{
-//            ResponseEntity<String> response = restTemplate.exchange(
-//                    "http://kapi.kakao.com/v1/user/access_token_info",
-//                    HttpMethod.GET,
-//                    entity,
-//                    String.class);
-//            return response.getStatusCode().is2xxSuccessful();
-//        } catch (Exception e){
-//            return false;
-//        }
 
-//    }
+    private boolean validateKakaoToken(String token){
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization","Bearer"+token);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        try{
+            ResponseEntity<String> response = restTemplate.exchange(
+                    "http://kapi.kakao.com/v1/user/access_token_info",
+                    HttpMethod.GET,
+                    entity,
+                    String.class);
+            return response.getStatusCode().is2xxSuccessful();
+        } catch (Exception e){
+            return false;
+        }
+
+    }
 }

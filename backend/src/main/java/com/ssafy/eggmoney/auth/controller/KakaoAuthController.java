@@ -44,12 +44,12 @@ public class KakaoAuthController {
     }
 
 
-//    public ResponseEntity<?> callbakc(@RequestParam("code") String code){
+    //    public ResponseEntity<?> callbakc(@RequestParam("code") String code){
 //
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    })
-@GetMapping("/callback")
-public Mono<ResponseEntity<ResponseApi<TokenResponse>>> kakaoCallback(@RequestParam("code") String code) {
+    @GetMapping("/callback")
+    public Mono<ResponseEntity<ResponseApi<TokenResponse>>> kakaoCallback(@RequestParam("code") String code) {
 //    System.out.println("callback with :" + code);
 //
 //    return kakaoService.handleUserLogin(code)
@@ -59,9 +59,9 @@ public Mono<ResponseEntity<ResponseApi<TokenResponse>>> kakaoCallback(@RequestPa
 //                        .location(URI.create(redirectUrl))
 //                        .build();
 //            });
-    return kakaoService.handleUserLogin(code)
-            .map(tokens -> ResponseEntity.ok(ResponseApi.success(tokens)));
-}
+        return kakaoService.handleUserLogin(code)
+                .map(result -> ResponseEntity.ok(ResponseApi.success(result)));
+    }
 
 
 }
