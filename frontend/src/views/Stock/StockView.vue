@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import BoxItem from "@/components/box/BoxAvailInvest.vue"
-import NavBarTab from "@/components/navbar/NavBarTab.vue"
+import NavBarTab from "@/components/navbar/navBarTab/NavBarTab.vue"
 import HeldStocksChart from "@/components/cart/HeldStocksChart.vue"
 import { useVariableStore } from "@/stores/variable"
 import BoxStock from "@/components/box/BoxStock.vue"
