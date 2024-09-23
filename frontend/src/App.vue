@@ -8,7 +8,7 @@ import NavBarTop from "./components/navbar/NavBarTop.vue"
   <div class="flex justify-center bg-gray-800">
     <div class="main-container bg-gray-200">
       <NavBarTop />
-      <!-- ddddddsss -->
+      <!-- ddddddddddddsss -->
       <RouterView class="mt-12 mb-24" />
       <NavBar />
     </div>
