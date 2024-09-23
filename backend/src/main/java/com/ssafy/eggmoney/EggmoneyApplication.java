@@ -10,7 +10,7 @@ public class EggmoneyApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EggmoneyApplication.class, args);
-		// test22dddddddd
+		// test22d
 	}
 
 }
