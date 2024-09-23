@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('ribbon03')
-        MATTERMOST_ENDPOINT = 'https://meeting.ssafy.com/hooks/s383baqpftgk7ddehjbkagyn7c'
+        MATTERMOST_ENDPOINT = 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a'
         MATTERMOST_CHANNEL = 'Jenkins'
         BACKEND_IMAGE = 'ribbon03/backend'
         FRONTEND_IMAGE = 'ribbon03/frontend'
@@ -27,7 +27,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scmGit(
-                    branches: [[name: 'back/infra']],
+                    branches: [[name: 'develop']],
                     userRemoteConfigs: [[ credentialsId: 'egg2', url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git']]
                 )
             }
@@ -138,7 +138,7 @@ def sendNotification(String color, String status) {
         커밋 작성자 : ${gitCommitterName}
         커밋 메시지 : ${gitCommitMessage}
         (<${env.BUILD_URL}|Details>)""",
-        endpoint: 'https://meeting.ssafy.com/hooks/s383baqpftgk7ddehjbkagyn7c',
+        endpoint: 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a',
         channel: 'Jenkins'
     )
 }
