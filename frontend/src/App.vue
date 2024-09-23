@@ -9,7 +9,7 @@ import NavBarTop from "./components/navbar/NavBarTop.vue"
     <div class="main-container bg-gray-200">
       <NavBarTop />
       <RouterView class="mt-12 mb-24" />
-      <!-- test2332dddddddttt -->
+      <!-- test2332ddddddddddttt -->
       <NavBar />
     </div>
   </div>
