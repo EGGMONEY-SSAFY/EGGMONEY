@@ -36,13 +36,16 @@ dependencies {
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 //	testImplementation 'org.springframework.security:spring-security-test'
 
-//	Webclient
+	// Webclient
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
-//	Jackson
+	// Jackson
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
 	implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
 	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+
+	// jsoup : 크롤링
+	implementation 'org.jsoup:jsoup:1.18.1'
 }
 
 tasks.named('test') {
