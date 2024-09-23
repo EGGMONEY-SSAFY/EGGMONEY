@@ -17,7 +17,7 @@
   const tokenResult = ref<string | null>(null);
     function redirectToLogin() {
     
-    window.location.href = 'http://localhost:8080/kakao/login'; // 백엔드 로그인 URL
+    window.location.href = 'http://localhost:8080/api/kakao/login'; // 백엔드 로그인 URL
   }
   interface ResponseApi<T>{
     success: boolean;
@@ -47,7 +47,7 @@
       if (code) {
           
           axios
-          .get<ResponseApi<TokenResponse>>(`http://localhost:8080/kakao/callback`,{
+          .get<ResponseApi<TokenResponse>>(`http://localhost:8080/api/kakao/callback`,{
             params:{code},
             withCredentials: true
           })
