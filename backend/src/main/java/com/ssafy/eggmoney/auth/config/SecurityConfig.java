@@ -37,8 +37,8 @@ public class SecurityConfig  {
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/login","/refresh-token", "/kakao/login", "/kakao/callback", "api/v1/family/**").permitAll()
-                                .anyRequest().authenticated()
+//                                .requestMatchers("/login","/refresh-token", "/kakao/login", "/kakao/callback", "api/v1/family/**").permitAll()
+                                .anyRequest().permitAll()
                 )
                 .sessionManagement(sessionManagement->
                         sessionManagement
