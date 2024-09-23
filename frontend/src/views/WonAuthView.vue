@@ -1,15 +1,10 @@
 <template>
-    <div>
-        <WonAuthComponent/>
-        <p>1</p>
-    </div>
+  <div>
+    <WonAuthComponent />
+    <p>1</p>
+  </div>
 </template>
 <script setup lang="ts">
-import WonAuthComponent from '@/components/WonAuthComponent.vue';
-
-
-
+import WonAuthComponent from "@/components/WonAuthComponent.vue"
 </script>
-<style>
-    
-</style>
+<style></style>

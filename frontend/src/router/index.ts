@@ -5,9 +5,9 @@ import FinView from "@/views/Fin/FinView.vue"
 import StockView from "@/views/Stock/StockView.vue"
 import StockHistoryView from "@/views/Stock/StockHistoryView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
-
 import WonAuthView from "@/views/WonAuthView.vue"
-import StockDetail from "@/views/Stock/StockDetail/StockDetail.vue"
+import StockDetail from "@/views/Stock/StockDetail.vue"
+
 
 
 const router = createRouter({
@@ -48,7 +48,7 @@ const router = createRouter({
       component: StockNewsView,
     },
     {
-      path:"/won",
+      path: "/won",
       name: "WonAuthView",
       component: WonAuthView,
     },
@@ -57,7 +57,6 @@ const router = createRouter({
       name: "StockDetail",
       component: StockDetail,
     },
-
   ],
 })
 
