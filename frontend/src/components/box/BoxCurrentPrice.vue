@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import IconRightArrow from "../icons/IconRightArrow.vue"
-
 const props = defineProps({
   price: Number,
 })
@@ -12,7 +10,7 @@ const props = defineProps({
       <span>현재 가격</span>
     </div>
     <div class="m-4">
-      <span>{{ props.price }}알</span>
+      <span>{{ props.price }} 알</span>
     </div>
   </div>
 </template>

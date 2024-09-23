@@ -29,23 +29,23 @@ const router = createRouter({
       path: "/fin",
       // name: "FinView",
       component: FinView,
-      children:[
+      children: [
         {
-          path: '',
+          path: "",
           name: "FinDepositView",
-          component: FinView
+          component: FinView,
         },
         {
           path: "loan",
           name: "FinLoanView",
-          component: FinView
+          component: FinView,
         },
         {
           path: "savings",
           name: "FinSavingsView",
-          component: FinView
-        },        
-      ]
+          component: FinView,
+        },
+      ],
     },
     {
       path: "/stock",

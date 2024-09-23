@@ -15,7 +15,7 @@ const rate = (gap / props.price) * 100
   <div class="bg-white m-4 rounded-lg shadow flex justify-between">
     <div class="m-6 flex self-center text-xl font-bold">{{ props.stock }}</div>
     <div class="flex flex-col justify-center items-center ml-24">
-      <div>{{ props.price }}알</div>
+      <div>{{ props.price.toLocaleString() }}알</div>
       <div class="text-xs" :class="gap > 0 ? 'text-red-500' : 'text-blue-500'">
         {{ gap > 0 ? "+" + gap : gap }} ({{ Math.round(rate * 100) / 100 }}%)
       </div>
