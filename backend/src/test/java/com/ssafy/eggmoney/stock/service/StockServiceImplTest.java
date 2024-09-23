@@ -32,7 +32,7 @@ class StockServiceImplTest {
             StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
             StockItem.IT, StockItem.UTILITIES};
 
-//    @Test
+//    @Test33
 //    void getToken() {
 //        StockTokenResponse stockToken = stockService.getAccessToken();
 //
@@ -118,3 +118,5 @@ class StockServiceImplTest {
 //        Assertions.assertThat(currentStockPrice).isNotNull();
 //    }
 }
+
+//test

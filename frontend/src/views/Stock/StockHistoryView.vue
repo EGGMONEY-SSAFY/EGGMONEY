@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NavBarTab from "@/components/navbar/NavBarTab.vue"
+import NavBarTab from "@/components/navbar/navBarTab/NavBarTab.vue"
 import { useVariableStore } from "@/stores/variable"
 import { computed, ref } from "vue"
 import { useRoute } from "vue-router"
