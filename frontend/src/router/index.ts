@@ -6,7 +6,7 @@ import StockView from "@/views/StockView.vue"
 import * as path from 'path';
 import MainView from "@/views/MainView.vue"
 import LoginView from "@/views/LoginView.vue"
-import DefaultLayout from "@/DefaultLayout.vue"
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,30 +22,24 @@ const router = createRouter({
       component:LoginView,
     },
     {
-      path:"/",
-      component:DefaultLayout,
-      children:[
-        {
-          path: "/asset",
-          name: "AssetView",
-          component: AssetView,
-        },
-        {
-          path: "/all",
-          name: "AllView",
-          component: AllView,
-        },
-        {
-          path: "/fin",
-          name: "FinView",
-          component: FinView,
-        },
-        {
-          path: "/stock",
-          name: "StockView",
-          component: StockView,
-        },
-      ]
+      path: "/asset",
+      name: "AssetView",
+      component: AssetView,
+    },
+    {
+      path: "/all",
+      name: "AllView",
+      component: AllView,
+    },
+    {
+      path: "/fin",
+      name: "FinView",
+      component: FinView,
+    },
+    {
+      path: "/stock",
+      name: "StockView",
+      component: StockView,
     },
     
   ],

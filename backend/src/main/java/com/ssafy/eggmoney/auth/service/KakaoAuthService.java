@@ -61,7 +61,7 @@ public class KakaoAuthService {
                         JsonNode jsonNode = objectMapper.readTree(responseBody);
                         String accessToken = jsonNode.get("access_token").asText();
                         String refreshToken = jsonNode.get("refresh_token").asText();
-                        return Mono.just(new TokenResponse(accessToken, refreshToken));
+                        return Mono.just(new TokenResponse(accessToken, refreshToken,null));
                     } catch (Exception e){
                         return Mono.error(new RuntimeException("엑세스토큰 파싱 실패"));
                     }
@@ -81,26 +81,26 @@ public class KakaoAuthService {
     public Mono<TokenResponse> handleUserLogin(String code){
         return getAccessTokens(code)
                 .flatMap(tokens -> getUserInfo(tokens.getAccessToken())
-                        .flatMap(userInfo ->{
+                        .flatMap(userInfo -> {
                             String email = userInfo.getKakaoAccount().getEmail();
                             String name = userInfo.getKakaoAccount().getProfile().getNickname();
 
-                            return Mono.defer(()->{
+                            return Mono.defer(() -> {
                                 Optional<User> optionalUser = userRepository.findByEmail(email);
-                                Map<String, String> result = new HashMap<>();
-                                if(optionalUser.isPresent()){
-                                    result.put("redirectUrl", "http://localhost:5173");
-                                }else {
+                                if (optionalUser.isPresent()) {
+                                    // 기존 유저일 경우
+                                    tokens.setRedirectUrl("http://localhost:5173");
+                                } else {
+                                    // 새 유저일 경우
                                     User newUser = User.builder()
                                             .email(email)
                                             .name(name)
                                             .build();
                                     userRepository.save(newUser);
-                                    result.put("redirectUrl", "http://localhost:5173/selectRole");
+                                    tokens.setRedirectUrl("http://localhost:5173/selectRole");
                                 }
-                                return Mono.just(result);
+                                return Mono.just(tokens);
                             });
-
                         }));
     }
 //    public Mono<User> handleUserLogin(String code) {
