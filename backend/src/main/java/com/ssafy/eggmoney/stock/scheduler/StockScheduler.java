@@ -22,7 +22,7 @@ public class StockScheduler {
             StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
             StockItem.IT, StockItem.UTILITIES};
 
-    @Scheduled(cron = "0 0 11 * * MON-FRI")
+    @Scheduled(cron = "0 0 20 * * MON-FRI", zone = "Asia/Seoul")
     public void saveDailyStockPrice() {
         String token = stockService.getAccessToken().getAccessToken();
 
