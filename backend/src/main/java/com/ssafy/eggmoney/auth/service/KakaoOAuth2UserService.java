@@ -15,8 +15,45 @@ package com.ssafy.eggmoney.auth.service;
 //import java.util.Collections;
 //import java.util.Map;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.List;
+
 //@Service
 public class KakaoOAuth2UserService  {
+
+    private final WebClient webClient;
+
+    public KakaoOAuth2UserService(WebClient.Builder webClientBuilder){
+        this.webClient = webClientBuilder.build();
+    }
+
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
+        String accessToken = userRequest.getAccessToken().getTokenValue();
+
+        // Kakao 사용자 정보 요청
+        Map<String, Object> attributes = webClient.get()
+                .uri("https://kapi.kakao.com/v2/user/me")
+                .headers(headers -> headers.setBearerAuth(accessToken))
+                .retrieve()
+                .bodyToMono(Map.class)
+                .block();
+
+        // 사용자 정보를 포함하는 OAuth2User 객체 생성
+        return new DefaultOAuth2User(
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")),
+                attributes,
+                "id"  // userNameAttributeName을 "id"로 지정
+        );
+
+    }
 //    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")implements OAuth2UserService<OAuth2UserRequest, OAuth2User>
 //    private String kakaoClientId;
 //
@@ -78,8 +115,8 @@ public class KakaoOAuth2UserService  {
 //                .retrieve()
 //                .bodyToMono(void.class)
 //                .block();
-    }
+//    }
 //    private OAuth2User fetchUserInfoFromProvider(OAuth2UserRequest userRequest){
 //        return null;
 //    }
-//}
+}

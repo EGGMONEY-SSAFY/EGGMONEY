@@ -15,5 +15,5 @@ export const useAuthStore = defineStore('auth',{
             this.refreshToken = null;
         }
     },
-    persist: true, // persist 플러그인 사용 시
+    //persist: true, // persist 플러그인 사용 시
 })
