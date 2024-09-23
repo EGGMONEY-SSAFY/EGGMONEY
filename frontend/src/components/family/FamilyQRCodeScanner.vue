@@ -52,6 +52,7 @@
   // QR 코드 스캔 후 처리
   const handleScan = (result: QrScanner.ScanResult) => {
     qrData.value = result.data;
+    console.log(qrData.value)
     showModal.value = true; // QR 코드 스캔 후 모달 표시
   };
   
