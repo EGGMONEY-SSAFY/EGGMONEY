@@ -27,8 +27,25 @@ const router = createRouter({
     },
     {
       path: "/fin",
-      name: "FinView",
+      // name: "FinView",
       component: FinView,
+      children:[
+        {
+          path: '',
+          name: "FinDepositView",
+          component: FinView
+        },
+        {
+          path: "loan",
+          name: "FinLoanView",
+          component: FinView
+        },
+        {
+          path: "savings",
+          name: "FinSavingsView",
+          component: FinView
+        },        
+      ]
     },
     {
       path: "/stock",
