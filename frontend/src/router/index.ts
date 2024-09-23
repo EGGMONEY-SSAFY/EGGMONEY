@@ -5,6 +5,10 @@ import FinView from "@/views/FinView.vue"
 import StockView from "@/views/StockView.vue"
 import FamilyView from "@/views/FamilyView.vue"
 
+import MyFamilyComponent from "@/components/family/FamilyInviteComponent.vue"
+import FamilyInviteComponent from "@/components/family/FamilyInviteComponent.vue"
+import FamilyConnectionComponent from "@/components/family/FamilyConnectionComponent.vue"
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -32,6 +36,24 @@ const router = createRouter({
       path:"/family",
       name:"FamilyView",
       component:FamilyView,
+      children:[
+        
+        {
+          path:"/my-family",
+          name:"MyFamilyView",
+          component:MyFamilyComponent,
+        },
+        {
+          path:"/family-invite",
+          name:"FamilyInviteView",
+          component:FamilyInviteComponent,
+        },
+        {
+          path:"/family-connection",
+          name:"FamilyConnectionView",
+          component:FamilyConnectionComponent,
+        },
+      ]
     }
   ],
 })
