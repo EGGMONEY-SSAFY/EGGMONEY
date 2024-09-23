@@ -29,6 +29,11 @@ import java.util.Collections;
 @EnableWebSecurity
 public class SecurityConfig  {
 
+//    private final KakaoOAuth2UserService kakaoOAuth2UserService;
+
+//    public SecurityConfig(KakaoOAuth2UserService kakaoOAuth2UserService){
+//        this.kakaoOAuth2UserService = kakaoOAuth2UserService;
+//    }
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthService authService;
     private final UserRepository userRepository;
@@ -48,6 +53,21 @@ public class SecurityConfig  {
         http
 //                .csrf(AbstractHttpConfigurer::disable)
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // CORS 활성화
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .requestMatchers("/kakao/login","/kakao/callback","/selectRole").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .oauth2Login(oauth2->oauth2
+//                        .userInfoEndpoint(userInfo -> userInfo
+//                        .userService(kakaoOAuth2UserService))
+//                )
+//                .logout(logout -> logout
+//                        .logoutUrl("/logout")
+//                        .logoutSuccessUrl("/login")
+//                        .invalidateHttpSession(true)
+//                        .deleteCookies("JSESSIONID")
+//                );
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/login","/refresh-token", "/kakao/login", "/kakao/callback").permitAll()
@@ -61,25 +81,25 @@ public class SecurityConfig  {
                                         userInfoEndpoint
                                                 .userService(kakaoOAuth2UserService()))
                 );
-//                .sessionManagement(sessionManagement->
-//                        sessionManagement
-//                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                )
-//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, authService), UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement(sessionManagement->
+                        sessionManagement
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, authService), UsernamePasswordAuthenticationFilter.class);
                 //.cors(cors -> cors.configurationSource(corsConfigurationSource())); // CORS 설정 추가
         return http.build();
     }
-    @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> kakaoOAuth2UserService(){
-        return new KakaoOAuth2UserService(webClientBuilder);
-    }
+//    @Bean
+//    public OAuth2UserService<OAuth2UserRequest, OAuth2User> kakaoOAuth2UserService(){
+//        return new KakaoOAuth2UserService(webClientBuilder);
+//    }
 //    @Bean
 //    public CorsConfigurationSource corsConfigurationSource() {
 //        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 //        CorsConfiguration corsConfiguration = new CorsConfiguration();
-//        corsConfiguration.setAllowedOrigins(Collections.singletonList("http://localhost:5173")); // 허용할 오리진 설정
+//        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://kauth.kakao.com")); // 허용할 오리진 설정
 //        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 HTTP 메서드 설정
-//        corsConfiguration.setAllowedHeaders(Arrays.asList("*")); // 허용할 헤더 설정
+//        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // 허용할 헤더 설정
 //        corsConfiguration.setAllowCredentials(true);
 //        corsConfiguration.setMaxAge(3600L);
 //        source.registerCorsConfiguration("/**", corsConfiguration);

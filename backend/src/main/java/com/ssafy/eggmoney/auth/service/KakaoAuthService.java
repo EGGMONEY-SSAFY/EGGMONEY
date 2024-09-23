@@ -131,26 +131,26 @@ public class KakaoAuthService {
                 .retrieve()
                 .bodyToMono(Void.class);
     }
-//    public Mono<User> handleUserLogin(String code) {
-//        return getAccessToken(code)
-//                .flatMap(this::getUserInfo)
-//                .flatMap(userInfo -> {
-//                    String email = userInfo.getKakaoAccount().getEmail();
-//                    String name = userInfo.getKakaoAccount().getProfile().getNickname();
-//
-//                    return Mono.defer(() -> {
-//                        Optional<User> optionalUser = userRepository.findByEmail(email);
-//                        if (optionalUser.isPresent()) {
-//                            return Mono.just(optionalUser.get());
-//                        } else {
-//                            User newUser = User.builder()
-//                                    .email(email)
-//                                    .name(name)
-//                                    .build();
-//                            return Mono.just(userRepository.save(newUser));
-//                        }
-//
-//                    });
-//                });
-//    };
+    public Mono<User> handleUserLogin(String code) {
+        return getAccessToken(code)
+                .flatMap(this::getUserInfo)
+                .flatMap(userInfo -> {
+                    String email = userInfo.getKakaoAccount().getEmail();
+                    String name = userInfo.getKakaoAccount().getProfile().getNickname();
+
+                    return Mono.defer(() -> {
+                        Optional<User> optionalUser = userRepository.findByEmail(email);
+                        if (optionalUser.isPresent()) {
+                            return Mono.just(optionalUser.get());
+                        } else {
+                            User newUser = User.builder()
+                                    .email(email)
+                                    .name(name)
+                                    .build();
+                            return Mono.just(userRepository.save(newUser));
+                        }
+
+                    });
+                });
+    };
 }

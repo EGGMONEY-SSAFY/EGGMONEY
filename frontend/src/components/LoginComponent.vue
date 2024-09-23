@@ -49,7 +49,8 @@ onMounted(()=>{
         
         axios
         .get<ResponseApi<TokenResponse>>(`http://localhost:8080/kakao/callback`,{
-          params:{code}
+          params:{code},
+          withCredentials: true
         })
     .then((response) => {
         console.log('Response Data:', response.data);
