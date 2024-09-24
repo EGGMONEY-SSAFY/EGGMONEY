@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router"
-import AssetView from "../views/Assets/AssetsView.vue"
-import AllView from "@/views/All/AllView.vue"
+import AssetsView from "@/views/Assets/AssetsView.vue"
+import AllView from"@/views/All/AllView.vue"
 import FinView from "@/views/Fin/FinView.vue"
-import StockView from "@/views/Stock/StockView.vue"
+import StockView from"@/views/Stock/StockView.vue"
 
 import StockHistoryView from "@/views/Stock/StockHistoryView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
@@ -21,6 +21,10 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: "/",
+      redirect: "/assets",
+    },
+    {
       path:"/main",
       name: "MainView",
       component:MainView,
@@ -31,9 +35,9 @@ const router = createRouter({
       component:LoginView,
     },
     {
-      path: "/asset",
-      name: "AssetView",
-      component: AssetView,
+      path: "/assets",
+      name: "AssetsView",
+      component: AssetsView,
     },
     {
       path: "/all",

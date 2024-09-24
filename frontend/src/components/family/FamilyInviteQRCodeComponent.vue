@@ -16,7 +16,7 @@ import QRCode from 'qrcode';
 const familyId = ref('1'); 
 const qrCode = ref<string | null>(null);
 
-// Function to generate QR code
+
 async function generateQRCode() {
   try {
     qrCode.value = await QRCode.toDataURL(`http://localhost:8080/invite?familyId=${familyId.value}`);
@@ -26,7 +26,7 @@ async function generateQRCode() {
   }
 }
 
-// Automatically generate QR code when component is mounted
+
 onMounted(() => {
   generateQRCode();
   
@@ -34,6 +34,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Add your styles here */
+
 </style>
 
