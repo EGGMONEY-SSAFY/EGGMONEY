@@ -1,8 +1,8 @@
 <template>
   <div id="invite-qr-code">
-    <h1>가족 초대 시스템</h1>
+
     <div v-if="qrCode">
-      <p>가족 초대 QR 코드:</p>
+     
       <img :src="qrCode" alt="QR 코드" />
     </div>
   </div>
