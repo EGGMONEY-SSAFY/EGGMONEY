@@ -93,13 +93,15 @@ const imageBase64 = ref<string>('');
   }
 
   const familyData = {
-    familyDescription: familyDescription.value,
-    familyImage: imageBase64.value,
+    //familyDescription: familyDescription.value,
+    //familyImage: imageBase64.value,
+    intro:"hi1",
   };
 
   try {
     const token = authStore.accessToken;
-    await axios.post('/api/v1/family/create', familyData, {
+    console.log(token)
+    await axios.post('http://localhost:8080/api/v1/family/create', familyData, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type':'application/json',
