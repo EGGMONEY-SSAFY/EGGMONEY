@@ -182,10 +182,10 @@ public class SavingServiceImpl implements SavingService {
         log.info("{}", savings.toString());
 
         if(savings.getExpireDate().toLocalDate().isAfter(LocalDate.now())){
-            interestMoney = savings.getBalance() * (savings.getSavingsProduct().getSavingsRate() - 2.0) / 100;
+            interestMoney = savings.getBalance() * (savings.getSavingsProduct().getSavingsRate() - 2.0) / 100 * savings.getSavingsProduct().getSavingsDate() / 12;
             expiredMoney = savings.getBalance() + (int) interestMoney;
         }else{
-            interestMoney = savings.getBalance() * savings.getSavingsProduct().getSavingsRate() / 100;
+            interestMoney = savings.getBalance() * savings.getSavingsProduct().getSavingsRate() / 100 * savings.getSavingsProduct().getSavingsDate() / 12;
             expiredMoney = savings.getBalance() + (int) interestMoney;
         }
         log.info("interestMoney: {}, expiredMoney: {}", interestMoney, expiredMoney);
