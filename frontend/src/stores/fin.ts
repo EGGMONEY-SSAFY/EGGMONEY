@@ -11,8 +11,9 @@ export interface depositProducts {
 export interface savingsProducts {
   productId: number
   productName: string
-  depositRate: number
-  depositDate: number
+  savingsRate: number
+  savingsDate: number
+  maxPrice: number
 }
 export const useFinStore = defineStore("fin", () => {
   const DEPOSIT_PRODUCT_API_URL = "/api/v1/fin/deposit/product"

@@ -1,26 +1,25 @@
 <script setup lang="ts">
 import BoxProduct from "@/components/box/BoxProduct.vue"
-import NavBarFinTab from "@/components/navbar/navBarTab/NavBarFinTab.vue"
 import { useFinStore } from "@/stores/fin"
 import { onMounted, ref } from "vue"
 
 const finStore = useFinStore()
 onMounted(() => {
-  if (finStore.savingsProducts.length === 0) {
-    finStore.getSavingsProduct()
+  if (finStore.depositProducts.length === 0) {
+    finStore.getDepositProduct()
   }
 })
 </script>
 
 <template>
-  <div class="">
+  <div>
     <BoxProduct
-      v-for="product in finStore.savingsProducts"
+      v-for="product in finStore.depositProducts"
       :key="product.productId"
       :product="product"
-      :date="product.savingsDate"
-      :rate="product.savingsRate"
-      fin="적금"
+      :date="product.depositDate"
+      :rate="product.depositRate"
+      fin="예금"
     />
   </div>
 </template>

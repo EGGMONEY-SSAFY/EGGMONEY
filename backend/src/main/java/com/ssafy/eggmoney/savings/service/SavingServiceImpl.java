@@ -47,6 +47,7 @@ public class SavingServiceImpl implements SavingService {
         List<SavingsProductListResponseDto> productListDto = productList.stream().map(
                 (product) -> SavingsProductListResponseDto.builder()
                         .id(product.getId())
+                        .productName(product.getProductName())
                         .savingsRate(product.getSavingsRate())
                         .savingsDate(product.getSavingsDate())
                         .max_price(product.getMaxPrice())
@@ -115,6 +116,7 @@ public class SavingServiceImpl implements SavingService {
         return SavingsResponseDto.builder()
                 .savingsRate(savings.getSavingsProduct().getSavingsRate())
                 .savingsDate(savings.getSavingsProduct().getSavingsDate())
+                .productName(savings.getSavingsProduct().getProductName())
                 .balance(savings.getBalance())
                 .expireDate(savings.getExpireDate())
                 .createdAt(savings.getCreatedAt())
