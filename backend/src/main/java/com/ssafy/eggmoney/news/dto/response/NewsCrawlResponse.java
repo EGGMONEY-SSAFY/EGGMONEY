@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class NewsCrawlResponse {
     private String title;
-    private String url;
+    private String link;
     private String press;
 }
