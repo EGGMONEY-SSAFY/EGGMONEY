@@ -31,10 +31,10 @@ onMounted(
     // 자식이 없다면 null, 자식이 있다면 첫 번째 자식으로 userSelect
     if ( userStore.children.length > 0 ) {
       console.log("자식 1명 이상")
-      userSelect.value = userStore.children.value && userStore.children.value.length > 0 ? userStore.children.value[0] : null;
+      userSelect.value = userStore.children && userStore.children.length > 0 ? userStore.children[0] : null;
       console.log(userSelect.value)
       console.log(userStore.children)
-    }else{
+    } else {
       console.log("가족 미구성")
     }
   }
@@ -49,12 +49,12 @@ onMounted(
       <!-- 부모일 경우 아이 Select Box -->
       <div v-if="userStore.role === `부모`" class="p-3">
         <select v-model="userSelect">
-          <option v-for="child in userStore.children" :value="child" :key="child.id">{{ child.name }}</option>
+          <option v-for="child in userStore.children" :value="child" :key="child.userId">{{ child.name }}</option>
         </select>
       </div>
       <div class="" v-if="userSelect != null">
         <!-- Main Body -->      
-        <AssetsMainView :user="userSelect" />
+        <!-- <AssetsMainView :user="userSelect" /> -->
       </div>
     </div>
     <!-- 등록된 가족이 없는 경우 -->
