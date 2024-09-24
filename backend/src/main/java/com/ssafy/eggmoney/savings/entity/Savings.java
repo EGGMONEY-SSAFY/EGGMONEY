@@ -38,9 +38,11 @@ public class Savings extends BaseTime {
     private int paymentMoney; // 정액 적금 금액
     private int balance; // 납부금
 
+    @Enumerated(value = EnumType.STRING)
+    private SavingsStatus savingsStatus; // AVAILABLE, EXPIRED
 
     @Builder(toBuilder = true)
-    public Savings(Long id, User user, SavingsProduct savingsProduct, LocalDateTime expireDate, int paymentDate, int paymentMoney, int balance) {
+    public Savings(Long id, User user, SavingsProduct savingsProduct, LocalDateTime expireDate, int paymentDate, int paymentMoney, int balance, SavingsStatus savingsStatus) {
         this.id = id;
         this.user = user;
         this.savingsProduct = savingsProduct;
@@ -48,6 +50,8 @@ public class Savings extends BaseTime {
         this.paymentDate = paymentDate;
         this.paymentMoney = paymentMoney;
         this.balance = balance;
+        this.savingsStatus = savingsStatus;
+
     }
 
 }

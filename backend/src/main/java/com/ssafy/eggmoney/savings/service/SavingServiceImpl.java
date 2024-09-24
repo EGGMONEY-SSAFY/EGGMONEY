@@ -2,13 +2,15 @@ package com.ssafy.eggmoney.savings.service;
 
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
-import com.ssafy.eggmoney.savings.dto.requestDto.SavingsCreateRequestDto;
-import com.ssafy.eggmoney.savings.dto.responseDto.SavingsLogResponseDto;
-import com.ssafy.eggmoney.savings.dto.responseDto.SavingsProductListResponseDto;
-import com.ssafy.eggmoney.savings.dto.responseDto.SavingsResponseDto;
+import com.ssafy.eggmoney.savings.dto.request.SavingsCreateRequestDto;
+import com.ssafy.eggmoney.savings.dto.response.SavingsDeleteResponseDto;
+import com.ssafy.eggmoney.savings.dto.response.SavingsLogResponseDto;
+import com.ssafy.eggmoney.savings.dto.response.SavingsProductListResponseDto;
+import com.ssafy.eggmoney.savings.dto.response.SavingsResponseDto;
 import com.ssafy.eggmoney.savings.entity.Savings;
 import com.ssafy.eggmoney.savings.entity.SavingsLog;
 import com.ssafy.eggmoney.savings.entity.SavingsProduct;
+import com.ssafy.eggmoney.savings.entity.SavingsStatus;
 import com.ssafy.eggmoney.savings.repository.SavingsLogRepository;
 import com.ssafy.eggmoney.savings.repository.SavingsProductRepository;
 import com.ssafy.eggmoney.savings.repository.SavingsRepository;
@@ -19,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +37,8 @@ public class SavingServiceImpl implements SavingService {
     private final UserRepository userRepository;
     private final AccountService accountService;
 
+
+    // 적금 상품 전체 조회하기
     @Override
     @Transactional(readOnly = true)
     public List<SavingsProductListResponseDto> getSavingProducts() {
@@ -52,8 +57,9 @@ public class SavingServiceImpl implements SavingService {
         return productListDto;
     }
 
+    // 적금 생성하기
     @Override
-    @Transactional()
+    @Transactional
     public void createSaving(SavingsCreateRequestDto requestDto){
 
         User user = userRepository.findById(requestDto.getUserId()).orElse(null);
@@ -64,7 +70,7 @@ public class SavingServiceImpl implements SavingService {
             log.error("적금 가입 권한이 없는 유저입니다.");
         }
 
-        if(savingsRepository.findByUserId(requestDto.getUserId()).isPresent()){
+        if(savingsRepository.findByUserIdAndSavingsStatus(requestDto.getUserId(), SavingsStatus.AVAILABLE).isPresent()){
             // 에러발생
             log.error("이미 사용자가 적금상품을 가지고 있습니다.");
         }
@@ -80,6 +86,7 @@ public class SavingServiceImpl implements SavingService {
                 .paymentDate(savingsProduct.getSavingsDate())
                 .balance(requestDto.getPaymentMoney())
                 .paymentMoney(requestDto.getPaymentMoney())
+                .savingsStatus(SavingsStatus.AVAILABLE)
                 .build();
 
         savingsRepository.save(savings);
@@ -98,11 +105,13 @@ public class SavingServiceImpl implements SavingService {
         log.info("적금 로그 저장");
     }
 
+    // 개인 적금 조회하기
     @Override
     @Transactional(readOnly = true)
     public SavingsResponseDto getSavings(Long userId){
-        Savings savings = savingsRepository.findByUserId(userId).orElse(null);
+        Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElse(null);
 
+        log.info("개인 적금 조회 성공");
         return SavingsResponseDto.builder()
                 .savingsRate(savings.getSavingsProduct().getSavingsRate())
                 .savingsDate(savings.getSavingsProduct().getSavingsDate())
@@ -114,10 +123,11 @@ public class SavingServiceImpl implements SavingService {
                 .build();
     }
 
+    // 적금 납부하기
     @Override
     @Transactional
     public void sendSavings(Long userId){
-        Savings savings = savingsRepository.findByUserId(userId).orElse(null);
+        Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElse(null);
 
         // 메인계좌에서 돈 빼오기
         accountService.updateAccount(AccountLogType.SAVINGS, userId, -1 * savings.getPaymentMoney());
@@ -139,9 +149,12 @@ public class SavingServiceImpl implements SavingService {
                 .build();
 
         savingsLogRepository.save(savingsLog);
+        log.info("적금 납부하기 성공");
     }
 
+    // 적금 로그 조회
     @Override
+    @Transactional(readOnly = true)
     public List<SavingsLogResponseDto> getSavingsLogs(Long savingsId) {
 
         List<SavingsLog> savingsLogs = savingsLogRepository.findAllBySavingsIdOrderByCreatedAtDesc(savingsId);
@@ -154,6 +167,46 @@ public class SavingServiceImpl implements SavingService {
                         .build()
         ).collect(Collectors.toList());
 
+        log.info("적금로그 조회 성공");
         return logDto;
+    }
+
+    // 적금 삭제하기
+    @Override
+    @Transactional
+    public SavingsDeleteResponseDto deleteSavings(Long savingsId) {
+
+        Savings savings = savingsRepository.findByIdAndSavingsStatus(savingsId, SavingsStatus.AVAILABLE).orElse(null);
+        double interestMoney;
+        int expiredMoney;
+        log.info("{}", savings.toString());
+
+        if(savings.getExpireDate().toLocalDate().isAfter(LocalDate.now())){
+            interestMoney = savings.getBalance() * (savings.getSavingsProduct().getSavingsRate() - 2.0) / 100 * savings.getSavingsProduct().getSavingsDate() / 12;
+            expiredMoney = savings.getBalance() + (int) interestMoney;
+        }else{
+            interestMoney = savings.getBalance() * savings.getSavingsProduct().getSavingsRate() / 100 * savings.getSavingsProduct().getSavingsDate() / 12;
+            expiredMoney = savings.getBalance() + (int) interestMoney;
+        }
+        log.info("interestMoney: {}, expiredMoney: {}", interestMoney, expiredMoney);
+
+        accountService.updateAccount(AccountLogType.SAVINGS, savings.getUser().getId(), expiredMoney);
+
+        Savings updateSavings = savings.toBuilder()
+                .savingsStatus(SavingsStatus.EXPIRED)
+                .build();
+
+        savingsRepository.save(updateSavings);
+        log.info("적금 해지 성공");
+
+
+        SavingsDeleteResponseDto deleteResponseDto = SavingsDeleteResponseDto.builder()
+                .savingsId(savings.getId())
+                .interestMoney(interestMoney)
+                .expiredMoney(expiredMoney)
+                .paymentDate(savings.getSavingsProduct().getSavingsDate())
+                .build();
+
+        return deleteResponseDto;
     }
 }
