@@ -16,15 +16,16 @@
     "@types/qrcode": "^1.5.5",
     "axios": "^1.7.7",
     "chart.js": "^4.4.4",
+    "jsencrypt": "^3.3.2",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^4.0.2",
     "qr-scanner": "^1.4.2",
     "qrcode": "^1.5.4",
     "vite-plugin-pwa": "^0.20.5",
     "vue": "^3.4.29",
+    "vue-chartjs": "^5.3.1",
     "vue-qr": "^4.0.9",
     "vue-qrcode-reader": "^5.5.8",
-    "vue-chartjs": "^5.3.1",
     "vue-router": "^4.3.3"
   },
   "devDependencies": {
