@@ -4,6 +4,7 @@ import com.ssafy.eggmoney.account.service.AccountService;
 import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
 import com.ssafy.eggmoney.family.entity.Family;
 import com.ssafy.eggmoney.family.repository.FamilyRepository;
+import com.ssafy.eggmoney.family.service.FamilyServcie;
 import com.ssafy.eggmoney.user.dto.reqeust.CreateUserReqeusetDto;
 import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
 import com.ssafy.eggmoney.user.entity.User;
@@ -18,28 +19,28 @@ public class UserServcie {
     private final UserRepository userRepository;
     private final AccountService accountService;
     private final FamilyRepository familyRepository;
+    private final FamilyServcie familyServcie;
 
 //    유저 조회
     public GetUserResponseDto getUser(Long userId) {
         User user = userRepository.findById(userId).get();
         Family fam = user.getFamily();
 
-        GetUserResponseDto getUserResponseDto = GetUserResponseDto.builder()
+        GetUserResponseDto.GetUserResponseDtoBuilder builder = GetUserResponseDto.builder()
+                .userId(user.getId())
                 .email(user.getEmail())
-                .family(GetFamilyResponseDto
-                        .builder()
-                        .intro(fam.getIntro())
-                        .presentId(fam.getPresentId())
-                        .qrcode(fam.getQrCode())
-                        .build()
-                )
                 .name(user.getName())
                 .role(user.getRole())
                 .realAccount(user.getRealAccount())
                 .bank(user.getBank())
-                .pwd(user.getSimplePwd())
-                .build();
-        return getUserResponseDto;
+                .pwd(user.getSimplePwd());
+
+        // family가 null이 아닌 경우에만 familyService 호출
+        if (fam != null) {
+            builder.family(familyServcie.getFamily(fam.getId()));
+        }
+
+        return builder.build();
     }
 
 //    유저 생성 ( 생성과 동시에 메인 계좌 생성 )
