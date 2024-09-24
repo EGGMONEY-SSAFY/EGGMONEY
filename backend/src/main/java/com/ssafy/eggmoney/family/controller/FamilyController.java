@@ -35,10 +35,12 @@ public class FamilyController {
 public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization", required = false) String token,
                                            @RequestBody CreateFamilyRequestDto dto) {
     if (token == null || !token.startsWith("Bearer ")) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Authorization 헤더가 필요합니다.");
+    System.out.println("1");
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Authorization 헤더가 필요합니다.");
     }
-
+    System.out.println(token);
     token = token.replace("Bearer ", "");
+    System.out.println(token);
     User user = kakaoAuthService.verifyKakaoToken(token);
 
     if (user == null) {
