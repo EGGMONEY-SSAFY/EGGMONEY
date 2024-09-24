@@ -6,11 +6,16 @@ import com.ssafy.eggmoney.family.dto.request.CreateFamilyRequestDto;
 import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
 import com.ssafy.eggmoney.family.entity.Family;
 import com.ssafy.eggmoney.family.repository.FamilyRepository;
+import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
+import com.ssafy.eggmoney.user.service.UserServcie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -22,10 +27,27 @@ public class FamilyServcie {
 //    가족 조회
     public GetFamilyResponseDto getFamily(Long familyId){
         Family fam = familyRepository.findById(familyId).get();
+        List<User> userList = userRepository.findAllByFamilyId(familyId);
+
         GetFamilyResponseDto getFamilyResponseDto = GetFamilyResponseDto.builder()
+                .familyId(familyId)
                 .presentId(fam.getPresentId())
                 .intro(fam.getIntro())
                 .qrcode(fam.getQrCode())
+                .members( userList.stream()
+                        .map( user -> GetUserResponseDto.builder()
+                                .userId(user.getId())
+                                .email(user.getEmail())
+                                .realAccount(user.getRealAccount())
+                                .role(user.getRole())
+                                .name(user.getName())
+                                .bank(user.getBank())
+                                .pwd(user.getSimplePwd())
+                                .stockRatio(user.getStockRatio())
+                                .build()
+                        )
+                        .collect(Collectors.toList())
+                )
                 .build();
 
         return getFamilyResponseDto;

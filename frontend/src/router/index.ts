@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router"
-import AssetsView from "@/views/Assets/AssetsView.vue"
-import AllView from"@/views/All/AllView.vue"
+import AssetView from "@/views/Asset/AssetView.vue"
+import AllView from "@/views/All/AllView.vue"
 import FinView from "@/views/Fin/FinView.vue"
 import StockView from"@/views/Stock/StockView.vue"
 
@@ -10,7 +10,7 @@ import WonAuthView from "@/views/WonAuthView.vue"
 import StockDetail from "@/views/Stock/StockDetail.vue"
 import MainView from "@/views/MainView.vue"
 import LoginView from "@/views/LoginView.vue"
-import MyFamilyComponent from "@/components/family/FamilyInviteComponent.vue"
+
 import FamilyInviteComponent from "@/components/family/FamilyInviteComponent.vue"
 import FamilyConnectionComponent from "@/components/family/FamilyConnectionComponent.vue"
 import FamilyComponent from "@/components/family/FamilyComponent.vue"
@@ -37,7 +37,7 @@ const router = createRouter({
     {
       path: "/assets",
       name: "AssetsView",
-      component: AssetsView,
+      component: AssetView,
     },
     {
       path: "/all",
