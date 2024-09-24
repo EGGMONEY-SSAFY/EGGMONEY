@@ -21,18 +21,19 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-@SpringBootTest
-class StockServiceImplTest {
-    @Autowired StockService stockService;
-    @Autowired StockRepository stockRepository;
-    String[] stockCodes = {"0001", "1001", "4002", "4003", "4004", "4005", "4007",
-            "4008", "4011", "4016", "4063", "4064", "4065"};
-    StockItem[] stockItems = {StockItem.KOSPI, StockItem.KOSDAQ, StockItem.AUTOMOTIVE,
-            StockItem.SEMICONDUCTOR, StockItem.HEALTHCARE, StockItem.BANKING, StockItem.ENERGY_CHEMICAL,
-            StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
-            StockItem.IT, StockItem.UTILITIES};
+//@SpringBootTest
+//class StockServiceImplTest {
+//    @Autowired StockService stockService;
+//    @Autowired StockRepository stockRepository;
+//    String[] stockCodes = {"0001", "1001", "4002", "4003", "4004", "4005", "4007",
+//            "4008", "4011", "4016", "4063", "4064", "4065"};
+//    StockItem[] stockItems = {StockItem.KOSPI, StockItem.KOSDAQ, StockItem.AUTOMOTIVE,
+//            StockItem.SEMICONDUCTOR, StockItem.HEALTHCARE, StockItem.BANKING, StockItem.ENERGY_CHEMICAL,
+//            StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
+//            StockItem.IT, StockItem.UTILITIES};
+//dddddd
 
-//    @Test
+//    @Test33
 //    void getToken() {
 //        StockTokenResponse stockToken = stockService.getAccessToken();
 //
@@ -117,4 +118,6 @@ class StockServiceImplTest {
 //
 //        Assertions.assertThat(currentStockPrice).isNotNull();
 //    }
-}
+//}
+
+//test

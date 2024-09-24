@@ -1,6 +1,7 @@
 package com.ssafy.eggmoney.savings.service;
 
 import com.ssafy.eggmoney.savings.dto.request.SavingsCreateRequestDto;
+import com.ssafy.eggmoney.savings.dto.response.SavingsDeleteResponseDto;
 import com.ssafy.eggmoney.savings.dto.response.SavingsLogResponseDto;
 import com.ssafy.eggmoney.savings.dto.response.SavingsProductListResponseDto;
 import com.ssafy.eggmoney.savings.dto.response.SavingsResponseDto;
@@ -13,4 +14,5 @@ public interface SavingService {
     SavingsResponseDto getSavings(Long userId);
     void sendSavings(Long userId);
     List<SavingsLogResponseDto> getSavingsLogs(Long savingsId);
+    SavingsDeleteResponseDto deleteSavings(Long savingsId);
 }
