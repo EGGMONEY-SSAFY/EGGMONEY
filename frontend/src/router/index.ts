@@ -3,11 +3,14 @@ import AssetView from "../views/AssetView.vue"
 import AllView from "@/views/AllView.vue"
 import FinView from "@/views/FinView.vue"
 import StockView from "@/views/StockView.vue"
-import FamilyView from "@/views/FamilyView.vue"
+
 
 import MyFamilyComponent from "@/components/family/FamilyInviteComponent.vue"
 import FamilyInviteComponent from "@/components/family/FamilyInviteComponent.vue"
 import FamilyConnectionComponent from "@/components/family/FamilyConnectionComponent.vue"
+import FamilyComponent from "@/components/family/FamilyComponent.vue"
+import FamilyView from "@/views/FamilyView.vue"
+import FamilyManageComponent from "@/components/family/FamilyManageComponent.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,19 +40,24 @@ const router = createRouter({
       name:"FamilyView",
       component:FamilyView,
       children:[
+        {
+          path:"",
+          name:"FamilyCom",
+          component:FamilyComponent,
+        },
         
         {
-          path:"/my-family",
+          path:"my-family",
           name:"MyFamilyView",
-          component:MyFamilyComponent,
+          component:FamilyManageComponent,
         },
         {
-          path:"/family-invite",
+          path:"family-invite",
           name:"FamilyInviteView",
           component:FamilyInviteComponent,
         },
         {
-          path:"/family-connection",
+          path:"family-connection",
           name:"FamilyConnectionView",
           component:FamilyConnectionComponent,
         },
