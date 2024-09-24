@@ -103,7 +103,7 @@ const imageBase64 = ref<string>('');
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type':'application/json',
-        //withCredentials: true,
+        //withCredentials: true,1
       },
     });
     alert('가족 생성 완료!');
