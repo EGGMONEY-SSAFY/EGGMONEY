@@ -54,11 +54,11 @@ public class FamilyServcie {
     }
 
 //    가족 생성
-    public void createFamily(CreateFamilyRequestDto dto) {
+    public void createFamily(CreateFamilyRequestDto dto, User user) {
         familyRepository.save(Family.builder()
                 .intro(dto.getIntro())
                 .qrCode(dto.getQrCode())
-                .presentId(dto.getPresentId())
+                .presentId(user.getId())//dto.getPresentId()
                 .build());
     }
 

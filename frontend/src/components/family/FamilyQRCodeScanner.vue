@@ -76,6 +76,7 @@ async function confirmConnection()  {
           headers:{
             // Authorization:`Bearer${authStore.getAccessToken}`,
             'Content-Type':'application/json',
+            withCredentials: true,
           }
         });  
           if(response.data.status==='success'){
@@ -95,7 +96,7 @@ async function confirmConnection()  {
   
   // 연결 취소
   function cancelConnection() {
-    showModal.value = false; // 모달 닫기
+    showModal.value = false; 
   }
   
   onMounted(() => {
@@ -114,6 +115,6 @@ async function confirmConnection()  {
   </script>
   
   <style scoped>
-  /* Tailwind로 스타일링을 관리하므로 추가적인 CSS는 필요하지 않음 */
+  
   </style>
   
