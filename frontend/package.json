@@ -13,11 +13,17 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@types/qrcode": "^1.5.5",
     "axios": "^1.7.7",
     "chart.js": "^4.4.4",
     "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^4.0.2",
+    "qr-scanner": "^1.4.2",
+    "qrcode": "^1.5.4",
     "vite-plugin-pwa": "^0.20.5",
     "vue": "^3.4.29",
+    "vue-qr": "^4.0.9",
+    "vue-qrcode-reader": "^5.5.8",
     "vue-chartjs": "^5.3.1",
     "vue-router": "^4.3.3"
   },
@@ -36,7 +42,7 @@
     "postcss": "^8.4.45",
     "prettier": "^3.2.5",
     "tailwindcss": "^3.4.10",
-    "typescript": "~5.4.0",
+    "typescript": "^5.6.2",
     "vite": "^5.3.1",
     "vite-plugin-vue-devtools": "^7.3.1",
     "vue-tsc": "^2.0.21"
