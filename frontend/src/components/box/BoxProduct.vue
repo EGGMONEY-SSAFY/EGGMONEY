@@ -6,6 +6,7 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  fin: String,
 })
 </script>
 
@@ -18,7 +19,7 @@ const props = defineProps({
         </div>
         <div class="flex justify-between items-end">
           <div class="text-main-color font-bold">{{ product.depositDate }}개월</div>
-          <div class="text-gray-600 text-sm">간 지정된 금액을 예금합니다</div>
+          <div class="text-gray-600 text-sm">간 지정된 금액을 {{ fin }}합니다</div>
         </div>
         <div class="flex justify-between items-end">
           <span class="text-main-color font-bold">연 {{ product.depositRate }}%</span>
