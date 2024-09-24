@@ -1,13 +1,11 @@
 package com.ssafy.eggmoney.deposit.service;
 
-import com.ssafy.eggmoney.account.entity.Account;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
-import com.ssafy.eggmoney.account.repository.AccountRepository;
-import com.ssafy.eggmoney.account.service.AccountLogService;
 import com.ssafy.eggmoney.account.service.AccountService;
-import com.ssafy.eggmoney.deposit.dto.requestdto.DepositCreateRequestDto;
-import com.ssafy.eggmoney.deposit.dto.responsedto.DepositProductListResponseDto;
-import com.ssafy.eggmoney.deposit.dto.responsedto.DepositResponseDto;
+import com.ssafy.eggmoney.deposit.dto.request.DepositCreateRequestDto;
+import com.ssafy.eggmoney.deposit.dto.response.DeleteDepositResponseDto;
+import com.ssafy.eggmoney.deposit.dto.response.DepositProductListResponseDto;
+import com.ssafy.eggmoney.deposit.dto.response.DepositResponseDto;
 import com.ssafy.eggmoney.deposit.dto.DepositProductDto;
 import com.ssafy.eggmoney.deposit.entity.Deposit;
 import com.ssafy.eggmoney.deposit.entity.DepositProduct;
@@ -20,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,6 +50,7 @@ public class DepositServiceImpl implements DepositService {
 
         return productListDto;
     }
+
     @Override
     @Transactional
     public void createDeposit(DepositCreateRequestDto requestDto){
@@ -109,5 +109,32 @@ public class DepositServiceImpl implements DepositService {
                 .build();
     }
 
+    @Override
+    @Transactional
+    public DeleteDepositResponseDto deleteDeposit(long depositId) {
 
+        Deposit deposit = depositRepository.findById(depositId).orElse(null);
+        int expiredMoney;
+        double interestMoney;
+        if(deposit.getExpireDate().toLocalDate().isAfter(LocalDate.now())){
+            interestMoney = deposit.getDepositMoney() * (deposit.getDepositProduct().getDepositRate() - 2.0) / 100;
+            expiredMoney = deposit.getDepositMoney() + (int) interestMoney;
+        }else{
+            interestMoney = deposit.getDepositMoney() * deposit.getDepositProduct().getDepositRate() / 100;
+            expiredMoney = deposit.getDepositMoney() + (int) interestMoney;
+        }
+        log.info("interestMoney: {}, expiredMoney: {}", interestMoney, expiredMoney);
+        accountService.updateAccount(AccountLogType.DEPOSIT, deposit.getUser().getId(), expiredMoney);
+
+        DeleteDepositResponseDto deleteResponseDto = DeleteDepositResponseDto.builder()
+                .depositId(depositId)
+                .depositMoney(deposit.getDepositMoney())
+                .interestMoney(interestMoney)
+                .expiredMoney(expiredMoney)
+                .build();
+        depositRepository.delete(deposit);
+        log.info("예금 계좌 삭제");
+
+        return deleteResponseDto;
+    }
 }
