@@ -7,8 +7,10 @@ import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.repository.AccountLogRepository;
 import com.ssafy.eggmoney.account.repository.AccountRepository;
 import com.ssafy.eggmoney.deposit.entity.Deposit;
+import com.ssafy.eggmoney.deposit.entity.DepositStatus;
 import com.ssafy.eggmoney.deposit.repository.DepositRepository;
 import com.ssafy.eggmoney.savings.entity.Savings;
+import com.ssafy.eggmoney.savings.entity.SavingsStatus;
 import com.ssafy.eggmoney.savings.repository.SavingsRepository;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
@@ -70,8 +72,8 @@ public class AccountService {
 //    자산 분석 ( 예적금, 대출, 주식 보유 파악 )
     public GetAnalyticsResponseDto getAnalytics(Long userId) {
         Account account = accountRepository.findByUserId(userId).get();
-        Savings savings = savingsRepository.findByUserId(userId).get();
-        Deposit deposit = depositRepository.findByUserId(userId).get();
+        Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).get();
+        Deposit deposit = depositRepository.findByUserIdAndDepositStatus(userId, DepositStatus.AVAILABLE).get();
         GetAnalyticsResponseDto dto = GetAnalyticsResponseDto.builder()
                 .mainAccountBalance(account.getBalance())
                 .savings(savings.getBalance())

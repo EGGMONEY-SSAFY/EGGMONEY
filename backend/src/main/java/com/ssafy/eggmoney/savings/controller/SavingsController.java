@@ -1,6 +1,7 @@
 package com.ssafy.eggmoney.savings.controller;
 
 import com.ssafy.eggmoney.savings.dto.request.SavingsCreateRequestDto;
+import com.ssafy.eggmoney.savings.dto.response.SavingsDeleteResponseDto;
 import com.ssafy.eggmoney.savings.dto.response.SavingsLogResponseDto;
 import com.ssafy.eggmoney.savings.dto.response.SavingsProductListResponseDto;
 import com.ssafy.eggmoney.savings.dto.response.SavingsResponseDto;
@@ -77,5 +78,18 @@ public class SavingsController {
         return ResponseEntity.ok().body(result);
     }
 
+
+    /**
+     * 적금삭제
+     * @param savingsId
+     * return SavingsDeleteResponseDto
+     */
+
+    @PostMapping("/delete/{savingsId}")
+    public ResponseEntity<SavingsDeleteResponseDto> deleteSavings(@PathVariable Long savingsId){
+        SavingsDeleteResponseDto result = savingService.deleteSavings(savingsId);
+
+        return ResponseEntity.ok().body(result);
+    }
 
 }
