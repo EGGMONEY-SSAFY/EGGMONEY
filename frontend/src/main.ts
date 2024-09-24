@@ -2,7 +2,7 @@ import "@/assets/main.css"
 
 import { createApp } from "vue"
 import { createPinia } from "pinia"
-import piniaPersistedstate from 'pinia-plugin-persistedstate'
+import piniaPersistedstate from "pinia-plugin-persistedstate"
 
 import App from "./App.vue"
 import router from "./router"
