@@ -16,7 +16,11 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
+@Slf4j // 로그 사용을 위한 어노테이션
 @Service
 public class KakaoAuthService {
 
@@ -104,28 +108,37 @@ public class KakaoAuthService {
                         }));
     }
 
-    public User verifyKakaoToken(String token){
+    // 카카오 토큰 검증
+    public User verifyKakaoToken(String token) {
         String url = "https://kapi.kakao.com/v2/user/me";
+
+        log.info("카카오 토큰 검증 시작 - 토큰 값: {}", token);  // 토큰 로그
 
         return webClient.get()
                 .uri(url)
                 .headers(headers -> headers.setBearerAuth(token))
                 .retrieve()
                 .bodyToMono(KakaoUserResponse.class)
+                .doOnNext(kakaoUserResponse -> log.info("카카오 API 응답: {}", kakaoUserResponse)) // 카카오 API 응답 로그
                 .flatMap(kakaoUserResponse -> {
                     String email = kakaoUserResponse.getKakaoAccount().getEmail();
                     Optional<User> optionalUser = userRepository.findByEmail(email);
-                    if(optionalUser.isPresent()){
-                        return Mono.just(optionalUser.get());
-                    }else {
 
+                    if (optionalUser.isPresent()) {
+                        log.info("기존 사용자 이메일: {}", email);  // 기존 사용자 로그
+                        return Mono.just(optionalUser.get());
+                    } else {
                         User newUser = User.builder()
                                 .email(email)
                                 .name(kakaoUserResponse.getKakaoAccount().getProfile().getNickname())
                                 .build();
+
+                        log.info("새 사용자 생성 - 이메일: {}, 이름: {}", email, kakaoUserResponse.getKakaoAccount().getProfile().getNickname());  // 새 사용자 로그
                         return Mono.just(userRepository.save(newUser));  // 저장 후 반환
                     }
-                }).block();
+                })
+                .doOnNext(user -> log.info("최종 반환된 사용자: {}", user))  // 반환되는 사용자 로그
+                .block();
     }
 //    public Mono<User> handleUserLogin(String code) {
 //        return getAccessToken(code)
