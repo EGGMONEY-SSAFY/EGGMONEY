@@ -14,7 +14,7 @@
   
   <script setup lang="ts">
   import { ref } from 'vue';
-  import LoginComponent from '@/components/LoginComponent.vue';
+  import LoginComponent from '@/components/login/LoginComponent.vue';
   
 
   </script>
