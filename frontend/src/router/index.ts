@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router"
-import AssetsView from "../views/Assets/AssetsView.vue"
+import AssetsView from "@/views/Assets/AssetsView.vue"
 import AllView from "@/views/All/AllView.vue"
 import FinView from "@/views/Fin/FinView.vue"
 import StockView from "@/views/Stock/StockView.vue"
