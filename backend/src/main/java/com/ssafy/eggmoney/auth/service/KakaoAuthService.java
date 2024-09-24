@@ -103,6 +103,30 @@ public class KakaoAuthService {
                             });
                         }));
     }
+
+    public User verifyKakaoToken(String token){
+        String url = "https://kapi.kakao.com/v2/user/me";
+
+        return webClient.get()
+                .uri(url)
+                .headers(headers -> headers.setBearerAuth(token))
+                .retrieve()
+                .bodyToMono(KakaoUserResponse.class)
+                .flatMap(kakaoUserResponse -> {
+                    String email = kakaoUserResponse.getKakaoAccount().getEmail();
+                    Optional<User> optionalUser = userRepository.findByEmail(email);
+                    if(optionalUser.isPresent()){
+                        return Mono.just(optionalUser.get());
+                    }else {
+
+                        User newUser = User.builder()
+                                .email(email)
+                                .name(kakaoUserResponse.getKakaoAccount().getProfile().getNickname())
+                                .build();
+                        return Mono.just(userRepository.save(newUser));  // 저장 후 반환
+                    }
+                }).block();
+    }
 //    public Mono<User> handleUserLogin(String code) {
 //        return getAccessToken(code)
 //                .flatMap(this::getUserInfo)

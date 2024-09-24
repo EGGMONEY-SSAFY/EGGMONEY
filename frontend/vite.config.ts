@@ -14,6 +14,14 @@ export default defineConfig(({ mode }) => {
       vueDevTools(),
       VitePWA({
         registerType: 'autoUpdate',
+        workbox: {
+          runtimeCaching: [
+            {
+              urlPattern: /^https?:\/\/.*\/api\/kakao\/login/,
+              handler: 'NetworkFirst',
+            },
+          ],
+        },
         devOptions: {
           enabled: true,
         },
