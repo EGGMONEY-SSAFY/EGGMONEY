@@ -18,7 +18,7 @@
     </div>
   </div>
 </template>
-
+<!-- 0924 키패드 수정 -->
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
