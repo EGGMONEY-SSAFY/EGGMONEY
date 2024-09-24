@@ -12,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional(readOnly = true)
 public class StockServiceImpl implements StockService {
     private final StockApiConfig apiConfig;
     private final WebClient webClient;
@@ -78,7 +78,7 @@ public class StockServiceImpl implements StockService {
                     headers.set("authorization", "Bearer " + token);
                     headers.set("appkey", apiConfig.getAppKey());
                     headers.set("appsecret", apiConfig.getAppSecret());
-                    headers.set("tr_id", "FHPUP02120000");
+                    headers.set("tr_id", "FHPUP02100000");
                     headers.set("custtype", "P");
                 })
                 .retrieve()
@@ -97,9 +97,7 @@ public class StockServiceImpl implements StockService {
     }
 
     @Transactional
-    @Override
-    public void saveCurrentStockPrice(StockItem stockItem, BigDecimal currentStockPrice) {
-        Stock stock = new Stock(stockItem, currentStockPrice, LocalDate.now());
-        stockRepository.save(stock);
+    public void saveCurrentStockPrices(List<Stock> stocks) {
+        stockRepository.saveAll(stocks);
     }
 }
