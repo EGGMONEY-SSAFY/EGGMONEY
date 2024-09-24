@@ -1,26 +1,32 @@
 import { createRouter, createWebHistory } from "vue-router"
-import AssetsView from "../views/Assets/AssetsView.vue"
+import AssetView from "../views/Assets/AssetsView.vue"
 import AllView from "@/views/All/AllView.vue"
 import FinView from "@/views/Fin/FinView.vue"
 import StockView from "@/views/Stock/StockView.vue"
 import StockHistoryView from "@/views/Stock/StockHistoryView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
-
 import WonAuthView from "@/views/WonAuthView.vue"
-import StockDetail from "@/views/Stock/StockDetail/StockDetail.vue"
-
+import StockDetail from "@/views/Stock/StockDetail.vue"
+import MainView from "@/views/MainView.vue"
+import LoginView from "@/views/LoginView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
-      redirect: "/assets",
+      path:"/main",
+      name: "MainView",
+      component:MainView,
     },
     {
-      path: "/assets",
-      name: "AssetsView",
-      component: AssetsView,
+      path:"/login",
+      name:"LoginView",
+      component:LoginView,
+    },
+    {
+      path: "/asset",
+      name: "AssetView",
+      component: AssetView,
     },
     {
       path: "/all",
@@ -29,8 +35,25 @@ const router = createRouter({
     },
     {
       path: "/fin",
-      name: "FinView",
+      // name: "FinView",
       component: FinView,
+      children: [
+        {
+          path: "",
+          name: "FinDepositView",
+          component: FinView,
+        },
+        {
+          path: "loan",
+          name: "FinLoanView",
+          component: FinView,
+        },
+        {
+          path: "savings",
+          name: "FinSavingsView",
+          component: FinView,
+        },
+      ],
     },
     {
       path: "/stock",
@@ -48,7 +71,7 @@ const router = createRouter({
       component: StockNewsView,
     },
     {
-      path:"/won",
+      path: "/won",
       name: "WonAuthView",
       component: WonAuthView,
     },
@@ -57,7 +80,6 @@ const router = createRouter({
       name: "StockDetail",
       component: StockDetail,
     },
-
   ],
 })
 

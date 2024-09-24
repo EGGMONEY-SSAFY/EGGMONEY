@@ -5,24 +5,26 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.EnumType.*;
+import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@Table(name = "stock_trade_log")
+@Table(name = "stock_logs")
 @NoArgsConstructor(access = PROTECTED)
-public class StockTradeLog extends BaseTime {
+public class StockLog extends BaseTime {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "trade_id")
+    @Column(name = "stock_log_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "stock_user_id")
     private StockUser stockUser;
 
-    @Enumerated(value = EnumType.STRING)
+    @Enumerated(value = STRING)
     private TradeType tradeType;
 
     private boolean isExecution;

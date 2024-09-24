@@ -7,5 +7,9 @@ export const useVariableStore = defineStore("variable", () => {
     title.value = newTitle
   }
 
-  return { title, setTitle }
+  const balance = ref(0)
+  const setBalance = (newBalance: number) => {
+    balance.value = newBalance
+  }
+  return { title, setTitle, balance, setBalance }
 })
