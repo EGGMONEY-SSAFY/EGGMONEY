@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router"
-import AssetView from "../views/AssetView.vue"
-import AllView from "@/views/AllView.vue"
-import FinView from "@/views/FinView.vue"
-import StockView from "@/views/StockView.vue"
+import AssetView from "../views/Assets/AssetsView.vue"
+import AllView from "@/views/All/AllView.vue"
+import FinView from "@/views/Fin/FinView.vue"
+import StockView from "@/views/Stock/StockView.vue"
+
 import StockHistoryView from "@/views/Stock/StockHistoryView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
 import WonAuthView from "@/views/WonAuthView.vue"
