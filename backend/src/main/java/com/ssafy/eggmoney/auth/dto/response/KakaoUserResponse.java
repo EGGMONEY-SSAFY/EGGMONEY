@@ -19,7 +19,7 @@ public class KakaoUserResponse {
     private String connectedAt; // UTC datetime as String
 
     @JsonProperty("synched_at")
-    private String synchedAt; // UTC datetime as String
+    private String synchedAt;
 
     @JsonProperty("properties")
     private Properties properties;
