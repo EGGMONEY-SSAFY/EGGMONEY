@@ -10,6 +10,7 @@ import lombok.Setter;
 @Builder
 @Setter
 public class GetUserResponseDto {
+    Long userId;
     String email;
     GetFamilyResponseDto family;
     String name;
