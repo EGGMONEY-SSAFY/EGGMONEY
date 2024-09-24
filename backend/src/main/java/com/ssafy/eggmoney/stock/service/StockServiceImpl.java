@@ -1,5 +1,6 @@
 package com.ssafy.eggmoney.stock.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.ssafy.eggmoney.common.config.StockApiConfig;
 import com.ssafy.eggmoney.stock.dto.response.StockPriceResponse;
 import com.ssafy.eggmoney.stock.dto.response.StockPricesResponse;
@@ -82,8 +83,8 @@ public class StockServiceImpl implements StockService {
                     headers.set("custtype", "P");
                 })
                 .retrieve()
-                .bodyToMono(StockPriceResponse.class)
-                .map(StockPriceResponse::getBstp_nmix_prpr)
+                .bodyToMono(JsonNode.class)
+                .map(jsonNode -> new BigDecimal(jsonNode.get("output").get("bstp_nmix_prpr").asText()))
                 .block();
     }
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +27,9 @@ public class StockScheduler {
             StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
             StockItem.IT, StockItem.UTILITIES};
 
-    @Scheduled(cron = "0 00 17 * * MON-FRI", zone = "Asia/Seoul")
+//    @Scheduled(cron = "0 0 18 * * MON-FRI", zone = "Asia/Seoul")
     public void saveDailyStockPrice() {
-        log.info("주식 스케쥴링 시작");
+        log.info("주식 스케쥴링 시작: " + LocalDateTime.now());
         List<Stock> stocks = new ArrayList<>();
         String token = stockService.getAccessToken().getAccessToken();
 
@@ -39,12 +40,10 @@ public class StockScheduler {
         try {
             for(int i = 0; i < stockCodes.length; i++) {
                 BigDecimal currentStockPrice = stockService.getCurrentStockPrice(token, stockCodes[i]);
+                System.out.println(currentStockPrice);
                 Stock stock = new Stock(stockItems[i], currentStockPrice, LocalDate.now());
                 stocks.add(stock);
             }
-        } catch (DecodingException d) {
-            log.info("공휴일이라서 응답 값이 없습니다.");
-            log.info(d.getMessage());
         } catch (Exception e) {
             log.error("주식 api 요청 에러 발생: ", e);
         }
