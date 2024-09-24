@@ -1,13 +1,10 @@
 package com.ssafy.eggmoney.savings.controller;
 
-import com.ssafy.eggmoney.deposit.dto.responsedto.DepositProductListResponseDto;
-import com.ssafy.eggmoney.savings.dto.requestDto.SavingsCreateRequestDto;
-import com.ssafy.eggmoney.savings.dto.responseDto.SavingsLogResponseDto;
-import com.ssafy.eggmoney.savings.dto.responseDto.SavingsProductListResponseDto;
-import com.ssafy.eggmoney.savings.dto.responseDto.SavingsResponseDto;
-import com.ssafy.eggmoney.savings.entity.SavingsLog;
+import com.ssafy.eggmoney.savings.dto.request.SavingsCreateRequestDto;
+import com.ssafy.eggmoney.savings.dto.response.SavingsLogResponseDto;
+import com.ssafy.eggmoney.savings.dto.response.SavingsProductListResponseDto;
+import com.ssafy.eggmoney.savings.dto.response.SavingsResponseDto;
 import com.ssafy.eggmoney.savings.service.SavingService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +34,8 @@ public class SavingsController {
     * */
     @PostMapping("/create")
     public ResponseEntity<?> createSaving(@RequestBody SavingsCreateRequestDto savingsCreateRequestDto){
+        System.out.println(savingsCreateRequestDto.getSavingsProductId());
+        System.out.println(savingsCreateRequestDto.getPaymentMoney());
         savingService.createSaving(savingsCreateRequestDto);
 
         return ResponseEntity.ok().build();

@@ -3,8 +3,12 @@ import AssetView from "../views/AssetView.vue"
 import AllView from "@/views/AllView.vue"
 import FinView from "@/views/FinView.vue"
 import StockView from "@/views/StockView.vue"
-
-
+import StockHistoryView from "@/views/Stock/StockHistoryView.vue"
+import StockNewsView from "@/views/Stock/StockNewsView.vue"
+import WonAuthView from "@/views/WonAuthView.vue"
+import StockDetail from "@/views/Stock/StockDetail.vue"
+import MainView from "@/views/MainView.vue"
+import LoginView from "@/views/LoginView.vue"
 import MyFamilyComponent from "@/components/family/FamilyInviteComponent.vue"
 import FamilyInviteComponent from "@/components/family/FamilyInviteComponent.vue"
 import FamilyConnectionComponent from "@/components/family/FamilyConnectionComponent.vue"
@@ -15,6 +19,16 @@ import FamilyManageComponent from "@/components/family/FamilyManageComponent.vue
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path:"/main",
+      name: "MainView",
+      component:MainView,
+    },
+    {
+      path:"/login",
+      name:"LoginView",
+      component:LoginView,
+    },
     {
       path: "/asset",
       name: "AssetView",
@@ -27,13 +41,50 @@ const router = createRouter({
     },
     {
       path: "/fin",
-      name: "FinView",
+      // name: "FinView",
       component: FinView,
+      children: [
+        {
+          path: "",
+          name: "FinDepositView",
+          component: FinView,
+        },
+        {
+          path: "loan",
+          name: "FinLoanView",
+          component: FinView,
+        },
+        {
+          path: "savings",
+          name: "FinSavingsView",
+          component: FinView,
+        },
+      ],
     },
     {
       path: "/stock",
       name: "StockView",
       component: StockView,
+    },
+    {
+      path: "/stock/history",
+      name: "StockHistoryView",
+      component: StockHistoryView,
+    },
+    {
+      path: "/stock/news",
+      name: "StockNewsView",
+      component: StockNewsView,
+    },
+    {
+      path: "/won",
+      name: "WonAuthView",
+      component: WonAuthView,
+    },
+    {
+      path: "/stock/:stock",
+      name: "StockDetail",
+      component: StockDetail,
     },
     {
       path:"/family",

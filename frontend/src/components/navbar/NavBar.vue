@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { RouterLink, RouterView, useRoute, useRouter } from "vue-router"
 import NavBarall from "./NavBarAll.vue"
 import NavBarAssets from "./NavBarAssets.vue"
 import NavBarFin from "./NavBarFin.vue"
