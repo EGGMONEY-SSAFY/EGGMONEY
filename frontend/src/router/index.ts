@@ -15,6 +15,10 @@ import AssetsView from "@/views/Assets/AssetsView.vue"
 import FinView from "@/views/Fin/FinView.vue"
 import StockView from "@/views/Stock/StockView.vue"
 import FinSavingsView from "@/views/Fin/FinSavingsView.vue"
+import FinDepositView from "@/views/Fin/FinDepositView.vue"
+import FinSavingsCreateView from "@/views/Fin/FinSavingsCreateView.vue"
+import FinDepositCreateView from "@/views/Fin/FinDepositCreateView.vue"
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -40,13 +44,13 @@ const router = createRouter({
     },
     {
       path: "/fin",
-      // name: "FinView",
+      name: "FinView",
       component: FinView,
       children: [
         {
           path: "",
           name: "FinDepositView",
-          component: FinView,
+          component: FinDepositView,
         },
         {
           path: "loan",
@@ -57,6 +61,16 @@ const router = createRouter({
           path: "savings",
           name: "FinSavingsView",
           component: FinSavingsView,
+        },
+        {
+          path: "deposit/create/:productId",
+          name: "FinDepositCreateView",
+          component: FinDepositCreateView,
+        },
+        {
+          path: "savings/create/:productId",
+          name: "FinSavingsCreateView",
+          component: FinSavingsCreateView,
         },
       ],
     },
