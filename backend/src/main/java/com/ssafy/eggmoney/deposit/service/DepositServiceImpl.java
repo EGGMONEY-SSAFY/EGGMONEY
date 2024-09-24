@@ -119,10 +119,10 @@ public class DepositServiceImpl implements DepositService {
         int expiredMoney;
         double interestMoney;
         if(deposit.getExpireDate().toLocalDate().isAfter(LocalDate.now())){
-            interestMoney = deposit.getDepositMoney() * (deposit.getDepositProduct().getDepositRate() - 2.0) / 100;
+            interestMoney = deposit.getDepositMoney() * (deposit.getDepositProduct().getDepositRate() - 2.0) / 100 * deposit.getDepositProduct().getDepositDate() / 12;
             expiredMoney = deposit.getDepositMoney() + (int) interestMoney;
         }else{
-            interestMoney = deposit.getDepositMoney() * deposit.getDepositProduct().getDepositRate() / 100;
+            interestMoney = deposit.getDepositMoney() * deposit.getDepositProduct().getDepositRate() / 100 * deposit.getDepositProduct().getDepositDate() / 12;
             expiredMoney = deposit.getDepositMoney() + (int) interestMoney;
         }
         log.info("interestMoney: {}, expiredMoney: {}", interestMoney, expiredMoney);

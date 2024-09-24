@@ -156,7 +156,7 @@ public class LoanServiceImpl implements LoanService {
     public void sendRepayment(long loanId) {
         Loan loan = loanRepository.findByIdAndLoanStatus(loanId, LoanStatus.APPROVAL).orElse(null);
 
-        int interest = (int) (loan.getLoanAmount() * loan.getLoanRate() / loan.getLoanDate());
+        int interest = (int) (loan.getLoanAmount() * loan.getLoanRate() / 100 * loan.getLoanDate() / 12);
         int repayment = (loan.getLoanType() == LoanType.EQUALR) ? loan.getLoanAmount() / loan.getLoanDate() : 0;
 
         if(loan.getBalance() == 0){
