@@ -7,6 +7,8 @@ const props = defineProps({
     required: true,
   },
 })
+
+console.log(props.product.maxPrice)
 const name = "FinSavingsCreateView"
 </script>
 
@@ -16,7 +18,13 @@ const name = "FinSavingsCreateView"
       :product="product"
       :to="{
         name: `${name}`,
-        params: { productId: product.productId },
+        query: {
+          productId: product.productId,
+          productName: product.productName,
+          savingsRate: product.savingsRate,
+          savingsDate: product.savingsRate,
+          maxPrice: product.maxPrice,
+        },
       }"
       class="m-2 flex justify-center w-full items-center"
     >

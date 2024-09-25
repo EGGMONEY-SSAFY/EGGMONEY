@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router"
+import { RouterLink, useRouter } from "vue-router"
 
 const props = defineProps({
   product: {
@@ -8,6 +8,9 @@ const props = defineProps({
   },
 })
 const name = "FinDepositCreateView"
+
+const router = useRouter()
+// const depositCreate = ()
 </script>
 
 <template>
@@ -16,11 +19,15 @@ const name = "FinDepositCreateView"
       :product="product"
       :to="{
         name: `${name}`,
-        params: { productId: product.productId },
+        query: {
+          productId: product.productId,
+          productName: product.productName,
+          depositDate: product.depositDate,
+          depositRate: product.depositRate,
+        },
       }"
       class="m-2 flex justify-center w-full items-center"
     >
-      <!-- fin/savings/create, fin/deposit/create로 변환-->
       <div class="my-4 mx-8 w-full flex flex-col gap-y-2">
         <div class="flex justify-between mb-3">
           <span class="font-bold text-xl">{{ props.product.productName }}</span>

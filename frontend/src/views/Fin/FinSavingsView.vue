@@ -18,9 +18,9 @@ onMounted(() => {
       v-for="product in finStore.savingsProducts"
       :key="product.productId"
       :product="product"
-      :date="product.savingsDate"
-      :rate="product.savingsRate"
-      fin="적금"
+      :savingsDate="product.savingsDate"
+      :savingsRate="product.savingsRate"
+      :maxPrice="product.maxPrice"
     />
   </div>
 </template>
