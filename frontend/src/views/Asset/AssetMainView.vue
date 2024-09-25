@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted } from "vue"
 
-    const props = defineProps({'child' : Object})
-    onMounted ( () => {
-        }
-    )
-        
+const props = defineProps({ child: Object })
+onMounted(() => {})
 </script>
 <template>
-    <div>
-    </div>
+  <div></div>
 </template>

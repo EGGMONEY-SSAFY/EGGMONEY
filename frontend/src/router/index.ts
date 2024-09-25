@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router"
 import AssetView from "@/views/Asset/AssetView.vue"
 import AllView from "@/views/All/AllView.vue"
 import FinView from "@/views/Fin/FinView.vue"
-import StockView from"@/views/Stock/StockView.vue"
+import StockView from "@/views/Stock/StockView.vue"
 
 import StockHistoryView from "@/views/Stock/StockHistoryView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
@@ -26,14 +26,14 @@ const router = createRouter({
       redirect: "/assets",
     },
     {
-      path:"/main",
+      path: "/main",
       name: "MainView",
-      component:MainView,
+      component: MainView,
     },
     {
-      path:"/login",
-      name:"LoginView",
-      component:LoginView,
+      path: "/login",
+      name: "LoginView",
+      component: LoginView,
     },
     {
       path: "/assets",
@@ -93,30 +93,30 @@ const router = createRouter({
       component: StockDetail,
     },
     {
-      path:"/family",
-      name:"FamilyView",
-      component:FamilyView,
-      children:[
+      path: "/family",
+      name: "FamilyView",
+      component: FamilyView,
+      children: [
         {
-          path:"",
-          name:"FamilyCom",
-          component:FamilyComponent,
+          path: "",
+          name: "FamilyCom",
+          component: FamilyComponent,
         },
-        
+
         {
-          path:"my-family",
-          name:"MyFamilyView",
-          component:FamilyManageComponent,
-        },
-        {
-          path:"family-invite",
-          name:"FamilyInviteView",
-          component:FamilyInviteComponent,
+          path: "my-family",
+          name: "MyFamilyView",
+          component: FamilyManageComponent,
         },
         {
-          path:"family-connection",
-          name:"FamilyConnectionView",
-          component:FamilyConnectionComponent,
+          path: "family-invite",
+          name: "FamilyInviteView",
+          component: FamilyInviteComponent,
+        },
+        {
+          path: "family-connection",
+          name: "FamilyConnectionView",
+          component: FamilyConnectionComponent,
         },
         {
           path:"/pinpad",
