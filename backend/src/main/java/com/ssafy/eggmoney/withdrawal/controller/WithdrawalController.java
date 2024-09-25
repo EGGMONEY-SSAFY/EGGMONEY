@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/asset/withdrawal")
+@RequestMapping("/api/v1/asset/withdrawal")
 public class WithdrawalController {
     private final WithdrawalService withdrawalService;
 

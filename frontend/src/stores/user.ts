@@ -36,6 +36,7 @@ export interface UserResponse {
 
 export const useUserStore = defineStore("user", () => {
   const USER_API_URL = "/api/v1/profile"
+  const ASSET_API_URL = "/api/v1/asset"
 
   const user = ref<User | null>(null)
   const role = ref<string>("")
@@ -61,13 +62,12 @@ export const useUserStore = defineStore("user", () => {
         role.value = res.data.role
         user.value = { userId: res.data.userId, name: res.data.name }
         familyId.value = res.data.family.familyId
-
-        console.log(familyId)
-
         if (familyId.value && role.value === "부모") {
+          let childrenArray = []
           res.data.family.members.forEach((member: FamilyMember) => {
             if (member.role === "자녀") {
-              children.value.push({ userId: member.userId, name: member.name })
+              childrenArray.push({ userId: member.userId, name: member.name })
+              children.value = childrenArray
             }
           })
         }
