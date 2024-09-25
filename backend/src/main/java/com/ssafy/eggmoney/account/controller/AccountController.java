@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/asset")
+@RequestMapping("/api/v1/asset")
 public class AccountController {
     private final AccountService accountService;
     private final AccountLogService accountLogService;
@@ -26,10 +26,18 @@ public class AccountController {
     }
 
 //    메인계좌 로그 조회
-    @PostMapping("/main-account/{userId}/log")
+    @GetMapping("/main-account/{userId}/log")
     public List<GetAccountLogResponseDto> getAccountLogs(@PathVariable("userId") Long userId){
         return accountLogService.getAccountLogs(userId);
     }
+
+//    메인계좌 로그 조회 ( 3개월 기준 )
+    @GetMapping("/main-account/{userId}/{month}/log")
+    public List<GetAccountLogResponseDto> get3MAccountLogs(@PathVariable("userId") Long userId, @PathVariable("month") Integer month)
+    {
+        return accountLogService.get3MAccountLogs(userId, month);
+    }
+
 
 //    자산 분석 ( 현재보유금, 예금, 적금, 주식 현황 )
     @GetMapping("/analytics/{userId}")

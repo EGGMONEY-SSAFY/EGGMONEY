@@ -7,11 +7,13 @@ import lombok.Getter;
 @Builder
 public class GetAnalyticsResponseDto {
 //    메인계좌 보유액
-    int mainAccountBalance;
+    Integer mainAccountBalance;
 //    주식 현재평가액
-    int stock;
+    Integer stock;
 //    적금 누적액
-    int savings;
+    Integer savings;
+//    대출액
+    Integer loan;
 //    예금액
-    int deposit;
+    Integer deposit;
 }
