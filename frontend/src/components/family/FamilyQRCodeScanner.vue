@@ -61,7 +61,7 @@ const qrData = ref<string | null>(null)
 let qrScanner: QrScanner | null = null
 const router = useRouter()
 
-const ab=()=>{
+const ab = () => {
   console.log(1)
   router.push("/family/family-connection/success")
 }

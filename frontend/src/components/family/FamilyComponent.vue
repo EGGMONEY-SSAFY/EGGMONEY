@@ -43,9 +43,7 @@
       v-if="showModal"
       class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
     >
-      <div
-        class="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-xs sm:max-w-sm mx-4"
-      >
+      <div class="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-xs sm:max-w-sm mx-4">
         <h1 class="text-lg font-bold">가족 프로필 사진 등록</h1>
         <!-- 이미지를 클릭하면 파일 업로드 창이 열리도록 설정 -->
         <div @click="triggerFileUpload" class="cursor-pointer">
@@ -86,55 +84,58 @@
         >
           가족 생성
         </button>
-        <button class="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg mt-4" @click="closeModal">
-        닫기
-      </button>
+        <button
+          class="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg mt-4"
+          @click="closeModal"
+        >
+          닫기
+        </button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import axios from "axios";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { useAuthStore } from "@/stores/auth";
+import axios from "axios"
+import { ref } from "vue"
+import { useRouter } from "vue-router"
+import { useAuthStore } from "@/stores/auth"
 
-const authStore = useAuthStore();
-const showModal = ref(false);
-const familyDescription = ref("");
-const imageBase64 = ref<string>("");
-const fileInput = ref<HTMLInputElement | null>(null);
-const router = useRouter();
+const authStore = useAuthStore()
+const showModal = ref(false)
+const familyDescription = ref("")
+const imageBase64 = ref<string>("")
+const fileInput = ref<HTMLInputElement | null>(null)
+const router = useRouter()
 
 // 파일 업로드 트리거
 function triggerFileUpload() {
-  fileInput.value?.click();
+  fileInput.value?.click()
 }
 
 // 파일 업로드 처리
 function handleFileUpload(event: Event) {
-  const target = event.target as HTMLInputElement;
-  const file = target.files?.[0];
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
   if (file) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
     reader.onload = () => {
       if (typeof reader.result === "string") {
-        imageBase64.value = reader.result;
+        imageBase64.value = reader.result
       }
-    };
+    }
   }
 }
 
 // 모달 열기
 function goToCreateFamily() {
-  showModal.value = true;
+  showModal.value = true
 }
 
 // 모달 닫기
 function closeModal() {
-  showModal.value = false;
+  showModal.value = false
 }
 
 // 가족 생성 처리
@@ -158,9 +159,9 @@ async function createFamily() {
   //       "Content-Type": "application/json",
   //     },
   //   });
-    //alert("가족 생성 완료!");
-    showModal.value = false;
-    router.push("/family/create");
+  //alert("가족 생성 완료!");
+  showModal.value = false
+  router.push("/family/create")
   // } catch (error) {
   //   console.error("가족 생성 오류:", error);
   //   alert("가족 생성에 실패했습니다.");
@@ -169,15 +170,15 @@ async function createFamily() {
 
 // 페이지 이동 함수들
 function goToMyFamily() {
-  router.push("/family/my-family");
+  router.push("/family/my-family")
 }
 
 function goToFamilyInvite() {
-  router.push("/family/family-invite");
+  router.push("/family/family-invite")
 }
 
 function goToFamilyConnection() {
-  router.push("/family/family-connection");
+  router.push("/family/family-connection")
 }
 </script>
 

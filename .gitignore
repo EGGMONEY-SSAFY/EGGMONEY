@@ -104,3 +104,4 @@ coverage
 *.tsbuildinfo
 
 dev-dist/
+.env
