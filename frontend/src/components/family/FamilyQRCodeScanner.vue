@@ -4,7 +4,7 @@
       ref="videoRef"
       class="w-full max-w-lg h-auto border-2 border-gray-300 rounded-md"
     ></video>
-
+    <button @click="ab">1</button>
     <!-- 모달 (가족 연결 확인) -->
     <div
       v-if="showModal"
@@ -61,6 +61,10 @@ const qrData = ref<string | null>(null)
 let qrScanner: QrScanner | null = null
 const router = useRouter()
 
+const ab=()=>{
+  console.log(1)
+  router.push("/family/family-connection/success")
+}
 // QR 코드 스캔 후 처리
 const handleScan = (result: QrScanner.ScanResult) => {
   qrData.value = result.data
