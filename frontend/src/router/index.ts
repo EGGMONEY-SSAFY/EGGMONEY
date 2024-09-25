@@ -18,6 +18,7 @@ import FinSavingsView from "@/views/Fin/FinSavingsView.vue"
 import FinDepositView from "@/views/Fin/FinDepositView.vue"
 import FinSavingsCreateView from "@/views/Fin/FinSavingsCreateView.vue"
 import FinDepositCreateView from "@/views/Fin/FinDepositCreateView.vue"
+import FinDepositCreateDetailView from "@/views/Fin/FinDepositCreateDetailView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,12 +64,17 @@ const router = createRouter({
           component: FinSavingsView,
         },
         {
-          path: "deposit/create/",
+          path: "deposit/create",
           name: "FinDepositCreateView",
           component: FinDepositCreateView,
         },
         {
-          path: "savings/create/",
+          path: "deposit/create/detail",
+          name: "FinDepositCreateDetailView",
+          component: FinDepositCreateDetailView,
+        },
+        {
+          path: "savings/create",
           name: "FinSavingsCreateView",
           component: FinSavingsCreateView,
         },
