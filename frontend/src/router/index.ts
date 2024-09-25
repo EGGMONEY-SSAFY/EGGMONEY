@@ -22,7 +22,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: "/assets",
+      redirect: "/asset",
     },
     {
       path: "/main",
