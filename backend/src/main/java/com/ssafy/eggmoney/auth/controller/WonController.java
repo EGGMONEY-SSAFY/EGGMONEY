@@ -10,7 +10,7 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/auth/won")
+@RequestMapping("/api/v1/auth/won")
 public class WonController {
     private final WonService wonService;
 
