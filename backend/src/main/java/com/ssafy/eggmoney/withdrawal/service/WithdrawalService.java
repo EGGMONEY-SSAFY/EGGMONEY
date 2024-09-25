@@ -177,7 +177,7 @@ public class WithdrawalService {
                         System.out.println("계좌이체 성공");
                         // 대출 인스턴스 상태 변경 및 계좌 로그 갱신
                         with.setWithdrawalStatus(WithdrawalStatus.APPROVAL);
-                        accountService.updateAccount(AccountLogType.WITHDRAWL, with.getUser().getId(), -with.getWithdrawalPrice());
+                        accountService.updateAccount(AccountLogType.WITHDRAWAL, with.getUser().getId(), -with.getWithdrawalPrice());
                         withdrawalRepository.save(with);
                     }, error -> {
                         System.out.println("Error: " + error.getMessage());

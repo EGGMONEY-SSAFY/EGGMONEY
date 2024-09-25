@@ -11,6 +11,7 @@ import com.ssafy.eggmoney.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,13 +26,31 @@ public class AccountLogService {
     public List<GetAccountLogResponseDto> getAccountLogs(Long userId){
         List<GetAccountLogResponseDto> dto = accountLogRepository.findLogsByAccountId(userId).stream()
                 .map( log -> GetAccountLogResponseDto.builder()
-                        .account(GetAccountResponseDto.builder()
-                                .userId(log.getAccount().getUser().getId())
-                                .balance(log.getAccount().getBalance())
-                                .build())
+                        .accountId(log.getAccount().getId())
                         .currentBalance(log.getCurrentBalance())
                         .tradePrice(log.getTradePrice())
                         .tradeTarget(log.getTradeTarget())
+                        .createdAt(log.getCreatedAt())
+                        .build())
+                .collect(Collectors.toList());
+        return dto;
+    }
+
+//    메인계좌 로그 조회 ( 3개월 이내 - 일 단위 )
+    public List<GetAccountLogResponseDto> get3MAccountLogs(Long userId, Integer month){
+        // 현재 시간
+        LocalDateTime endDate = LocalDateTime.now();
+        // 3개월 전
+        LocalDateTime startDate = endDate.minusMonths(month);
+        Account account = accountRepository.findByUserId(userId).orElse(null);
+
+        List<GetAccountLogResponseDto> dto = accountLogRepository.findLatestLogsByDayAndAccountId(account.getId(), startDate, endDate).stream()
+                .map( log -> GetAccountLogResponseDto.builder()
+                        .accountId(log.getAccount().getId())
+                        .currentBalance(log.getCurrentBalance())
+                        .tradePrice(log.getTradePrice())
+                        .tradeTarget(log.getTradeTarget())
+                        .createdAt(log.getCreatedAt())
                         .build())
                 .collect(Collectors.toList());
         return dto;
@@ -52,5 +71,5 @@ public class AccountLogService {
     }
 
 //
-
+//    public void
 }
