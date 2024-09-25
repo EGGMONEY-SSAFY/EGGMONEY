@@ -22,8 +22,11 @@ public class PinPadService {
     private final Map<Integer, BufferedImage> numberImages;
     private final BufferedImage backImage;
     private final BufferedImage checkImage;
+    private final EncryptionService encryptionService;
 
-    public PinPadService() throws IOException {
+
+    public PinPadService(EncryptionService encryptionService) throws IOException {
+        this.encryptionService = encryptionService;
         numberImages = IntStream.range(0, 10)
                 .boxed()
                 .collect(Collectors.toMap(
@@ -44,56 +47,84 @@ public class PinPadService {
     }
 
     public PinPadResponse generatePinPadResponse() throws IOException {
-        List<Integer> pinPad = IntStream.range(0, 10).boxed().collect(Collectors.toList());
-        Collections.shuffle(pinPad);
+        try{
+            List<Integer> pinPad = IntStream.range(0, 10).boxed().collect(Collectors.toList());
+            Collections.shuffle(pinPad);
 
-        // Create image for pin pad
-        BufferedImage pinPadImage = createPinPadImage(pinPad);
-        byte[] imageBytes = convertImageToBytes(pinPadImage);
+            StringBuilder pinOrder = new StringBuilder();
+            for (int number : pinPad) {
+                pinOrder.append(number);
+            }
+            int lastIndex = pinPad.size() - 1;
+            pinPad.add(lastIndex, -1); // back.png
+            pinPad.add(-2); // check.png /
+            BufferedImage pinPadImage = createPinPadImage(pinPad);
+            byte[] imageBytes = convertImageToBytes(pinPadImage);
         String encodedImage = Base64.getEncoder().encodeToString(imageBytes);
-//
-        return new PinPadResponse(pinPad, encodedImage);
+            //String encodedImage = encryptionService.encryptImage(imageBytes);
+            return new PinPadResponse(pinPad, encodedImage);
+        }catch (Exception e) {
+            throw new RuntimeException("Failed to generate PinPadResponse", e);
+        }
+
 
 //        return new PinPadResponse(pinPad, imageBytes);
     }
 
     private BufferedImage createPinPadImage(List<Integer> pinPad) {
         int imageSize = 400;
-        int cellSize = imageSize / 4;
+        int cellSize = imageSize / 4; // 4x3 그리드에 맞추기 위해 cellSize 설정
         BufferedImage pinPadImage = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = pinPadImage.createGraphics();
 
-        // 배경을 투명하게 설정
+        // 투명한 배경 설정
         graphics.setComposite(AlphaComposite.Clear);
         graphics.fillRect(0, 0, imageSize, imageSize);
         graphics.setComposite(AlphaComposite.SrcOver);
 
-        // 숫자의 위치를 설정합니다 (3x4 배열)
         int padding = 10;
+
+        // 모든 요소를 3x4 배열로 배치 (숫자 10개 + back, check 버튼)
         for (int i = 0; i < pinPad.size(); i++) {
             int number = pinPad.get(i);
-            BufferedImage numberImage = numberImages.get(number);
-            Image scaledImage = numberImage.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+            Image img;
 
-            int x, y;
-
-            if (i < 9) { // 숫자가 상단에 배치되는 경우
-                x = (i % 3) * (cellSize + padding);
-                y = (i / 3) * (cellSize + padding);
-            } else { // 숫자가 하단에 배치되는 경우
-                x = (imageSize - cellSize) / 2;
-                y = 3 * (cellSize + padding);
+            if (number == -1) {
+                img = backImage;
+            } else if (number == -2) {
+                img = checkImage;
+            } else {
+                img = numberImages.get(number);
             }
 
-            graphics.drawImage(scaledImage, x, y, null);
-        }
+            // 이미지 크기 조정
+            Image scaledImage = img.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
 
-        // 뒤로가기와 확인 버튼을 적절한 위치에 배치
-        graphics.drawImage(backImage, 0, 3 * (cellSize + padding), cellSize, cellSize, null);
-        graphics.drawImage(checkImage, 3 * (cellSize + padding), 3 * (cellSize + padding), cellSize, cellSize, null);
+            // 좌표 계산
+            int x = (i % 3) * (cellSize + padding);
+            int y = (i / 3) * (cellSize + padding);
+
+            // Image를 BufferedImage로 변환하여 그리기
+            BufferedImage bufferedImage = toBufferedImage(scaledImage);
+            graphics.drawImage(bufferedImage, x, y, null);
+        }
 
         graphics.dispose();
         return pinPadImage;
+    }
+
+    // Image를 BufferedImage로 변환하는 메서드
+    private BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
+        }
+
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        return bimage;
     }
 
     private byte[] convertImageToBytes(BufferedImage image) throws IOException {
