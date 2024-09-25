@@ -1,5 +1,12 @@
 <template>
-  <div class="pin-container relative mx-auto mt-5">
+  <div class="pin-container flex flex-col items-center justify-center  relative mx-auto mt-5">
+    <div class="text-center mt-6 text-lg font-semibold text-gray-700">
+      {{ instructionMessage }}
+    
+    </div>
+    <div class="input-display">
+      <span v-for="digit in firstInput">{{ digit !== undefined ? '*' : '' }}</span>
+    </div>
     <!-- 실제 이미지 -->
     <img
       :src="pinPadImage"
@@ -15,9 +22,7 @@
         @click="onButtonClick(number)">
     </button>
     
-    <div class="text-center mt-6 text-lg font-semibold text-gray-700">
-      {{ instructionMessage }}
-    </div>
+    
   </div>
 </template>
 
@@ -26,9 +31,10 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 import JSEncrypt from 'jsencrypt';
-
+//@ts-ignore
+import CryptoJS from 'crypto-js';
 const pinPadImage = ref<string|null>(null);
-const numbers = ref<number[]>([1,2,3,4,5,6,7,8,9,10,0,11]);
+const numbers = ref<number[]>([0,1,2,3,4,5,6,7,8,9,10,11]);
 const firstInput = ref<number[]>([]);
 const secondInput = ref<number[]>([]);
 const step = ref<number>(1);
@@ -62,19 +68,26 @@ const fetchPinPadImage = async () => {
     const token = authStore.accessToken;
     console.log(token)
     const response = await axios.get('http://localhost:8080/api/pinpad', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type':'application/json',
-      }
+      //headers: {
+        //Authorization: `Bearer ${token}`,
+        //'Content-Type':'application/json',
+      //}
     });
     const encryptedImage = response.data.encryptedImage;
-    const decrypt = new JSEncrypt();
-    decrypt.setPrivateKey(''
-      // `${env.RSA.key}`
-    );
-    const decryptedBase64Image = decrypt.decrypt(encryptedImage);
-
+    console.log(encryptedImage)
+    // const decrypt = new JSEncrypt();
+    // decrypt.setPrivateKey(''
+    //   // `${env.RSA.key}`
+    // );
+    // const aesKey = CryptoJS.enc.Utf8.parse(import.meta.env.VITE_AES_KEY); 
+    // const decrypted = CryptoJS.AES.decrypt(encryptedImage, CryptoJS.enc.Utf8.parse(aesKey), {
+    //   mode: CryptoJS.mode.ECB, 
+    //   padding: CryptoJS.pad.Pkcs7 ,
+    // });
+    const decryptedBase64Image = encryptedImage;
+    // decrypted.toString(CryptoJS.enc.Base64);
     pinPadImage.value = `data:image/png;base64,${decryptedBase64Image }`;
+    console.log(pinPadImage.value)
   } catch (error) {
     console.error('이미지 불러오기 실패:',error);
   }
@@ -201,7 +214,13 @@ return {
   background-color: transparent;
   transition: background-color 1s ease;
 }
-
+.input-display {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
 </style>
 
 
