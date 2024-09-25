@@ -6,10 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-public class StockApiConfig {
-    @Value("${stock_api.appkey}")
-    private String appKey;
-
-    @Value("${stock_api.appsecret}")
-    private String appSecret;
+public class OpenAIApiConfig {
+    @Value("${open_ai.key}")
+    private String apiKey;
 }
