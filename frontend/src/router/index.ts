@@ -17,6 +17,8 @@ import FamilyComponent from "@/components/family/FamilyComponent.vue"
 import FamilyView from "@/views/All/FamilyView.vue"
 import FamilyManageComponent from "@/components/family/FamilyManageComponent.vue"
 import PinPadComponent from "@/components/login/PinPadComponent.vue"
+import CreateFamilySuccess from "@/components/family/complete/CreateFamilySuccess.vue"
+import ConnectionFamilySuccess from "@/components/family/complete/ConnectionFamilySuccess.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -98,9 +100,17 @@ const router = createRouter({
       component: FamilyView,
       children: [
         {
+          path:"create",
+          name:"FamilyCreate",
+          component:CreateFamilySuccess,
+        }
+      ,
+        {
           path: "",
           name: "FamilyCom",
           component: FamilyComponent,
+          children:[
+          ]
         },
 
         {
@@ -117,6 +127,12 @@ const router = createRouter({
           path: "family-connection",
           name: "FamilyConnectionView",
           component: FamilyConnectionComponent,
+          children: [
+            ]
+        },{
+          path:"/family/family-connection/success",
+          name:"FamilyConnectSuccess",
+          component:ConnectionFamilySuccess,
         },
         {
           path:"/pinpad",
