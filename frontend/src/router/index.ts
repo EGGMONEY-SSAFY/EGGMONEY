@@ -1,24 +1,46 @@
 import { createRouter, createWebHistory } from "vue-router"
-import AssetsView from "../views/Assets/AssetsView.vue"
+import AssetView from "@/views/Asset/AssetView.vue"
 import AllView from "@/views/All/AllView.vue"
 import FinView from "@/views/Fin/FinView.vue"
 import StockView from "@/views/Stock/StockView.vue"
+
 import StockHistoryView from "@/views/Stock/StockHistoryView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
-import WonAuthView from "@/views/WonAuthView.vue"
+import WonAuthView from "@/views/All/WonAuthView.vue"
 import StockDetail from "@/views/Stock/StockDetail.vue"
+import MainView from "@/views/All/MainView.vue"
+import LoginView from "@/views/All/LoginView.vue"
+
+import FamilyInviteComponent from "@/components/family/FamilyInviteComponent.vue"
+import FamilyConnectionComponent from "@/components/family/FamilyConnectionComponent.vue"
+import FamilyComponent from "@/components/family/FamilyComponent.vue"
+import FamilyView from "@/views/All/FamilyView.vue"
+import FamilyManageComponent from "@/components/family/FamilyManageComponent.vue"
+import PinPadComponent from "@/components/login/PinPadComponent.vue"
+import CreateFamilySuccess from "@/components/family/complete/CreateFamilySuccess.vue"
+import ConnectionFamilySuccess from "@/components/family/complete/ConnectionFamilySuccess.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      redirect: "/assets",
+      redirect: "/asset",
     },
     {
-      path: "/assets",
-      name: "AssetsView",
-      component: AssetsView,
+      path: "/main",
+      name: "MainView",
+      component: MainView,
+    },
+    {
+      path: "/login",
+      name: "LoginView",
+      component: LoginView,
+    },
+    {
+      path: "/asset",
+      name: "AssetView",
+      component: AssetView,
     },
     {
       path: "/all",
@@ -29,23 +51,23 @@ const router = createRouter({
       path: "/fin",
       // name: "FinView",
       component: FinView,
-      children:[
+      children: [
         {
-          path: '',
+          path: "",
           name: "FinDepositView",
-          component: FinView
+          component: FinView,
         },
         {
           path: "loan",
           name: "FinLoanView",
-          component: FinView
+          component: FinView,
         },
         {
           path: "savings",
           name: "FinSavingsView",
-          component: FinView
-        },        
-      ]
+          component: FinView,
+        },
+      ],
     },
     {
       path: "/stock",
@@ -72,6 +94,53 @@ const router = createRouter({
       name: "StockDetail",
       component: StockDetail,
     },
+    {
+      path: "/family",
+      name: "FamilyView",
+      component: FamilyView,
+      children: [
+        {
+          path:"create",
+          name:"FamilyCreate",
+          component:CreateFamilySuccess,
+        }
+      ,
+        {
+          path: "",
+          name: "FamilyCom",
+          component: FamilyComponent,
+          children:[
+          ]
+        },
+
+        {
+          path: "my-family",
+          name: "MyFamilyView",
+          component: FamilyManageComponent,
+        },
+        {
+          path: "family-invite",
+          name: "FamilyInviteView",
+          component: FamilyInviteComponent,
+        },
+        {
+          path: "family-connection",
+          name: "FamilyConnectionView",
+          component: FamilyConnectionComponent,
+          children: [
+            ]
+        },{
+          path:"/family/family-connection/success",
+          name:"FamilyConnectSuccess",
+          component:ConnectionFamilySuccess,
+        },
+        {
+          path:"/pinpad",
+          name:"pinpadView",
+          component:PinPadComponent,
+        }
+      ]
+    }
   ],
 })
 
