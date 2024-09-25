@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum AccountLogType {
 //    아래 부분에 로그 유형 추가
 //    자산
-    WITHDRAWL("출금"),
+    WITHDRAWAL("출금"),
     SAVINGS("적금"),
     DEPOSIT("예금"),
     ALLOWANCE("용돈"),
