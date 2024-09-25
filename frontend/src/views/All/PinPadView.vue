@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PinPadComponent from '@/components/login/PinPadComponent.vue';
+import PinPadComponent from "@/components/login/PinPadComponent.vue"
 </script>
 
 <template>
