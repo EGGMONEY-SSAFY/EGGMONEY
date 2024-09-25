@@ -24,6 +24,8 @@ if (typeof name === "string" && name in data) {
   price = data[name]
   Quantity = ownQuantity[name]
 }
+
+const userData = { 현재잔액: 135000, 투자가능금액: 35000 }
 </script>
 
 <template>
@@ -34,10 +36,10 @@ if (typeof name === "string" && name in data) {
     <h1 class="text-center">주식 정보</h1>
     <BoxStockInfo :Quantity="Quantity" />
     <h1 class="text-center">현재가 거래</h1>
-    <BoxCurrentBuy :price="price" :Quantity="Quantity" />
+    <BoxCurrentBuy :price="price" :userData="userData" />
     <BoxCurrentSell :price="price" :Quantity="Quantity" />
     <div class="text-center">지정가 거래</div>
-    <BoxLimitBuy />
-    <BoxLimitSell />
+    <BoxLimitBuy :price="price" :userData="userData" />
+    <BoxLimitSell :price="price" :Quantity="Quantity" />
   </div>
 </template>
