@@ -7,8 +7,10 @@
       alt="Pin Pad"
       v-if="pinPadImage"
     />
-    <button v-for="(number, index) in numbers" key="index"
-        class="absolute keypad-button bg-white text-black border border-gray-400 rounded-md shadow-md hover:bg-gray-200"
+    <button v-for="(number, index) in numbers" 
+        :key="index"
+        class="absolute keypad-button border border-gray-400 rounded-md shadow-md"
+        :class="{ 'clicked': clickedButton === index, 'random': randomButton === index }"
         :style="buttonStyle(index)"
         @click="onButtonClick(number)">
     </button>
@@ -18,11 +20,12 @@
     </div>
   </div>
 </template>
-<!-- 0924 키패드 수정 -->
+
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
+import JSEncrypt from 'jsencrypt';
 
 const pinPadImage = ref<string|null>(null);
 const numbers = ref<number[]>([1,2,3,4,5,6,7,8,9,10,0,11]);
@@ -32,6 +35,8 @@ const step = ref<number>(1);
 const publicKey = ref<string>('');
 const instructionMessage = ref<string>('비밀번호를 입력해주세요');
 
+const clickedButton = ref<number|null>(null);
+const randomButton = ref<number|null>(null);
 
 const authStore = useAuthStore();
 
@@ -52,7 +57,7 @@ const fetchPublicKey = async()=>{
   }
 }
 
-const fetchPinPad = async () => {
+const fetchPinPadImage = async () => {
   try {
     const token = authStore.accessToken;
     console.log(token)
@@ -62,14 +67,24 @@ const fetchPinPad = async () => {
         'Content-Type':'application/json',
       }
     });
-    pinPadImage.value = `data:image/png;base64,${response.data.encryptedImage}`;
+    const encryptedImage = response.data.encryptedImage;
+    const decrypt = new JSEncrypt();
+    decrypt.setPrivateKey(''
+      // `${env.RSA.key}`
+    );
+    const decryptedBase64Image = decrypt.decrypt(encryptedImage);
+
+    pinPadImage.value = `data:image/png;base64,${decryptedBase64Image }`;
   } catch (error) {
-    console.error(error);
+    console.error('이미지 불러오기 실패:',error);
   }
 };
 
-const onButtonClick = (number:number|string)=>{
-  if(number===10){
+const onButtonClick = (index:number)=>{
+  clickedButton.value = index; 
+  randomButton.value = getRandomIndex(index); 
+  console.log(clickedButton.value, randomButton.value);
+  if (numbers.value[index] === 10) {
     if(step.value ===1){
       firstInput.value.pop();
     }else{
@@ -77,33 +92,54 @@ const onButtonClick = (number:number|string)=>{
     }return;
   }
   if(step.value ===1){
-    firstInput.value.push(number);
+    firstInput.value.push(numbers.value[index]);
     if(firstInput.value.length ===4){
       instructionMessage.value = '비밀번호를 한 번 더 입력해주세요';
       step.value = 2;
     }
   } else if(step.value ===2){
-    secondInput.value.push(number);
+    secondInput.value.push(numbers.value[index]);
     if(secondInput.value.length === 4){
       verifyInput();
     }
   }
+  setTimeout(() => {
+    clickedButton.value = null;
+    randomButton.value = null;
+  }, 500);
 }
-
+const getRandomIndex = (excludeIndex: number): number => {
+  let randomIndex;
+  do {
+    randomIndex = Math.floor(Math.random() * numbers.value.length);
+  } while (randomIndex === excludeIndex); 
+  return randomIndex;
+};
 const verifyInput=()=>{
   if(firstInput.value.join('') === secondInput.value.join('')){
-    const hashedPin = .toString();
-    sendToBackend(hashedPin);
+    const pinString = firstInput.value.toString();
+    encryptAndSendPin(pinString);
   }else{
     instructionMessage.value = '비밀번호가 일치하지 않습니다. 다시 시도해주세요';
     resetInput();
   }
 }
 
-const sendToBackend = async(hashedPin:string)=>{
+const encryptAndSendPin =(pin: string)=>{
+  const encrypt = new JSEncrypt();
+  encrypt.setPublicKey(publicKey.value);
+  const encryptedPin = encrypt.encrypt(pin);
+  if (!encryptedPin) {
+    console.error('PIN 암호화 실패');
+    instructionMessage.value = '암호화 오류가 발생했습니다.';
+    return;
+  }
+  sendToBackend(encryptedPin);
+};
+const sendToBackend = async(encryptedPin:string)=>{
   try{
     await axios.post('http://localhost:8080/api/pinpad/verify',{
-      encryptedPin:hashedPin
+      encryptedPin:encryptedPin
     });
     instructionMessage.value='비밀번호 설정이 완료되었습니다!';
   }catch(error){
@@ -121,23 +157,32 @@ const resetInput =()=>{
 onUnmounted(()=>{
   pinPadImage.value = null;
 })
-onMounted(fetchPinPad);
+onMounted(()=>{
+fetchPublicKey();  
+fetchPinPadImage();});
 
 // 버튼 스타일 설정
 const buttonStyle = (index: number) => {
-  const row = Math.floor(index / 3);
-  const col = index % 3;
-  const buttonSize = 80; // 버튼 크기
-  const padding = 10; // 버튼 사이 간격
+const row = Math.floor(index / 3);
+const col = index % 3;
+const buttonSize = 80; // 버튼 크기
+const padding = 10; // 버튼 사이 간격
 
-  return {
-    left: `${col * (buttonSize + padding)}px`,
-    top: `${row * (buttonSize + padding)}px`,
-    width: `${buttonSize}px`,
-    height: `${buttonSize}px`,
-    fontSize: '24px',
-    textAlign: 'center'
-  };
+const backgroundColor = (clickedButton.value === index || randomButton.value === index) 
+? 'white' 
+: 'transparent';
+
+return {
+  left: `${col * (buttonSize + padding)}px`,
+  top: `${row * (buttonSize + padding)}px`,
+  width: `${buttonSize}px`,
+  height: `${buttonSize}px`,
+  backgroundColor,
+  fontSize: '24px',
+  textAlign: 'center' as const, // textAlign 타입을 올바르게 지정
+  cursor: 'pointer',
+  transition: 'background-color 0.5s ease',
+};
 };
 
 </script>
@@ -153,12 +198,15 @@ const buttonStyle = (index: number) => {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  background-color: transparent;
+  transition: background-color 1s ease;
 }
+
 </style>
 
 
 <!-- 클릭 이벤트를 받는 투명한 상자들 -->
- <!-- const onBackClick = () => {
+<!-- const onBackClick = () => {
   console.log('뒤로가기 버튼 클릭됨');
 };
 
