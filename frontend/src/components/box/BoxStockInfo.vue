@@ -11,6 +11,7 @@
       </div>
     </div>
 
+    
     <div class="flex justify-between">
       <div class="m-4">
         <p>보유 수량</p>
