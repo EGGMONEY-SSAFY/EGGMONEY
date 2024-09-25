@@ -76,12 +76,12 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import axios from "axios"
-import kb from "../assets/bank/kb로고.png"
-import nh from "../assets/bank/농협로고.png"
-import sh from "../assets/bank/신한로고.png"
-import wo from "../assets/bank/우리로고.png"
-import toss from "../assets/bank/토스로고.png"
-import ha from "../assets/bank/하나로고.png"
+import kb from "@/assets/bank/kb로고.png"
+import nh from "@/assets/bank/농협로고.png"
+import sh from "@/assets/bank/신한로고.png"
+import wo from "@/assets/bank/우리로고.png"
+import toss from "@/assets/bank/토스로고.png"
+import ha from "@/assets/bank/하나로고.png"
 
 const bankitems = [kb, nh, sh, wo, toss, ha]
 const bankname = ["KB 국민은행", "농협은행", "신한은행", "우리은행", "토스", "하나은행"]
