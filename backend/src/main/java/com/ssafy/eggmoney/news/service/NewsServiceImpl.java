@@ -1,11 +1,10 @@
 package com.ssafy.eggmoney.news.service;
 
 import com.ssafy.eggmoney.common.config.OpenAIApiConfig;
-import com.ssafy.eggmoney.news.dto.response.NewsCrawlResponse;
-import com.ssafy.eggmoney.news.dto.response.OpenAIResponse;
-import com.ssafy.eggmoney.news.dto.response.SummarizedContentResponse;
+import com.ssafy.eggmoney.news.dto.response.*;
 import com.ssafy.eggmoney.news.entity.News;
 import com.ssafy.eggmoney.news.repository.NewsRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,12 +21,14 @@ import java.util.*;
 @Transactional(readOnly = true)
 @Slf4j
 public class NewsServiceImpl implements NewsService {
-    private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.6613.138 Safari/537.36";
+    private static final String USER_AGENT =
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.6613.138 Safari/537.36";
     private final WebClient webClient;
     private final OpenAIApiConfig openAIConfig;
     private final NewsRepository newsRepository;
 
-    public NewsServiceImpl(WebClient.Builder webClientBuilder, OpenAIApiConfig openAIConfig, NewsRepository newsRepository) {
+    public NewsServiceImpl(WebClient.Builder webClientBuilder, OpenAIApiConfig openAIConfig,
+                           NewsRepository newsRepository) {
         this.webClient = webClientBuilder.baseUrl("https://api.openai.com/v1").build();
         this.openAIConfig = openAIConfig;
         this.newsRepository = newsRepository;
@@ -47,7 +48,8 @@ public class NewsServiceImpl implements NewsService {
             log.error("크롤링 에러 발생: ", e);
         }
 
-        Elements headLineNewsElements = document.select("div.section_article.as_headline._TEMPLATE ul.sa_list > li");
+        Elements headLineNewsElements = document
+                .select("div.section_article.as_headline._TEMPLATE ul.sa_list > li");
 
         if(headLineNewsElements.isEmpty()) {
             log.warn("크롤링 에러 발생: 헤드라인 뉴스가 없습니다.");
@@ -98,7 +100,8 @@ public class NewsServiceImpl implements NewsService {
         requestBody.put("max_tokens", 700);
         requestBody.put("temperature", 0.3);
         requestBody.put("messages", new Object[] {
-                Map.of("role", "system", "content", "너는 경제 뉴스를 고등학생이 이해할 수 있도록 요약해주는 전문기자야"),
+                Map.of("role", "system", "content",
+                        "너는 경제 뉴스를 고등학생이 이해할 수 있도록 요약해주는 전문기자야"),
                 Map.of("role", "user", "content", newsContent)
         });
 
@@ -117,7 +120,8 @@ public class NewsServiceImpl implements NewsService {
                     String finishReason = firstChoice.getFinishReason();
                     int promptTokens = response.getUsage().getPromptTokens();
                     int completionTokens = response.getUsage().getCompletionTokens();
-                    return new SummarizedContentResponse(id, content, refusal, finishReason, promptTokens, completionTokens);
+                    return new SummarizedContentResponse(id, content, refusal, finishReason,
+                            promptTokens, completionTokens);
                 })
                 .block();
     }
@@ -126,5 +130,18 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public void saveAllNews(List<News> newsList) {
         newsRepository.saveAll(newsList);
+    }
+
+    @Override
+    public List<NewsTitlesResponse> findNewsTitles() {
+        return newsRepository.findNewsTitles();
+    }
+
+    @Override
+    public NewsReponse findNewsById(Long id) {
+        News news = newsRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("해당 뉴스가 존재하지않습니다."));
+        return new NewsReponse(news.getId(), news.getTitle(), news.getLink(),
+                news.getPress(), news.getContent(), news.getCreatedAt());
     }
 }

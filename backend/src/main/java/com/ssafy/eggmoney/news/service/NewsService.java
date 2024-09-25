@@ -1,6 +1,8 @@
 package com.ssafy.eggmoney.news.service;
 
 import com.ssafy.eggmoney.news.dto.response.NewsCrawlResponse;
+import com.ssafy.eggmoney.news.dto.response.NewsReponse;
+import com.ssafy.eggmoney.news.dto.response.NewsTitlesResponse;
 import com.ssafy.eggmoney.news.dto.response.SummarizedContentResponse;
 import com.ssafy.eggmoney.news.entity.News;
 
@@ -11,4 +13,6 @@ public interface NewsService {
     String crawlNewsContent(String newsUrl);
     SummarizedContentResponse summarizeNews(String newsContent);
     void saveAllNews(List<News> newsList);
+    List<NewsTitlesResponse> findNewsTitles();
+    NewsReponse findNewsById(Long id);
 }

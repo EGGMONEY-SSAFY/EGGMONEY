@@ -1,6 +1,7 @@
 //package com.ssafy.eggmoney.news.service;
 //
 //import com.ssafy.eggmoney.news.dto.response.NewsCrawlResponse;
+//import com.ssafy.eggmoney.news.dto.response.NewsTitlesResponse;
 //import com.ssafy.eggmoney.news.dto.response.SummarizedContentResponse;
 //import com.ssafy.eggmoney.news.entity.News;
 //import com.ssafy.eggmoney.news.repository.NewsRepository;
@@ -26,14 +27,16 @@
 //    @Test
 //    void crawlFinanceHeadLineNews() {
 //        List<NewsCrawlResponse> headLineNews = newsService.crawlFinanceHeadLineNews();
+//
 //        Assertions.assertThat(headLineNews).hasSizeGreaterThan(5);
 //    }
 //
 //    @Test
-//    void crawlFinanceNews() {
+//    void crawlNewsContent() {
 //        List<NewsCrawlResponse> headLineNewsList = newsService.crawlFinanceHeadLineNews();
 //        NewsCrawlResponse headLineNews = headLineNewsList.get(0);
 //        String newsContent = newsService.crawlNewsContent(headLineNews.getLink());
+//
 //        Assertions.assertThat(newsContent).hasSizeGreaterThan(100);
 //    }
 //
@@ -43,7 +46,8 @@
 //        List<NewsCrawlResponse> headLineNewsList = newsService.crawlFinanceHeadLineNews();
 //
 //        for (int i = 0; i < 5; i++) {
-//            News news = new News(headLineNewsList.get(i).getTitle(), headLineNewsList.get(i).getLink(), headLineNewsList.get(i).getPress());
+//            News news = new News(headLineNewsList.get(i).getTitle(),
+//                    headLineNewsList.get(i).getLink(), headLineNewsList.get(i).getPress());
 //            String newsContent = newsService.crawlNewsContent(headLineNewsList.get(i).getLink());
 //            newsContent = "줄바꿈 X, 350토큰이상, 존댓말. 뉴스: " + newsContent;
 //            SummarizedContentResponse summarizedContent = newsService.summarizeNews(newsContent);
@@ -57,6 +61,14 @@
 //
 //        List<News> findNewsList = newsRepository.findAll();
 //
-//        Assertions.assertThat(findNewsList.size() - beforeFindNewsList.size()).isEqualTo(newsList.size());
+//        Assertions.assertThat(findNewsList.size() - beforeFindNewsList.size())
+//                .isEqualTo(newsList.size());
+//    }
+//
+//    @Test
+//    public void findTitleList() {
+//        List<NewsTitlesResponse> titleList = newsService.findNewsTitles();
+//
+//        Assertions.assertThat(titleList).isNotEmpty();
 //    }
 //}
