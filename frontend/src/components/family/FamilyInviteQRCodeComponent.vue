@@ -1,39 +1,30 @@
 <template>
   <div id="invite-qr-code">
-
     <div v-if="qrCode">
-     
       <img :src="qrCode" alt="QR 코드" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue"
 // @ts-ignore
-import QRCode from 'qrcode';
+import QRCode from "qrcode"
 
-const familyId = ref('1'); 
-const qrCode = ref<string | null>(null);
-
+const familyId = ref("1")
+const qrCode = ref<string | null>(null)
 
 async function generateQRCode() {
   try {
-    qrCode.value = await QRCode.toDataURL(`http://localhost:8080/invite?familyId=${familyId.value}`);
-    
+    qrCode.value = await QRCode.toDataURL(`http://localhost:8080/invite?familyId=${familyId.value}`)
   } catch (error) {
-    console.error('QR code generation error:', error);
+    console.error("QR code generation error:", error)
   }
 }
 
-
 onMounted(() => {
-  generateQRCode();
-  
-});
+  generateQRCode()
+})
 </script>
 
-<style scoped>
-
-</style>
-
+<style scoped></style>
