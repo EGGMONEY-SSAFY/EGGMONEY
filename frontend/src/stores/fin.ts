@@ -1,7 +1,6 @@
 import { defineStore } from "pinia"
 import axios from "axios"
 import { reactive } from "vue"
-
 export interface depositProducts {
   productId: number
   productName: string
@@ -15,39 +14,52 @@ export interface savingsProducts {
   savingsDate: number
   maxPrice: number
 }
-export const useFinStore = defineStore("fin", () => {
-  const DEPOSIT_PRODUCT_API_URL = "/api/v1/fin/deposit/product"
-  const SAVINGS_PRODUCT_API_URL = "/api/v1/fin/savings/product"
+export const useFinStore = defineStore(
+  "fin",
+  () => {
+    const DEPOSIT_PRODUCT_API_URL = "/api/v1/fin/deposit/product"
+    const SAVINGS_PRODUCT_API_URL = "/api/v1/fin/savings/product"
 
-  const depositProducts = reactive<depositProducts[]>([])
-  const savingsProducts = reactive<savingsProducts[]>([])
-  const getDepositProduct = function () {
-    axios({
-      method: "GET",
-      url: `${DEPOSIT_PRODUCT_API_URL}`,
-    })
-      .then((res) => {
-        depositProducts.push(...res.data)
-        console.log(res.data)
+    const depositProducts = reactive<depositProducts[]>([])
+    const savingsProducts = reactive<savingsProducts[]>([])
+    const getDepositProduct = function () {
+      axios({
+        method: "GET",
+        url: `${DEPOSIT_PRODUCT_API_URL}`,
       })
-      .catch((err) => {
-        console.error(err)
+        .then((res) => {
+          depositProducts.push(...res.data)
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+
+    const getSavingsProduct = function () {
+      axios({
+        method: "GET",
+        url: `${SAVINGS_PRODUCT_API_URL}`,
       })
+        .then((res) => {
+          savingsProducts.push(...res.data)
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+    return { depositProducts, getDepositProduct, savingsProducts, getSavingsProduct }
   }
-
-  const getSavingsProduct = function () {
-    axios({
-      method: "GET",
-      url: `${SAVINGS_PRODUCT_API_URL}`,
-    })
-      .then((res) => {
-        savingsProducts.push(...res.data)
-        console.log(res.data)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-  }
-
-  return { depositProducts, getDepositProduct, savingsProducts, getSavingsProduct }
-})
+  // {
+  //   persist: {
+  //     enabled: true, // 상태 지속 활성화
+  //     strategies: [
+  //       {
+  //         key: "finStore",
+  //         storage: sessionStorage,
+  //       },
+  //     ],
+  //   },
+  // }
+)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import BoxProduct from "@/components/box/BoxProduct.vue"
-import NavBarFinTab from "@/components/navbar/navBarTab/NavBarFinTab.vue"
+import BoxSavingsProduct from "@/components/box/BoxSavingsProduct.vue"
+
 import { useFinStore } from "@/stores/fin"
 import { onMounted, ref } from "vue"
 
@@ -14,7 +14,7 @@ onMounted(() => {
 
 <template>
   <div class="">
-    <BoxProduct
+    <BoxSavingsProduct
       v-for="product in finStore.savingsProducts"
       :key="product.productId"
       :product="product"

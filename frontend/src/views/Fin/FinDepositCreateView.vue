@@ -6,15 +6,11 @@ import { useRoute } from "vue-router"
 
 const route = useRoute()
 const finStore = useFinStore()
-const path = computed(() => {
-  return Number(route.params.productId)
-})
-const productId = ref(path)
-console.log(path.value)
+const productId = Number(route.params.productId)
 
-const selectProduct = computed(() => {
-  return finStore.depositProducts.find((product) => product.productId === productId.value)
-})
+const selectProduct = ref<Object>()
+
+onMounted(async () => {})
 </script>
 
 <template>
@@ -23,9 +19,7 @@ const selectProduct = computed(() => {
       <div class="m-2">
         <IconExplanation></IconExplanation>
       </div>
-      <div class="text-gray-600 font-bold" v-if="selectProduct?.productId">
-        선택하신 상품은 {{ selectProduct?.productName }} 입니다
-      </div>
+      <div class="text-gray-600 font-bold">선택하신 상품은 {{}} 입니다</div>
     </div>
   </div>
 </template>

@@ -63,12 +63,12 @@ const router = createRouter({
           component: FinSavingsView,
         },
         {
-          path: "deposit/create/:productId",
+          path: "deposit/create/",
           name: "FinDepositCreateView",
           component: FinDepositCreateView,
         },
         {
-          path: "savings/create/:productId",
+          path: "savings/create/",
           name: "FinSavingsCreateView",
           component: FinSavingsCreateView,
         },

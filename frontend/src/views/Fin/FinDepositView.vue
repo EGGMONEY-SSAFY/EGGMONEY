@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BoxProduct from "@/components/box/BoxProduct.vue"
+import BoxDepositProduct from "@/components/box/BoxDepositProduct.vue"
 import { useFinStore } from "@/stores/fin"
 import { onMounted, ref } from "vue"
 
@@ -13,13 +13,10 @@ onMounted(() => {
 
 <template>
   <div>
-    <BoxProduct
+    <BoxDepositProduct
       v-for="product in finStore.depositProducts"
       :key="product.productId"
       :product="product"
-      :date="product.depositDate"
-      :rate="product.depositRate"
-      fin="예금"
     />
   </div>
 </template>
