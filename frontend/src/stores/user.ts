@@ -46,7 +46,7 @@ export const useUserStore = defineStore("user", () => {
   const deposit = ref(null)
   const savings = ref(null)
   const loan = ref(null)
-
+  const userData = { 현재잔액: 135000, 투자가능금액: 35000 }
   // 역할 변경 (테스트용 코드)
   const setRole = (newRole: string): void => {
     role.value = newRole
@@ -77,5 +77,5 @@ export const useUserStore = defineStore("user", () => {
       })
   }
 
-  return { user, role, children, familyId, setRole, getUser }
+  return { user, role, children, familyId, setRole, getUser, userData }
 })
