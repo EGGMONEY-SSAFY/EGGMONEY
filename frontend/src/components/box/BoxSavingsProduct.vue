@@ -6,11 +6,8 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-  date: Number,
-  rate: Number,
-  fin: String,
 })
-const name = props.fin === "예금" ? "FinDepositCreateView" : "FinSavingsCreateView"
+const name = "FinSavingsCreateView"
 </script>
 
 <template>
@@ -29,11 +26,11 @@ const name = props.fin === "예금" ? "FinDepositCreateView" : "FinSavingsCreate
           <span class="font-bold text-xl">{{ product.productName }}</span>
         </div>
         <div class="flex justify-between items-end">
-          <div class="text-main-color font-bold">{{ date }}개월</div>
-          <div class="text-gray-600 text-sm">간 지정된 금액을 {{ fin }}합니다</div>
+          <div class="text-main-color font-bold">{{ product.savingsDate }}개월</div>
+          <div class="text-gray-600 text-sm">간 매달 지정된 금액을 적금합니다</div>
         </div>
         <div class="flex justify-between items-end">
-          <span class="text-main-color font-bold">연 {{ rate?.toFixed(1) }}%</span>
+          <span class="text-main-color font-bold">연 {{ product.savingsRate?.toFixed(1) }}%</span>
           <span class="text-gray-600 text-sm">의 이율로 돌려드려요</span>
         </div>
       </div>
