@@ -18,8 +18,8 @@ import java.util.Base64;
 public class EncryptionService {
     private PublicKey publicKey;
     private PrivateKey privateKey;
-    private final String secretKey;
-
+//    private final String secretKey;
+//
     @PostConstruct
     public void initKeys() throws Exception{
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
@@ -36,9 +36,9 @@ public class EncryptionService {
     public PrivateKey getPrivateKey(){
         return privateKey;
     }
-    public EncryptionService(@Value("${secret.aesKey}") String secretKey) {
-        this.secretKey = secretKey;
-    }
+//    public EncryptionService(@Value("${secret.aesKey}") String secretKey) {
+//        this.secretKey = secretKey;
+//    }
 
     private SecretKey generateKey() throws Exception{
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
@@ -50,8 +50,8 @@ public class EncryptionService {
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             //cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            SecretKeySpec keySpec =new SecretKeySpec(secretKey.getBytes(), "AES");
-            cipher.init(Cipher.ENCRYPT_MODE, keySpec);
+//            SecretKeySpec keySpec =new SecretKeySpec(secretKey.getBytes(), "AES");
+//            cipher.init(Cipher.ENCRYPT_MODE, keySpec);
             byte[] encryptedImage = cipher.doFinal(imageBytes);
             if (encryptedImage == null || encryptedImage.length == 0) {
                 throw new RuntimeException("이미지 암호화 실패: 암호화된 데이터가 유효하지 않습니다.");
