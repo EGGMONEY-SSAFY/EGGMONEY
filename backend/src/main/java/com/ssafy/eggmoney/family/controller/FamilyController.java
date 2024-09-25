@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/family")
+@RequestMapping("/api/v1/family")
 public class FamilyController {
     private static final Logger logger = LoggerFactory.getLogger(FamilyController.class);
     private final FamilyServcie familyServcie;
