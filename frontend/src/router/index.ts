@@ -99,17 +99,15 @@ const router = createRouter({
       component: FamilyView,
       children: [
         {
-          path:"create",
-          name:"FamilyCreate",
-          component:CreateFamilySuccess,
-        }
-      ,
+          path: "create",
+          name: "FamilyCreate",
+          component: CreateFamilySuccess,
+        },
         {
           path: "",
           name: "FamilyCom",
           component: FamilyComponent,
-          children:[
-          ]
+          children: [],
         },
 
         {
@@ -126,20 +124,20 @@ const router = createRouter({
           path: "family-connection",
           name: "FamilyConnectionView",
           component: FamilyConnectionComponent,
-          children: [
-            ]
-        },{
-          path:"/family/family-connection/success",
-          name:"FamilyConnectSuccess",
-          component:ConnectionFamilySuccess,
+          children: [],
         },
         {
-          path:"/pinpad",
-          name:"pinpadView",
-          component:PinPadComponent,
-        }
-      ]
-    }
+          path: "/family/family-connection/success",
+          name: "FamilyConnectSuccess",
+          component: ConnectionFamilySuccess,
+        },
+        {
+          path: "/pinpad",
+          name: "pinpadView",
+          component: PinPadComponent,
+        },
+      ],
+    },
   ],
 })
 

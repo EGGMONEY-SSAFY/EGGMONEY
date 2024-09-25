@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center justify-center h-screen" style="background-color: #FEFCE8;">
+  <div class="flex flex-col items-center justify-center h-screen" style="background-color: #fefce8">
     <h1 class="text-xl font-bold">가족 연결 완료!</h1>
     <p class="text-center text-gray-700">이제 자유롭게 가족의 서비스를 이용할 수 있어요.</p>
     <img class="my-6" src="@/assets/common/완료 상자.png" alt="선물 이미지" />
@@ -7,16 +7,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { onMounted } from "vue"
+import { useRouter } from "vue-router"
 
+const router = useRouter()
 
-const router = useRouter();
-
-onMounted(()=>{
-  setTimeout(()=>{
-    router.push("/family");
-  },1500);
+onMounted(() => {
+  setTimeout(() => {
+    router.push("/family")
+  }, 1500)
 })
-
 </script>
