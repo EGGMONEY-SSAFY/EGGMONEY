@@ -4,9 +4,9 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.eggmoney.news.dto.response.NewsTitlesResponse;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static com.ssafy.eggmoney.news.entity.QNews.news;
 
@@ -28,7 +28,7 @@ public class NewsCostomRepositoryImpl implements NewsCostomRepository {
                 .fetch();
 
         if(newsTitles.isEmpty()) {
-            throw new EntityNotFoundException("뉴스 데이터가 존재하지않습니다.");
+            throw new NoSuchElementException("뉴스 제목들이 존재하지않습니다.");
         }
 
         return newsTitles;

@@ -4,7 +4,6 @@ import com.ssafy.eggmoney.common.config.OpenAIApiConfig;
 import com.ssafy.eggmoney.news.dto.response.*;
 import com.ssafy.eggmoney.news.entity.News;
 import com.ssafy.eggmoney.news.repository.NewsRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -140,7 +139,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsReponse findNewsById(Long id) {
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("해당 뉴스가 존재하지않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당 뉴스가 존재하지않습니다."));
         return new NewsReponse(news.getId(), news.getTitle(), news.getLink(),
                 news.getPress(), news.getContent(), news.getCreatedAt());
     }
