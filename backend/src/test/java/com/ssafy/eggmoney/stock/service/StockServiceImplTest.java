@@ -1,27 +1,27 @@
-package com.ssafy.eggmoney.stock.service;
-
-import com.ssafy.eggmoney.stock.dto.response.StockPriceResponse;
-import com.ssafy.eggmoney.stock.dto.response.StockTokenResponse;
-import com.ssafy.eggmoney.stock.entity.StockItem;
-import com.ssafy.eggmoney.stock.repository.StockRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
+//package com.ssafy.eggmoney.stock.service;
+//
+//import com.ssafy.eggmoney.stock.dto.response.StockPriceResponse;
+//import com.ssafy.eggmoney.stock.dto.response.StockTokenResponse;
+//import com.ssafy.eggmoney.stock.entity.StockItem;
+//import com.ssafy.eggmoney.stock.repository.StockRepository;
+//import org.assertj.core.api.Assertions;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.transaction.annotation.Transactional;
+//
+//import java.io.IOException;
+//import java.math.BigDecimal;
+//import java.nio.file.Files;
+//import java.nio.file.Path;
+//import java.nio.file.Paths;
+//import java.nio.file.attribute.BasicFileAttributes;
+//import java.time.Instant;
+//import java.time.temporal.ChronoUnit;
+//import java.util.List;
+//
 //@SpringBootTest
+//@Transactional
 //class StockServiceImplTest {
 //    @Autowired StockService stockService;
 //    @Autowired StockRepository stockRepository;
@@ -31,9 +31,8 @@ import java.util.List;
 //            StockItem.SEMICONDUCTOR, StockItem.HEALTHCARE, StockItem.BANKING, StockItem.ENERGY_CHEMICAL,
 //            StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
 //            StockItem.IT, StockItem.UTILITIES};
-//dddddd
-
-//    @Test33
+//
+//    @Test
 //    void getToken() {
 //        StockTokenResponse stockToken = stockService.getAccessToken();
 //
@@ -72,7 +71,6 @@ import java.util.List;
 //    }
 //
 //    @Test
-//    @Transactional
 //    public void saveStockPrices() {
 //        String token;
 //        Path path = Paths.get("C:/Temp/stock_token.txt");
@@ -114,10 +112,8 @@ import java.util.List;
 //            throw new RuntimeException(e);
 //        }
 //
-//        BigDecimal currentStockPrice = stockService.getCurrentStockPrice(token, "0001");
+//        BigDecimal currentStockPrice = stockService.getCurrentStockPrice(token, stockCodes[0]);
 //
 //        Assertions.assertThat(currentStockPrice).isNotNull();
 //    }
 //}
-
-//test

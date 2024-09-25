@@ -1,5 +1,6 @@
 package com.ssafy.eggmoney.stock.scheduler;
 
+import com.ssafy.eggmoney.stock.entity.Stock;
 import com.ssafy.eggmoney.stock.entity.StockItem;
 import com.ssafy.eggmoney.stock.service.StockService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -22,19 +27,27 @@ public class StockScheduler {
             StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
             StockItem.IT, StockItem.UTILITIES};
 
-    @Scheduled(cron = "0 0 20 * * MON-FRI", zone = "Asia/Seoul")
+//    @Scheduled(cron = "0 0 18 * * MON-FRI", zone = "Asia/Seoul")
     public void saveDailyStockPrice() {
+        log.info("주식 스케쥴링 시작: " + LocalDateTime.now());
+        List<Stock> stocks = new ArrayList<>();
         String token = stockService.getAccessToken().getAccessToken();
+
+        if(token == null) {
+            log.warn("주식 토큰이 null 입니다.");
+        }
 
         try {
             for(int i = 0; i < stockCodes.length; i++) {
                 BigDecimal currentStockPrice = stockService.getCurrentStockPrice(token, stockCodes[i]);
-                stockService.saveCurrentStockPrice(stockItems[i], currentStockPrice);
+                System.out.println(currentStockPrice);
+                Stock stock = new Stock(stockItems[i], currentStockPrice, LocalDate.now());
+                stocks.add(stock);
             }
-        } catch (DecodingException d) {
-            log.info("공휴일이라서 응답 값이 없습니다.");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("주식 api 요청 에러 발생: ", e);
         }
+
+        stockService.saveCurrentStockPrices(stocks);
     }
 }
