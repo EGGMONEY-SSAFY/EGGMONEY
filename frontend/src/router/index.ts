@@ -3,13 +3,12 @@ import AssetView from "@/views/Asset/AssetView.vue"
 import AllView from "@/views/All/AllView.vue"
 import FinView from "@/views/Fin/FinView.vue"
 import StockView from "@/views/Stock/StockView.vue"
-
 import StockHistoryView from "@/views/Stock/StockHistoryView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
 import WonAuthView from "@/views/All/WonAuthView.vue"
 import StockDetail from "@/views/Stock/StockDetail.vue"
-import MainView from "@/views/All/MainView.vue"
-import LoginView from "@/views/All/LoginView.vue"
+import MainView from "@/views/MainView.vue"
+import LoginView from "@/views/LoginView.vue"
 
 import FamilyInviteComponent from "@/components/family/FamilyInviteComponent.vue"
 import FamilyConnectionComponent from "@/components/family/FamilyConnectionComponent.vue"
@@ -100,17 +99,15 @@ const router = createRouter({
       component: FamilyView,
       children: [
         {
-          path:"create",
-          name:"FamilyCreate",
-          component:CreateFamilySuccess,
-        }
-      ,
+          path: "create",
+          name: "FamilyCreate",
+          component: CreateFamilySuccess,
+        },
         {
           path: "",
           name: "FamilyCom",
           component: FamilyComponent,
-          children:[
-          ]
+          children: [],
         },
 
         {
@@ -127,20 +124,20 @@ const router = createRouter({
           path: "family-connection",
           name: "FamilyConnectionView",
           component: FamilyConnectionComponent,
-          children: [
-            ]
-        },{
-          path:"/family/family-connection/success",
-          name:"FamilyConnectSuccess",
-          component:ConnectionFamilySuccess,
+          children: [],
         },
         {
-          path:"/pinpad",
-          name:"pinpadView",
-          component:PinPadComponent,
-        }
-      ]
-    }
+          path: "/family/family-connection/success",
+          name: "FamilyConnectSuccess",
+          component: ConnectionFamilySuccess,
+        },
+        {
+          path: "/pinpad",
+          name: "pinpadView",
+          component: PinPadComponent,
+        },
+      ],
+    },
   ],
 })
 
