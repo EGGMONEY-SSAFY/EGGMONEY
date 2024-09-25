@@ -9,6 +9,9 @@ import com.ssafy.eggmoney.account.repository.AccountRepository;
 import com.ssafy.eggmoney.deposit.entity.Deposit;
 import com.ssafy.eggmoney.deposit.entity.DepositStatus;
 import com.ssafy.eggmoney.deposit.repository.DepositRepository;
+import com.ssafy.eggmoney.loan.entity.Loan;
+import com.ssafy.eggmoney.loan.entity.LoanStatus;
+import com.ssafy.eggmoney.loan.repository.LoanRepository;
 import com.ssafy.eggmoney.savings.entity.Savings;
 import com.ssafy.eggmoney.savings.entity.SavingsStatus;
 import com.ssafy.eggmoney.savings.repository.SavingsRepository;
@@ -30,6 +33,7 @@ public class AccountService {
     private final UserRepository userRepository;
     private final SavingsRepository savingsRepository;
     private final DepositRepository depositRepository;
+    private final LoanRepository loanRepository;
 
 //    내 메인 계좌 조회
     public GetAccountResponseDto getAccount(Long userId) {
@@ -71,14 +75,17 @@ public class AccountService {
 
 //    자산 분석 ( 예적금, 대출, 주식 보유 파악 )
     public GetAnalyticsResponseDto getAnalytics(Long userId) {
-        Account account = accountRepository.findByUserId(userId).get();
-        Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).get();
-        Deposit deposit = depositRepository.findByUserIdAndDepositStatus(userId, DepositStatus.AVAILABLE).get();
+        Account account = accountRepository.findByUserId(userId).orElse(null);
+        Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElse(null);
+        Loan loan = loanRepository.findByIdAndLoanStatus(userId, LoanStatus.APPROVAL).orElse(null);
+        Deposit deposit = depositRepository.findByUserIdAndDepositStatus(userId, DepositStatus.AVAILABLE).orElse(null);
+        System.out.println(savings);
         GetAnalyticsResponseDto dto = GetAnalyticsResponseDto.builder()
-                .mainAccountBalance(account.getBalance())
-                .savings(savings.getBalance())
-                .deposit(deposit.getDepositMoney())
+                .mainAccountBalance(account != null ? account.getBalance() : null)
+                .savings(savings != null ? savings.getBalance() : null)
+                .deposit(deposit != null ? deposit.getDepositMoney() : null)
                 .stock(0)
+                .loan(loan != null ? loan.getLoanAmount() : null)
                 .build();
         return dto;
     }

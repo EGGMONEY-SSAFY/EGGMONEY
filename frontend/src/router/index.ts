@@ -23,7 +23,7 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      redirect: "/assets",
+      redirect: "/asset",
     },
     {
       path: "/main",
@@ -36,8 +36,8 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path: "/assets",
-      name: "AssetsView",
+      path: "/asset",
+      name: "AssetView",
       component: AssetView,
     },
     {
