@@ -35,8 +35,8 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path: "/assets",
-      name: "AssetsView",
+      path: "/asset",
+      name: "AssetView",
       component: AssetView,
     },
     {
