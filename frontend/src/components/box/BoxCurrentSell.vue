@@ -8,10 +8,17 @@ const props = defineProps({
   },
 })
 
-const buyQuantity = ref(0)
-const totalBuyAmount = computed(() => {
-  return buyQuantity.value * props.price
+const sellQuantity = ref(0)
+const totalSellAmount = computed(() => {
+  return sellQuantity.value * props.price
 })
+
+const preventNegativeQuantity = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  if (input.valueAsNumber < 0) {
+    sellQuantity.value = 0
+  }
+}
 </script>
 
 <template>
@@ -21,7 +28,7 @@ const totalBuyAmount = computed(() => {
         <p>보유 수량</p>
       </div>
       <div class="m-4 flex justify-center items-center">
-        <p>{{ totalBuyAmount }}</p>
+        <p>{{ totalSellAmount }}</p>
       </div>
     </div>
 
@@ -33,8 +40,9 @@ const totalBuyAmount = computed(() => {
         <input
           class="bg-gray-200 mx-1 w-12 text-center rounded"
           type="number"
-          v-model.number="buyQuantity"
+          v-model.number="sellQuantity"
           placeholder="숫자를 입력하세요"
+          @input="preventNegativeQuantity"
         />
         <p>주</p>
       </div>
@@ -45,7 +53,7 @@ const totalBuyAmount = computed(() => {
         <p>총 매수액</p>
       </div>
       <div class="m-4 flex justify-center items-center">
-        <p>{{ totalBuyAmount }}</p>
+        <p>{{ totalSellAmount }}</p>
       </div>
     </div>
 
@@ -55,6 +63,14 @@ const totalBuyAmount = computed(() => {
       </div>
       <div class="m-4 flex justify-center items-center">
         <p>sef</p>
+      </div>
+    </div>
+
+    <div class="flex justify-center">
+      <div
+        class="bg-blue-500 m-4 rounded-lg p-1 px-3 text-white cursor-pointer hover:bg-blue-200 hover:text-black"
+      >
+        매도
       </div>
     </div>
   </div>

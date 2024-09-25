@@ -9,6 +9,7 @@ import com.ssafy.eggmoney.deposit.dto.response.DepositResponseDto;
 import com.ssafy.eggmoney.deposit.dto.DepositProductDto;
 import com.ssafy.eggmoney.deposit.entity.Deposit;
 import com.ssafy.eggmoney.deposit.entity.DepositProduct;
+import com.ssafy.eggmoney.deposit.entity.DepositStatus;
 import com.ssafy.eggmoney.deposit.repository.DepositProductRepository;
 import com.ssafy.eggmoney.deposit.repository.DepositRepository;
 import com.ssafy.eggmoney.user.entity.User;
@@ -23,9 +24,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
+@Service
 public class DepositServiceImpl implements DepositService {
 
     private final UserRepository userRepository;
@@ -67,7 +68,7 @@ public class DepositServiceImpl implements DepositService {
             log.error("예금 가입 권한이 없는 유저입니다.");
         }
 
-        if(depositRepository.findByUserId(requestDto.getUserId()).isPresent()){
+        if(depositRepository.findByUserIdAndDepositStatus(requestDto.getUserId(), DepositStatus.AVAILABLE).isPresent()){
             // 에러발생
             log.error("이미 사용자가 예금상품을 가지고 있습니다.");
         }
@@ -77,6 +78,7 @@ public class DepositServiceImpl implements DepositService {
                 .depositProduct(depositProduct)
                 .expireDate(expiration)
                 .depositMoney(requestDto.getDepositMoney())
+                .depositStatus(DepositStatus.AVAILABLE)
                 .build();
 
         Deposit savedDeposit = depositRepository.save(deposit);
@@ -89,7 +91,7 @@ public class DepositServiceImpl implements DepositService {
     @Override
     @Transactional(readOnly = true)
     public DepositResponseDto getDeposits(long userId){
-        Deposit deposit = depositRepository.findByUserId(userId).orElse(null);
+        Deposit deposit = depositRepository.findByUserIdAndDepositStatus(userId, DepositStatus.AVAILABLE).orElse(null);
 
         if(deposit == null){
             log.info("가입된 예금 상품이 없습니다.");
@@ -105,7 +107,7 @@ public class DepositServiceImpl implements DepositService {
                 .depositProduct(depositProductDto)
                 .expireDate(deposit.getExpireDate())
                 .depositMoney(deposit.getDepositMoney())
-                .depositMoney(deposit.getDepositMoney())
+                .createdAt(deposit.getCreatedAt())
                 .build();
     }
 
@@ -113,14 +115,14 @@ public class DepositServiceImpl implements DepositService {
     @Transactional
     public DeleteDepositResponseDto deleteDeposit(long depositId) {
 
-        Deposit deposit = depositRepository.findById(depositId).orElse(null);
+        Deposit deposit = depositRepository.findByIdAndDepositStatus(depositId, DepositStatus.AVAILABLE).orElse(null);
         int expiredMoney;
         double interestMoney;
         if(deposit.getExpireDate().toLocalDate().isAfter(LocalDate.now())){
-            interestMoney = deposit.getDepositMoney() * (deposit.getDepositProduct().getDepositRate() - 2.0) / 100;
+            interestMoney = deposit.getDepositMoney() * (deposit.getDepositProduct().getDepositRate() - 2.0) / 100 * deposit.getDepositProduct().getDepositDate() / 12;
             expiredMoney = deposit.getDepositMoney() + (int) interestMoney;
         }else{
-            interestMoney = deposit.getDepositMoney() * deposit.getDepositProduct().getDepositRate() / 100;
+            interestMoney = deposit.getDepositMoney() * deposit.getDepositProduct().getDepositRate() / 100 * deposit.getDepositProduct().getDepositDate() / 12;
             expiredMoney = deposit.getDepositMoney() + (int) interestMoney;
         }
         log.info("interestMoney: {}, expiredMoney: {}", interestMoney, expiredMoney);
@@ -132,7 +134,13 @@ public class DepositServiceImpl implements DepositService {
                 .interestMoney(interestMoney)
                 .expiredMoney(expiredMoney)
                 .build();
-        depositRepository.delete(deposit);
+
+        Deposit updatedDeposit = deposit.toBuilder()
+                .depositStatus(DepositStatus.EXPIRED)
+                .build();
+
+        depositRepository.save(updatedDeposit);
+
         log.info("예금 계좌 삭제");
 
         return deleteResponseDto;

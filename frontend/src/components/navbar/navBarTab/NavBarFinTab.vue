@@ -6,7 +6,7 @@ const props = defineProps({ path: String })
 const route = useRoute()
 const isAtive = computed(() => {
   return (linkPath: string) => {
-      return route.path === linkPath ? "bg-main-color rounded-full text-white" : ""
+    return route.path === linkPath ? "bg-main-color rounded-full text-white" : ""
   }
 })
 </script>
