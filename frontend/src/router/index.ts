@@ -17,13 +17,19 @@ import FamilyManageComponent from "@/components/family/FamilyManageComponent.vue
 import PinPadComponent from "@/components/login/PinPadComponent.vue"
 import CreateFamilySuccess from "@/components/family/complete/CreateFamilySuccess.vue"
 import ConnectionFamilySuccess from "@/components/family/complete/ConnectionFamilySuccess.vue"
+import MainView from "@/views/All/MainView.vue"
+import LoginView from "@/views/All/LoginView.vue"
+import StockNewsDetailView from "@/views/Stock/StockNewsDetailView.vue"
 import PocketMoneyView from "@/views/All/PocketMoneyView.vue"
 import FinDepositView from "@/views/Fin/FinDepositView.vue"
 import FinSavingsCreateView from "@/views/Fin/FinSavingsCreateView.vue"
 import FinSavingsView from "@/views/Fin/FinSavingsView.vue"
 import FinDepositCreateDetailView from "@/views/Fin/FinDepositCreateDetailView.vue"
 import FinDepositCreateView from "@/views/Fin/FinDepositCreateView.vue"
+import FinSavingsCreateDetailView from "@/views/Fin/FinSavingsCreateDetailView.vue"
 import EditProfileView from "@/views/All/EditProfileView.vue"
+import ExInfoView from "@/views/All/ExInfoView.vue"
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +42,11 @@ const router = createRouter({
       path: "/main",
       name: "MainView",
       component: MainView,
+    },
+    {
+      path: "/stock/news/:newsId",
+      name: "StockNewsDetailView",
+      component: StockNewsDetailView,
     },
     {
       path: "/login",
@@ -87,6 +98,11 @@ const router = createRouter({
           name: "FinSavingsCreateView",
           component: FinSavingsCreateView,
         },
+        {
+          path: "savings/create/detail",
+          name: "FinSavingsCreateDetailView",
+          component: FinSavingsCreateDetailView,
+        },
       ],
     },
     {
@@ -110,7 +126,7 @@ const router = createRouter({
       component: WonAuthView,
     },
     {
-      path: "/stock/:stock",
+      path: "/stock/detail/:stock",
       name: "StockDetail",
       component: StockDetail,
     },
@@ -151,25 +167,31 @@ const router = createRouter({
           path: "/family/family-connection/success",
           name: "FamilyConnectSuccess",
           component: ConnectionFamilySuccess,
-        },
-        {
-          path: "/pinpad",
-          name: "pinpadView",
-          component: PinPadComponent,
-        },
-        {
-          path: "/pocketmoney",
-          name: "PocketMoneyView",
-          component: PocketMoneyView,
-        },
-        {
-          path: "/editProfile",
-          name: "EditProfileView",
-          component: EditProfileView,
-        },
-      ],
+        }
+      ]
     },
+    {
+      path: "/pinpad",
+      name: "pinpadView",
+      component: PinPadComponent,
+    },
+    {
+      path:"/pocketmoney",
+      name:"PocketMoneyView",
+      component:PocketMoneyView,
+    },
+    {
+      path:"/editProfile",
+      name:"EditProfileView",
+      component:EditProfileView,
+    },
+    {
+      path:"/ExInfo",
+      name:"ExInfoView",
+      component:ExInfoView,
+    }
   ],
 })
 
 export default router
+
