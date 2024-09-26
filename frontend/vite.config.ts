@@ -15,6 +15,15 @@ export default defineConfig(({ mode }) => {
       vueDevTools(),
       VitePWA({
         registerType: "autoUpdate",
+        workbox: {
+          maximumFileSizeToCacheInBytes: 5 * 1024 ** 2,
+          runtimeCaching: [
+            {
+              urlPattern: /^https?:\/\/.*\/api\/kakao\/login/,
+              handler: "NetworkFirst",
+            },
+          ],
+        },
         devOptions: {
           enabled: true,
         },
