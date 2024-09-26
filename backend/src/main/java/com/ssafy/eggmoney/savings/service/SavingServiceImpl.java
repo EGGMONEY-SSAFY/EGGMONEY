@@ -114,6 +114,7 @@ public class SavingServiceImpl implements SavingService {
 
         log.info("개인 적금 조회 성공");
         return SavingsResponseDto.builder()
+                .savingsId(savings.getId())
                 .savingsRate(savings.getSavingsProduct().getSavingsRate())
                 .savingsDate(savings.getSavingsProduct().getSavingsDate())
                 .productName(savings.getSavingsProduct().getProductName())
