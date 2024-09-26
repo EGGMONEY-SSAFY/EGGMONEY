@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center justify-center  bg-gray-100">
+  <div class="flex flex-col items-center justify-center bg-gray-100">
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
       <h2 class="text-center text-2xl font-bold text-gray-800 mb-6">로그인</h2>
       <button
@@ -14,7 +14,6 @@
         />
         카카오로 로그인
       </button>
-      
     </div>
   </div>
 </template>
