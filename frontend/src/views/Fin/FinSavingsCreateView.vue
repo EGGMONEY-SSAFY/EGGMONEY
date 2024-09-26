@@ -2,7 +2,6 @@
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
 import InputMoney from "@/components/input/InputMoney.vue"
-import { useFinStore } from "@/stores/fin"
 import { ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
@@ -29,7 +28,7 @@ const updateMoney = (value: number) => {
 const router = useRouter()
 const handleClick = () => {
   router.push({
-    name: "FinView", // 추후 간편 비밀번호로 변경되어야 한다.
+    name: "FinSavingsCreateDetailView", // 추후 간편 비밀번호로 변경되어야 한다.
     query: {
       money: money.value,
       productId: productId,
@@ -54,7 +53,10 @@ const handleClick = () => {
       </div>
       <div class="m-4">
         <div class="m-4">입금하실 금액을 선택해주세요</div>
-        <div class="m-4">{{ savingsDate }}개월 동안 연이율 {{ savingsRate.toFixed(1) }}%로</div>
+        <div class="m-4">
+          <span class="font-bold">{{ savingsDate }}개월</span> 동안 연이율
+          <span class="font-bold"> {{ savingsRate.toFixed(1) }}%</span>로
+        </div>
 
         <div class="m-4">
           달마다 <InputMoney @updateMoney="updateMoney" :max-price="maxPrice"></InputMoney> 알을
@@ -65,7 +67,7 @@ const handleClick = () => {
     <!-- 다음으로 넘어가는 버튼 : FinView를 간편비밀번호로 넘기고, 해당 값들은 route.query에 들어있다.-->
     <div class="bottom-2">
       <div class="text-center">
-        <NextButton routeName="FinView" @click="handleClick"></NextButton>
+        <NextButton routeName="FinSavingsCreateDetailView" @click="handleClick"></NextButton>
       </div>
     </div>
   </div>
