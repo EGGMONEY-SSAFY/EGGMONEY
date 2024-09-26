@@ -1,13 +1,20 @@
 <template>
-  <div class="flex flex-col items-center justify-center bg-gray-100 min-h-screen">
+  <div class="main-container bg-gray-200">
+      <div className="mt-16">
+        <BoxFamilytotal/>
+      </div>
+  </div>
+  
+  <div class="flex flex-col items-center justify-center bg-gray-200 min-h-screen">
     <!-- 가족 이미지 섹션 -->
+
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl mb-6">
       <img
         :src="familyImageUrl || familyDefaultImage"
         alt="가족 기본이미지"
         class="w-full h-48 object-cover mb-4"
       />
-      <div class="flex flex-col justify-center items-center">
+      <div class="flex flex-col justify-center items-center mx-12">
         <h1 class="text-lg font-bold">가훈</h1>
         <br />
         <button class="px-4 py-2 bg-orange-500 text-white rounded-lg">가족삭제</button>
@@ -43,6 +50,7 @@
     />
   </div>
 </template>
+
 <script setup lang="ts">
 import axios from "axios"
 import { onMounted, ref } from "vue"
@@ -50,6 +58,9 @@ import familyDefaultImage from "@/assets/family/가족 기본이미지.png"
 import parentDefaultImage from "@/assets/family/부모 기본이미지.png"
 import daughterDefaultImage from "@/assets/family/딸 기본이미지.png"
 import DeleteFamilyComponent from "./DeleteFamilyComponent.vue"
+
+import BoxFamilytotal from "@/components/family/familybox/BoxFamilytotal.vue"
+
 interface FamilyMembers {
   id: number
   name: string
@@ -118,4 +129,17 @@ onMounted(() => {
   fetchFamilyData()
 })
 </script>
-<style lang=""></style>
+
+<style scoped>
+.main-container {
+  width: 100%;
+  height: 100%;
+  min-height: 101vh;
+}
+
+@media (min-width: 393px) {
+  .main-container {
+    max-width: 393px;
+  }
+}
+</style>
