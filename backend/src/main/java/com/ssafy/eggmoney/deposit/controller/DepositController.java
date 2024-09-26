@@ -25,6 +25,7 @@ public class DepositController {
      * 전체 예금 상품 조회
      * return DepositProductResponseDto
      * */
+    @CrossOrigin("http://localhost:5173")
     @GetMapping("/product")
     public ResponseEntity<List<DepositProductListResponseDto>> getAllDepositProduct() {
         List<DepositProductListResponseDto> result = depositService.getDepositProducts();
