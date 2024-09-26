@@ -4,7 +4,7 @@ import PinPadComponent from "@/components/login/PinPadComponent.vue"
 
 <template>
   <div class="">
-    <h1>This is an fin page</h1>
+    <h1>This is an fin pag</h1>
     <PinPadComponent />
   </div>
 </template>
