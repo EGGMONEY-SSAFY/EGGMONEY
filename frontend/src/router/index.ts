@@ -24,6 +24,7 @@ import FinSavingsView from "@/views/Fin/FinSavingsView.vue"
 import FinDepositCreateDetailView from "@/views/Fin/FinDepositCreateDetailView.vue"
 import FinDepositCreateView from "@/views/Fin/FinDepositCreateView.vue"
 import EditProfileView from "@/views/All/EditProfileView.vue"
+import ExInfoView from "@/views/All/ExInfoView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -168,6 +169,11 @@ const router = createRouter({
           component:EditProfileView,
         }
       ]
+    },
+    {
+      path:"/ExInfo",
+      name:"ExInfoView",
+      component:ExInfoView,
     }
   ],
 })
