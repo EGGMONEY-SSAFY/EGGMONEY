@@ -1,13 +1,173 @@
 <template lang="">
-  <div>
-    
+  <div class="px-4 py-6">
+    <!-- 자녀 선택 드롭다운 -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+      <div class="flex justify-between items-center">
+        <select v-model="selectedChildId" @change="updateSelectedChild" class="border border-gray-300 rounded-lg p-2 w-40 text-orange-600 font-bold">
+          <option v-for="child in children" :key="child.id" :value="child.id">{{ child.name }}</option>
+        </select>
+        <i class="fas fa-bell text-orange-500"></i> <!-- 알림 아이콘 -->
+      </div>
+      <div class="mt-4">
+        <!-- 자녀 정보 -->
+        <span class="font-semibold">{{ parent.name }}님은 현재</span>
+        <span class="font-bold text-orange-600">{{ selectedChild?.name }}</span>에게
+      </div>
+      <hr class="my-2" />
+      <div class="text-gray-500">
+        <span class="bg-orange-100 text-orange-500 px-2 py-1 rounded-full">{{ selectedChild?.allowance_period }}</span>
+        <span>마다</span>
+        <span class="font-semibold">{{ selectedChild?.price.toLocaleString() }}</span> 알을 주고 있습니다
+      </div>
+    </div>
+
+    <hr class="my-6" />
+
+    <!-- 용돈 단위 설정 (주, 월) -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+      <div class="font-semibold text-gray-700 mb-2">{{ selectedChild?.name }}에게 줄 단위를 설정해주세요</div>
+      <select v-model="selectedPeriodUnit" class="border border-gray-300 rounded-lg p-2 w-full focus:ring-2 focus:ring-orange-500">
+        <option value="주">주</option>
+        <option value="월">월</option>
+      </select>
+    </div>
+
+    <hr class="my-6" />
+
+    <!-- 용돈 줄 시기 설정 (요일 혹은 날짜) -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+      <div class="font-semibold text-gray-700 mb-2">용돈을 줄 시기를 설정해주세요</div>
+      <!-- 요일 선택 상자 -->
+      <div v-if="selectedPeriodUnit === '주'" class="grid grid-cols-7 gap-2">
+        <button v-for="(day, index) in daysOfWeek" :key="index" @click="selectedAllowanceDay = index"
+          :class="{'bg-orange-500 text-white': selectedAllowanceDay === index, 'bg-orange-100 text-orange-500': selectedAllowanceDay !== index}"
+          class="border border-gray-300 rounded-lg p-2 text-center cursor-pointer">
+          {{ day }}
+        </button>
+      </div>
+      <!-- 날짜 선택 -->
+      <div v-if="selectedPeriodUnit === '월'" class="grid grid-cols-7 gap-2">
+        <button v-for="day in 31" :key="day" @click="selectedAllowanceDay = day"
+          :class="{'bg-orange-500 text-white': selectedAllowanceDay === day, 'bg-orange-100 text-orange-500': selectedAllowanceDay !== day}"
+          class="border border-gray-300 rounded-lg p-2 text-center cursor-pointer">
+          {{ day }}
+        </button>
+      </div>
+    </div>
+
+    <hr class="my-6" />
+
+    <!-- 용돈 설정 -->
+    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+      <div class="font-semibold text-gray-700 mb-2">{{ selectedChild?.name }}에게 줄 용돈을 설정해 주세요</div>
+      <div class="flex items-center">
+        <input v-model="allowanceAmount" type="number" class="border border-gray-300 rounded-lg p-2 w-24 text-right focus:ring-2 focus:ring-orange-500" />
+        <span class="ml-2">알</span>
+      </div>
+    </div>
+
+    <!-- 수정 완료 버튼 -->
+    <button class="w-full px-4 py-3 bg-main-color text-white font-semibold rounded-lg mt-4" @click="sumbitchanges">
+      수정 완료
+    </button>
+
+    <!-- 수정완료 모달 -->
+    <div v-if="showModal" class="modal">
+      <img src='@/assets/common/완료 폭죽.png' />
+      <span>용돈 정보 수정 완료</span>
+    </div>
   </div>
 </template>
-<script>
-export default {
-  
+<script setup lang="ts">
+import {ref, onMounted} from 'vue';
+import axios from 'axios';
+
+interface Child{
+  name:string,
+  id:number;
+  price:number,
+  allowance_period:string,
+  allowance_day:number;
+}
+const parent = ref({name:'김엄마'})// 로그인 유저의 정보 user.name;
+
+
+const children = ref<Child[]>([]);
+const selectedChild = ref<Child|null>(null);
+const selectedChildId = ref<number | null>(null);
+const selectedPeriodUnit = ref('');
+const selectedAllowanceDay = ref<number | null>(null); 
+
+const allowanceAmount = ref(0);
+
+const showModal =ref(false);
+
+const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
+onMounted(
+  async()=>{
+    const response = {
+      data: [
+        { name: '김아들', id: 1, price: 30000, allowance_period: '주', allowance_day: 1 },
+        { name: '김딸', id: 2, price: 20000, allowance_period: '월', allowance_day: 15 }
+      ]
+    };
+  try{
+    // const response = await axios.get('/api/v1/family/1/searchchild');
+    console.log(response)
+    children.value = response.data;
+    selectedChild.value = children.value[0];
+    selectedPeriodUnit.value = selectedChild.value?.allowance_period ?? '';
+    allowanceAmount.value = selectedChild.value?.price ?? 0;
+  } catch(error){
+    console.error('자녀 정보를 불러오는 중 오류', error);
+  }
+}
+
+)
+const updateSelectedChild = () => {
+  const child = children.value.find(c => c.id === selectedChildId.value);
+  if (child) {
+    selectedChild.value = child;
+    selectedPeriodUnit.value = child.allowance_period;
+    selectedAllowanceDay.value = child.allowance_day;
+    allowanceAmount.value = child.price;
+  }
+};
+const sumbitchanges = async()=>{
+  if (selectedChild.value) {
+    try {
+      console.log( selectedChild.value.id,
+        selectedPeriodUnit.value,
+        selectedAllowanceDay.value,
+         allowanceAmount.value)
+      // const response = await axios.post('/api/allowance', {
+        // user_id: selectedChild.value.id,
+        // allowance_period: selectedPeriodUnit.value,
+        // allowance_day: allowanceAmount.value
+      // });
+      showModal.value = true;
+      setTimeout(() => {
+        showModal.value = false;
+      }, 1000);
+    } catch (error) {
+      console.error('수정하는 중 오류', error);
+    }
+  }
 }
 </script>
-<style lang="">
-  
+<style scoped>
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border-radius: 10px;
+}
+button {
+  cursor: pointer;
+}
 </style>
