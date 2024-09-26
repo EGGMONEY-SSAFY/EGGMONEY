@@ -7,7 +7,8 @@ import lombok.Getter;
 @Builder
 public class SavingsProductListResponseDto {
     private Long id;
+    private String productName;
     private int savingsDate;
     private Double savingsRate;
-    private int max_price;
+    private int maxPrice;
 }

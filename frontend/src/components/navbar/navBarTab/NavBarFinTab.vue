@@ -6,7 +6,11 @@ const props = defineProps({ path: String })
 const route = useRoute()
 const isAtive = computed(() => {
   return (linkPath: string) => {
-    return route.path === linkPath ? "bg-main-color rounded-full text-white" : ""
+    if (linkPath !== "/fin") {
+      return route.path.startsWith(linkPath) ? "bg-main-color rounded-full text-white" : ""
+    } else if (route.path === "/fin" || route.path.startsWith("/fin/deposit")) {
+      return "bg-main-color rounded-full text-white"
+    }
   }
 })
 </script>
@@ -22,6 +26,6 @@ const isAtive = computed(() => {
     >
   </div>
   <div>
-    {{ props.path }}
+    <RouterView></RouterView>
   </div>
 </template>
