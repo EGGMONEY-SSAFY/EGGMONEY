@@ -19,6 +19,7 @@ public class DepositProduct extends BaseTime {
     @Column(name = "deposit_product_id")
     private Long id;
 
+    private String productName;
     private int depositDate;
     private Double depositRate;
 }

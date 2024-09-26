@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import PocketMoneyComponent from '@/components/login/PocketMoneyComponent.vue';
-
+import PocketMoneyComponent from "@/components/login/PocketMoneyComponent.vue"
 </script>
 
 <template>
   <div class="">
-    <PocketMoneyComponent/>
-    
+    <PocketMoneyComponent />
   </div>
 </template>

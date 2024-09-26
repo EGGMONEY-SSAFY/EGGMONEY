@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class SavingsResponseDto {
     private int savingsDate; // savingsProduct 기간(개월수)
     private Double savingsRate; // savingsProduct 이율
+    private String productName; // savingsProduct 이름
     private int balance;
     private LocalDateTime expireDate;
     private LocalDateTime createdAt;
