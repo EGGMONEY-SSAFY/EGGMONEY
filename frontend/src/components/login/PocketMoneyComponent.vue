@@ -1,4 +1,4 @@
-<template lang="">
+<template>
   <div class="px-4 py-6">
     <!-- 자녀 선택 드롭다운 -->
     <div class="bg-white rounded-lg shadow-md p-4 mb-6">
