@@ -1,5 +1,8 @@
 <template>
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+  <div
+    v-if="showModal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+  >
     <div class="bg-white p-6 rounded-lg shadow-lg text-center">
       <p class="text-lg font-semibold mb-4">구성원에서 삭제하시겠습니까?</p>
       <div class="flex justify-center space-x-4">
@@ -11,4 +14,14 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue"
+
+const showModal = ref(true)
+const emits = defineEmits(["confirmDelete", "cancelDelete"])
+const confirmDelete = () => {
+  emits("confirmDelete")
+}
+const cancelDelete = () => {
+  emits("cancelDelete")
+}
 </script>

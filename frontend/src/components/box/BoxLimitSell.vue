@@ -6,17 +6,33 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  Quantity: {
+    type: Number,
+    default: 0,
+  },
 })
 
+const Quantity = ref(props.Quantity)
 const sellQuantity = ref(0)
+const sellPrice = ref(props.price + 1)
+
 const totalSellAmount = computed(() => {
-  return sellQuantity.value * props.price
+  return sellQuantity.value * sellPrice.value
 })
 
 const preventNegativeQuantity = (event: Event) => {
   const input = event.target as HTMLInputElement
   if (input.valueAsNumber < 0) {
     sellQuantity.value = 0
+  } else if (input.valueAsNumber > Quantity.value) {
+    sellQuantity.value = Quantity.value
+  }
+}
+
+const preventNegativePrice = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  if (input.valueAsNumber < props.price + 1) {
+    sellPrice.value = props.price + 1
   }
 }
 </script>
@@ -28,7 +44,7 @@ const preventNegativeQuantity = (event: Event) => {
         <p>보유 수량</p>
       </div>
       <div class="m-4 flex justify-center items-center">
-        <p>{{ totalSellAmount }}</p>
+        <p>{{ Quantity }}</p>
       </div>
     </div>
 
@@ -50,19 +66,26 @@ const preventNegativeQuantity = (event: Event) => {
 
     <div class="flex justify-between">
       <div class="m-4">
-        <p>총 매수액</p>
+        <p>매도 가격</p>
       </div>
       <div class="m-4 flex justify-center items-center">
-        <p>{{ totalSellAmount }}</p>
+        <input
+          class="bg-gray-200 mx-1 w-24 text-center rounded"
+          type="number"
+          v-model.number="sellPrice"
+          placeholder="숫자를 입력하세요"
+          @input="preventNegativePrice"
+        />
+        <p>알</p>
       </div>
     </div>
 
     <div class="flex justify-between">
       <div class="m-4">
-        <p>매수 후 투자 가능 금액</p>
+        <p>총 매도액</p>
       </div>
       <div class="m-4 flex justify-center items-center">
-        <p>sef</p>
+        <p>{{ totalSellAmount }}</p>
       </div>
     </div>
 

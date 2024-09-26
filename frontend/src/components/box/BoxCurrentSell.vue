@@ -6,9 +6,15 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  Quantity: {
+    type: Number,
+    default: 0,
+  },
 })
 
+const Quantity = ref(props.Quantity)
 const sellQuantity = ref(0)
+
 const totalSellAmount = computed(() => {
   return sellQuantity.value * props.price
 })
@@ -17,6 +23,8 @@ const preventNegativeQuantity = (event: Event) => {
   const input = event.target as HTMLInputElement
   if (input.valueAsNumber < 0) {
     sellQuantity.value = 0
+  } else if (input.valueAsNumber > Quantity.value) {
+    sellQuantity.value = Quantity.value
   }
 }
 </script>
@@ -28,7 +36,7 @@ const preventNegativeQuantity = (event: Event) => {
         <p>보유 수량</p>
       </div>
       <div class="m-4 flex justify-center items-center">
-        <p>{{ totalSellAmount }}</p>
+        <p>{{ Quantity }}</p>
       </div>
     </div>
 
@@ -50,26 +58,15 @@ const preventNegativeQuantity = (event: Event) => {
 
     <div class="flex justify-between">
       <div class="m-4">
-        <p>총 매수액</p>
+        <p>총 매도액</p>
       </div>
       <div class="m-4 flex justify-center items-center">
         <p>{{ totalSellAmount }}</p>
       </div>
     </div>
 
-    <div class="flex justify-between">
-      <div class="m-4">
-        <p>매수 후 투자 가능 금액</p>
-      </div>
-      <div class="m-4 flex justify-center items-center">
-        <p>sef</p>
-      </div>
-    </div>
-
     <div class="flex justify-center">
-      <div
-        class="bg-blue-500 m-4 rounded-lg p-1 px-3 text-white cursor-pointer hover:bg-blue-200 hover:text-black"
-      >
+      <div class="bg-blue-500 m-4 rounded-lg p-1 px-3 text-white cursor-pointer hover:bg-blue-600">
         매도
       </div>
     </div>
