@@ -50,7 +50,7 @@ public class SavingServiceImpl implements SavingService {
                         .productName(product.getProductName())
                         .savingsRate(product.getSavingsRate())
                         .savingsDate(product.getSavingsDate())
-                        .max_price(product.getMaxPrice())
+                        .maxPrice(product.getMaxPrice())
                         .build()
                 ).collect(Collectors.toList());
 
