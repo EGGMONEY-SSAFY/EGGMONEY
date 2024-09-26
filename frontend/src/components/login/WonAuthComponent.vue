@@ -82,7 +82,8 @@ import sh from "@/assets/bank/신한로고.png"
 import wo from "@/assets/bank/우리로고.png"
 import toss from "@/assets/bank/토스로고.png"
 import ha from "@/assets/bank/하나로고.png"
-
+import { useAuthStore } from "@/stores/auth"
+const authStore = useAuthStore();
 const bankitems = [kb, nh, sh, wo, toss, ha]
 const bankname = ["KB 국민은행", "농협은행", "신한은행", "우리은행", "토스", "하나은행"]
 
@@ -127,10 +128,20 @@ const sendWonAuth = async () => {
 const checkAuthNumber = async () => {
   if (selectaccount.value && checkAuth.value) {
     try {
-      const response = await axios.post("http://localhost:8080/api/v1/auth/won/check", {
+      // const token = authStore.accessToken;
+      const token='ZY84Th2AKvGO4-ZhsyNPZ4_GbkiIoqgPAAAAAQoqJU8AAAGSLXRX5JCBbdpZdq0Z';
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/auth/won/check",
+        
+      {
         accountnum: selectaccount.value,
         authText: "SSAFY_TEST",
         authnum: checkAuth.value,
+      },{
+        headers:{
+          Authorization: `Bearer ${token}`,
+          'Content-Type':'application/json',
+        }
       })
       console.log(response)
       bankselectstep.value += 1
