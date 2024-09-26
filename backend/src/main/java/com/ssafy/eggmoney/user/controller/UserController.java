@@ -1,6 +1,7 @@
 package com.ssafy.eggmoney.user.controller;
 
 import com.ssafy.eggmoney.user.dto.reqeust.CreateUserReqeusetDto;
+import com.ssafy.eggmoney.user.dto.reqeust.UpdateUserRequestDto;
 import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
 import com.ssafy.eggmoney.user.service.UserServcie;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,9 @@ public class UserController {
         userService.createUser(dto);
     }
 
+    @PostMapping("/{userId}/update")
+    public void updateUser(@PathVariable("userId") Long userId, @RequestBody UpdateUserRequestDto dto){
+        userService.updateUser(userId, dto);
+    }
 
 }
