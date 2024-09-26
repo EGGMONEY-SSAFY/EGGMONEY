@@ -30,7 +30,6 @@ import FinSavingsCreateDetailView from "@/views/Fin/FinSavingsCreateDetailView.v
 import EditProfileView from "@/views/All/EditProfileView.vue"
 import ExInfoView from "@/views/All/ExInfoView.vue"
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -167,8 +166,8 @@ const router = createRouter({
           path: "/family/family-connection/success",
           name: "FamilyConnectSuccess",
           component: ConnectionFamilySuccess,
-        }
-      ]
+        },
+      ],
     },
     {
       path: "/pinpad",
@@ -176,22 +175,21 @@ const router = createRouter({
       component: PinPadComponent,
     },
     {
-      path:"/pocketmoney",
-      name:"PocketMoneyView",
-      component:PocketMoneyView,
+      path: "/pocketmoney",
+      name: "PocketMoneyView",
+      component: PocketMoneyView,
     },
     {
-      path:"/editProfile",
-      name:"EditProfileView",
-      component:EditProfileView,
+      path: "/editProfile",
+      name: "EditProfileView",
+      component: EditProfileView,
     },
     {
-      path:"/ExInfo",
-      name:"ExInfoView",
-      component:ExInfoView,
-    }
+      path: "/ExInfo",
+      name: "ExInfoView",
+      component: ExInfoView,
+    },
   ],
 })
 
 export default router
-
