@@ -22,7 +22,7 @@ const name = "FinSavingsCreateView"
           productId: product.productId,
           productName: product.productName,
           savingsRate: product.savingsRate,
-          savingsDate: product.savingsRate,
+          savingsDate: product.savingsDate,
           maxPrice: product.maxPrice,
         },
       }"
