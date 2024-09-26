@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 public class StockApiConfig {
-    @Value("${stock-api.appkey}")
+    @Value("${stock_api.appkey}")
     private String appKey;
 
-    @Value("${stock-api.appsecret}")
+    @Value("${stock_api.appsecret}")
     private String appSecret;
 }
