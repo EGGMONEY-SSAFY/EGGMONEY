@@ -20,6 +20,7 @@ public class SavingsProduct extends BaseTime {
     @Column(name = "savings_product_id")
     private Long id;
 
+    private String productName;
     private int savingsDate;
     private Double savingsRate;
 

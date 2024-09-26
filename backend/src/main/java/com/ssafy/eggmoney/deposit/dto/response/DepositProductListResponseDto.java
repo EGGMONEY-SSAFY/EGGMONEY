@@ -7,6 +7,7 @@ import lombok.Getter;
 @Builder
 public class DepositProductListResponseDto {
     private Long productId;
+    private String productName;
     private int depositDate;
     private Double depositRate;
 }

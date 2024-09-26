@@ -9,7 +9,6 @@ import WonAuthView from "@/views/All/WonAuthView.vue"
 import StockDetail from "@/views/Stock/StockDetail.vue"
 import MainView from "@/views/All/MainView.vue"
 import LoginView from "@/views/All/LoginView.vue"
-
 import FamilyInviteComponent from "@/components/family/FamilyInviteComponent.vue"
 import FamilyConnectionComponent from "@/components/family/FamilyConnectionComponent.vue"
 import FamilyComponent from "@/components/family/FamilyComponent.vue"
@@ -19,6 +18,11 @@ import PinPadComponent from "@/components/login/PinPadComponent.vue"
 import CreateFamilySuccess from "@/components/family/complete/CreateFamilySuccess.vue"
 import ConnectionFamilySuccess from "@/components/family/complete/ConnectionFamilySuccess.vue"
 import PocketMoneyView from "@/views/All/PocketMoneyView.vue"
+import FinDepositView from "@/views/Fin/FinDepositView.vue"
+import FinSavingsCreateView from "@/views/Fin/FinSavingsCreateView.vue"
+import FinSavingsView from "@/views/Fin/FinSavingsView.vue"
+import FinDepositCreateDetailView from "@/views/Fin/FinDepositCreateDetailView.vue"
+import FinDepositCreateView from "@/views/Fin/FinDepositCreateView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,7 +43,7 @@ const router = createRouter({
     },
     {
       path: "/asset",
-      name: "AssetView",
+      name: "AssetsView",
       component: AssetView,
     },
     {
@@ -49,13 +53,13 @@ const router = createRouter({
     },
     {
       path: "/fin",
-      // name: "FinView",
+      name: "FinView",
       component: FinView,
       children: [
         {
           path: "",
           name: "FinDepositView",
-          component: FinView,
+          component: FinDepositView,
         },
         {
           path: "loan",
@@ -65,7 +69,22 @@ const router = createRouter({
         {
           path: "savings",
           name: "FinSavingsView",
-          component: FinView,
+          component: FinSavingsView,
+        },
+        {
+          path: "deposit/create",
+          name: "FinDepositCreateView",
+          component: FinDepositCreateView,
+        },
+        {
+          path: "deposit/create/detail",
+          name: "FinDepositCreateDetailView",
+          component: FinDepositCreateDetailView,
+        },
+        {
+          path: "savings/create",
+          name: "FinSavingsCreateView",
+          component: FinSavingsCreateView,
         },
       ],
     },
@@ -133,17 +152,17 @@ const router = createRouter({
           component: ConnectionFamilySuccess,
         },
         {
-          path:"/pinpad",
-          name:"pinpadView",
-          component:PinPadComponent,
+          path: "/pinpad",
+          name: "pinpadView",
+          component: PinPadComponent,
         },
         {
-          path:"/pocketmoney",
-          name:"PocketMoneyView",
-          component:PocketMoneyView,
-        }
-      ]
-    }
+          path: "/pocketmoney",
+          name: "PocketMoneyView",
+          component: PocketMoneyView,
+        },
+      ],
+    },
   ],
 })
 
