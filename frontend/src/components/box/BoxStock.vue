@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router"
-import IconRightArrow from "../icons/IconRightArrow.vue"
+import IconRightArrow from "@/components/icons/IconRightArrow.vue"
 
 const props = defineProps({
   stock: String,
@@ -20,7 +20,10 @@ const rate = (gap / props.price) * 100
         {{ gap > 0 ? "+" + gap : gap }} ({{ Math.round(rate * 100) / 100 }}%)
       </div>
     </div>
-    <RouterLink :to="`/stock/${props.stock}`" class="m-6 flex justify-center items-center gap-4">
+    <RouterLink
+      :to="`/stock/detail/${props.stock}`"
+      class="m-6 flex justify-center items-center gap-4"
+    >
       <IconRightArrow class="size-6" />
     </RouterLink>
   </div>
