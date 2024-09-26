@@ -7,9 +7,6 @@ import StockHistoryView from "@/views/Stock/StockHistoryView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
 import WonAuthView from "@/views/All/WonAuthView.vue"
 import StockDetail from "@/views/Stock/StockDetail.vue"
-import MainView from "@/views/MainView.vue"
-import LoginView from "@/views/LoginView.vue"
-
 import FamilyInviteComponent from "@/components/family/FamilyInviteComponent.vue"
 import FamilyConnectionComponent from "@/components/family/FamilyConnectionComponent.vue"
 import FamilyComponent from "@/components/family/FamilyComponent.vue"
@@ -18,6 +15,8 @@ import FamilyManageComponent from "@/components/family/FamilyManageComponent.vue
 import PinPadComponent from "@/components/login/PinPadComponent.vue"
 import CreateFamilySuccess from "@/components/family/complete/CreateFamilySuccess.vue"
 import ConnectionFamilySuccess from "@/components/family/complete/ConnectionFamilySuccess.vue"
+import MainView from "@/views/All/MainView.vue"
+import LoginView from "@/views/All/LoginView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
