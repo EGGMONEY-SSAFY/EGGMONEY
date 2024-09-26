@@ -5,30 +5,15 @@ import { Doughnut } from "vue-chartjs"
 import { ref, onMounted, watch } from "vue"
 import { useUserStore } from "@/stores/user.js"
 import { useAssetStore } from "@/stores/asset.js"
-
-const userStore = useUserStore()
-const assetStore = useAssetStore()
-
-interface Analytics {
-  입출금통장: Number | null
-  예금: Number | null
-  적금: Number | null
-  대출: Number | null
-  주식: Number | null
-}
-
-// labels와 datasets의 타입 정의
-interface ChartData {
-  labels: string[]
-  datasets: {
-    data: number[]
-  }[]
-}
+import type { ChartData } from "@/stores/asset.js"
+import type { Analytics } from "@/stores/asset.js"
 
 // labels와 datasets으로 가공하는 함수
 function formatData(response: Analytics): ChartData {
-  const labels = Object.keys(response) // key값을 labels로 변환
-  const data = Object.values(response).map((value) => (value !== null ? value : 0)) // null을 0으로 변환
+  const labels = Object.keys(response).filter((key) => key !== "대출")
+  const data = Object.entries(response)
+    .filter(([key]) => key !== "대출")
+    .map(([key, value]) => (value !== null ? value : 0))
 
   return {
     labels: labels,
@@ -82,8 +67,6 @@ watch(
 onMounted(async () => {
   if (props.analytics?.입출금통장) {
     data.value = formatData(props.analytics)
-
-    console.log(props.analytics)
   }
 })
 </script>

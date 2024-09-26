@@ -25,6 +25,13 @@ import FinSavingsCreateView from "@/views/Fin/FinSavingsCreateView.vue"
 import FinSavingsView from "@/views/Fin/FinSavingsView.vue"
 import FinDepositCreateDetailView from "@/views/Fin/FinDepositCreateDetailView.vue"
 import FinDepositCreateView from "@/views/Fin/FinDepositCreateView.vue"
+import AssetMainAccountView from "@/views/Asset/AssetMainAccountView.vue"
+import AssetMainView from "@/views/Asset/AssetMainView.vue"
+import AssetSavingsView from "@/views/Asset/AssetSavingsView.vue"
+import AssetDepositView from "@/views/Asset/AssetDepositView.vue"
+import AssetLoanView from "@/views/Asset/AssetLoanView.vue"
+import AssetLoanDetailView from "@/views/Asset/AssetLoanDetailView.vue"
+import AssetLoanListView from "@/views/Asset/AssetLoanListView.vue"
 import FinSavingsCreateDetailView from "@/views/Fin/FinSavingsCreateDetailView.vue"
 import EditProfileView from "@/views/All/EditProfileView.vue"
 import ExInfoView from "@/views/All/ExInfoView.vue"
@@ -53,8 +60,45 @@ const router = createRouter({
     },
     {
       path: "/asset",
-      name: "AssetsView",
+      // name: "AssetView",
       component: AssetView,
+      children: [
+        {
+          path: "",
+          name: "AssetMainView",
+          component: AssetMainView,
+        },
+        {
+          path: "main-account",
+          name: "AssetMainAccountView",
+          component: AssetMainAccountView,
+        },
+        {
+          path: "savings",
+          name: "AssetSavingsView",
+          component: AssetSavingsView,
+        },
+        {
+          path: "deposit",
+          name: "AssetDepositView",
+          component: AssetDepositView,
+        },
+        {
+          path: "loan",
+          name: "AssetLoanListView",
+          component: AssetLoanListView,
+        },
+      ],
+    },
+    {
+      path: "/asset/loan/:loanId",
+      name: "AssetLoanListItem",
+      component: AssetLoanView,
+    },
+    {
+      path: "/asset/loan/:loanId/detail",
+      name: "AssetLoanListItemDetail",
+      component: AssetLoanDetailView,
     },
     {
       path: "/all",

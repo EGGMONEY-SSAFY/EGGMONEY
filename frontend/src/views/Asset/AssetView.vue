@@ -1,17 +1,11 @@
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user"
-import { useVariableStore } from "@/stores/variable"
-import { ref, onMounted, watch } from "vue"
-import AssetMainView from "@/views/Asset/AssetMainView.vue"
+import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
-const varStore = useVariableStore()
+import type { User } from "@/stores/user"
+
 const userStore = useUserStore()
 const router = useRouter()
-
-interface User {
-  userId: number
-  name: string
-}
 
 const userSelect = ref<User | null>(null)
 
@@ -25,12 +19,11 @@ const goWithdrawalTab = () => {
 }
 
 onMounted(async () => {
-  varStore.setTitle("자산")
   // 유저 조회해서 유저 정보(역할, 자식 목록) 가져오기
   await userStore.getUser(3)
 
   //  자녀가 로그인한 경우
-  if (userStore.role === "자녀") {
+  if (userStore.user && userStore.user.role === "자녀") {
     userSelect.value = userStore.user
   }
 
@@ -54,22 +47,31 @@ onMounted(async () => {
     <!-- 등록된 가족이 있는 경우 -->
     <div v-if="userStore.children.length > 0">
       <!-- 부모일 경우 아이 Select Box -->
-      <div v-if="userStore.role === `부모`" class="p-3 flex justify-between">
-        <select v-model="userSelect">
-          <option v-for="child in userStore.children" :value="child" :key="child.userId">
+      <div v-if="userStore.user && userStore.user.role === `부모`" class="p-3 flex justify-between">
+        <select
+          v-model="userSelect"
+          class="bg-white border border-gray-200 text-black text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block p-2"
+        >
+          <option
+            v-for="child in userStore.children"
+            :value="child"
+            :key="child.userId"
+            class="text-black"
+          >
             {{ child.name }}
           </option>
         </select>
         <button
           class="text-sm bg-main-color rounded-full text-white text-lg py-1 px-3"
           @click="goWithdrawalTab"
+          v-if="userStore.user.role === '부모'"
         >
           출금요청보기
         </button>
       </div>
       <div class="" v-if="userSelect != null">
         <!-- Main Body -->
-        <AssetMainView :user="userSelect" />
+        <RouterView :user="userSelect" />
       </div>
     </div>
 
@@ -85,3 +87,13 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+<style>
+select {
+  background-color: white;
+  color: black;
+}
+select option:hover {
+  background-color: gray;
+  color: white;
+}
+</style>
