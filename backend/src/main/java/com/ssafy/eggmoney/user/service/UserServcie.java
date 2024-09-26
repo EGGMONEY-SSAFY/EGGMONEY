@@ -6,11 +6,14 @@ import com.ssafy.eggmoney.family.entity.Family;
 import com.ssafy.eggmoney.family.repository.FamilyRepository;
 import com.ssafy.eggmoney.family.service.FamilyServcie;
 import com.ssafy.eggmoney.user.dto.reqeust.CreateUserReqeusetDto;
+import com.ssafy.eggmoney.user.dto.reqeust.UpdateUserRequestDto;
 import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -63,5 +66,17 @@ public class UserServcie {
 //        메인 계좌 생성
         accountService.createAccount(user.getId());
         System.out.println("계좌 생성 완료");
+    }
+
+    // 유저 정보 업데이트
+    public void updateUser(Long userId, UpdateUserRequestDto dto){
+        Optional<User> userOptional = userRepository.findById(userId);
+        if(userOptional.isPresent()){
+            User user = userOptional.get();
+            user.updateUserInfo(dto.getName(), dto.getBank(), dto.getRealAccount(), dto.getSimplePwd(),dto.getRole());
+            userRepository.save(user);
+        }else {
+            throw new IllegalArgumentException("유저를 찾을 수 없습니다.");
+        }
     }
 }

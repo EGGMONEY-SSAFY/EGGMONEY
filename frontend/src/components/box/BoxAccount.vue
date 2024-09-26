@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch } from "vue"
-import IconRightArrow from "../icons/IconRightArrow.vue"
+import { onMounted } from "vue"
 import { useAssetStore } from "@/stores/asset"
 
 interface User {
