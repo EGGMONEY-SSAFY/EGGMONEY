@@ -28,6 +28,7 @@ import FinDepositCreateDetailView from "@/views/Fin/FinDepositCreateDetailView.v
 import FinDepositCreateView from "@/views/Fin/FinDepositCreateView.vue"
 import FinSavingsCreateDetailView from "@/views/Fin/FinSavingsCreateDetailView.vue"
 import EditProfileView from "@/views/All/EditProfileView.vue"
+import ExInfoView from "@/views/All/ExInfoView.vue"
 
 
 const router = createRouter({
@@ -166,24 +167,29 @@ const router = createRouter({
           path: "/family/family-connection/success",
           name: "FamilyConnectSuccess",
           component: ConnectionFamilySuccess,
-        },
-        {
-          path: "/pinpad",
-          name: "pinpadView",
-          component: PinPadComponent,
-        },
-        {
-          path: "/pocketmoney",
-          name: "PocketMoneyView",
-          component: PocketMoneyView,
-        },
-        {
-          path: "/editProfile",
-          name: "EditProfileView",
-          component: EditProfileView,
-        },
-      ],
+        }
+      ]
     },
+    {
+      path: "/pinpad",
+      name: "pinpadView",
+      component: PinPadComponent,
+    },
+    {
+      path:"/pocketmoney",
+      name:"PocketMoneyView",
+      component:PocketMoneyView,
+    },
+    {
+      path:"/editProfile",
+      name:"EditProfileView",
+      component:EditProfileView,
+    },
+    {
+      path:"/ExInfo",
+      name:"ExInfoView",
+      component:ExInfoView,
+    }
   ],
 })
 
