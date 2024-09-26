@@ -19,6 +19,7 @@ import PinPadComponent from "@/components/login/PinPadComponent.vue"
 import CreateFamilySuccess from "@/components/family/complete/CreateFamilySuccess.vue"
 import ConnectionFamilySuccess from "@/components/family/complete/ConnectionFamilySuccess.vue"
 import PocketMoneyView from "@/views/All/PocketMoneyView.vue"
+import EditProfileView from "@/views/All/EditProfileView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -141,6 +142,11 @@ const router = createRouter({
           path:"/pocketmoney",
           name:"PocketMoneyView",
           component:PocketMoneyView,
+        },
+        {
+          path:"/editProfile",
+          name:"EditProfileView",
+          component:EditProfileView,
         }
       ]
     }
