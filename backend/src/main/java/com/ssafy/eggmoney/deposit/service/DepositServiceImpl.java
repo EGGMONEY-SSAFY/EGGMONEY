@@ -42,6 +42,7 @@ public class DepositServiceImpl implements DepositService {
         List<DepositProductListResponseDto> productListDto = productList.stream().map(
                 (product) -> DepositProductListResponseDto.builder()
                         .productId(product.getId())
+                        .productName(product.getProductName())
                         .depositDate(product.getDepositDate())
                         .depositRate(product.getDepositRate())
                         .build())
@@ -99,6 +100,7 @@ public class DepositServiceImpl implements DepositService {
         DepositProduct depositProduct = deposit.getDepositProduct();
         DepositProductDto depositProductDto = DepositProductDto.builder()
                 .id(depositProduct.getId())
+                .productName(depositProduct.getProductName())
                 .rate(depositProduct.getDepositRate())
                 .date(depositProduct.getDepositDate()).build();
 

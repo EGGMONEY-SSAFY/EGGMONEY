@@ -7,6 +7,7 @@ import lombok.Getter;
 @Builder
 public class DepositProductDto {
     private long id;
+    private String productName;
     private double rate;
     private int date;
 }
