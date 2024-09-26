@@ -14,8 +14,8 @@ import IconSetting from "../icons/IconAllStock.vue"
       </div>
     </div>
     <div class="flex justify-between cursor-pointer">
-      <div class="m-4">
-        <p>&nbsp;&nbsp;&nbsp;주식 현재가</p>
+      <div class="my-4 mx-8">
+        <p>주식 현재가</p>
       </div>
       <div class="m-4 flex justify-center items-center">
         <p><IconRightArrow class="size-6" /></p>
@@ -23,26 +23,17 @@ import IconSetting from "../icons/IconAllStock.vue"
     </div>
 
     <div class="flex justify-between cursor-pointer">
-      <div class="m-4">
-        <p>&nbsp;&nbsp;&nbsp;거래내역</p>
+      <div class="my-4 mx-8">
+        <p>거래내역</p>
       </div>
       <div class="m-4 flex justify-center items-center">
         <p><IconRightArrow class="size-6" /></p>
       </div>
     </div>
 
-    <!-- <div class="flex justify-between">
-      <div class="m-4">
-        <p>&nbsp;&nbsp;&nbsp;뉴스</p>
-      </div>
-      <div class="m-4 flex justify-center items-center">
-        <p><IconRightArrow class="size-6" /></p>
-      </div>
-    </div> -->
-
     <div class="flex justify-between mb-3 cursor-pointer">
-      <div class="m-4">
-        <p>&nbsp;&nbsp;&nbsp;뉴스</p>
+      <div class="my-4 mx-8">
+        <p>뉴스</p>
       </div>
       <div class="m-4 flex justify-center items-center">
         <p><IconRightArrow class="size-6" /></p>

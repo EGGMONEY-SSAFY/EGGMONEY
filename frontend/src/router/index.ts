@@ -158,17 +158,17 @@ const router = createRouter({
           component: PinPadComponent,
         },
         {
-          path:"/pocketmoney",
-          name:"PocketMoneyView",
-          component:PocketMoneyView,
+          path: "/pocketmoney",
+          name: "PocketMoneyView",
+          component: PocketMoneyView,
         },
         {
-          path:"/editProfile",
-          name:"EditProfileView",
-          component:EditProfileView,
-        }
-      ]
-    }
+          path: "/editProfile",
+          name: "EditProfileView",
+          component: EditProfileView,
+        },
+      ],
+    },
   ],
 })
 
