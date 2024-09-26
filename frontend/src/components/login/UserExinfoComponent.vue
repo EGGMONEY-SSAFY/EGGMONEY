@@ -46,7 +46,9 @@
 <script setup lang="ts">
 import { ref, type Ref } from "vue"
 import axios from "axios"
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const role = ref<number>(2) as Ref<number>
 const selectRole = (selectedRole: number) => {
   role.value = selectedRole
@@ -54,7 +56,7 @@ const selectRole = (selectedRole: number) => {
 }
 const submitExinfo = async () => {
   if (role.value === 2) {
-    alert("부모의 역할을 선택해주세요")
+    alert("역할을 선택해주세요")
     return
   }
   try {
@@ -62,6 +64,7 @@ const submitExinfo = async () => {
       role: role.value,
     })
     console.log(response)
+    router.push("/won")
   } catch (error) {
     console.error("Error:", error)
   }

@@ -1,6 +1,8 @@
 package com.ssafy.eggmoney.auth.service;
 
 
+import com.ssafy.eggmoney.user.dto.reqeust.UpdateUserRequestDto;
+import com.ssafy.eggmoney.user.service.UserServcie;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
@@ -14,9 +16,10 @@ import java.util.Date;
 public class WonService {
 
     private final WebClient webClient;
-
-    public WonService(WebClient.Builder webClientBuilder){
+    private final UserServcie userServcie;
+    public WonService(WebClient.Builder webClientBuilder, UserServcie userServcie){
         this.webClient = webClientBuilder.build();
+        this.userServcie = userServcie;
     }
 
     public Mono<String> sendmessage(String accountnum) {
@@ -41,19 +44,31 @@ public class WonService {
                 });
     }
 
-    public Mono<String> checkmessage(String accountnum, String authText, String authnum) {
+    public Mono<String> checkmessage(String accountnum, String authText, String authnum, Long userId) {
         String url = "https://finopenapi.ssafy.io/ssafy/api/v1/edu/accountAuth/checkAuthCode";
         String requestBody = String.format(
                 "{\"Header\": {\"apiName\": \"checkAuthCode\", \"transmissionDate\": \"%s\", \"transmissionTime\": \"%s\", \"institutionCode\": \"00100\", \"fintechAppNo\": \"001\", \"apiServiceCode\": \"checkAuthCode\", \"institutionTransactionUniqueNo\": \"%s\", \"apiKey\": \"063446596d794b47bb3d4977043e3523\", \"userKey\": \"2c07499f-9e20-4800-a1ae-a45a4382d4d8\"}, \"accountNo\": \"%s\", \"authText\": \"%s\", \"authCode\": \"%s\"}",
                 getCurrentDate(), getCurrentTime(),generateUniqueTransactionNo(), accountnum, authText, authnum
         );
-
+//        요청을 확인하고, 유저 데이터를 해당 아래 컨트롤러를 활용해서 업데이트하는 로직 피룡
+//        @PostMapping("/{userId}/update")
+//    public void updateUser(@PathVariable("userId") Long userId, @RequestBody UpdateUserRequestDto dto){
+//        userService.updateUser(userId, dto);
+//    }
+//        userServcie.createUser(Long userId, String authnum);
         return webClient.post()
                 .uri(url)
                 .header("Content-Type", "application/json")
                 .bodyValue(requestBody)
                 .retrieve()
                 .bodyToMono(String.class)
+                .doOnSuccess(response -> {
+                    // 인증 성공 후 유저 업데이트 로직 호출
+                    UpdateUserRequestDto updateDto = new UpdateUserRequestDto();
+                    updateDto.setRealAccount(accountnum);
+                    //updateDto.setAuthStatus(true); // 인증 성공 상태로 업데이트
+                    userServcie.updateUser(userId, updateDto); // userId로 사용자 정보 업데이트
+                })
                 .doOnError(error -> {
                     if (error instanceof WebClientResponseException) {
                         WebClientResponseException webClientResponseException = (WebClientResponseException) error;
