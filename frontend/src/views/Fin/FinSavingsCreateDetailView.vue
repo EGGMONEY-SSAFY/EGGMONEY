@@ -1,4 +1,3 @@
-<!-- 예금 가입 시 이용약관 페이지 -->
 <script setup lang="ts">
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
@@ -9,11 +8,14 @@ const route = useRoute()
 
 const productId = Number(route.query.productId)
 const productName = route.query.productName
-const depositRate = Number(route.query.depositRate)
-const depositDate = Number(route.query.depositDate)
+const savingsRate = Number(route.query.savingsRate)
+const savingsDate = Number(route.query.savingsDate)
 const money = Number(route.query.money)
 
-const repayment = (money + (((money * depositRate) / 100) * depositDate) / 12).toFixed(0)
+const repayment = (
+  money * savingsDate +
+  (((money * savingsRate) / 100) * savingsDate) / 12
+).toFixed(0)
 
 const handleClick = () => {
   router.push({
@@ -22,8 +24,8 @@ const handleClick = () => {
       money: money,
       productId: productId,
       productName: productName,
-      depositDate: depositDate,
-      depositRate: depositRate,
+      savingsDate: savingsDate,
+      savingsRate: savingsRate,
     },
   })
 }
@@ -39,35 +41,44 @@ const handleClick = () => {
         </div>
         <div class="text-gray-600 font-bold text-sm">선택하신 상품은 {{ productName }}입니다</div>
       </div>
-      <div class="m-4">
+      <div class="mb-0 m-4">
         <div class="font-bold">※ 상품정보</div>
         <div class="bg-white m-2 p-3 rounded-lg shadow">
           <div class="m-2 text-sm">해당 상품은</div>
           <div class="m-2 text-sm">
-            <span class="font-bold">{{ depositDate }}개월</span> 동안 연이율
-            <span class="font-bold">{{ depositRate.toFixed(1) }}%</span>로
+            <span class="font-bold">{{ savingsDate }}개월</span> 동안 연이율
+            <span class="font-bold">{{ savingsRate.toFixed(1) }}%</span>로
           </div>
-
           <div class="m-2 text-sm">
             <span class="font-bold">{{ money }}</span> 알을 예금해 둘 예정이에요
           </div>
         </div>
       </div>
-      <div class="m-4">
+
+      <div class="mt-2 m-4">
+        <div class="font-bold">※ 적금미납입</div>
+        <div class="bg-white m-2 p-3 rounded-lg shadow">
+          <div class="m-2 text-sm">해당 상품의 <span class="font-bold">적금 납입일</span>에</div>
+          <div class="m-2 text-sm">{{ money }}알을 납입하지 않으시면</div>
+          <div class="m-2 text-sm">만기일이 <span class="font-bold">한달</span> 연장됩니다.</div>
+        </div>
+      </div>
+
+      <div class="mt-2 m-4">
         <div class="font-bold">※ 해지정보</div>
         <div class="bg-white m-2 p-3 rounded-lg shadow">
           <div class="m-2 text-sm">해당 상품의 <span class="font-bold">만기일 도달 전</span>에</div>
           <div class="m-2 text-sm">상품을 해지하시면</div>
           <div class="m-2 text-sm">
             해지일까지의 금액에
-            <span class="font-bold">{{ (depositRate - 2.0).toFixed(1) }}%</span>가
+            <span class="font-bold">{{ (savingsRate - 2.0).toFixed(1) }}%</span>가
           </div>
           <div class="m-2 text-sm">적용된 금액을 지급합니다.</div>
         </div>
       </div>
     </div>
 
-    <div class="m-4">
+    <div class="m-4 mb-7">
       <div class="m-4 text-red-500">
         ※ 예상 만기액은 <span class="font-bold text-red-500">{{ repayment }}원</span> 입니다.
       </div>
