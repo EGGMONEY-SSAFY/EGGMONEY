@@ -36,21 +36,21 @@ import { ref } from "vue"
 const showModal = ref(false)
 const user = ref("")
 function sumbitchanges() {
-  try{
+  try {
     // 유저 아이디로 수정 필요
-    const response=axios.post('api/v1/profile/1/update',{
-    name:user.value
-  });
-  console.log(user.value);
-  
-      showModal.value = true;
-      setTimeout(() => {
-        showModal.value = false;
-      }, 1000);
-  // console.log('이름 업데이트 성공', response);
-}catch(error){
-  console.log(error);
-}
+    const response = axios.post("api/v1/profile/1/update", {
+      name: user.value,
+    })
+    console.log(user.value)
+
+    showModal.value = true
+    setTimeout(() => {
+      showModal.value = false
+    }, 1000)
+    // console.log('이름 업데이트 성공', response);
+  } catch (error) {
+    console.log(error)
+  }
 }
 </script>
 <style scoped>
