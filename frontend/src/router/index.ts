@@ -23,6 +23,7 @@ import FinSavingsCreateView from "@/views/Fin/FinSavingsCreateView.vue"
 import FinSavingsView from "@/views/Fin/FinSavingsView.vue"
 import FinDepositCreateDetailView from "@/views/Fin/FinDepositCreateDetailView.vue"
 import FinDepositCreateView from "@/views/Fin/FinDepositCreateView.vue"
+import FinSavingsCreateDetailView from "@/views/Fin/FinSavingsCreateDetailView.vue"
 import EditProfileView from "@/views/All/EditProfileView.vue"
 
 const router = createRouter({
@@ -86,6 +87,11 @@ const router = createRouter({
           path: "savings/create",
           name: "FinSavingsCreateView",
           component: FinSavingsCreateView,
+        },
+        {
+          path: "savings/create/detail",
+          name: "FinSavingsCreateDetailView",
+          component: FinSavingsCreateDetailView,
         },
       ],
     },
@@ -158,17 +164,17 @@ const router = createRouter({
           component: PinPadComponent,
         },
         {
-          path:"/pocketmoney",
-          name:"PocketMoneyView",
-          component:PocketMoneyView,
+          path: "/pocketmoney",
+          name: "PocketMoneyView",
+          component: PocketMoneyView,
         },
         {
-          path:"/editProfile",
-          name:"EditProfileView",
-          component:EditProfileView,
-        }
-      ]
-    }
+          path: "/editProfile",
+          name: "EditProfileView",
+          component: EditProfileView,
+        },
+      ],
+    },
   ],
 })
 
