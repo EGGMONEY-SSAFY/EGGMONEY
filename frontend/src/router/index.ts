@@ -152,23 +152,23 @@ const router = createRouter({
           path: "/family/family-connection/success",
           name: "FamilyConnectSuccess",
           component: ConnectionFamilySuccess,
-        },
-        {
-          path: "/pinpad",
-          name: "pinpadView",
-          component: PinPadComponent,
-        },
-        {
-          path:"/pocketmoney",
-          name:"PocketMoneyView",
-          component:PocketMoneyView,
-        },
-        {
-          path:"/editProfile",
-          name:"EditProfileView",
-          component:EditProfileView,
         }
       ]
+    },
+    {
+      path: "/pinpad",
+      name: "pinpadView",
+      component: PinPadComponent,
+    },
+    {
+      path:"/pocketmoney",
+      name:"PocketMoneyView",
+      component:PocketMoneyView,
+    },
+    {
+      path:"/editProfile",
+      name:"EditProfileView",
+      component:EditProfileView,
     },
     {
       path:"/ExInfo",
