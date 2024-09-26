@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted } from "vue"
-import { useAssetStore } from "@/stores/asset"
 
 interface User {
   userId: number
@@ -16,7 +15,6 @@ interface Analytics {
 }
 
 const props = defineProps<{ user: User; analytics: Analytics | null }>()
-const assetStore = useAssetStore()
 
 onMounted(() => {
   console.log(props.analytics?.입출금통장)

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BoxBasic from "@/components/box/BoxBasic.vue";
 import NavBarTab from "@/components/navbar/navBarTab/NavBarTab.vue"
 import { useVariableStore } from "@/stores/variable"
 import { computed, ref } from "vue"
@@ -11,19 +12,16 @@ const path = computed(() => {
 const store = useVariableStore()
 store.setTitle("거래내역")
 
-const inputValue = ref(0)
 
-const result = computed(() => {
-  return inputValue.value * 1000
-})
+
 </script>
 
 <template>
   <div>
     <NavBarTab :path="path" />
-    <h1>This is an history page</h1>
-    <h1>숫자 입력 및 변환</h1>
-    <input type="number" v-model.number="inputValue" placeholder="숫자를 입력하세요" />
-    <p>결과: {{ result }}</p>
+    <div class="flex flex-col flex-grow justify-between">
+      <BoxBasic/>
+      <BoxBasic class="mb-20"/>
+    </div>
   </div>
 </template>

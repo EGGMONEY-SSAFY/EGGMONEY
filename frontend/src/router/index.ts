@@ -17,8 +17,6 @@ import FamilyManageComponent from "@/components/family/FamilyManageComponent.vue
 import PinPadComponent from "@/components/login/PinPadComponent.vue"
 import CreateFamilySuccess from "@/components/family/complete/CreateFamilySuccess.vue"
 import ConnectionFamilySuccess from "@/components/family/complete/ConnectionFamilySuccess.vue"
-import MainView from "@/views/All/MainView.vue"
-import LoginView from "@/views/All/LoginView.vue"
 import StockNewsDetailView from "@/views/Stock/StockNewsDetailView.vue"
 import PocketMoneyView from "@/views/All/PocketMoneyView.vue"
 import FinDepositView from "@/views/Fin/FinDepositView.vue"
@@ -28,7 +26,6 @@ import FinDepositCreateDetailView from "@/views/Fin/FinDepositCreateDetailView.v
 import FinDepositCreateView from "@/views/Fin/FinDepositCreateView.vue"
 import FinSavingsCreateDetailView from "@/views/Fin/FinSavingsCreateDetailView.vue"
 import EditProfileView from "@/views/All/EditProfileView.vue"
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
