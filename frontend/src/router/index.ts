@@ -17,6 +17,7 @@ import CreateFamilySuccess from "@/components/family/complete/CreateFamilySucces
 import ConnectionFamilySuccess from "@/components/family/complete/ConnectionFamilySuccess.vue"
 import MainView from "@/views/All/MainView.vue"
 import LoginView from "@/views/All/LoginView.vue"
+import StockNewsDetailView from "@/views/Stock/StockNewsDetailView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,11 @@ const router = createRouter({
       path: "/main",
       name: "MainView",
       component: MainView,
+    },
+    {
+      path: "/stock/news/:newsId",
+      name: "StockNewsDetailView",
+      component: StockNewsDetailView,
     },
     {
       path: "/login",
@@ -88,7 +94,7 @@ const router = createRouter({
       component: WonAuthView,
     },
     {
-      path: "/stock/:stock",
+      path: "/stock/detail/:stock",
       name: "StockDetail",
       component: StockDetail,
     },
