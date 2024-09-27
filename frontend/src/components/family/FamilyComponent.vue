@@ -44,8 +44,7 @@
       class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 mx-12"
     >
       <!-- <div class="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-xs sm:max-w-sm mx-4"> -->
-        <div class="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-xs mx-4">
-
+      <div class="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-xs mx-4">
         <!-- 이미지를 클릭하면 파일 업로드 창이 열리도록 설정 -->
         <div @click="triggerFileUpload" class="cursor-pointer mt-4 mb-4">
           <img
@@ -80,7 +79,7 @@
 
         <!-- 가족 생성 버튼 -->
         <button
-          class="px-4 py-2 bg-orange-500 text-white font-semibold rounded-lg  text-sm mt-4 mr-4 "
+          class="px-4 py-2 bg-orange-500 text-white font-semibold rounded-lg text-sm mt-4 mr-4"
           @click="createFamily"
         >
           가족 생성

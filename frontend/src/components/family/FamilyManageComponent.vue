@@ -1,23 +1,21 @@
 <template>
-  <div class="main-container bg-gray-200">
-      <div className="mt-16">
-        <BoxFamilytotal/>
-      </div>
-  </div>
-  
   <div class="flex flex-col items-center justify-center bg-gray-200 min-h-screen">
     <!-- 가족 이미지 섹션 -->
-
-    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl mb-6">
+    <div class="bg-white px-4 pb-4 pt-4 rounded-lg shadow-lg w-80 max-w-xl mb-6 mx-4 mt-8">
       <img
         :src="familyImageUrl || familyDefaultImage"
         alt="가족 기본이미지"
         class="w-full h-48 object-cover mb-4"
       />
-      <div class="flex flex-col justify-center items-center mx-12">
-        <h1 class="text-lg font-bold">가훈</h1>
-        <br />
-        <button class="px-4 py-2 bg-orange-500 text-white rounded-lg">가족삭제</button>
+      <div class="flex flex-col justify-center items-center cursor-pointer">
+        <div class="flex items-center mb-4">
+          <h2 class="text-lg font-bold text-blue-700">&nbsp;착하게 살자&nbsp;</h2>
+          <IconFamilyEdit />
+          <br />
+        </div>
+        <div class="w-full flex justify-end ml-4 pr-2">
+          <button class="px-2 py-2 bg-orange-500 text-white rounded-lg text-sm">가족삭제</button>
+        </div>
       </div>
     </div>
 
@@ -25,23 +23,32 @@
     <div
       v-for="member in familyMembers"
       :key="member.id"
-      class="bg-white p-4 rounded-lg shadow-lg w-full max-w-xl mb-4 flex items-center"
+      class="bg-white p-4 rounded-lg shadow-lg w-80 max-w-xl mb-4 flex items-center"
     >
-      <img
-        :src="member.profileImageUrl"
-        alt="프로필 이미지"
-        class="w-16 h-16 rounded-full object-cover mr-4"
-      />
-      <div class="flex-1">
-        <h2 class="text-lg font-bold">{{ member.name }}</h2>
-        <p class="text-sm text-gray-500">구성원 역할: {{ member.role }}</p>
+      <div class="bg-blue-700 p-4 rounded-lg mr-4">
+        <div class="bg-white rounded-full p-2">
+          <img
+            :src="member.profileImageUrl"
+            alt="프로필 이미지"
+            class="w-12 h-12 rounded-full object-cover"
+          />
+        </div>
+        <h2 class="text-white text-md font-bold mt-4 ml-2">{{ member.name }}</h2>
       </div>
-      <button
-        @click="openDeleteModal(member.id)"
-        class="px-4 py-2 bg-red-500 text-white rounded-lg"
-      >
-        삭제
-      </button>
+
+      <div class="flex-1">
+        <!-- <h2 class="text-md font-bold">{{ member.name }}</h2> -->
+        <p class="text-md text-gray-700 font-bold mt-4 mb-4">
+          &nbsp;구성원 역할 &nbsp;&nbsp;
+          <span class="text-blue-700 font-bold">{{ member.role }}</span>
+        </p>
+        <button
+          @click="openDeleteModal(member.id)"
+          class="px-4 py-1 bg-red-500 text-white rounded-lg text-sm mt-12 ml-28"
+        >
+          삭제
+        </button>
+      </div>
     </div>
     <DeleteFamilyComponent
       v-if="selectedMemberId !== null"
@@ -50,7 +57,6 @@
     />
   </div>
 </template>
-
 <script setup lang="ts">
 import axios from "axios"
 import { onMounted, ref } from "vue"
@@ -58,9 +64,7 @@ import familyDefaultImage from "@/assets/family/가족 기본이미지.png"
 import parentDefaultImage from "@/assets/family/부모 기본이미지.png"
 import daughterDefaultImage from "@/assets/family/딸 기본이미지.png"
 import DeleteFamilyComponent from "./DeleteFamilyComponent.vue"
-
-import BoxFamilytotal from "@/components/family/familybox/BoxFamilytotal.vue"
-
+import IconFamilyEdit from "../icons/IconFamilyEdit.vue"
 interface FamilyMembers {
   id: number
   name: string
@@ -73,19 +77,19 @@ const familyImageUrl = ref<string>("")
 const familyMembers = ref<FamilyMembers[]>([
   {
     id: 1,
-    name: "홍길동",
+    name: "김엄마",
     role: "부모님",
     profileImageUrl: parentDefaultImage, // 더미 이미지 URL
   },
   {
     id: 2,
-    name: "김영희",
+    name: "김아빠",
     role: "부모님",
     profileImageUrl: parentDefaultImage, // 더미 이미지 URL
   },
   {
     id: 3,
-    name: "홍길순",
+    name: "김자녀",
     role: "자녀",
     profileImageUrl: daughterDefaultImage, // 더미 이미지 URL
   },
@@ -129,17 +133,4 @@ onMounted(() => {
   fetchFamilyData()
 })
 </script>
-
-<style scoped>
-.main-container {
-  width: 100%;
-  height: 100%;
-  min-height: 101vh;
-}
-
-@media (min-width: 393px) {
-  .main-container {
-    max-width: 393px;
-  }
-}
-</style>
+<style lang=""></style>
