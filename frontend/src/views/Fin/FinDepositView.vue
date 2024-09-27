@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BoxDepositProduct from "@/components/box/BoxDepositProduct.vue"
 import { useFinStore } from "@/stores/fin"
-import { onMounted, ref } from "vue"
+import { onMounted } from "vue"
 
 const finStore = useFinStore()
 onMounted(() => {

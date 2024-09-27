@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import IconExplanation from "@/components/icons/IconExplanation.vue"
-import { useFinStore } from "@/stores/fin";
-import { onMounted, ref, onUnmounted } from "vue";
+import { useFinStore } from "@/stores/fin"
+import { onMounted, ref, onUnmounted } from "vue"
 
 const name = "FinLoanCreateView"
 const finStore = useFinStore()
-onMounted( ()=> {
+onMounted(() => {
   finStore.isYellowPage = true
 })
-onUnmounted( ()=> {
+onUnmounted(() => {
   finStore.isYellowPage = false
 })
 </script>
