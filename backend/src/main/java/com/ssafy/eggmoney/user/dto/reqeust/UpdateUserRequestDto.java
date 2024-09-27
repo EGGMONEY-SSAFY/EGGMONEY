@@ -11,4 +11,5 @@ public class UpdateUserRequestDto {
     private String bank;
     private String realAccount;
     private String simplePwd;
+    private String role;
 }

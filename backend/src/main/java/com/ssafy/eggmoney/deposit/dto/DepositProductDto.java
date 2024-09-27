@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @Builder
 public class DepositProductDto {
-    private long id;
+    private long productId;
     private String productName;
-    private double rate;
-    private int date;
+    private double depositRate;
+    private int depositDate;
 }

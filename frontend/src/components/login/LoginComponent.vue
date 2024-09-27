@@ -1,11 +1,21 @@
 <template>
-  <a id="kakao-login-btn" @click="redirectToLogin">
-    <img
-      src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
-      width="222"
-      alt="카카오 로그인 버튼"
-    />
-  </a>
+  <div class="flex flex-col items-center justify-center bg-gray-100">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+      <h2 class="text-center text-2xl font-bold text-gray-800 mb-6">로그인</h2>
+      <button
+        id="kakao-login-btn"
+        @click="redirectToLogin"
+        class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-4 rounded-full mb-4 flex items-center justify-center"
+      >
+        <img
+          src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png"
+          alt="카카오 로그인 버튼"
+          class="w-6 h-6 mr-2"
+        />
+        카카오로 로그인
+      </button>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">

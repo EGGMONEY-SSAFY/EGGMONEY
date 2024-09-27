@@ -1,6 +1,19 @@
 <script setup lang="ts">
+import { useRouter } from "vue-router"
 import IconRightArrow from "../icons/IconRightArrow.vue"
 import IconFamily from "../icons/IconFamily.vue"
+
+// Vue Router 사용
+const router = useRouter()
+
+// 내 가족 클릭 이벤트 핸들러
+const goToFamily = () => {
+  router.push("/family")
+}
+
+const goToFamilyConnect = () => {
+  router.push("/family/family-connection")
+}
 </script>
 
 <template>
@@ -15,36 +28,18 @@ import IconFamily from "../icons/IconFamily.vue"
         <p></p>
       </div>
     </div>
-    <div class="flex justify-between cursor-pointer">
-      <div class="m-4">
-        <p>&nbsp;&nbsp;&nbsp;내 가족</p>
+    <div class="flex justify-between cursor-pointer" @click="goToFamily">
+      <div class="my-4 mx-8">
+        <p>가족</p>
       </div>
       <div class="m-4 flex justify-center items-center">
         <p><IconRightArrow class="size-6" /></p>
       </div>
     </div>
 
-    <!-- <div class="flex justify-between">
-      <div class="m-4">
-        <p>&nbsp;&nbsp;&nbsp;적금 상품 조회</p>
-      </div>
-      <div class="m-4 flex justify-center items-center">
-        <p><IconRightArrow class="size-6" /></p>
-      </div>
-    </div> -->
-
-    <!-- <div class="flex justify-between">
-      <div class="m-4">
-        <p>&nbsp;&nbsp;&nbsp;뉴스</p>
-      </div>
-      <div class="m-4 flex justify-center items-center">
-        <p><IconRightArrow class="size-6" /></p>
-      </div>
-    </div> -->
-
-    <div class="flex justify-between mb-3 cursor-pointer">
-      <div class="m-4">
-        <p>&nbsp;&nbsp;&nbsp;가족 연결</p>
+    <div class="flex justify-between mb-3 cursor-pointer" @click="goToFamilyConnect">
+      <div class="my-4 mx-8">
+        <p>가족 연결</p>
       </div>
       <div class="m-4 flex justify-center items-center">
         <p><IconRightArrow class="size-6" /></p>
