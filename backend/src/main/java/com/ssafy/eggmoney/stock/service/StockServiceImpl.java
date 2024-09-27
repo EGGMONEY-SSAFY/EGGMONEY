@@ -2,9 +2,10 @@ package com.ssafy.eggmoney.stock.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.ssafy.eggmoney.common.config.StockApiConfig;
+import com.ssafy.eggmoney.stock.dto.api.StockPriceDto;
+import com.ssafy.eggmoney.stock.dto.api.StockPricesDto;
+import com.ssafy.eggmoney.stock.dto.api.StockTokenDto;
 import com.ssafy.eggmoney.stock.dto.response.StockPriceResponse;
-import com.ssafy.eggmoney.stock.dto.response.StockPricesResponse;
-import com.ssafy.eggmoney.stock.dto.response.StockTokenResponse;
 import com.ssafy.eggmoney.stock.entity.Stock;
 import com.ssafy.eggmoney.stock.entity.StockItem;
 import com.ssafy.eggmoney.stock.repository.StockRepository;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +33,7 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public StockTokenResponse getAccessToken() {
+    public StockTokenDto getAccessToken() {
         return webClient.post()
                 .uri("/oauth2/tokenP")
                 .bodyValue(Map.of(
@@ -40,12 +42,12 @@ public class StockServiceImpl implements StockService {
                         "appsecret", apiConfig.getAppSecret()
                 ))
                 .retrieve()
-                .bodyToMono(StockTokenResponse.class)
+                .bodyToMono(StockTokenDto.class)
                 .block();
     }
 
     @Override
-    public List<StockPriceResponse> getStockPrices(String token, String inputDate, String stockCode) {
+    public List<StockPriceDto> getStockPrices(String token, String inputDate, String stockCode) {
         return this.webClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/uapi/domestic-stock/v1/quotations/inquire-index-daily-price")
@@ -63,11 +65,12 @@ public class StockServiceImpl implements StockService {
                     headers.set("custtype", "P");
                 })
                 .retrieve()
-                .bodyToMono(StockPricesResponse.class)
-                .map(StockPricesResponse::getOutput2)
+                .bodyToMono(StockPricesDto.class)
+                .map(StockPricesDto::getOutput2)
                 .block();
     }
 
+    @Override
     public BigDecimal getCurrentStockPrice(String token, String stockCode) {
         return this.webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -91,7 +94,7 @@ public class StockServiceImpl implements StockService {
 
     @Transactional
     @Override
-    public void saveStockPrices(List<StockPriceResponse> stockPrices, StockItem stockItem) {
+    public void saveStockPrices(List<StockPriceDto> stockPrices, StockItem stockItem) {
         List<Stock> stocks = new ArrayList<>();
         stockPrices.forEach(stockPrice -> {
             Stock stock = new Stock(stockItem, stockPrice.getBstp_nmix_prpr(), stockPrice.getStck_bsop_date());
@@ -103,5 +106,23 @@ public class StockServiceImpl implements StockService {
     @Transactional
     public void saveCurrentStockPrices(List<Stock> stocks) {
         stockRepository.saveAll(stocks);
+    }
+
+    @Override
+    public List<StockPriceResponse> findLatestStockPrice() {
+        List<StockPriceResponse> StockPrices = new ArrayList<>();
+        List<StockItem> stockItems = stockRepository.findStockItems();
+
+        for (StockItem stockItem : stockItems) {
+            List<Integer> prices = stockRepository.findTop2LatestPrices(stockItem);
+            StockPrices.add(new StockPriceResponse(stockItem, prices.get(0), prices.get(1)));
+        }
+
+        return StockPrices;
+    }
+
+    @Override
+    public LocalDate findLatestDate() {
+        return stockRepository.findLatestDate();
     }
 }

@@ -1,7 +1,8 @@
 //package com.ssafy.eggmoney.stock.service;
 //
-//import com.ssafy.eggmoney.stock.dto.response.StockPriceResponse;
-//import com.ssafy.eggmoney.stock.dto.response.StockTokenResponse;
+//import com.ssafy.eggmoney.stock.dto.api.StockPriceDto;
+//import com.ssafy.eggmoney.stock.dto.api.StockTokenDto;
+//import com.ssafy.eggmoney.stock.entity.Stock;
 //import com.ssafy.eggmoney.stock.entity.StockItem;
 //import com.ssafy.eggmoney.stock.repository.StockRepository;
 //import org.assertj.core.api.Assertions;
@@ -18,6 +19,7 @@
 //import java.nio.file.Paths;
 //import java.nio.file.attribute.BasicFileAttributes;
 //import java.time.Instant;
+//import java.time.LocalDate;
 //import java.time.temporal.ChronoUnit;
 //import java.util.List;
 //
@@ -36,7 +38,7 @@
 //
 //    @Test
 //    void getToken() {
-//        StockTokenResponse stockToken = stockService.getAccessToken();
+//        StockTokenDto stockToken = stockService.getAccessToken();
 //
 //        Assertions.assertThat(stockToken.getAccessToken()).isNotNull();
 //        Assertions.assertThat(stockToken.getExpiresIn()).isEqualTo(86400);
@@ -67,7 +69,7 @@
 //            throw new RuntimeException(e);
 //        }
 //
-//        List<StockPriceResponse> stockPrices = stockService.getStockPrices(token, "20240921", "0001");
+//        List<StockPriceDto> stockPrices = stockService.getStockPrices(token, "20240921", "0001");
 //
 //        Assertions.assertThat(stockPrices).hasSize(100);
 //    }
@@ -91,7 +93,7 @@
 //        }
 //
 //        for (int i = 0; i < stockCodes.length; i++) {
-//            List<StockPriceResponse> stockPrices = stockService.getStockPrices(token, "20231130", stockCodes[i]);
+//            List<StockPriceDto> stockPrices = stockService.getStockPrices(token, "20231130", stockCodes[i]);
 //            stockService.saveStockPrices(stockPrices, stockItems[i]);
 //        }
 //    }
@@ -117,5 +119,14 @@
 //        BigDecimal currentStockPrice = stockService.getCurrentStockPrice(token, stockCodes[0]);
 //
 //        Assertions.assertThat(currentStockPrice).isNotNull();
+//    }
+//
+//    @Test
+//    void getLatestDateStocks() {
+//        List<StockItem> stockItems = stockRepository.findStockItems();
+//        List<Integer> top2LatestPrices = stockRepository.findTop2LatestPrices(StockItem.KOSPI);
+//
+//        Assertions.assertThat(stockItems).hasSize(13);
+//        Assertions.assertThat(top2LatestPrices).hasSize(2);
 //    }
 //}
