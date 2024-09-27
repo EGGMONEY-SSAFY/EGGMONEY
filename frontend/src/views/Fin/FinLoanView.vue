@@ -1,11 +1,26 @@
 <script setup lang="ts">
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
+import router from "@/router"
+import { useFinStore } from "@/stores/fin"
+import { onMounted, ref, onUnmounted } from "vue"
 const name = "FinLoanCreateView"
+const finStore = useFinStore()
+onMounted(() => {
+  finStore.isYellowPage = true
+})
+onUnmounted(() => {
+  finStore.isYellowPage = false
+})
+const handleClick = () => {
+  router.push({
+    name: "FinLoanCreateView",
+  })
+}
 </script>
 
 <template>
-  <div class=" bg-yellow-50">
+  <div class="bg-yellow-50">
     <div class="h-[78vh] flex flex-col justify-around">
       <div class="m-4 flex items-center justify-center">
         <div class="m-2 flex">
@@ -25,7 +40,7 @@ const name = "FinLoanCreateView"
         </div>
       </div>
       <div class="m-4">
-        <NextButton :route-name="name" content="신청하기"></NextButton>
+        <NextButton content="신청하기" @click="handleClick"></NextButton>
       </div>
     </div>
   </div>

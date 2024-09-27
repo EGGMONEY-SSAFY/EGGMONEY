@@ -10,10 +10,10 @@
           <div
             class="flex flex-col items-center mb-6 cursor-pointer"
             :class="{
-              'border-4 border-orange-500': role === 0,
-              'border-2 border-gray-300': role !== 0,
+              'border-4 border-orange-500': role === '자녀',
+              'border-2 border-gray-300': role !== '자녀',
             }"
-            @click="selectRole(0)"
+            @click="selectRole('자녀')"
           >
             <img src="@/assets/common/부모 닭.png" alt="부모" class="w-24 h-24 mb-2" />
             <span class="text-lg font-bold text-gray-800">부모</span>
@@ -22,10 +22,10 @@
           <div
             class="flex flex-col items-center cursor-pointer"
             :class="{
-              'border-4 border-orange-500': role === 1,
-              'border-2 border-gray-300': role !== 1,
+              'border-4 border-orange-500': role === '부모',
+              'border-2 border-gray-300': role !== '부모',
             }"
-            @click="selectRole(1)"
+            @click="selectRole('부모')"
           >
             <img src="@/assets/common/아기 닭.png" alt="자녀" class="w-24 h-24 mb-2" />
             <span class="text-lg font-bold text-gray-800">자녀</span>
@@ -46,15 +46,17 @@
 <script setup lang="ts">
 import { ref, type Ref } from "vue"
 import axios from "axios"
+import { useRouter } from "vue-router"
 
-const role = ref<number>(2) as Ref<number>
-const selectRole = (selectedRole: number) => {
+const router = useRouter()
+const role = ref<String>("최초") as Ref<String>
+const selectRole = (selectedRole: String) => {
   role.value = selectedRole
   console.log(role.value)
 }
 const submitExinfo = async () => {
-  if (role.value === 2) {
-    alert("부모의 역할을 선택해주세요")
+  if (role.value === "최초") {
+    alert("역할을 선택해주세요")
     return
   }
   try {
@@ -62,6 +64,7 @@ const submitExinfo = async () => {
       role: role.value,
     })
     console.log(response)
+    router.push("/won")
   } catch (error) {
     console.error("Error:", error)
   }

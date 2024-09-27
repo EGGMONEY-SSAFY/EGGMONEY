@@ -1,7 +1,11 @@
 package com.ssafy.eggmoney.auth.controller;
 
+import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 import com.ssafy.eggmoney.auth.service.WonService;
+import com.ssafy.eggmoney.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -13,7 +17,7 @@ import java.util.Map;
 @RequestMapping("/api/v1/auth/won")
 public class WonController {
     private final WonService wonService;
-
+    private final KakaoAuthService kakaoAuthService;
     @PostMapping("/send")
     public Mono<String> sendmessage(@RequestBody Map<String, String> request){
         String accountnum = request.get("accountnum");
@@ -21,11 +25,15 @@ public class WonController {
     }
 
     @PostMapping("/check")
-    public Mono<String> checkmessage(@RequestBody Map<String, String> request){
+    public Mono<String> checkmessage(@RequestHeader(value = "Authorization") String token,@RequestBody Map<String, String> request){
         String accountnum = request.get("accountnum");
         String authText = request.get("authText");
         String authnum = request.get("authnum");
-        return wonService.checkmessage(accountnum,authText,authnum);
+
+        User user = kakaoAuthService.verifyKakaoToken(token);
+
+        Long userId = user.getId();
+        return wonService.checkmessage(accountnum,authText,authnum,userId);
     }
 
 }
