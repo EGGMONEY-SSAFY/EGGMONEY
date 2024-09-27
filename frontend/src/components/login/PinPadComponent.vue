@@ -205,7 +205,7 @@ const buttonStyle = (index: number) => {
   const col = index % 3
   const buttonSize = 80 // 버튼 크기
   const padding = 20 // 버튼 사이 간격
-
+// test
   const backgroundColor =
     clickedButton.value === index || randomButton.value === index ? "white" : "transparent"
 
