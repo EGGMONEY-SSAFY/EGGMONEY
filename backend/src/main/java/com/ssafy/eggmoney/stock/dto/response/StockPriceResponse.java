@@ -20,7 +20,8 @@ public class StockPriceResponse {
 
         BigDecimal priceBD = BigDecimal.valueOf(price);
         BigDecimal previousPriceBD = BigDecimal.valueOf(previousPrice);
-        BigDecimal result = priceBD.subtract(previousPriceBD).divide(previousPriceBD, 4, RoundingMode.HALF_UP)
+        BigDecimal result = priceBD.subtract(previousPriceBD)
+                .divide(previousPriceBD, 4, RoundingMode.HALF_UP)
                 .multiply(BigDecimal.valueOf(100));
         ratio = result.setScale(2, RoundingMode.HALF_UP);
     }

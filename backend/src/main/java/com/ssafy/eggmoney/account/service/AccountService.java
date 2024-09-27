@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -40,7 +41,7 @@ public class AccountService {
         Optional<User> ou =  userRepository.findById(userId);
 
         if ( ou.isEmpty() )
-            throw new RuntimeException();
+            throw new NoSuchElementException("해당 유저가 존재하기 않습니다.");
 
         User us = ou.get();
         Account ac = accountRepository.findByUserId(us.getId()).get();
@@ -79,13 +80,12 @@ public class AccountService {
         Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElse(null);
         Loan loan = loanRepository.findByIdAndLoanStatus(userId, LoanStatus.APPROVAL).orElse(null);
         Deposit deposit = depositRepository.findByUserIdAndDepositStatus(userId, DepositStatus.AVAILABLE).orElse(null);
-        System.out.println(savings);
         GetAnalyticsResponseDto dto = GetAnalyticsResponseDto.builder()
-                .mainAccountBalance(account != null ? account.getBalance() : null)
-                .savings(savings != null ? savings.getBalance() : null)
-                .deposit(deposit != null ? deposit.getDepositMoney() : null)
+                .mainAccountBalance(account != null ? account.getBalance() : 0)
+                .savings(savings != null ? savings.getBalance() : 0)
+                .deposit(deposit != null ? deposit.getDepositMoney() : 0)
                 .stock(0)
-                .loan(loan != null ? loan.getLoanAmount() : null)
+                .loan(loan != null ? loan.getLoanAmount() : 0)
                 .build();
         return dto;
     }
