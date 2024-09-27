@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@Table(name = "stocks")
+@Table(name = "stocks", uniqueConstraints = @UniqueConstraint(columnNames = {"stockItem", "date"}))
 @NoArgsConstructor(access = PROTECTED)
 public class Stock extends BaseTime {
     @Id
