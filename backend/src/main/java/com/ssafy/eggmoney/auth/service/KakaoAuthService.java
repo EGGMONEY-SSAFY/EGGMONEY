@@ -111,12 +111,17 @@ public class KakaoAuthService {
     // 카카오 토큰 검증
     public User verifyKakaoToken(String token) {
         String url = "https://kapi.kakao.com/v2/user/me";
-
-        log.info("카카오 토큰 검증 시작 - 토큰 값: {}", token);  // 토큰 로그
+        final String accessToken;
+        if (token.startsWith("Bearer ")) {
+            accessToken = token.substring(7);  // "Bearer " 부분을 제거
+        }else {
+            accessToken = token;
+        }
+        log.info("카카오 토큰 검증 시작 - 토큰 값: {}", accessToken);  // 토큰 로그
 
         return webClient.get()
                 .uri(url)
-                .headers(headers -> headers.setBearerAuth(token))
+                .headers(headers -> headers.setBearerAuth(accessToken))
                 .retrieve()
                 .bodyToMono(KakaoUserResponse.class)
                 .doOnNext(kakaoUserResponse -> log.info("카카오 API 응답: {}", kakaoUserResponse)) // 카카오 API 응답 로그
