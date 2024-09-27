@@ -60,7 +60,8 @@ const submitExinfo = async () => {
     return
   }
   try {
-    const response = await axios.post("/api/v1/profile/1/update", {
+    const userId=await axios.post('')
+    const response = await axios.post(`/api/v1/profile/${userId}/update`, {
       role: role.value,
     })
     console.log(response)
