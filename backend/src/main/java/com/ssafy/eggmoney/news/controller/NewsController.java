@@ -18,7 +18,6 @@ public class NewsController {
 
     @GetMapping("/news")
     public ResponseEntity<List<NewsTitlesResponse>> getNewsTitles() {
-        System.out.println("getNewsTitles");
         return new ResponseEntity<>(newsService.findNewsTitles(), HttpStatus.OK);
     }
 
