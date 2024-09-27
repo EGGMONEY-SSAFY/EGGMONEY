@@ -10,6 +10,21 @@ export interface TradeData {
   createdAt: string
 }
 
+export interface Analytics {
+  입출금통장: Number | null
+  예금: Number | null
+  적금: Number | null
+  대출: Number | null
+  주식: Number | null
+}
+
+export interface ChartData {
+  labels: string[]
+  datasets: {
+    data: number[]
+  }[]
+}
+
 export const useAssetStore = defineStore("asset", () => {
   const API_URL = "/api/v1/asset"
   const deposit = ref<Number | null>(null)
@@ -18,74 +33,6 @@ export const useAssetStore = defineStore("asset", () => {
   const mainAccount = ref<Number | null>(null)
   const stock = ref<Number | null>(null)
   const logs = ref<TradeData[]>([])
-
-  // 메인계좌 조회
-  const getAccount = function (userId: number) {
-    axios({
-      method: "get",
-      url: `${API_URL}/main-account/${userId}`,
-      data: {
-        // "username": payload.username,
-      },
-    })
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-  }
-
-  // 예금 조회
-  const getDeposit = function (userId: number) {
-    axios({
-      method: "get",
-      url: `${API_URL}/main-account/${userId}`,
-      data: {
-        // "username": payload.username,
-      },
-    })
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-  }
-
-  // 적금계좌 조회
-  const getSavings = function (userId: number) {
-    axios({
-      method: "get",
-      url: `${API_URL}/main-account/${userId}`,
-      data: {
-        // "username": payload.username,
-      },
-    })
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-  }
-
-  // 대출 조회
-  const getLoan = function (userId: number) {
-    axios({
-      method: "get",
-      url: `${API_URL}/main-account/${userId}`,
-      data: {
-        // "username": payload.username,
-      },
-    })
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-  }
 
   // 유저 자산 조회
   const getPort = function (userId: number): Promise<void> {
@@ -97,7 +44,7 @@ export const useAssetStore = defineStore("asset", () => {
         deposit.value = res.data.deposit
         savings.value = res.data.savings
         mainAccount.value = res.data.mainAccountBalance
-        loan.value = res.data.value
+        loan.value = res.data.loan
         stock.value = res.data.stock
       })
       .catch((err) => {
@@ -116,19 +63,20 @@ export const useAssetStore = defineStore("asset", () => {
         res.data.forEach((data: TradeData) => {
           if (data.tradeTarget === "WITHDRAWAL") {
             data.tradeTarget = "출금"
-          } else if (data.tradeTarget === "loan") {
+          } else if (data.tradeTarget === "LOAN") {
             data.tradeTarget = "대출"
-          } else if (data.tradeTarget === "deposit") {
+          } else if (data.tradeTarget === "DEPOSIT") {
             data.tradeTarget = "예금"
-          } else if (data.tradeTarget === "stock") {
+          } else if (data.tradeTarget === "STOCK") {
             data.tradeTarget = "주식"
-          } else if (data.tradeTarget === "savings") {
+          } else if (data.tradeTarget === "SAVINGS") {
             data.tradeTarget = "적금"
+          } else if (data.tradeTarget === "ALLOWANCE") {
+            data.tradeTarget = "용돈"
           }
           logsArray.push(data)
         })
         logs.value = logsArray
-        console.log(logs.value)
       })
       .catch((err) => {
         console.error(err)
@@ -142,10 +90,6 @@ export const useAssetStore = defineStore("asset", () => {
     mainAccount,
     stock,
     logs,
-    getAccount,
-    getDeposit,
-    getSavings,
-    getLoan,
     getPort,
     getAccountLog,
   }

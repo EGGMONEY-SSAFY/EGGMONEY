@@ -62,10 +62,11 @@ public class User extends BaseTime {
         this.stockRatio = ratio;
     }
 
-    public void updateUserInfo(String name, String bank, String realAccount, String simplePwd){
+    public void updateUserInfo(String name, String bank, String realAccount, String simplePwd, String role){
         if(name != null) this.name = name;
         if(bank!=null) this.bank = bank;
         if(realAccount != null) this.realAccount = realAccount;
         if(simplePwd != null) this.simplePwd = simplePwd;
+        if(role != null) this.role = role;
     }
 }
