@@ -27,7 +27,6 @@ public class StockLog extends BaseTime {
     @Enumerated(value = STRING)
     private TradeType tradeType;
 
-    private boolean isExecution;
+    private int tradePrice;
     private int tradeAmount;
-    private int price;
 }
