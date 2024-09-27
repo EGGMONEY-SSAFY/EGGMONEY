@@ -58,7 +58,7 @@ public class StockController {
                         .setScale(0, RoundingMode.HALF_UP)
                                 .intValue();
 
-        response.put("investableRatio", investablePrice);
+        response.put("investablePrice", investablePrice);
         response.put("balance", analytics.getMainAccountBalance());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
