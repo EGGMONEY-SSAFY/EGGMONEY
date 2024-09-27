@@ -145,17 +145,19 @@ const verifyInput = () => {
 const encryptAndSendPin = (pin: string) => {
   const encrypt = new JSEncrypt()
   encrypt.setPublicKey(publicKey.value)
-  const encryptedPin = encrypt.encrypt(pin)
-  if (!encryptedPin) {
-    console.error("PIN 암호화 실패")
-    instructionMessage.value = "암호화 오류가 발생했습니다."
-    return
-  }
+  //const encryptedPin = encrypt.encrypt(pin)
+  const encryptedPin = pin
+  //   if (!encryptedPin) {
+  //     console.error("PIN 암호화 실패")
+  //     instructionMessage.value = "암호화 오류가 발생했습니다."
+  //     return
+  //   }
   sendToBackend(encryptedPin)
 }
 const sendToBackend = async (encryptedPin: string) => {
   try {
-    const token = authStore.accessToken
+    // const token = authStore.accessToken
+    const token = "8CHnOwrEfKz3D_d9svUewrgwa0qyWihdAAAAAQoqJZAAAAGSMhZ9aJCBbdpZdq0Z"
     const response = await axios.post(
       "http://localhost:8080/api/pinpad/verify/check",
       {
@@ -168,6 +170,7 @@ const sendToBackend = async (encryptedPin: string) => {
         },
       }
     )
+    console.log(response)
     if (response.data.status === "success") {
       // 상위 프롭스에 이벤트전달 성공 이벤트 전달
       failCount.value = 0 // 성공 시 틀린 횟수 초기화
@@ -176,6 +179,7 @@ const sendToBackend = async (encryptedPin: string) => {
       instructionMessage.value = "비밀번호가 일치하지 않습니다. 다시 시도해주세요."
       resetInput()
       failCount.value += 1 // 실패 시 틀린 횟수 증가
+      console.log(failCount.value)
       if (failCount.value >= 5) {
         emit("pinFail")
         // 5번 틀리면 상위 프롭스에 실패 이벤트 전달
