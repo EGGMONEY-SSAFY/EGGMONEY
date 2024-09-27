@@ -2,6 +2,7 @@ package com.ssafy.eggmoney.simplepwd.controller;
 
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 import com.ssafy.eggmoney.global.dto.ResponseApi;
+import com.ssafy.eggmoney.simplepwd.dto.request.PinVerificationRequest;
 import com.ssafy.eggmoney.simplepwd.dto.response.PinPadResponse;
 import com.ssafy.eggmoney.simplepwd.service.EncryptionService;
 import com.ssafy.eggmoney.simplepwd.service.PinPadService;
@@ -22,14 +23,16 @@ import java.util.Map;
 public class PinPadController {
     private final PinPadService pinPadService;
     private final EncryptionService encryptionService;
-//    private final KakaoAuthService kakaoAuthService;
-//    private final UserServcie userServcie;
+    private final KakaoAuthService kakaoAuthService;
+    private final UserServcie userService;
 
 
     @Autowired
-    public PinPadController(PinPadService pinPadService, EncryptionService encryptionService){
+    public PinPadController(PinPadService pinPadService, EncryptionService encryptionService, KakaoAuthService kakaoAuthService, UserServcie userService){
         this.pinPadService=pinPadService;
         this.encryptionService=encryptionService;
+        this.kakaoAuthService = kakaoAuthService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/api/pinpad", produces = "application/json")
@@ -60,18 +63,23 @@ public class PinPadController {
         response.put("Pwd",decryptedPasswordString);
         return ResponseEntity.ok(response);
     }
-//    @PostMapping("/api/pinpad/verify/check")
-//    public ResponseEntity<Map<String, String>> checkUserSimplePwd(@RequestHeader(value="Authorization") String token, @RequestBody String encryptedPassword) throws Exception{
-//        String decryptedPassword = verifyPin(encryptedPassword).get("Pwd");
-//        User user = kakaoAuthService.verifyKakoToken(token);
-//        String userStoredPwd = userServcie.getUserSimplePassword(user.getId());
-//        Map<String, String> response = new HashMap<>();
+    @PostMapping("/api/pinpad/verify/check")
+    public ResponseEntity<Map<String, String>> checkUserSimplePwd(@RequestHeader(value="Authorization") String token, @RequestBody PinVerificationRequest request) throws Exception{
+        String encryptedPassword = request.getEncryptedPin();
+
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        System.out.println("카카오 토큰 검증된 유저 ID: " + user.getId());
+        // 저장된 비밀번호 확인
+        String userStoredPwd = userService.getUser(user.getId()).getPwd();
+        System.out.println("저장된 비밀번호: " + userStoredPwd);
+        Map<String, String> response = new HashMap<>();
 //        if(decryptedPassword.equals(userStoredPwd)){
-//            response.put("status","success");
-//        }else{
-//            response.put("status","fail");
-//        }
-//
-//        return ResponseEntity.ok(response);
-//    }
+        if(encryptedPassword.equals(userStoredPwd)){
+            response.put("status","success");
+        }else{
+            response.put("status","fail");
+        }
+        System.out.println(response);
+        return ResponseEntity.ok(response);
+    }
 }
