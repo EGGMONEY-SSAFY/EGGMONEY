@@ -11,7 +11,7 @@ const isActive = computed(() => {
 </script>
 
 <template>
-  <RouterLink to="/stock" class="flex flex-col justify-center items-center mt-2">
+  <RouterLink to="/stock/home" class="flex flex-col justify-center items-center mt-2">
     <component :is="isActive ? IconStockSelected : IconStock" />
     <p class="text-sm mt-1">증권</p>
   </RouterLink>

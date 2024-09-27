@@ -1,10 +1,11 @@
 <template>
-  <div id="qr-code-scanner" class="flex flex-col items-center justify-center h-screen">
+  <div id="qr-code-scanner" class="flex flex-col items-center justify-center">
     <video
       ref="videoRef"
       class="w-full max-w-lg h-auto border-2 border-gray-300 rounded-md"
     ></video>
-    <button @click="ab">1</button>
+    <!-- h-auto -->
+    <button @click="ab"></button>
     <!-- 모달 (가족 연결 확인) -->
     <div
       v-if="showModal"

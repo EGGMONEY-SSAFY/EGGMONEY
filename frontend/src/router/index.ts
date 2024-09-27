@@ -17,7 +17,6 @@ import FamilyManageComponent from "@/components/family/FamilyManageComponent.vue
 import PinPadComponent from "@/components/login/PinPadComponent.vue"
 import CreateFamilySuccess from "@/components/family/complete/CreateFamilySuccess.vue"
 import ConnectionFamilySuccess from "@/components/family/complete/ConnectionFamilySuccess.vue"
-
 import StockNewsDetailView from "@/views/Stock/StockNewsDetailView.vue"
 import PocketMoneyView from "@/views/All/PocketMoneyView.vue"
 import FinDepositView from "@/views/Fin/FinDepositView.vue"
@@ -37,6 +36,9 @@ import EditProfileView from "@/views/All/EditProfileView.vue"
 import FinLoanView from "@/views/Fin/FinLoanView.vue"
 import FinLoanCreateView from "@/views/Fin/FinLoanCreateView.vue"
 import ExInfoView from "@/views/All/ExInfoView.vue"
+import AssetDepositDetailView from "@/views/Asset/AssetDepositDetailView.vue"
+import AssetSavingsDetailView from "@/views/Asset/AssetSavingsDetailView.vue"
+import StockOrderListView from "@/views/Stock/StockOrderListView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,6 +51,11 @@ const router = createRouter({
       path: "/main",
       name: "MainView",
       component: MainView,
+    },
+    {
+      path: "/stock/order-list",
+      name: "StockOrderListView",
+      component: StockOrderListView,
     },
     {
       path: "/stock/news/:newsId",
@@ -91,6 +98,16 @@ const router = createRouter({
           component: AssetLoanListView,
         },
       ],
+    },
+    {
+      path: "/asset/deposit/:userId",
+      name: "AssetDepositDetailView",
+      component: AssetDepositDetailView,
+    },
+    {
+      path: "/asset/savings/:userId",
+      name: "AssetSavingsDetailView",
+      component: AssetSavingsDetailView,
     },
     {
       path: "/asset/loan/:loanId",
@@ -155,7 +172,7 @@ const router = createRouter({
       ],
     },
     {
-      path: "/stock",
+      path: "/stock/home",
       name: "StockView",
       component: StockView,
     },

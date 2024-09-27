@@ -1,13 +1,13 @@
 <template>
-  <div class="p-6 min-h-screen bg-gray-100">
+  <div class="p-6 min-h-screen bg-gray-200">
     <div class="space-y-8">
       <!-- 가족 생성 버튼 -->
       <div
         @click="goToCreateFamily"
         class="flex items-center space-x-6 cursor-pointer bg-white hover:bg-gray-100 p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
       >
-        <img src="@/assets/family/가족 생성.png" alt="가족 생성 아이콘" class="w-16 h-16" />
-        <p class="text-2xl font-semibold">가족 생성</p>
+        <img src="@/assets/family/가족 생성.png" alt="가족 생성 아이콘" class="w-12 h-12" />
+        <p class="text-xl font-semibold">가족 생성</p>
       </div>
 
       <!-- 내 가족 버튼 -->
@@ -15,8 +15,8 @@
         @click="goToMyFamily"
         class="flex items-center space-x-6 cursor-pointer bg-white hover:bg-gray-100 p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
       >
-        <img src="@/assets/family/내 가족.png" alt="내 가족 아이콘" class="w-16 h-16" />
-        <p class="text-2xl font-semibold">내 가족</p>
+        <img src="@/assets/family/내 가족.png" alt="내 가족 아이콘" class="w-12 h-12" />
+        <p class="text-xl font-semibold">내 가족</p>
       </div>
 
       <!-- 가족 초대 버튼 -->
@@ -24,8 +24,8 @@
         @click="goToFamilyInvite"
         class="flex items-center space-x-6 cursor-pointer bg-white hover:bg-gray-100 p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
       >
-        <img src="@/assets/family/가족 초대.png" alt="가족 초대 아이콘" class="w-16 h-16" />
-        <p class="text-2xl font-semibold">가족 초대</p>
+        <img src="@/assets/family/가족 초대.png" alt="가족 초대 아이콘" class="w-12 h-12" />
+        <p class="text-xl font-semibold">가족 초대</p>
       </div>
 
       <!-- 가족 연결 버튼 -->
@@ -33,20 +33,20 @@
         @click="goToFamilyConnection"
         class="flex items-center space-x-6 cursor-pointer bg-white hover:bg-gray-100 p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
       >
-        <img src="@/assets/family/가족 연결.png" alt="가족 연결 아이콘" class="w-16 h-16" />
-        <p class="text-2xl font-semibold">가족 연결</p>
+        <img src="@/assets/family/가족 연결.png" alt="가족 연결 아이콘" class="w-12 h-12" />
+        <p class="text-xl font-semibold">가족 연결</p>
       </div>
     </div>
 
     <!-- 가족 생성 모달 창 -->
     <div
       v-if="showModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 mx-12"
     >
-      <div class="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-xs sm:max-w-sm mx-4">
-        <h1 class="text-lg font-bold">가족 프로필 사진 등록</h1>
+      <!-- <div class="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-xs sm:max-w-sm mx-4"> -->
+      <div class="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-xs mx-4">
         <!-- 이미지를 클릭하면 파일 업로드 창이 열리도록 설정 -->
-        <div @click="triggerFileUpload" class="cursor-pointer">
+        <div @click="triggerFileUpload" class="cursor-pointer mt-4 mb-4">
           <img
             v-if="imageBase64"
             :src="imageBase64"
@@ -60,7 +60,7 @@
             class="w-24 h-24 rounded-full mx-auto"
           />
         </div>
-
+        <h1 class="text-sm font-bold text-blue-600">가족사진 등록하기</h1>
         <!-- 파일 선택 input 요소는 숨김 -->
         <input
           ref="fileInput"
@@ -74,18 +74,18 @@
           type="text"
           v-model="familyDescription"
           placeholder="가족 소개"
-          class="p-2 border border-gray-300 rounded mt-4 w-full"
+          class="px-2 py-4 border border-gray-300 rounded mt-4 w-full text-sm"
         />
 
         <!-- 가족 생성 버튼 -->
         <button
-          class="px-4 py-2 bg-orange-500 text-white font-semibold rounded-lg mt-4"
+          class="px-4 py-2 bg-orange-500 text-white font-semibold rounded-lg text-sm mt-4 mr-4"
           @click="createFamily"
         >
           가족 생성
         </button>
         <button
-          class="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg mt-4"
+          class="px-4 py-2 bg-red-500 text-white font-semibold text-sm rounded-lg mt-4"
           @click="closeModal"
         >
           닫기

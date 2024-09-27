@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { Loan } from "@/stores/fin"
 import type { User } from "@/stores/user"
+import type { Loan } from "@/stores/fin"
 import { onMounted } from "vue"
 import { useRouter } from "vue-router"
 import IconRightArrow from "../icons/IconRightArrow.vue"
-
 const props = defineProps<{ user: User; loan: Loan }>()
 const router = useRouter()
 
