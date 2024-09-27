@@ -36,7 +36,6 @@ import EditProfileView from "@/views/All/EditProfileView.vue"
 import StockOrderListView from "@/views/Stock/StockOrderListView.vue"
 import ExInfoView from "@/views/All/ExInfoView.vue"
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
