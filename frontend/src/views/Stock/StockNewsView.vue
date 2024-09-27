@@ -2,23 +2,27 @@
 import BoxNews from "@/components/box/BoxNews.vue"
 import NavBarTab from "@/components/navbar/navBarTab/NavBarTab.vue"
 import { useVariableStore } from "@/stores/variable"
-import { computed } from "vue"
+import { computed, onMounted, reactive } from "vue"
 import { useRoute } from "vue-router"
-import { onMounted } from "vue"
 import { useStockStore } from "@/stores/stock"
 
+interface Article {
+  id: number
+  press: string
+  publishDate: string
+  title: string
+}
+
 const stockStore = useStockStore()
+const news = reactive<Article[]>([]) // 뉴스 모음 배열
 
-onMounted(() => {
-  stockStore.getNews()
-})
-const path = computed(() => {
-  return route.path
+onMounted(async () => {
+  const fetchedNews = await stockStore.getNews()
+  news.push(...fetchedNews)
 })
 
-const news = stockStore.news
 const route = useRoute()
-
+const path = computed(() => route.path)
 const store = useVariableStore()
 store.setTitle("뉴스")
 </script>
@@ -26,6 +30,9 @@ store.setTitle("뉴스")
 <template>
   <div>
     <NavBarTab :path="path" />
-    <BoxNews v-for="article in news" :key="article.id" :article="article" />
+    <div v-if="news.length">
+      <BoxNews v-for="article in news" :key="article.id" :article="article" />
+    </div>
+    <div v-else>Loading...</div>
   </div>
 </template>

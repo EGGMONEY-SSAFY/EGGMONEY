@@ -1,15 +1,14 @@
 <template>
-    <div class="flex flex-col items-center justify-center mx-auto h-screen">
-    
-    <div v-if="step!=2">
+  <div class="flex flex-col items-center justify-center mx-auto h-screen">
+    <div v-if="step != 2">
       <div class="text-center mt-6 text-lg font-semibold text-gray-700">
-      {{ instructionMessage }}
-    </div>
-    
-    <!-- 비밀번호 입력 표시 -->
-    <div class="flex gap-3 mb-4">
-        <div 
-          v-for="(digit, index) in 6" 
+        {{ instructionMessage }}
+      </div>
+
+      <!-- 비밀번호 입력 표시 -->
+      <div class="flex gap-3 mb-4">
+        <div
+          v-for="(digit, index) in 6"
           :key="index"
           class="w-12 h-12 border border-gray-300 rounded bg-white flex items-center justify-center text-2xl font-bold shadow-md"
         >
@@ -17,8 +16,8 @@
         </div>
       </div>
 
-    <!-- 이미지 및 핀 패드 -->
-    <div class="bg-white flex justify-center items-center w-full max-w-md h-auto relative">
+      <!-- 이미지 및 핀 패드 -->
+      <div class="bg-white flex justify-center items-center w-full max-w-md h-auto relative">
         <img :src="pinPadImage" class="ml-11 w-full h-auto" alt="Pin Pad" v-if="pinPadImage" />
         <button
           v-for="(number, index) in numbers"
@@ -41,6 +40,10 @@ import JSEncrypt from "jsencrypt"
 //@ts-ignore
 import CryptoJS from "crypto-js"
 
+const emit = defineEmits<{
+  (event: "pinSuccess"): void
+  (event: "pinFail"): void
+}>()
 const pinPadImage = ref<string | null>(null)
 const numbers = ref<number[]>([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
 const firstInput = ref<number[]>([])
@@ -51,6 +54,7 @@ const instructionMessage = ref<string>("비밀번호를 입력해주세요")
 
 const clickedButton = ref<number | null>(null)
 const randomButton = ref<number | null>(null)
+const failCount = ref<number>(0) // 틀린 횟수를 저장
 
 const authStore = useAuthStore()
 
@@ -110,16 +114,15 @@ const onButtonClick = (index: number) => {
     else secondInput.value.pop()
     return
   }
-  if(index!=9){
-    if (step.value === 1&& firstInput.value.length<6 &&index!=11) {
-    firstInput.value.push(numbers.value[index])
-    
-  } else if (step.value === 1&&firstInput.value.length === 6 && index===11) {
-      verifyInput();
+  if (index != 9) {
+    if (step.value === 1 && firstInput.value.length < 6 && index != 11) {
+      firstInput.value.push(numbers.value[index])
+    } else if (step.value === 1 && firstInput.value.length === 6 && index === 11) {
+      verifyInput()
       step.value = 2
     }
   }
-  
+
   setTimeout(() => {
     clickedButton.value = null
     randomButton.value = null
@@ -133,9 +136,9 @@ const getRandomIndex = (excludeIndex: number): number => {
   return randomIndex
 }
 const verifyInput = () => {
-  console.log(firstInput.value,secondInput.value)
-    const pinString = firstInput.value.toString()
-    encryptAndSendPin(pinString)
+  console.log(firstInput.value, secondInput.value)
+  const pinString = firstInput.value.toString()
+  encryptAndSendPin(pinString)
 }
 
 const encryptAndSendPin = (pin: string) => {
@@ -152,26 +155,38 @@ const encryptAndSendPin = (pin: string) => {
 const sendToBackend = async (encryptedPin: string) => {
   try {
     const token = authStore.accessToken
-    const response=await axios.post("http://localhost:8080/api/pinpad/verify/check", {
-      encryptedPin: encryptedPin,
-    },{
+    const response = await axios.post(
+      "http://localhost:8080/api/pinpad/verify/check",
+      {
+        encryptedPin: encryptedPin,
+      },
+      {
         headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type':'application/json',
-        }
-    })
-    if(response.data.status==='success'){
-        // 상위 프롭스에 이벤트전달 성공 이벤트 전달
-    }else{
-        instructionMessage.value = "비밀번호가 일치하지 않습니다. 다시 시도해주세요."
-        resetInput()
-        // 5번 틀리면 상위 프롭스에 실패 이벤트 전달 
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    if (response.data.status === "success") {
+      // 상위 프롭스에 이벤트전달 성공 이벤트 전달
+      failCount.value = 0 // 성공 시 틀린 횟수 초기화
+      emit("pinSuccess")
+    } else {
+      instructionMessage.value = "비밀번호가 일치하지 않습니다. 다시 시도해주세요."
+      resetInput()
+      failCount.value += 1 // 실패 시 틀린 횟수 증가
+      if (failCount.value >= 5) {
+        emit("pinFail")
+        // 5번 틀리면 상위 프롭스에 실패 이벤트 전달
+        failCount.value = 0 // 틀린 횟수 초기화
+      }
     }
   } catch (error) {
     console.error(error)
     instructionMessage.value = "비밀번호 검증 오류입니다. 다시 시도해주세요."
     resetInput()
-}
+    emit("pinFail")
+  }
 }
 
 const resetInput = () => {
@@ -194,7 +209,7 @@ const buttonStyle = (index: number) => {
   const col = index % 3
   const buttonSize = 80 // 버튼 크기
   const padding = 20 // 버튼 사이 간격
-// test
+  // test
   const backgroundColor =
     clickedButton.value === index || randomButton.value === index ? "white" : "transparent"
 
