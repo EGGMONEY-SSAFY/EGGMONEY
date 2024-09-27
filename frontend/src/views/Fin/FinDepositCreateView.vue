@@ -45,30 +45,28 @@ const handleClick = () => {
 </script>
 
 <template>
-  <div class="m-4">
-    <!-- 바로 밑 justify가 안먹음 -->
-    <div class="flex flex-col m-4 justify-between">
-      <div class="flex justify-center items-center">
-        <div class="flex justify-center m-2">
-          <IconExplanation></IconExplanation>
-        </div>
-        <div class="text-gray-600 font-bold text-sm">
-          선택하신 예금 상품은 <span class="font-bold text-base">{{ productName }}</span
-          >입니다
-        </div>
+  <!-- 바로 밑 justify가 안먹음 -->
+  <div class="h-[78vh] flex flex-col m-4 justify-around">
+    <div class="flex justify-center items-center">
+      <div class="flex justify-center m-2">
+        <IconExplanation></IconExplanation>
       </div>
-      <div class="m-4">
-        <div class="m-2">입금하실 금액을 선택해주세요</div>
-        <div class="m-2">
-          <span class="font-bold">{{ depositDate }}개월</span> 동안
-          <span class="font-bold">연이율 {{ depositRate.toFixed(1) }}%</span>로
-        </div>
-
-        <div class="my-4"><InputMoney @updateMoney="updateMoney"></InputMoney> 알을</div>
-        <div class="m-2">예금해 둘 예정이에요</div>
+      <div class="text-gray-600 font-bold text-sm">
+        선택하신 예금 상품은 <span class="font-bold text-base">{{ productName }}</span
+        >입니다
       </div>
     </div>
-    <div class="bottom-2 text-center">
+    <div class="m-4 mb-16 pl-4">
+      <div class="m-2">입금하실 금액을 선택해주세요</div>
+      <div class="m-2">
+        <span class="font-bold">{{ depositDate }}개월</span> 동안
+        <span class="font-bold">연이율 {{ depositRate.toFixed(1) }}%</span>로
+      </div>
+
+      <div class="my-4"><InputMoney @updateMoney="updateMoney"></InputMoney> 알을</div>
+      <div class="m-2">예금해 둘 예정이에요</div>
+    </div>
+    <div class="m-4 text-center">
       <NextButton routeName="FinDepositCreateDetailView" @click="handleClick"></NextButton>
     </div>
   </div>

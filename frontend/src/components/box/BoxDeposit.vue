@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { useAssetStore } from "@/stores/asset"
-import IconRightArrow from "../icons/IconRightArrow.vue"
-import { onMounted, watch } from "vue"
 import { useUserStore } from "@/stores/user"
 import type { User } from "@/stores/user"
 import type { Deposit } from "@/stores/fin"
+import { useRouter } from "vue-router";
 
 const props = defineProps<{ user: User; deposit: Deposit | null }>()
-const userStore = useUserStore()
+const router = useRouter()
+
+function goDepositDetail(userId: number) {
+  router.push({ name: "AssetDepositDetailView", params: { userId: userId } })
+}
 
 const formatExpireDate = (expireDate?: string) => {
   if (!expireDate) return "" // expireDate가 없는 경우 빈 문자열 반환
@@ -18,12 +20,6 @@ const formatExpireDate = (expireDate?: string) => {
   return `${year}. ${month}. ${day}`
 }
 
-onMounted(() => {
-  if (props.deposit) {
-    console.log(props.deposit)
-  }
-  // console.log(props.deposit?.depositProduct?.depositRate)
-})
 </script>
 
 <template>
@@ -35,7 +31,7 @@ onMounted(() => {
         >
           {{ props.deposit?.depositProduct?.productName }}
         </h1>
-        <button class="text-main-color font-semibold text-base my-auto" @click="">통장관리</button>
+        <button class="text-main-color font-semibold text-base my-auto" @click="goDepositDetail(props.user.userId)">통장관리</button>
       </div>
       <div class="text-center">
         <h1 class="mt-8 text-lg underline underline-offset-4">
@@ -51,12 +47,6 @@ onMounted(() => {
         <h1 v-if="props.deposit?.expireDate" class="text-sm">
           만기일 {{ formatExpireDate(props.deposit?.expireDate) }}
         </h1>
-      </div>
-      <div
-        class="flex text-justify justify-around mt-8 px-5"
-        v-if="userStore.user?.role !== '자녀'"
-      >
-        <button class="bg-red-500 px-5 py-2 rounded-xl text-white font-semibold">해지하기</button>
       </div>
     </div>
   </div>
