@@ -182,6 +182,7 @@ export const useFinStore = defineStore(
       })
         .then((res) => {
           deposit.value = res.data
+          console.log(deposit.value)
         })
         .catch((err) => {
           deposit.value = null
@@ -285,10 +286,10 @@ export const useFinStore = defineStore(
     }
 
     // User 예금 해약
-    const deleteDeposit = function (userId: Number): Promise<void> {
+    const deleteDeposit = function (depositId: Number): Promise<void> {
       return axios({
         method: "post",
-        url: `${DELETE_DEPOSIT_API_URL}/${userId}`
+        url: `${DELETE_DEPOSIT_API_URL}/${depositId}`
       })
         .then((res) => {
           

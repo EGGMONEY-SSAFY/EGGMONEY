@@ -31,8 +31,9 @@ const closeModal = () => {
   isModalOpen.value = false
 }
 
-async function deleteDeposit(userId: number) {
-  await finStore.deleteDeposit(userId)
+async function deleteDeposit(depositId: number) {
+  console.log(userDeposit)
+  await finStore.deleteDeposit(depositId)
   router.push({name:'AssetMainView'})
 }
 
