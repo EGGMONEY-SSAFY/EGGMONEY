@@ -26,6 +26,7 @@ import FinDepositCreateDetailView from "@/views/Fin/FinDepositCreateDetailView.v
 import FinDepositCreateView from "@/views/Fin/FinDepositCreateView.vue"
 import FinSavingsCreateDetailView from "@/views/Fin/FinSavingsCreateDetailView.vue"
 import EditProfileView from "@/views/All/EditProfileView.vue"
+import StockOrderListView from "@/views/Stock/StockOrderListView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,11 @@ const router = createRouter({
       path: "/main",
       name: "MainView",
       component: MainView,
+    },
+    {
+      path: "/stock/order-list",
+      name: "StockOrderListView",
+      component: StockOrderListView,
     },
     {
       path: "/stock/news/:newsId",
@@ -102,7 +108,7 @@ const router = createRouter({
       ],
     },
     {
-      path: "/stock",
+      path: "/stock/home",
       name: "StockView",
       component: StockView,
     },
