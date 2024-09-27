@@ -1,4 +1,5 @@
 <template>
+  <!-- 만들 때 -->
   <div class="flex flex-col items-center justify-center mx-auto h-screen">
     <div v-if="step != 2">
       <div class="text-center mt-6 text-lg font-semibold text-gray-700">

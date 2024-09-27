@@ -1,6 +1,9 @@
 <template>
   <div id="qr-code-scanner" class="flex flex-col items-center justify-center">
-    <video ref="videoRef" class="w-full max-w-lg h-40 border-2 border-gray-300 rounded-md"></video>
+    <video
+      ref="videoRef"
+      class="w-full max-w-lg h-auto border-2 border-gray-300 rounded-md"
+    ></video>
     <!-- h-auto -->
     <button @click="ab"></button>
     <!-- 모달 (가족 연결 확인) -->
