@@ -85,7 +85,7 @@ public class AccountService {
                 .savings(savings != null ? savings.getBalance() : null)
                 .deposit(deposit != null ? deposit.getDepositMoney() : null)
                 .stock(0)
-                .loan(loan != null ? loan.getLoanAmount() : null)
+                .loan(loan != null ? loan.getBalance() : null)
                 .build();
         return dto;
     }
