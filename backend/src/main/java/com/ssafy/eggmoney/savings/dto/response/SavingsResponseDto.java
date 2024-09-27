@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class SavingsResponseDto {
+    private Long savingsId;
     private int savingsDate; // savingsProduct 기간(개월수)
     private Double savingsRate; // savingsProduct 이율
     private String productName; // savingsProduct 이름
@@ -16,5 +17,4 @@ public class SavingsResponseDto {
     private LocalDateTime createdAt;
     private int paymentDate;
     private int paymentMoney;
-
 }

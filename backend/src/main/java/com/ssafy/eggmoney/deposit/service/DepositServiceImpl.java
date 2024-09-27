@@ -99,10 +99,10 @@ public class DepositServiceImpl implements DepositService {
         }
         DepositProduct depositProduct = deposit.getDepositProduct();
         DepositProductDto depositProductDto = DepositProductDto.builder()
-                .id(depositProduct.getId())
+                .productId(depositProduct.getId())
                 .productName(depositProduct.getProductName())
-                .rate(depositProduct.getDepositRate())
-                .date(depositProduct.getDepositDate()).build();
+                .depositRate(depositProduct.getDepositRate())
+                .depositDate(depositProduct.getDepositDate()).build();
 
         log.info("예금 조회");
         return DepositResponseDto.builder()

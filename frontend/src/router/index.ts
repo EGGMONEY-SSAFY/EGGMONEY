@@ -17,16 +17,26 @@ import FamilyManageComponent from "@/components/family/FamilyManageComponent.vue
 import PinPadComponent from "@/components/login/PinPadComponent.vue"
 import CreateFamilySuccess from "@/components/family/complete/CreateFamilySuccess.vue"
 import ConnectionFamilySuccess from "@/components/family/complete/ConnectionFamilySuccess.vue"
+
+import StockNewsDetailView from "@/views/Stock/StockNewsDetailView.vue"
 import PocketMoneyView from "@/views/All/PocketMoneyView.vue"
 import FinDepositView from "@/views/Fin/FinDepositView.vue"
 import FinSavingsCreateView from "@/views/Fin/FinSavingsCreateView.vue"
 import FinSavingsView from "@/views/Fin/FinSavingsView.vue"
 import FinDepositCreateDetailView from "@/views/Fin/FinDepositCreateDetailView.vue"
 import FinDepositCreateView from "@/views/Fin/FinDepositCreateView.vue"
+import AssetMainAccountView from "@/views/Asset/AssetMainAccountView.vue"
+import AssetMainView from "@/views/Asset/AssetMainView.vue"
+import AssetSavingsView from "@/views/Asset/AssetSavingsView.vue"
+import AssetDepositView from "@/views/Asset/AssetDepositView.vue"
+import AssetLoanView from "@/views/Asset/AssetLoanView.vue"
+import AssetLoanDetailView from "@/views/Asset/AssetLoanDetailView.vue"
+import AssetLoanListView from "@/views/Asset/AssetLoanListView.vue"
 import FinSavingsCreateDetailView from "@/views/Fin/FinSavingsCreateDetailView.vue"
 import EditProfileView from "@/views/All/EditProfileView.vue"
 import FinLoanView from "@/views/Fin/FinLoanView.vue"
 import FinLoanCreateView from "@/views/Fin/FinLoanCreateView.vue"
+import ExInfoView from "@/views/All/ExInfoView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,14 +51,56 @@ const router = createRouter({
       component: MainView,
     },
     {
+      path: "/stock/news/:newsId",
+      name: "StockNewsDetailView",
+      component: StockNewsDetailView,
+    },
+    {
       path: "/login",
       name: "LoginView",
       component: LoginView,
     },
     {
       path: "/asset",
-      name: "AssetsView",
+      // name: "AssetView",
       component: AssetView,
+      children: [
+        {
+          path: "",
+          name: "AssetMainView",
+          component: AssetMainView,
+        },
+        {
+          path: "main-account",
+          name: "AssetMainAccountView",
+          component: AssetMainAccountView,
+        },
+        {
+          path: "savings",
+          name: "AssetSavingsView",
+          component: AssetSavingsView,
+        },
+        {
+          path: "deposit",
+          name: "AssetDepositView",
+          component: AssetDepositView,
+        },
+        {
+          path: "loan",
+          name: "AssetLoanListView",
+          component: AssetLoanListView,
+        },
+      ],
+    },
+    {
+      path: "/asset/loan/:loanId",
+      name: "AssetLoanListItem",
+      component: AssetLoanView,
+    },
+    {
+      path: "/asset/loan/:loanId/detail",
+      name: "AssetLoanListItemDetail",
+      component: AssetLoanDetailView,
     },
     {
       path: "/all",
@@ -123,7 +175,7 @@ const router = createRouter({
       component: WonAuthView,
     },
     {
-      path: "/stock/:stock",
+      path: "/stock/detail/:stock",
       name: "StockDetail",
       component: StockDetail,
     },
@@ -165,22 +217,27 @@ const router = createRouter({
           name: "FamilyConnectSuccess",
           component: ConnectionFamilySuccess,
         },
-        {
-          path: "/pinpad",
-          name: "pinpadView",
-          component: PinPadComponent,
-        },
-        {
-          path: "/pocketmoney",
-          name: "PocketMoneyView",
-          component: PocketMoneyView,
-        },
-        {
-          path: "/editProfile",
-          name: "EditProfileView",
-          component: EditProfileView,
-        },
       ],
+    },
+    {
+      path: "/pinpad",
+      name: "pinpadView",
+      component: PinPadComponent,
+    },
+    {
+      path: "/pocketmoney",
+      name: "PocketMoneyView",
+      component: PocketMoneyView,
+    },
+    {
+      path: "/editProfile",
+      name: "EditProfileView",
+      component: EditProfileView,
+    },
+    {
+      path: "/ExInfo",
+      name: "ExInfoView",
+      component: ExInfoView,
     },
   ],
 })

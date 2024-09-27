@@ -73,7 +73,7 @@ public class UserServcie {
         Optional<User> userOptional = userRepository.findById(userId);
         if(userOptional.isPresent()){
             User user = userOptional.get();
-            user.updateUserInfo(dto.getName(), dto.getBank(), dto.getRealAccount(), dto.getSimplePwd());
+            user.updateUserInfo(dto.getName(), dto.getBank(), dto.getRealAccount(), dto.getSimplePwd(),dto.getRole());
             userRepository.save(user);
         }else {
             throw new IllegalArgumentException("유저를 찾을 수 없습니다.");

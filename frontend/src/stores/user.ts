@@ -6,6 +6,9 @@ import axios from "axios"
 export interface User {
   userId: number
   name: string
+  realAccount: string
+  bank: string
+  role: string
 }
 
 // FamilyMember 인터페이스 정의
@@ -39,7 +42,6 @@ export const useUserStore = defineStore("user", () => {
   const ASSET_API_URL = "/api/v1/asset"
 
   const user = ref<User | null>(null)
-  const role = ref<string>("")
   const children = ref<User[]>([])
   const familyId = ref<number | null>(null)
 
@@ -47,10 +49,6 @@ export const useUserStore = defineStore("user", () => {
   const savings = ref(null)
   const loan = ref(null)
   const userData = { 현재잔액: 135000, 투자가능금액: 35000 }
-  // 역할 변경 (테스트용 코드)
-  const setRole = (newRole: string): void => {
-    role.value = newRole
-  }
 
   // 유저 조회
   const getUser = function (userId: number): Promise<void> {
@@ -59,14 +57,25 @@ export const useUserStore = defineStore("user", () => {
       url: `${USER_API_URL}/${userId}`,
     })
       .then((res) => {
-        role.value = res.data.role
-        user.value = { userId: res.data.userId, name: res.data.name }
+        user.value = {
+          userId: res.data.userId,
+          name: res.data.name,
+          realAccount: res.data.realAccount,
+          bank: res.data.bank,
+          role: res.data.role,
+        }
         familyId.value = res.data.family.familyId
-        if (familyId.value && role.value === "부모") {
+        if (familyId.value && user.value.role === "부모") {
           let childrenArray = []
           res.data.family.members.forEach((member: FamilyMember) => {
             if (member.role === "자녀") {
-              childrenArray.push({ userId: member.userId, name: member.name })
+              childrenArray.push({
+                userId: member.userId,
+                name: member.name,
+                realAccount: member.realAccount,
+                bank: member.bank,
+                role: member.role,
+              })
               children.value = childrenArray
             }
           })
@@ -77,5 +86,5 @@ export const useUserStore = defineStore("user", () => {
       })
   }
 
-  return { user, role, children, familyId, setRole, getUser, userData }
+  return { user, children, familyId, getUser, userData }
 })

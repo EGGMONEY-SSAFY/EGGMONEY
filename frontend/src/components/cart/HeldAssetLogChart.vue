@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { Line } from "vue-chartjs"
+import { ref, watch } from "vue"
+import "chartjs-adapter-date-fns" // 날짜 포맷을 위해 필요한 어댑터
+import { useAssetStore } from "@/stores/asset"
+import type { TradeData } from "@/stores/asset"
 import {
   Chart as ChartJS,
   LineElement,
@@ -9,23 +14,11 @@ import {
   Legend,
   Title,
 } from "chart.js"
-import { Line } from "vue-chartjs"
-import { ref, watch } from "vue"
-import "chartjs-adapter-date-fns" // 날짜 포맷을 위해 필요한 어댑터
-import { useAssetStore } from "@/stores/asset"
 
 const assetStore = useAssetStore()
 
 // Chart.js 컴포넌트 등록
 ChartJS.register(LineElement, PointElement, LinearScale, TimeScale, Tooltip, Legend, Title)
-
-interface TradeData {
-  accountId: number
-  currentBalance: number
-  tradePrice: number
-  tradeTarget: string
-  createdAt: string
-}
 
 // Line 차트 데이터 가공 함수
 function formatLineData(tradeHistory: TradeData[]): {
@@ -100,6 +93,9 @@ const lineOptions = {
         display: true,
         text: "보유액", // 세로축 제목
       },
+      ticks: {
+        maxTicksLimit: 10, // 세로 축의 최대 표시 개수 제한 (예: 5개 이하)
+      },
     },
   },
   plugins: {
@@ -115,7 +111,7 @@ const lineOptions = {
         label: (tooltipItem: any) => {
           const date = new Date(tooltipItem.parsed.x) // X축의 값을 날짜로 변환
           const formattedDate = date.toISOString().split("T")[0] // YYYY-MM-DD 형식으로 변환
-          const value = tooltipItem.parsed.y // Y축 값 (잔액 등)
+          const value = tooltipItem.parsed.y.toLocaleString() // Y축 값 (잔액 등)
           return [`${formattedDate}`, `잔액: ${value}`]
         },
       },
