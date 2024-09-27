@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center justify-center mx-auto h-screen">
-    <div v-if="step != 3">
+    <div v-if="step != 2">
       <div class="text-center mt-6 text-lg font-semibold text-gray-700">
         {{ instructionMessage }}
       </div>
@@ -29,9 +29,6 @@
         ></button>
       </div>
     </div>
-    <div v-if="step === 3">
-      <CreateSimplePwdSuccess />
-    </div>
   </div>
 </template>
 
@@ -43,7 +40,10 @@ import JSEncrypt from "jsencrypt"
 //@ts-ignore
 import CryptoJS from "crypto-js"
 
-import CreateSimplePwdSuccess from "./complete/CreateSimplePwdSuccess.vue"
+const emit = defineEmits<{
+  (event: "pinSuccess"): void
+  (event: "pinFail"): void
+}>()
 const pinPadImage = ref<string | null>(null)
 const numbers = ref<number[]>([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
 const firstInput = ref<number[]>([])
@@ -54,6 +54,7 @@ const instructionMessage = ref<string>("비밀번호를 입력해주세요")
 
 const clickedButton = ref<number | null>(null)
 const randomButton = ref<number | null>(null)
+const failCount = ref<number>(0) // 틀린 횟수를 저장
 
 const authStore = useAuthStore()
 
@@ -108,14 +109,6 @@ const onButtonClick = (index: number) => {
   clickedButton.value = index
   randomButton.value = getRandomIndex(index)
   console.log(clickedButton.value, randomButton.value)
-  // if (numbers.value[index] === 10) {
-  //   if (step.value === 1) {
-  //     firstInput.value.pop()
-  //   } else {
-  //     secondInput.value.pop()
-  //   }
-  //   return
-  // }
   if (index === 9) {
     if (step.value === 1) firstInput.value.pop()
     else secondInput.value.pop()
@@ -125,13 +118,8 @@ const onButtonClick = (index: number) => {
     if (step.value === 1 && firstInput.value.length < 6 && index != 11) {
       firstInput.value.push(numbers.value[index])
     } else if (step.value === 1 && firstInput.value.length === 6 && index === 11) {
-      instructionMessage.value = "비밀번호를 한 번 더 입력해주세요"
-      step.value = 2
-    } else if (step.value === 2 && secondInput.value.length < 6) {
-      secondInput.value.push(numbers.value[index])
-    } else if (secondInput.value.length === 6 && index === 11) {
       verifyInput()
-      step.value = 3
+      step.value = 2
     }
   }
 
@@ -149,13 +137,8 @@ const getRandomIndex = (excludeIndex: number): number => {
 }
 const verifyInput = () => {
   console.log(firstInput.value, secondInput.value)
-  if (firstInput.value.join("") === secondInput.value.join("")) {
-    const pinString = firstInput.value.toString()
-    encryptAndSendPin(pinString)
-  } else {
-    instructionMessage.value = "비밀번호가 일치하지 않습니다. 다시 시도해주세요"
-    resetInput()
-  }
+  const pinString = firstInput.value.toString()
+  encryptAndSendPin(pinString)
 }
 
 const encryptAndSendPin = (pin: string) => {
@@ -171,13 +154,38 @@ const encryptAndSendPin = (pin: string) => {
 }
 const sendToBackend = async (encryptedPin: string) => {
   try {
-    await axios.post("http://localhost:8080/api/pinpad/verify", {
-      encryptedPin: encryptedPin,
-    })
-    instructionMessage.value = "비밀번호 설정이 완료되었습니다!"
+    const token = authStore.accessToken
+    const response = await axios.post(
+      "http://localhost:8080/api/pinpad/verify/check",
+      {
+        encryptedPin: encryptedPin,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    if (response.data.status === "success") {
+      // 상위 프롭스에 이벤트전달 성공 이벤트 전달
+      failCount.value = 0 // 성공 시 틀린 횟수 초기화
+      emit("pinSuccess")
+    } else {
+      instructionMessage.value = "비밀번호가 일치하지 않습니다. 다시 시도해주세요."
+      resetInput()
+      failCount.value += 1 // 실패 시 틀린 횟수 증가
+      if (failCount.value >= 5) {
+        emit("pinFail")
+        // 5번 틀리면 상위 프롭스에 실패 이벤트 전달
+        failCount.value = 0 // 틀린 횟수 초기화
+      }
+    }
   } catch (error) {
     console.error(error)
-    instructionMessage.value = "오류가 발생했습니다. 다시 시도해주세요."
+    instructionMessage.value = "비밀번호 검증 오류입니다. 다시 시도해주세요."
+    resetInput()
+    emit("pinFail")
   }
 }
 
@@ -241,97 +249,3 @@ const buttonStyle = (index: number) => {
   margin-bottom: 20px;
 }
 </style>
-
-<!-- 클릭 이벤트를 받는 투명한 상자들 -->
-<!-- const onBackClick = () => {
-  console.log('뒤로가기 버튼 클릭됨');
-};
-
-const onCheckClick = () => {
-  console.log('확인 버튼 클릭됨');
-  console.log('클릭된 상자들:', clickedBoxes.value);
-}; -->
-<!-- <div v-for="(box, index) in numberBoxes" :key="index"
-class="absolute box"
-:style="boxStyle(box)"
-@click.stop="onBoxClick(index)">
-</div>
-
-
-const numberBoxes = ref<{ x: number; y: number; width: number; height: number }[]>([]);
-const clickedBoxes = ref<number[]>([]); // 클릭된 상자의 인덱스를 저장
-<div class="text-center mt-4">비밀번호를 입력해주세요</div> -->
-
-<!-- <template>
-  <div class="pin-pad relative">
-    <img
-      :src="pinPadImage"
-      @click="onPinPadClick"
-      class="w-full cursor-pointer"
-      alt="Pin Pad"
-    />
-    <div
-      v-for="(box, index) in numberBoxes"
-      :key="index"
-      class="absolute border border-gray-500"
-      :style="boxStyle(box)"
-    >
-      {{ box.number }}
-    </div>
-    <div class="text-center mt-4">비밀번호를 입력해주세요</div>
-    <button class="bg-orange-500 text-white py-2 rounded mt-4">확인</button>
-  </div>
-</template>
-
-<script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-
-const pinPad = ref<number[]>([]);
-const pinPadImage = ref<string>('');
-const numberBoxes = ref<{ number: number; x: number; y: number; width: number; height: number }[]>([]);
-
-const fetchPinPad = async () => {
-  try {
-    const response = await axios.get('http://localhost:8080/api/pinpad', {
-      headers: {
-        'Accept': 'application/json'
-      }
-    });
-    pinPad.value = response.data.pinPad;
-    pinPadImage.value = `data:image/png;base64,${response.data.encryptedImage}`;
-    numberBoxes.value = calculateNumberBoxes(response.data.pinPad);
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-
-
-const onPinPadClick = (event: MouseEvent) => {
-  const img = event.currentTarget as HTMLImageElement;
-  const rect = img.getBoundingClientRect();
-  const x = event.clientX - rect.left; // 이미지 내 x 좌표
-  const y = event.clientY - rect.top;  // 이미지 내 y 좌표
-
-  console.log('Clicked at position:', { x, y });
-  axios.post('/api/pinpad/submit', { x, y });
-};
-
-const boxStyle = (box: { x: number; y: number; width: number; height: number }) => ({
-  left: `${box.x}px`,
-  top: `${box.y}px`,
-  width: `${box.width}px`,
-  height: `${box.height}px`
-});
-
-onMounted(fetchPinPad);
-</script>
-
-<style scoped>
-.pin-pad {
-  position: relative;
-}
-
-
-</style> -->
