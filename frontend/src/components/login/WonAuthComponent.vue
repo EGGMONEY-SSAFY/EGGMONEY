@@ -60,7 +60,7 @@
     </div>
 
     <div v-else-if="bankselectstep === 3" class="step">
-      <CreateAccountSuccess/>
+      <CreateAccountSuccess />
     </div>
   </div>
   <!-- <div v-else-if="bankselectstep === 2">
@@ -84,7 +84,7 @@ import toss from "@/assets/bank/토스로고.png"
 import ha from "@/assets/bank/하나로고.png"
 import { useAuthStore } from "@/stores/auth"
 import CreateAccountSuccess from "./complete/CreateAccountSuccess.vue"
-const authStore = useAuthStore();
+const authStore = useAuthStore()
 const bankitems = [kb, nh, sh, wo, toss, ha]
 const bankname = ["KB 국민은행", "농협은행", "신한은행", "우리은행", "토스", "하나은행"]
 
@@ -130,20 +130,22 @@ const checkAuthNumber = async () => {
   if (selectaccount.value && checkAuth.value) {
     try {
       // const token = authStore.accessToken;
-      const token='y8bVYxkfMkStpHnhnYsiwSh-aJr_XBwJAAAAAQo9cpcAAAGSML9Ig5CBbdpZdq0Z';
+      const token = "y8bVYxkfMkStpHnhnYsiwSh-aJr_XBwJAAAAAQo9cpcAAAGSML9Ig5CBbdpZdq0Z"
       const response = await axios.post(
         "http://localhost:8080/api/v1/auth/won/check",
-        
-      {
-        accountnum: selectaccount.value,
-        authText: "SSAFY_TEST",
-        authnum: checkAuth.value,
-      },{
-        headers:{
-          Authorization: `Bearer ${token}`,
-          'Content-Type':'application/json',
+
+        {
+          accountnum: selectaccount.value,
+          authText: "SSAFY_TEST",
+          authnum: checkAuth.value,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
-      })
+      )
       console.log(response)
       bankselectstep.value += 1
     } catch (error) {

@@ -1,15 +1,14 @@
 <template>
   <div class="flex flex-col items-center justify-center mx-auto h-screen">
-    
-    <div v-if="step!=3">
+    <div v-if="step != 3">
       <div class="text-center mt-6 text-lg font-semibold text-gray-700">
-      {{ instructionMessage }}
-    </div>
-    
-    <!-- 비밀번호 입력 표시 -->
-    <div class="flex gap-3 mb-4">
-        <div 
-          v-for="(digit, index) in 6" 
+        {{ instructionMessage }}
+      </div>
+
+      <!-- 비밀번호 입력 표시 -->
+      <div class="flex gap-3 mb-4">
+        <div
+          v-for="(digit, index) in 6"
           :key="index"
           class="w-12 h-12 border border-gray-300 rounded bg-white flex items-center justify-center text-2xl font-bold shadow-md"
         >
@@ -17,8 +16,8 @@
         </div>
       </div>
 
-    <!-- 이미지 및 핀 패드 -->
-    <div class="bg-white flex justify-center items-center w-full max-w-md h-auto relative">
+      <!-- 이미지 및 핀 패드 -->
+      <div class="bg-white flex justify-center items-center w-full max-w-md h-auto relative">
         <img :src="pinPadImage" class="ml-11 w-full h-auto" alt="Pin Pad" v-if="pinPadImage" />
         <button
           v-for="(number, index) in numbers"
@@ -30,12 +29,11 @@
         ></button>
       </div>
     </div>
-    <div v-if="step===3">
-      <CreateSimplePwdSuccess/>
+    <div v-if="step === 3">
+      <CreateSimplePwdSuccess />
     </div>
   </div>
 </template>
-
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue"
@@ -123,22 +121,20 @@ const onButtonClick = (index: number) => {
     else secondInput.value.pop()
     return
   }
-  if(index!=9){
-    if (step.value === 1&& firstInput.value.length<6 &&index!=11) {
-    firstInput.value.push(numbers.value[index])
-    
-  } else if (step.value === 1&&firstInput.value.length === 6 && index===11) {
+  if (index != 9) {
+    if (step.value === 1 && firstInput.value.length < 6 && index != 11) {
+      firstInput.value.push(numbers.value[index])
+    } else if (step.value === 1 && firstInput.value.length === 6 && index === 11) {
       instructionMessage.value = "비밀번호를 한 번 더 입력해주세요"
       step.value = 2
-    }else if (step.value === 2&& secondInput.value.length <6 ) {
-    secondInput.value.push(numbers.value[index])
-    
-  } else if (secondInput.value.length === 6 && index===11) {
+    } else if (step.value === 2 && secondInput.value.length < 6) {
+      secondInput.value.push(numbers.value[index])
+    } else if (secondInput.value.length === 6 && index === 11) {
       verifyInput()
       step.value = 3
     }
   }
-  
+
   setTimeout(() => {
     clickedButton.value = null
     randomButton.value = null
@@ -152,7 +148,7 @@ const getRandomIndex = (excludeIndex: number): number => {
   return randomIndex
 }
 const verifyInput = () => {
-  console.log(firstInput.value,secondInput.value)
+  console.log(firstInput.value, secondInput.value)
   if (firstInput.value.join("") === secondInput.value.join("")) {
     const pinString = firstInput.value.toString()
     encryptAndSendPin(pinString)
@@ -205,7 +201,7 @@ const buttonStyle = (index: number) => {
   const col = index % 3
   const buttonSize = 80 // 버튼 크기
   const padding = 20 // 버튼 사이 간격
-// test
+  // test
   const backgroundColor =
     clickedButton.value === index || randomButton.value === index ? "white" : "transparent"
 
