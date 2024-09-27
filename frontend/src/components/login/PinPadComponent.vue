@@ -1,23 +1,41 @@
 <template>
-  <div class="pin-container flex flex-col items-center justify-center relative mx-auto mt-5">
-    <div class="text-center mt-6 text-lg font-semibold text-gray-700">
+  <div class="flex flex-col items-center justify-center mx-auto h-screen">
+    
+    <div v-if="step!=3">
+      <div class="text-center mt-6 text-lg font-semibold text-gray-700">
       {{ instructionMessage }}
     </div>
-    <div class="input-display">
-      <span v-for="digit in firstInput">{{ digit !== undefined ? "*" : "" }}</span>
+    
+    <!-- 비밀번호 입력 표시 -->
+    <div class="flex gap-3 mb-4">
+        <div 
+          v-for="(digit, index) in 6" 
+          :key="index"
+          class="w-12 h-12 border border-gray-300 rounded bg-white flex items-center justify-center text-2xl font-bold shadow-md"
+        >
+          {{ (step === 1 ? firstInput[index] : secondInput[index]) !== undefined ? "*" : "" }}
+        </div>
+      </div>
+
+    <!-- 이미지 및 핀 패드 -->
+    <div class="bg-white flex justify-center items-center w-full max-w-md h-auto relative">
+        <img :src="pinPadImage" class="ml-11 w-full h-auto" alt="Pin Pad" v-if="pinPadImage" />
+        <button
+          v-for="(number, index) in numbers"
+          :key="index"
+          class="ml-12 my-9 absolute border border-gray-400 rounded-md shadow-md bg-white"
+          :class="{ 'bg-white': clickedButton === index || randomButton === index }"
+          :style="buttonStyle(index)"
+          @click="onButtonClick(index)"
+        ></button>
+      </div>
     </div>
-    <!-- 실제 이미지 -->
-    <img :src="pinPadImage" class="w-full h-auto" alt="Pin Pad" v-if="pinPadImage" />
-    <button
-      v-for="(number, index) in numbers"
-      :key="index"
-      class="absolute keypad-button border border-gray-400 rounded-md shadow-md"
-      :class="{ clicked: clickedButton === index, random: randomButton === index }"
-      :style="buttonStyle(index)"
-      @click="onButtonClick(number)"
-    ></button>
+    <div v-if="step===3">
+      <CreateSimplePwdSuccess/>
+    </div>
   </div>
 </template>
+
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue"
@@ -26,6 +44,8 @@ import { useAuthStore } from "@/stores/auth"
 import JSEncrypt from "jsencrypt"
 //@ts-ignore
 import CryptoJS from "crypto-js"
+
+import CreateSimplePwdSuccess from "./complete/CreateSimplePwdSuccess.vue"
 const pinPadImage = ref<string | null>(null)
 const numbers = ref<number[]>([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
 const firstInput = ref<number[]>([])
@@ -90,26 +110,35 @@ const onButtonClick = (index: number) => {
   clickedButton.value = index
   randomButton.value = getRandomIndex(index)
   console.log(clickedButton.value, randomButton.value)
-  if (numbers.value[index] === 10) {
-    if (step.value === 1) {
-      firstInput.value.pop()
-    } else {
-      secondInput.value.pop()
-    }
+  // if (numbers.value[index] === 10) {
+  //   if (step.value === 1) {
+  //     firstInput.value.pop()
+  //   } else {
+  //     secondInput.value.pop()
+  //   }
+  //   return
+  // }
+  if (index === 9) {
+    if (step.value === 1) firstInput.value.pop()
+    else secondInput.value.pop()
     return
   }
-  if (step.value === 1) {
+  if(index!=9){
+    if (step.value === 1&& firstInput.value.length<6 &&index!=11) {
     firstInput.value.push(numbers.value[index])
-    if (firstInput.value.length === 4) {
+    
+  } else if (step.value === 1&&firstInput.value.length === 6 && index===11) {
       instructionMessage.value = "비밀번호를 한 번 더 입력해주세요"
       step.value = 2
-    }
-  } else if (step.value === 2) {
+    }else if (step.value === 2&& secondInput.value.length <6 ) {
     secondInput.value.push(numbers.value[index])
-    if (secondInput.value.length === 4) {
+    
+  } else if (secondInput.value.length === 6 && index===11) {
       verifyInput()
+      step.value = 3
     }
   }
+  
   setTimeout(() => {
     clickedButton.value = null
     randomButton.value = null
@@ -123,6 +152,7 @@ const getRandomIndex = (excludeIndex: number): number => {
   return randomIndex
 }
 const verifyInput = () => {
+  console.log(firstInput.value,secondInput.value)
   if (firstInput.value.join("") === secondInput.value.join("")) {
     const pinString = firstInput.value.toString()
     encryptAndSendPin(pinString)
@@ -174,8 +204,8 @@ const buttonStyle = (index: number) => {
   const row = Math.floor(index / 3)
   const col = index % 3
   const buttonSize = 80 // 버튼 크기
-  const padding = 10 // 버튼 사이 간격
-
+  const padding = 20 // 버튼 사이 간격
+// test
   const backgroundColor =
     clickedButton.value === index || randomButton.value === index ? "white" : "transparent"
 
