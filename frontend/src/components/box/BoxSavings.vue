@@ -2,13 +2,13 @@
 import { useUserStore } from "@/stores/user"
 import { useFinStore, type Savings } from "@/stores/fin"
 import type { User } from "@/stores/user"
-import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { useRouter } from "vue-router"
+import { ref } from "vue"
 
 const userStore = useUserStore()
 const router = useRouter()
 const finStore = useFinStore()
-const isModalOpen = ref(false);
+const isModalOpen = ref(false)
 
 const props = defineProps<{ user: User; savings: Savings | null }>()
 function goSavingsDetail(userId: number) {
@@ -17,18 +17,18 @@ function goSavingsDetail(userId: number) {
 
 async function sendSavings(userId: number) {
   await finStore.sendSavings(userId)
-  closeModal();
-  window.location.reload();
+  closeModal()
+  window.location.reload()
 }
 
 // 모달을 여는 함수
 function openModal() {
-  isModalOpen.value = true;
+  isModalOpen.value = true
 }
 
 // 모달을 닫는 함수
 function closeModal() {
-  isModalOpen.value = false;
+  isModalOpen.value = false
 }
 
 // 만기일 포맷팅 함수
@@ -51,7 +51,12 @@ const formatExpireDate = (expireDate?: string) => {
         >
           {{ props.savings?.productName }}
         </h1>
-        <button class="text-main-color font-semibold text-base my-auto" @click="goSavingsDetail(props.user.userId)">통장관리</button>
+        <button
+          class="text-main-color font-semibold text-base my-auto"
+          @click="goSavingsDetail(props.user.userId)"
+        >
+          통장관리
+        </button>
       </div>
       <div class="text-center">
         <h1 class="mt-8 text-lg underline underline-offset-4">
@@ -71,17 +76,34 @@ const formatExpireDate = (expireDate?: string) => {
         class="flex text-justify justify-center mt-8 px-5 gap-4"
         v-if="userStore.user?.role !== '자녀'"
       >
-        <button class="bg-lime-700 px-3 py-2 rounded-xl text-white font-semibold" @click="openModal">납입하기</button>
+        <button
+          class="bg-lime-700 px-3 py-2 rounded-xl text-white font-semibold"
+          @click="openModal"
+        >
+          납입하기
+        </button>
       </div>
     </div>
-        <!-- 모달 -->
-        <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+    <!-- 모달 -->
+    <div
+      v-if="isModalOpen"
+      class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50"
+    >
       <div class="bg-white p-6 rounded-lg shadow-lg w-80" v-if="userStore.user?.userId">
         <h2 class="text-base font-bold mb-4">정말 적금을 납입하시겠습니까?</h2>
-        <h2 class="text-wrap text-center pb-4 text-red-600 text-sm">* 적금을 납입시 돈을 <br/>돌려받을 수 없습니다.</h2>
+        <h2 class="text-wrap text-center pb-4 text-red-600 text-sm">
+          * 적금을 납입시 돈을 <br />돌려받을 수 없습니다.
+        </h2>
         <div class="flex justify-end">
-          <button class="bg-gray-500 text-white px-4 py-2 rounded mr-2" @click="closeModal">취소</button>
-          <button class="bg-blue-500 text-white px-4 py-2 rounded" @click="sendSavings(userStore.user?.userId)">확인</button>
+          <button class="bg-gray-500 text-white px-4 py-2 rounded mr-2" @click="closeModal">
+            취소
+          </button>
+          <button
+            class="bg-blue-500 text-white px-4 py-2 rounded"
+            @click="sendSavings(userStore.user?.userId)"
+          >
+            확인
+          </button>
         </div>
       </div>
     </div>

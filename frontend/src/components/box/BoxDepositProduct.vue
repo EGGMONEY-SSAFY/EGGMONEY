@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, useRouter } from "vue-router"
+import { RouterLink } from "vue-router"
 
 const props = defineProps({
   product: {
@@ -8,9 +8,6 @@ const props = defineProps({
   },
 })
 const name = "FinDepositCreateView"
-
-const router = useRouter()
-// const depositCreate = ()
 </script>
 
 <template>

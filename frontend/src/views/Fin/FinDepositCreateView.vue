@@ -7,7 +7,6 @@
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
 import InputMoney from "@/components/input/InputMoney.vue"
-import { useFinStore } from "@/stores/fin"
 import { ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 

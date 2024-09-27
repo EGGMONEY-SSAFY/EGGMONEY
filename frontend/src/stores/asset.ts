@@ -90,8 +90,8 @@ export const useAssetStore = defineStore("asset", () => {
       url: `${API_URL}/withdrawal/create`,
       data: {
         userId: userId,
-        price: price
-      }
+        price: price,
+      },
     })
       .then((res) => {
         console.log(res.data)

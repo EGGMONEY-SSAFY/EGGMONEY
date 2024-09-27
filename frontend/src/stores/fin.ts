@@ -247,11 +247,9 @@ export const useFinStore = defineStore(
     const sendSavings = function (userId: Number): Promise<void> {
       return axios({
         method: "post",
-        url: `${USER_SAVINGS_SEND_API_URL}/${userId}`
+        url: `${USER_SAVINGS_SEND_API_URL}/${userId}`,
       })
-        .then((res) => {
-          
-        })
+        .then((res) => {})
         .catch((err) => {
           console.error(err)
         })
@@ -261,11 +259,9 @@ export const useFinStore = defineStore(
     const sendLoan = function (loanId: Number): Promise<void> {
       return axios({
         method: "post",
-        url: `${USER_LOAN_SEND_API_URL}/${loanId}`
+        url: `${USER_LOAN_SEND_API_URL}/${loanId}`,
       })
-        .then((res) => {
-          
-        })
+        .then((res) => {})
         .catch((err) => {
           console.error(err)
         })
@@ -275,11 +271,9 @@ export const useFinStore = defineStore(
     const deleteSavings = function (savingsId: Number): Promise<void> {
       return axios({
         method: "post",
-        url: `${DELETE_SAVINGS_API_URL}/${savingsId}`
+        url: `${DELETE_SAVINGS_API_URL}/${savingsId}`,
       })
-        .then((res) => {
-          
-        })
+        .then((res) => {})
         .catch((err) => {
           console.error(err)
         })
@@ -289,11 +283,9 @@ export const useFinStore = defineStore(
     const deleteDeposit = function (depositId: Number): Promise<void> {
       return axios({
         method: "post",
-        url: `${DELETE_DEPOSIT_API_URL}/${depositId}`
+        url: `${DELETE_DEPOSIT_API_URL}/${depositId}`,
       })
-        .then((res) => {
-          
-        })
+        .then((res) => {})
         .catch((err) => {
           console.error(err)
         })
@@ -320,7 +312,7 @@ export const useFinStore = defineStore(
       isYellowPage,
       sendLoan,
       deleteDeposit,
-      deleteSavings 
+      deleteSavings,
     }
   }
   // {

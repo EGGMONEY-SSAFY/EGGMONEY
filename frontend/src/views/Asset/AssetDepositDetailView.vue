@@ -34,7 +34,7 @@ const closeModal = () => {
 async function deleteDeposit(depositId: number) {
   console.log(userDeposit)
   await finStore.deleteDeposit(depositId)
-  router.push({name:'AssetMainView'})
+  router.push({ name: "AssetMainView" })
 }
 
 onMounted(async () => {
@@ -78,7 +78,7 @@ onMounted(async () => {
           <div class="flex justify-between">
             <h1>예금액</h1>
             <h1 class="text-end">{{ userDeposit.depositMoney?.toLocaleString() }}</h1>
-          </div>          
+          </div>
         </div>
       </div>
     </div>
@@ -88,7 +88,10 @@ onMounted(async () => {
   </div>
 
   <!-- 모달 창 -->
-  <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
+  <div
+    v-if="isModalOpen"
+    class="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50"
+  >
     <div class="bg-white p-6 rounded-lg shadow-lg w-80">
       <h2 class="text-lg font-bold mb-4">정말 예금을 해지하시겠습니까?</h2>
       <div class="grid gap-1 mb-3">
@@ -96,12 +99,25 @@ onMounted(async () => {
         <p class="text-sm text-red-500">계속 진행하시겠습니까?</p>
       </div>
       <div class="mb-6 text-sm grid gap-1">
-        <h1>해지 시에는 <span class="text-lg font-bold text-red-500 underline underline-offset-2">{{ userDeposit?.depositMoney?.toLocaleString() }}원</span> 을</h1>
+        <h1>
+          해지 시에는
+          <span class="text-lg font-bold text-red-500 underline underline-offset-2"
+            >{{ userDeposit?.depositMoney?.toLocaleString() }}원</span
+          >
+          을
+        </h1>
         <h1>받을 수 있습니다.</h1>
       </div>
       <div class="flex justify-end">
-        <button class="bg-gray-500 text-white px-4 py-2 rounded mr-2" @click="closeModal">취소</button>
-        <button class="bg-red-500 text-white px-4 py-2 rounded" @click="() => deleteDeposit(Number(userDeposit?.depositId))">확인</button>
+        <button class="bg-gray-500 text-white px-4 py-2 rounded mr-2" @click="closeModal">
+          취소
+        </button>
+        <button
+          class="bg-red-500 text-white px-4 py-2 rounded"
+          @click="() => deleteDeposit(Number(userDeposit?.depositId))"
+        >
+          확인
+        </button>
       </div>
     </div>
   </div>

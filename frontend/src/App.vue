@@ -8,8 +8,11 @@ const finStore = useFinStore()
 </script>
 
 <template>
-  <div class="flex justify-center bg-gray-800" >
-    <div class="main-container bg-gray-200" :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }">
+  <div class="flex justify-center bg-gray-800">
+    <div
+      class="main-container bg-gray-200"
+      :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }"
+    >
       <NavBarTop />
       <RouterView class="mt-12 mb-24" />
       <NavBar />
