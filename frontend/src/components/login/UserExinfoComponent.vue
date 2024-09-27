@@ -46,16 +46,16 @@
 <script setup lang="ts">
 import { ref, type Ref } from "vue"
 import axios from "axios"
-import { useRouter } from "vue-router";
+import { useRouter } from "vue-router"
 
-const router = useRouter();
-const role = ref<String>('최초') as Ref<String>
+const router = useRouter()
+const role = ref<String>("최초") as Ref<String>
 const selectRole = (selectedRole: String) => {
   role.value = selectedRole
   console.log(role.value)
 }
 const submitExinfo = async () => {
-  if (role.value === '최초') {
+  if (role.value === "최초") {
     alert("역할을 선택해주세요")
     return
   }

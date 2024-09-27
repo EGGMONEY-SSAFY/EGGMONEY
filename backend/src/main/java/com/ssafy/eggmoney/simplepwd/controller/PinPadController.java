@@ -23,6 +23,7 @@ public class PinPadController {
     private final PinPadService pinPadService;
     private final EncryptionService encryptionService;
     private final KakaoAuthService kakaoAuthService;
+    private final UserServcie userServcie;
 
 
     @Autowired
@@ -60,11 +61,12 @@ public class PinPadController {
         return ResponseEntity.ok(response);
     }
     @PostMapping("/api/pinpad/verify/check")
-    public ResponseEntity<Map<String, String>> checkUserSimplePwd(@RequestHeader(value="Authorization") String token, @RequestBody String encryptyedPassword) throws Exception{
-        String key=verifyPin(encryptyedPassword).Pwd();
+    public ResponseEntity<Map<String, String>> checkUserSimplePwd(@RequestHeader(value="Authorization") String token, @RequestBody String encryptedPassword) throws Exception{
+        String decryptedPassword = verifyPin(encryptedPassword).get("Pwd");
         User user = kakaoAuthService.verifyKakoToken(token);
+        String userStoredPwd = userServcie.getUserSimplePassword(user.getId());
         Map<String, String> response = new HashMap<>();
-        if(key==UserServcie.getUser(user.getId())){
+        if(decryptedPassword.equals(userStoredPwd)){
             response.put("status","success");
         }else{
             response.put("status","fail");
