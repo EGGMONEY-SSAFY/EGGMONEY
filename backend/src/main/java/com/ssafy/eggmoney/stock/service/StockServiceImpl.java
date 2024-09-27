@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -91,10 +92,12 @@ public class StockServiceImpl implements StockService {
     @Transactional
     @Override
     public void saveStockPrices(List<StockPriceResponse> stockPrices, StockItem stockItem) {
+        List<Stock> stocks = new ArrayList<>();
         stockPrices.forEach(stockPrice -> {
             Stock stock = new Stock(stockItem, stockPrice.getBstp_nmix_prpr(), stockPrice.getStck_bsop_date());
-            stockRepository.save(stock);
+            stocks.add(stock);
         });
+        stockRepository.saveAll(stocks);
     }
 
     @Transactional
