@@ -106,6 +106,7 @@ public class DepositServiceImpl implements DepositService {
 
         log.info("예금 조회");
         return DepositResponseDto.builder()
+                .depositId(deposit.getId())
                 .depositProduct(depositProductDto)
                 .expireDate(deposit.getExpireDate())
                 .depositMoney(deposit.getDepositMoney())

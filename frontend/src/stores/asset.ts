@@ -83,6 +83,24 @@ export const useAssetStore = defineStore("asset", () => {
       })
   }
 
+  // 출금 요청 생성
+  const createWithdrawal = function (userId: number, price: number): Promise<void> {
+    return axios({
+      method: "post",
+      url: `${API_URL}/withdrawal/create`,
+      data: {
+        userId: userId,
+        price: price
+      }
+    })
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
   return {
     deposit,
     savings,
@@ -92,5 +110,6 @@ export const useAssetStore = defineStore("asset", () => {
     logs,
     getPort,
     getAccountLog,
+    createWithdrawal,
   }
 })

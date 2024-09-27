@@ -34,6 +34,7 @@ export interface SavingsLogs {
 }
 
 export interface Deposit {
+  depositId: number | null
   depositProduct: depositProducts | null
   createdAt: string | null
   expireDate: string | null
@@ -41,7 +42,7 @@ export interface Deposit {
 }
 
 export interface Loan {
-  loanId: number
+  loanId: number | null
   userName: string | null
   loanType: string | null
   loanStatus: string | null
@@ -73,7 +74,12 @@ export const useFinStore = defineStore(
     const USER_LOAN_API_URL = "/api/v1/fin/loan"
     const USER_LOAN_LOG_API_URL = "/api/v1/fin/loan/log"
     const USER_LOAN_DETAIL_API_URL = "/api/v1/fin/loan/detail"
+    const USER_SAVINGS_SEND_API_URL = "/api/v1/fin/savings/send"
+    const USER_LOAN_SEND_API_URL = "/api/v1/fin/loan/send"
+    const DELETE_SAVINGS_API_URL = "/api/v1/fin/savings/delete"
+    const DELETE_DEPOSIT_API_URL = "/api/v1/fin/deposit/delete"
 
+    const isYellowPage = ref<boolean>(false)
     const depositProducts = reactive<depositProducts[]>([])
     const savingsProducts = reactive<savingsProducts[]>([])
 
@@ -176,6 +182,7 @@ export const useFinStore = defineStore(
       })
         .then((res) => {
           deposit.value = res.data
+          console.log(deposit.value)
         })
         .catch((err) => {
           deposit.value = null
@@ -229,7 +236,63 @@ export const useFinStore = defineStore(
             logsArray.push(log)
           })
           loanLogs.value = logsArray
-          // console.log(loanLogs.value)
+          console.log(loanLogs.value)
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+
+    // User 적금 납입
+    const sendSavings = function (userId: Number): Promise<void> {
+      return axios({
+        method: "post",
+        url: `${USER_SAVINGS_SEND_API_URL}/${userId}`
+      })
+        .then((res) => {
+          
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+
+    // User 대출 상환
+    const sendLoan = function (loanId: Number): Promise<void> {
+      return axios({
+        method: "post",
+        url: `${USER_LOAN_SEND_API_URL}/${loanId}`
+      })
+        .then((res) => {
+          
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+
+    // User 적금 해약
+    const deleteSavings = function (savingsId: Number): Promise<void> {
+      return axios({
+        method: "post",
+        url: `${DELETE_SAVINGS_API_URL}/${savingsId}`
+      })
+        .then((res) => {
+          
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+
+    // User 예금 해약
+    const deleteDeposit = function (depositId: Number): Promise<void> {
+      return axios({
+        method: "post",
+        url: `${DELETE_DEPOSIT_API_URL}/${depositId}`
+      })
+        .then((res) => {
+          
         })
         .catch((err) => {
           console.error(err)
@@ -244,6 +307,7 @@ export const useFinStore = defineStore(
       getUserSavings,
       savings,
       savingsLogs,
+      sendSavings,
       getUserSavingsLogs,
       getUserDeposit,
       deposit,
@@ -253,6 +317,10 @@ export const useFinStore = defineStore(
       getUserLoanLogs,
       getUserLoanList,
       loanList,
+      isYellowPage,
+      sendLoan,
+      deleteDeposit,
+      deleteSavings 
     }
   }
   // {
