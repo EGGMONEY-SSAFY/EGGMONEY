@@ -42,30 +42,30 @@ const handleClick = () => {
 </script>
 
 <template>
-  <div class="m-4">
-    <!--  -->
-    <div class="flex flex-col m-4 justify-between">
-      <div class="flex justify-center items-center">
-        <div class="flex justify-center m-2">
-          <IconExplanation></IconExplanation>
-        </div>
-        <div class="text-gray-600 font-bold text-sm">선택하신 상품은 {{ productName }}입니다</div>
+  <!--  -->
+  <div class="flex flex-col m-4 h-[75vh]">
+    <div class="flex justify-center items-center">
+      <div class="flex justify-center m-2">
+        <IconExplanation></IconExplanation>
       </div>
-      <div class="m-4">
-        <div class="m-4">입금하실 금액을 선택해주세요</div>
-        <div class="m-4">
-          <span class="font-bold">{{ savingsDate }}개월</span> 동안 연이율
-          <span class="font-bold"> {{ savingsRate.toFixed(1) }}%</span>로
-        </div>
-
-        <div class="m-4">
-          달마다 <InputMoney @updateMoney="updateMoney" :max-price="maxPrice"></InputMoney> 알을
-        </div>
-        <div class="m-4">적금할 예정이에요</div>
-      </div>
+      <div class="text-gray-600 font-bold text-sm">선택하신 상품은 {{ productName }}입니다</div>
     </div>
+
+    <div class="m-4">
+      <div class="m-4">입금하실 금액을 선택해주세요</div>
+      <div class="m-4">
+        <span class="font-bold">{{ savingsDate }}개월</span> 동안 연이율
+        <span class="font-bold"> {{ savingsRate.toFixed(1) }}%</span>로
+      </div>
+
+      <div class="m-4">
+        달마다 <InputMoney @updateMoney="updateMoney" :max-price="maxPrice"></InputMoney> 알을
+      </div>
+      <div class="m-4">적금할 예정이에요</div>
+    </div>
+
     <!-- 다음으로 넘어가는 버튼 : FinView를 간편비밀번호로 넘기고, 해당 값들은 route.query에 들어있다.-->
-    <div class="bottom-2">
+    <div class="mt-auto">
       <div class="text-center">
         <NextButton routeName="FinSavingsCreateDetailView" @click="handleClick"></NextButton>
       </div>
