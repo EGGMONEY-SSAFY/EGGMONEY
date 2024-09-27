@@ -4,6 +4,8 @@ import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 import com.ssafy.eggmoney.auth.service.WonService;
 import com.ssafy.eggmoney.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -27,7 +29,9 @@ public class WonController {
         String accountnum = request.get("accountnum");
         String authText = request.get("authText");
         String authnum = request.get("authnum");
+
         User user = kakaoAuthService.verifyKakaoToken(token);
+
         Long userId = user.getId();
         return wonService.checkmessage(accountnum,authText,authnum,userId);
     }
