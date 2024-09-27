@@ -70,8 +70,5 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <div class="pt-5 text-center">
-      <button class="bg-red-500 rounded-lg text-white p-2">해지하기</button>
-    </div>
   </div>
 </template>

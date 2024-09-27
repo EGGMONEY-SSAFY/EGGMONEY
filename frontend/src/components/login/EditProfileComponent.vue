@@ -33,8 +33,8 @@
 import axios from "axios"
 import { ref } from "vue"
 // ref() 유저 이름 변경시
-const showModal = ref(false)
-const user = ref("")
+const showModal =ref(false);
+const user = ref('');
 function sumbitchanges() {
   try {
     // 유저 아이디로 수정 필요

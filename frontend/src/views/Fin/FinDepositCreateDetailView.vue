@@ -32,7 +32,7 @@ const handleClick = () => {
 <template>
   <div class="m-4">
     <!--  -->
-    <div class="flex flex-col m-4 justify-between">
+    <div class="h-[78vh] flex flex-col m-4 justify-around">
       <div class="flex justify-center items-center">
         <div class="flex justify-center m-2">
           <IconExplanation></IconExplanation>
@@ -65,17 +65,15 @@ const handleClick = () => {
           <div class="m-2 text-sm">적용된 금액을 지급합니다.</div>
         </div>
       </div>
-    </div>
 
-    <div class="m-4">
       <div class="m-4 text-red-500">
         ※ 예상 만기액은 <span class="font-bold text-red-500">{{ repayment }}원</span> 입니다.
       </div>
-    </div>
 
-    <!-- 다음으로 넘어가는 버튼 : FinView를 간편비밀번호로 넘기고, 해당 값들은 route.query에 들어있다.-->
-    <div class="bottom-2 text-center">
-      <NextButton routeName="FinView" @click="handleClick"></NextButton>
+      <!-- 다음으로 넘어가는 버튼 : FinView를 간편비밀번호로 넘기고, 해당 값들은 route.query에 들어있다.-->
+      <div class="mt-4 text-center">
+        <NextButton routeName="FinView" @click="handleClick"></NextButton>
+      </div>
     </div>
   </div>
 </template>

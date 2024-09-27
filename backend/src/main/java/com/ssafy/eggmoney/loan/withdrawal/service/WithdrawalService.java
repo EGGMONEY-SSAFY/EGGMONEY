@@ -6,6 +6,7 @@ import com.ssafy.eggmoney.account.entity.Account;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.repository.AccountRepository;
 import com.ssafy.eggmoney.account.service.AccountService;
+import com.ssafy.eggmoney.common.exception.ErrorType;
 import com.ssafy.eggmoney.common.webClient.ApiClient;
 import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
 import com.ssafy.eggmoney.family.entity.Family;
@@ -28,6 +29,7 @@ import reactor.core.publisher.Mono;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,16 +40,16 @@ public class WithdrawalService {
     private final UserRepository userRepository;
     private final AccountService accountService;
     private final AccountRepository accountRepository;
-    private final WebClient.Builder webClientBuilder;
-    private final ObjectMapper objectMapper;
     private final ApiClient apiClient;
 
     private BigInteger institutionTransactionUniqueNo = new BigInteger("0");
 
 //  출금요청 로그 조회
     public List<GetWithdrawalResponseDto> getWithdrawalLogs(GetWithdrawalRequestDto dto){
-        User child = userRepository.findById(dto.getUserId()).get();
-        User parent = userRepository.findById(child.getFamily().getPresentId()).get();
+        User child = userRepository.findById(dto.getUserId())
+                .orElseThrow( () -> new NoSuchElementException(ErrorType.NOT_FOUND_CHILD.toString()));
+        User parent = userRepository.findById(child.getFamily().getPresentId())
+                .orElseThrow( () -> new NoSuchElementException(ErrorType.NOT_FOUND_PARENT.toString()));
         List<Withdrawal> lst = withdrawalRepository.findLogsByUserId(child.getId());
         Family childFam = child.getFamily();
         Family parentFam = parent.getFamily();
@@ -106,8 +108,7 @@ public class WithdrawalService {
         System.out.println("Acc Bal : "+account.getBalance()+"/ dto Bal"+dto.getPrice());
 //        예외처리 : 계좌에 출금요청할 돈 있어야 함
         if ( account.getBalance() - dto.getPrice() < 0 ) {
-            System.out.println("돈 부족");
-            return;
+            throw new IllegalArgumentException(ErrorType.NOT_ENOUGH_MONEY.toString());
         }
         
         withdrawalRepository.save(
@@ -122,22 +123,23 @@ public class WithdrawalService {
 
 //    출금 심사
     public void judgeWithdrawal(Long Wid, JudgeWithdrawalRequestDto dto){
-        Withdrawal with = withdrawalRepository.findById(Wid).get();
-        User user = userRepository.findById(dto.getUserId()).get();
+        Withdrawal with = withdrawalRepository.findById(Wid)
+                .orElseThrow( () -> new NoSuchElementException(ErrorType.NOT_FOUND_WITHDRAWAL.toString()));
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow( () -> new NoSuchElementException(ErrorType.NOT_FOUND_UESR.toString()));
         String judge = dto.getJudge();
 
 //        예외처리: 부모가 아닌데 심사하려는 경우
         if ( dto.getUserId() != with.getUser().getFamily().getPresentId() ) {
-            System.out.println("권한이 없습니다.");
-            return;
+            throw new IllegalArgumentException(ErrorType.NOT_PRESENT_USER.toString());
         }
 //        예외처리: judge가 null값
         if ( judge == null )
-            return;
+            throw new NoSuchElementException(ErrorType.IS_ILLEGAL_REQUEST.toString());
+
 //        예외처리: 이미 심사가 이루어진 상태
         if ( with.getWithdrawalStatus() != WithdrawalStatus.PROGRESS ) {
-            System.out.println("이미 심사됨");
-            return;
+            throw new IllegalArgumentException(ErrorType.WITH_ALREADY_JUDGED.toString());
         }
 
 //      대출 승인
@@ -147,7 +149,6 @@ public class WithdrawalService {
                     .flatMap( userKeyResponse -> {
                         HashMap<String, Object> responseMap = apiClient.parseResponse(userKeyResponse, new TypeReference<HashMap<String, Object>>() {});
                         String userKey = String.valueOf(responseMap.get("userKey"));
-                        System.out.println(userKey);
                         institutionTransactionUniqueNo = institutionTransactionUniqueNo.add(BigInteger.ONE);
 
                         // 계좌 잔고 조회
@@ -162,25 +163,22 @@ public class WithdrawalService {
 
                                     // 잔고 확인 후 처리
                                     if (Integer.parseInt(String.valueOf(innerMap.get("accountBalance"))) < with.getWithdrawalPrice()) {
-                                        System.out.println("실물계좌 잔고 부족");
-                                        return Mono.empty();
+                                        throw new IllegalArgumentException(ErrorType.NOT_ENOUGH_MONEY.toString());
                                     }
 
                                     // 잔고가 충분하면 계좌 이체 수행
                                     String childAccount = with.getUser().getRealAccount();
-                                    System.out.println("CHILD : "+childAccount);
                                     String parentAccount = user.getRealAccount();
                                     return apiClient.transferAccount(userKey, childAccount, parentAccount, transactionUniqueNo, with.getWithdrawalPrice());
                                 });
                     })
                     .subscribe( transferResponse -> {
-                        System.out.println("계좌이체 성공");
                         // 대출 인스턴스 상태 변경 및 계좌 로그 갱신
                         with.setWithdrawalStatus(WithdrawalStatus.APPROVAL);
                         accountService.updateAccount(AccountLogType.WITHDRAWAL, with.getUser().getId(), -with.getWithdrawalPrice());
                         withdrawalRepository.save(with);
                     }, error -> {
-                        System.out.println("Error: " + error.getMessage());
+                        throw new IllegalArgumentException(ErrorType.API_NETWORK_ERROR.toString());
                     });
         }
 
