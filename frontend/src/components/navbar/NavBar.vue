@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import NavBarall from "./NavBarAll.vue"
-import NavBarAssets from "./NavBarAsset.vue"
-import NavBarFin from "./NavBarFin.vue"
-import NavBarStock from "./NavBarStock.vue"
+import NavBarall from "@/components/navbar/NavBarAll.vue"
+import NavBarAssets from "@/components/navbar/NavBarAsset.vue"
+import NavBarFin from "@/components/navbar/NavBarFin.vue"
+import NavBarStock from "@/components/navbar/NavBarStock.vue"
 </script>
 
 <template>
