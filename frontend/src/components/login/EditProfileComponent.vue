@@ -37,6 +37,7 @@ const showModal = ref(false)
 const user = ref("")
 function sumbitchanges() {
   try {
+    // 유저 아이디로 수정 필요
     const response = axios.post("api/v1/profile/1/update", {
       name: user.value,
     })

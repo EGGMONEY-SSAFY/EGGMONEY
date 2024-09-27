@@ -4,29 +4,12 @@ import HeldAssetChart from "@/components/cart/HeldAssetChart.vue"
 import HeldAssetLogChart from "@/components/cart/HeldAssetLogChart.vue"
 import { useAssetStore } from "@/stores/asset"
 import { onMounted, watch, ref } from "vue"
+import type { User } from "@/stores/user"
+import type { Analytics, TradeData } from "@/stores/asset"
+import { useVariableStore } from "@/stores/variable"
 
 const assetStore = useAssetStore()
-
-interface User {
-  userId: number
-  name: string
-}
-
-interface Analytics {
-  입출금통장: Number | null
-  예금: Number | null
-  적금: Number | null
-  대출: Number | null
-  주식: Number | null
-}
-
-interface TradeData {
-  accountId: number
-  currentBalance: number
-  tradePrice: number
-  tradeTarget: string
-  createdAt: string
-}
+const varStore = useVariableStore()
 
 const props = defineProps<{ user: User }>()
 
@@ -48,7 +31,6 @@ watch(
     if (newUser) {
       await assetStore.getPort(newUser.userId)
 
-      // 수정: ref로 선언된 analytics를 재활당하여 반응성을 보장
       analytics.value = {
         입출금통장: assetStore.mainAccount,
         예금: assetStore.deposit,
@@ -64,8 +46,8 @@ watch(
 )
 
 onMounted(async () => {
+  varStore.setTitle("자산")
   await assetStore.getPort(props.user.userId)
-  // 수정: ref로 선언된 analytics 값을 재할당
   analytics.value = {
     입출금통장: assetStore.mainAccount,
     예금: assetStore.deposit,
@@ -73,6 +55,7 @@ onMounted(async () => {
     대출: assetStore.loan,
     주식: assetStore.stock,
   }
+  console.log(analytics.value)
   await assetStore.getAccountLog(props.user.userId)
   accountHistory.value = assetStore.logs
 })
