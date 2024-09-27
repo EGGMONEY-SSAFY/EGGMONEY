@@ -40,8 +40,10 @@ public class StockController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/stock/user/{userId}/ratio")
-    public ResponseEntity<Integer> getInvestableRatio(@PathVariable Long userId) {
+    @GetMapping("/stock/user/{userId}/available-balance")
+    public ResponseEntity<Map<String, Integer>> getInvestableRatio(@PathVariable Long userId) {
+        Map<String, Integer> response = new HashMap<>();
+
         GetAnalyticsResponseDto analytics = accountService.getAnalytics(userId);
         int assets = analytics.getMainAccountBalance()
                 + analytics.getDeposit()
@@ -50,11 +52,15 @@ public class StockController {
                 + analytics.getStock();
 
         BigDecimal investableRatio = BigDecimal.valueOf(userService.findInvestableRatio(userId));
-
-        BigDecimal investablePrice = investableRatio
+        int investablePrice = investableRatio
                 .divide(BigDecimal.valueOf(100))
-                .multiply(BigDecimal.valueOf(assets));
+                .multiply(BigDecimal.valueOf(assets))
+                        .setScale(0, RoundingMode.HALF_UP)
+                                .intValue();
 
-        return new ResponseEntity<>(investablePrice.setScale(0, RoundingMode.HALF_UP).intValue(), HttpStatus.OK);
+        response.put("investableRatio", investablePrice);
+        response.put("balance", analytics.getMainAccountBalance());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
