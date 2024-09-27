@@ -10,6 +10,10 @@ const props = defineProps({
     type: String,
     default: "다음",
   },
+  disabled: {
+    type: Boolean,
+    default: true,
+  },
 })
 </script>
 <template>
