@@ -3,6 +3,7 @@ package com.ssafy.eggmoney.stock.entity;
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import com.ssafy.eggmoney.user.entity.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,14 +21,19 @@ public class StockUser extends BaseTime {
     @Column(name = "stock_user_id")
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
+    @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "stock_id")
     private Stock stock;
 
+    @NotNull
     private int buyAverage;
+
+    @NotNull
     private int amount;
 }
