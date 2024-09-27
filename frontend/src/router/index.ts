@@ -38,6 +38,7 @@ import FinLoanCreateView from "@/views/Fin/FinLoanCreateView.vue"
 import ExInfoView from "@/views/All/ExInfoView.vue"
 import AssetDepositDetailView from "@/views/Asset/AssetDepositDetailView.vue"
 import AssetSavingsDetailView from "@/views/Asset/AssetSavingsDetailView.vue"
+import StockOrderListView from "@/views/Stock/StockOrderListView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
