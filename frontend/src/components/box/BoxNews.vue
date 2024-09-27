@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import IconRightArrow from "@/components/icons/IconRightArrow.vue"
-
 interface Article {
   id: number
   press: string
@@ -12,15 +10,16 @@ const props = defineProps<{ article: Article }>()
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg shadow flex justify-between">
-    <div class="m-4">
-      <span>{{ props.article.title }}</span>
+  <RouterLink
+    :to="`/stock/news/${props.article.id}`"
+    class="bg-white m-4 rounded-lg shadow flex justify-between"
+  >
+    <div class="m-6 flex flex-col w-full gap-4">
+      <span class="font-bold">{{ props.article.title }}</span>
+      <div class="flex justify-between">
+        <span class="text-gray-400">{{ props.article.press }}</span>
+        <span class="text-gray-400">{{ props.article.publishDate }}</span>
+      </div>
     </div>
-    <RouterLink
-      :to="`/stock/news/${props.article.id}`"
-      class="m-4 flex justify-center items-center"
-    >
-      <IconRightArrow class="size-6" />
-    </RouterLink>
-  </div>
+  </RouterLink>
 </template>
