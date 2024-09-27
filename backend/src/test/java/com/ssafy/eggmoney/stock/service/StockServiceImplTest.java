@@ -8,6 +8,7 @@
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.test.annotation.Rollback;
 //import org.springframework.transaction.annotation.Transactional;
 //
 //import java.io.IOException;
@@ -22,6 +23,7 @@
 //
 //@SpringBootTest
 //@Transactional
+//@Rollback(value = false)
 //class StockServiceImplTest {
 //    @Autowired StockService stockService;
 //    @Autowired StockRepository stockRepository;
@@ -88,8 +90,8 @@
 //            throw new RuntimeException(e);
 //        }
 //
-//        for (int i = 11; i < stockCodes.length; i++) {
-//            List<StockPriceResponse> stockPrices = stockService.getStockPrices(token, "20240921", stockCodes[i]);
+//        for (int i = 0; i < stockCodes.length; i++) {
+//            List<StockPriceResponse> stockPrices = stockService.getStockPrices(token, "20231130", stockCodes[i]);
 //            stockService.saveStockPrices(stockPrices, stockItems[i]);
 //        }
 //    }
