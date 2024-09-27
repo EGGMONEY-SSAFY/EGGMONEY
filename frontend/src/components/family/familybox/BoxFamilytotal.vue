@@ -11,5 +11,4 @@ import IconRightArrow from "@/components/icons/IconRightArrow.vue"
       <IconRightArrow class="size-6" />
     </RouterLink>
   </div>
-  
 </template>
