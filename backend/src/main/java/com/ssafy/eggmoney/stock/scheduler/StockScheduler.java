@@ -25,7 +25,7 @@ public class StockScheduler {
             StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
             StockItem.IT, StockItem.UTILITIES};
 
-    @Scheduled(cron = "0 0 18 * * MON-FRI", zone = "Asia/Seoul")
+//    @Scheduled(cron = "0 50 16 * * MON-FRI", zone = "Asia/Seoul")
     public void saveDailyStockPrice() {
         log.info("주식 스케쥴링 시작: " + LocalDateTime.now());
         List<Stock> stocks = new ArrayList<>();
