@@ -15,7 +15,7 @@
         <i class="fas fa-bell text-orange-500"></i>
         <!-- 알림 아이콘 -->
       </div>
-      <div class="mt-4">
+      <div class="mt-">
         <!-- 자녀 정보 -->
         <span class="font-semibold">{{ parent.name }}님은 현재</span>
         <span class="font-bold text-orange-600">{{ selectedChild?.name }}</span

@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center justify-center h-screen bg-gray-100">
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
       <div class="flex items-center mb-6">
-        <h2 class="text-xl font-bold text-gray-800">사용자 유형 선택</h2>
+        <h2 class="text-xl font-bold text-gray-800">👪 사용자 유형 선택</h2>
       </div>
 
       <div class="bg-gray-100 rounded-lg p-4">
