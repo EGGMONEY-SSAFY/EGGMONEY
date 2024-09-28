@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 import axios from "axios"
 import { reactive, ref } from "vue"
+import type internal from "stream"
 export interface depositProducts {
   productId: number
   productName: string
@@ -62,7 +63,12 @@ export interface LoanLog {
   repayment: number
   createdAt: string
 }
-
+export interface LoanCreate {
+  loanReason: string
+  loanAmount: number
+  loanDate: number
+  loanType: string
+}
 export const useFinStore = defineStore(
   "fin",
   () => {
@@ -95,12 +101,14 @@ export const useFinStore = defineStore(
       createdAt: null,
     })
 
+    const loanCreate = ref<LoanCreate | null>(null)
     const savingsLogs = ref<SavingsLogs[] | null>(null)
     const deposit = ref<Deposit | null>(null)
     const loan = ref<Loan | null>(null)
     const loanList = ref<Loan[] | null>(null)
     const loanLogs = ref<LoanLog[] | null>([])
 
+    // 예금상품조회
     const getDepositProduct = function () {
       axios({
         method: "GET",
@@ -115,6 +123,7 @@ export const useFinStore = defineStore(
         })
     }
 
+    // 적금상품조회
     const getSavingsProduct = function () {
       axios({
         method: "GET",
@@ -127,6 +136,17 @@ export const useFinStore = defineStore(
         .catch((err) => {
           console.error(err)
         })
+    }
+
+    // 대출신청정보 저장
+    const setLoanCreate = function (reason: string, amount: number, date: number, type: string) {
+      const loanType = type === "원리금균등상환" ? "EQUALR" : "LUMPSUM"
+      loanCreate.value = {
+        loanReason: reason,
+        loanAmount: amount,
+        loanDate: date,
+        loanType: loanType,
+      }
     }
 
     // User 적금 계좌 조회
@@ -309,6 +329,8 @@ export const useFinStore = defineStore(
       getUserLoanLogs,
       getUserLoanList,
       loanList,
+      setLoanCreate,
+      loanCreate,
       isYellowPage,
       sendLoan,
       deleteDeposit,
