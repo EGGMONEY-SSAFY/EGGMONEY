@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col items-center justify-center bg-yellow-50 main-container">
+  <div class="flex flex-col items-center justify-center bg-yellow-50 main-container3">
     <h1 class="text-xl font-bold mb-8">가족 생성 완료!</h1>
     <p class="text-center text-gray-700">
       가족 생성을 완료했어요. <br />이제 자유롭게 가족을 초대할 수 있어요.
@@ -29,14 +29,14 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.main-container {
+.main-container3 {
   width: 100%;
   height: 100%;
   min-height: 101vh; /* 전체 높이를 101vh로 설정 */
 }
 
 @media (min-width: 393px) {
-  .main-container {
+  .main-container3 {
     max-width: 393px;
   }
 }
