@@ -47,29 +47,38 @@ public class StockServiceImpl implements StockService {
                 .block();
     }
 
-    @Override
-    public List<StockPriceDto> getStockPrices(String token, String inputDate, String stockCode) {
-        return this.webClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/uapi/domestic-stock/v1/quotations/inquire-index-daily-price")
-                        .queryParam("FID_PERIOD_DIV_CODE", "D")
-                        .queryParam("FID_COND_MRKT_DIV_CODE", "U")
-                        .queryParam("FID_INPUT_ISCD", stockCode)
-                        .queryParam("FID_INPUT_DATE_1", inputDate)
-                        .build())
-                .headers(headers -> {
-                    headers.set("content-type", "application/json");
-                    headers.set("authorization", "Bearer " + token);
-                    headers.set("appkey", apiConfig.getAppKey());
-                    headers.set("appsecret", apiConfig.getAppSecret());
-                    headers.set("tr_id", "FHPUP02120000");
-                    headers.set("custtype", "P");
-                })
-                .retrieve()
-                .bodyToMono(StockPricesDto.class)
-                .map(StockPricesDto::getOutput2)
-                .block();
-    }
+//    public List<StockPriceDto> getStockPrices(String token, String inputDate, String stockCode) {
+//        return this.webClient.get()
+//                .uri(uriBuilder -> uriBuilder
+//                        .path("/uapi/domestic-stock/v1/quotations/inquire-index-daily-price")
+//                        .queryParam("FID_PERIOD_DIV_CODE", "D")
+//                        .queryParam("FID_COND_MRKT_DIV_CODE", "U")
+//                        .queryParam("FID_INPUT_ISCD", stockCode)
+//                        .queryParam("FID_INPUT_DATE_1", inputDate)
+//                        .build())
+//                .headers(headers -> {
+//                    headers.set("content-type", "application/json");
+//                    headers.set("authorization", "Bearer " + token);
+//                    headers.set("appkey", apiConfig.getAppKey());
+//                    headers.set("appsecret", apiConfig.getAppSecret());
+//                    headers.set("tr_id", "FHPUP02120000");
+//                    headers.set("custtype", "P");
+//                })
+//                .retrieve()
+//                .bodyToMono(StockPricesDto.class)
+//                .map(StockPricesDto::getOutput2)
+//                .block();
+//    }
+
+//    @Transactional
+//    public void saveStockPrices(List<StockPriceDto> stockPrices, StockItem stockItem) {
+//        List<Stock> stocks = new ArrayList<>();
+//        stockPrices.forEach(stockPrice -> {
+//            Stock stock = new Stock(stockItem, stockPrice.getBstp_nmix_prpr(), stockPrice.getStck_bsop_date());
+//            stocks.add(stock);
+//        });
+//        stockRepository.saveAll(stocks);
+//    }
 
     @Override
     public BigDecimal getCurrentStockPrice(String token, String stockCode) {
@@ -91,17 +100,6 @@ public class StockServiceImpl implements StockService {
                 .bodyToMono(JsonNode.class)
                 .map(jsonNode -> new BigDecimal(jsonNode.get("output").get("bstp_nmix_prpr").asText()))
                 .block();
-    }
-
-    @Transactional
-    @Override
-    public void saveStockPrices(List<StockPriceDto> stockPrices, StockItem stockItem) {
-        List<Stock> stocks = new ArrayList<>();
-        stockPrices.forEach(stockPrice -> {
-            Stock stock = new Stock(stockItem, stockPrice.getBstp_nmix_prpr(), stockPrice.getStck_bsop_date());
-            stocks.add(stock);
-        });
-        stockRepository.saveAll(stocks);
     }
 
     @Transactional

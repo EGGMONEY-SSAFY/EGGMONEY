@@ -27,7 +27,7 @@ public class StockCostomRepositoryImpl implements StockCostomRepository {
                 .select(stock.stockPrice)
                 .from(stock)
                 .where(stock.stockItem.eq(stockItem))
-                .orderBy(stock.date.desc())
+                .orderBy(stock.createdAt.desc())
                 .offset(0)
                 .limit(2)
                 .fetch();
@@ -40,11 +40,11 @@ public class StockCostomRepositoryImpl implements StockCostomRepository {
     }
 
     @Override
-    public LocalDate findLatestDate() {
-        LocalDate date = queryFactory
-                .select(stock.date)
+    public LocalDateTime findLatestDate() {
+        LocalDateTime date = queryFactory
+                .select(stock.createdAt)
                 .from(stock)
-                .orderBy(stock.date.desc())
+                .orderBy(stock.createdAt.desc())
                 .offset(0)
                 .limit(1)
                 .fetchOne();

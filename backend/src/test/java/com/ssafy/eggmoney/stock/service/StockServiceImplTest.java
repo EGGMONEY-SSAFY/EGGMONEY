@@ -21,6 +21,7 @@
 //import java.time.Instant;
 //import java.time.LocalDate;
 //import java.time.temporal.ChronoUnit;
+//import java.util.ArrayList;
 //import java.util.List;
 //
 //@SpringBootTest
@@ -119,6 +120,34 @@
 //        BigDecimal currentStockPrice = stockService.getCurrentStockPrice(token, stockCodes[0]);
 //
 //        Assertions.assertThat(currentStockPrice).isNotNull();
+//    }
+//
+//    @Test
+//    void saveCurrentStockPrice() {
+//        String token;
+//        Path path = Paths.get("C:/Temp/stock_token.txt");
+//        try {
+//            BasicFileAttributes basicFileAttributes = Files.readAttributes(path, BasicFileAttributes.class);
+//            Instant lastModifiedTime = basicFileAttributes.lastModifiedTime().toInstant();
+//            Instant now = Instant.now();
+//
+//            if(lastModifiedTime.isBefore(now.minus(24, ChronoUnit.HOURS))) {
+//                getToken();
+//            }
+//
+//            token = String.join("\n", Files.readAllLines(path));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        List<Stock> stocks = new ArrayList<>();
+//        for(int i = 0; i < stockCodes.length; i++) {
+//            BigDecimal currentStockPrice = stockService.getCurrentStockPrice(token, stockCodes[i]);
+//            Stock stock = new Stock(stockItems[i], currentStockPrice, LocalDate.now().minusDays(1));
+//            stocks.add(stock);
+//        }
+//
+//        stockService.saveCurrentStockPrices(stocks);
 //    }
 //
 //    @Test

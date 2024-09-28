@@ -81,11 +81,11 @@ public class AccountService {
         Loan loan = loanRepository.findByIdAndLoanStatus(userId, LoanStatus.APPROVAL).orElse(null);
         Deposit deposit = depositRepository.findByUserIdAndDepositStatus(userId, DepositStatus.AVAILABLE).orElse(null);
         GetAnalyticsResponseDto dto = GetAnalyticsResponseDto.builder()
-                .mainAccountBalance(account != null ? account.getBalance() : 0)
-                .savings(savings != null ? savings.getBalance() : 0)
-                .deposit(deposit != null ? deposit.getDepositMoney() : 0)
+                .mainAccountBalance(account != null ? account.getBalance() : null)
+                .savings(savings != null ? savings.getBalance() : null)
+                .deposit(deposit != null ? deposit.getDepositMoney() : null)
                 .stock(0)
-                .loan(loan != null ? loan.getLoanAmount() : 0)
+                .loan(loan != null ? loan.getLoanAmount() : null)
                 .build();
         return dto;
     }

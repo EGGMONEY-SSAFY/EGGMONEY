@@ -2,16 +2,15 @@ package com.ssafy.eggmoney.stock.controller;
 
 import com.ssafy.eggmoney.account.dto.responseDto.GetAnalyticsResponseDto;
 import com.ssafy.eggmoney.account.service.AccountService;
+import com.ssafy.eggmoney.stock.dto.response.StockPriceForYearResponse;
 import com.ssafy.eggmoney.stock.dto.response.StockPriceResponse;
+import com.ssafy.eggmoney.stock.entity.StockItem;
 import com.ssafy.eggmoney.stock.service.StockService;
 import com.ssafy.eggmoney.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -35,7 +34,7 @@ public class StockController {
         List<StockPriceResponse> stockPrices = stockService.findLatestStockPrice();
         response.put("stockPrices", stockPrices);
 
-        LocalDate date = stockService.findLatestDate();
+        LocalDate date = stockService.findLatestDate().toLocalDate();
         response.put("date", date);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -45,11 +44,22 @@ public class StockController {
         Map<String, Integer> response = new HashMap<>();
 
         GetAnalyticsResponseDto analytics = accountService.getAnalytics(userId);
-        int assets = analytics.getMainAccountBalance()
-                + analytics.getDeposit()
-                + analytics.getSavings()
-                + analytics.getLoan()
-                + analytics.getStock();
+        int assets = 0;
+        if(analytics.getMainAccountBalance() != null) {
+            assets += analytics.getMainAccountBalance();
+        }
+        if(analytics.getDeposit() != null) {
+            assets += analytics.getDeposit();
+        }
+        if(analytics.getSavings() != null) {
+            assets += analytics.getSavings();
+        }
+        if(analytics.getLoan() != null) {
+            assets += analytics.getLoan();
+        }
+        if(analytics.getStock() != null) {
+            assets += analytics.getStock();
+        }
 
         BigDecimal investableRatio = BigDecimal.valueOf(userService.findInvestableRatio(userId));
         int investablePrice = investableRatio
