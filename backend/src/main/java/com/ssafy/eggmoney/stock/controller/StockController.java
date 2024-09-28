@@ -63,4 +63,9 @@ public class StockController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/stock/price/year")
+    public ResponseEntity<List<StockPriceForYearResponse>> getStockPricesForYear(@RequestParam StockItem stockItem) {
+        return new ResponseEntity<>(stockService.findStockPricesForYear(stockItem), HttpStatus.OK);
+    }
 }

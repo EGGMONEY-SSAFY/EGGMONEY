@@ -5,6 +5,7 @@ import com.ssafy.eggmoney.common.config.StockApiConfig;
 import com.ssafy.eggmoney.stock.dto.api.StockPriceDto;
 import com.ssafy.eggmoney.stock.dto.api.StockPricesDto;
 import com.ssafy.eggmoney.stock.dto.api.StockTokenDto;
+import com.ssafy.eggmoney.stock.dto.response.StockPriceForYearResponse;
 import com.ssafy.eggmoney.stock.dto.response.StockPriceResponse;
 import com.ssafy.eggmoney.stock.entity.Stock;
 import com.ssafy.eggmoney.stock.entity.StockItem;
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -122,7 +123,12 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public LocalDate findLatestDate() {
+    public LocalDateTime findLatestDate() {
         return stockRepository.findLatestDate();
+    }
+
+    @Override
+    public List<StockPriceForYearResponse> findStockPricesForYear(StockItem stockItem) {
+        return stockRepository.findStockPricesForYear(stockItem);
     }
 }
