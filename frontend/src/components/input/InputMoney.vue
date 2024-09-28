@@ -9,7 +9,7 @@ const props = defineProps({
     default: 100000000,
   },
 })
-console.log("입력창" + props.maxPrice)
+
 const max = ref(0)
 const emit = defineEmits(["updateMoney"])
 if (Number(props.maxPrice) != 0) {
@@ -30,7 +30,7 @@ const preventNegativeMoney = (event: Event) => {
 
 <template>
   <input
-    class="bg-white mx-1 w-32 text-center rounded"
+    class="bg-white mx-1 p-0.5 w-32 text-center rounded-md font-bold"
     type="number"
     v-model.number="money"
     placeholder="숫자를 입력하세요"
