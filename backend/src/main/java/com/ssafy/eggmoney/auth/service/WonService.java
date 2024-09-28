@@ -2,7 +2,7 @@ package com.ssafy.eggmoney.auth.service;
 
 
 import com.ssafy.eggmoney.user.dto.reqeust.UpdateUserRequestDto;
-import com.ssafy.eggmoney.user.service.UserServcie;
+import com.ssafy.eggmoney.user.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
@@ -16,8 +16,8 @@ import java.util.Date;
 public class WonService {
 
     private final WebClient webClient;
-    private final UserServcie userServcie;
-    public WonService(WebClient.Builder webClientBuilder, UserServcie userServcie){
+    private final UserService userServcie;
+    public WonService(WebClient.Builder webClientBuilder, UserService userServcie){
         this.webClient = webClientBuilder.build();
         this.userServcie = userServcie;
     }
