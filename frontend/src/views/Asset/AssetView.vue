@@ -3,6 +3,10 @@ import { useUserStore } from "@/stores/user"
 import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import type { User } from "@/stores/user"
+import { useVariableStore } from "@/stores/variable"
+
+const store = useVariableStore()
+store.setTitle("자산")
 
 const userStore = useUserStore()
 const router = useRouter()
@@ -77,11 +81,12 @@ onMounted(async () => {
 
     <!-- 등록된 가족이 없는 경우 -->
     <div v-else class="pt-20 text-center grid grid-cols-1 grid-flow-row">
-      <h1 class="text-xl font-bold text-red-700">가족을 등록해 주세요.</h1>
-      <div>
-        <img src="@/assets/asset/link.png" alt="link" class="w-full p-12" />
+      <h1 class="text-lg font-bold text-blue-700">가족을 등록해 주세요.</h1>
+      <div class="flex justify-center items-center mt-16 mb-16">
+        <img src="@/assets/asset/link.png" alt="link" class="w-32" />
       </div>
-      <button class="bg-main-color rounded-full text-white text-lg py-2 mx-10" @click="goFamilyTab">
+
+      <button class="bg-main-color rounded-full text-white text-sm py-2 mx-10" @click="goFamilyTab">
         등록하러가기
       </button>
     </div>
