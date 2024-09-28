@@ -1,7 +1,9 @@
 <template>
-  <div class="p-5 bg-gray-100 rounded-lg shadow-md">
+  <div class="p-5 bg-gray-200 rounded-lg">
     <div v-if="bankselectstep === 0" class="step">
-      <p class="text-main-color text-lg font-bold mb-4">주로 쓰는 은행 계좌를 선택해주세요</p>
+      <p class="text-main-color text-basic font-bold mb-8 mt-4">
+        주로 쓰는 은행 계좌를 선택해주세요
+      </p>
       <div class="grid grid-cols-2 gap-4">
         <div
           @click="selectBank(index)"
@@ -16,7 +18,7 @@
     </div>
 
     <div v-else-if="bankselectstep === 1" class="step">
-      <p class="text-main-color text-lg font-bold mb-4" v-if="selectbank !== null">
+      <p class="text-main-color text-basic font-bold mb-8 mt-4" v-if="selectbank !== null">
         {{ bankname[selectbank] }}계좌번호를 입력해주세요
       </p>
       <input
@@ -48,7 +50,7 @@
       <input
         type="text"
         v-model="checkAuth"
-        class="w-full p-2 border border-gray-300 rounded mb-4"
+        class="w-full p-2 border rounded mb-4"
         placeholder="인증번호 입력"
       />
       <button
@@ -84,6 +86,11 @@ import toss from "@/assets/bank/토스로고.png"
 import ha from "@/assets/bank/하나로고.png"
 import { useAuthStore } from "@/stores/auth"
 import CreateAccountSuccess from "./complete/CreateAccountSuccess.vue"
+import { useVariableStore } from "@/stores/variable"
+
+const store = useVariableStore()
+store.setTitle("입금계좌 등록")
+
 const authStore = useAuthStore()
 const bankitems = [kb, nh, sh, wo, toss, ha]
 const bankname = ["KB 국민은행", "농협은행", "신한은행", "우리은행", "토스", "하나은행"]

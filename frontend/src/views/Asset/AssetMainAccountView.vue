@@ -4,23 +4,9 @@ import BoxMainAccount from "@/components/box/BoxMainAccount.vue"
 import { useAssetStore } from "@/stores/asset"
 import { useVariableStore } from "@/stores/variable"
 import { onMounted, ref, watch } from "vue"
-
+import type { TradeData } from "@/stores/asset"
+import type { User } from "@/stores/user"
 const varStore = useVariableStore()
-
-interface User {
-  userId: number
-  name: string
-  realAccount: string
-  bank: string
-}
-
-interface TradeData {
-  accountId: number
-  currentBalance: number
-  tradePrice: number
-  tradeTarget: string
-  createdAt: string
-}
 
 const assetStore = useAssetStore()
 const balance = ref<Number | null>(0)

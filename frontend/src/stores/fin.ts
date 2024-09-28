@@ -43,7 +43,7 @@ export interface Deposit {
 }
 
 export interface Loan {
-  loanId: number | null
+  loanId: number
   userName: string | null
   loanType: string | null
   loanStatus: string | null
