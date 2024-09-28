@@ -1,7 +1,7 @@
 <template>
   <div>
     <WonAuthComponent />
-    <p>1</p>
+    <!-- <p>1</p> -->
   </div>
 </template>
 <script setup lang="ts">
