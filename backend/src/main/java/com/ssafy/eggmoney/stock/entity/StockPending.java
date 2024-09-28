@@ -1,24 +1,24 @@
 package com.ssafy.eggmoney.stock.entity;
 
-import com.ssafy.eggmoney.common.entity.BaseTime;
 import com.ssafy.eggmoney.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.FetchType.*;
+import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@Table(name = "stock_users")
+@Table(name = "stock_pendings")
 @NoArgsConstructor(access = PROTECTED)
-public class StockUser extends BaseTime {
+public class StockPending {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "stock_user_id")
+    @Column(name = "stock_pending_id")
     private Long id;
 
     @NotNull
@@ -32,8 +32,12 @@ public class StockUser extends BaseTime {
     private Stock stock;
 
     @NotNull
-    private int buyAverage;
+    @Enumerated(value = STRING)
+    private TradeType tradeType;
 
     @NotNull
-    private int amount;
+    private int pendingPrice;
+
+    @NotNull
+    private int pendingAmount;
 }

@@ -1,7 +1,6 @@
 package com.ssafy.eggmoney.user.service;
 
 import com.ssafy.eggmoney.account.service.AccountService;
-import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
 import com.ssafy.eggmoney.family.entity.Family;
 import com.ssafy.eggmoney.family.repository.FamilyRepository;
 import com.ssafy.eggmoney.family.service.FamilyServcie;
@@ -13,12 +12,13 @@ import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 //@Transactional
-public class UserServcie {
+public class UserService {
     private final UserRepository userRepository;
     private final AccountService accountService;
     private final FamilyRepository familyRepository;
@@ -78,5 +78,13 @@ public class UserServcie {
         }else {
             throw new IllegalArgumentException("유저를 찾을 수 없습니다.");
         }
+    }
+
+    public int findInvestableRatio(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new NoSuchElementException("유저를 찾을 수 없습니다.")
+        );
+
+        return user.getStockRatio();
     }
 }

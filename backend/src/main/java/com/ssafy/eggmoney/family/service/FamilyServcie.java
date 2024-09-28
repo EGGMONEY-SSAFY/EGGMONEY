@@ -9,7 +9,6 @@ import com.ssafy.eggmoney.family.repository.FamilyRepository;
 import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
-import com.ssafy.eggmoney.user.service.UserServcie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

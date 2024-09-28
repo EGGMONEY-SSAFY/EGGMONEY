@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@Table(name = "stocks")
+@Table(name = "stocks", uniqueConstraints = @UniqueConstraint(columnNames = {"stockItem", "createdAt"}))
 @NoArgsConstructor(access = PROTECTED)
 public class Stock extends BaseTime {
     @Id
@@ -29,12 +29,17 @@ public class Stock extends BaseTime {
     @NotNull
     private int stockPrice;
 
-    @NotNull
-    private LocalDate date;
+//    @NotNull
+//    private LocalDate date;
 
-    public Stock(StockItem stockItem, BigDecimal stockPrice, LocalDate date) {
+//    public Stock(StockItem stockItem, BigDecimal stockPrice, LocalDate date) {
+//        this.stockItem = stockItem;
+//        this.stockPrice = stockPrice.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+//        this.date = date;
+//    }
+
+    public Stock(StockItem stockItem, BigDecimal stockPrice) {
         this.stockItem = stockItem;
         this.stockPrice = stockPrice.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
-        this.date = date;
     }
 }
