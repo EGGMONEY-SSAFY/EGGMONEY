@@ -1,13 +1,12 @@
 package com.ssafy.eggmoney.simplepwd.controller;
 
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
-import com.ssafy.eggmoney.global.dto.ResponseApi;
 import com.ssafy.eggmoney.simplepwd.dto.request.PinVerificationRequest;
 import com.ssafy.eggmoney.simplepwd.dto.response.PinPadResponse;
 import com.ssafy.eggmoney.simplepwd.service.EncryptionService;
 import com.ssafy.eggmoney.simplepwd.service.PinPadService;
 import com.ssafy.eggmoney.user.entity.User;
-import com.ssafy.eggmoney.user.service.UserServcie;
+import com.ssafy.eggmoney.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +23,11 @@ public class PinPadController {
     private final PinPadService pinPadService;
     private final EncryptionService encryptionService;
     private final KakaoAuthService kakaoAuthService;
-    private final UserServcie userService;
+    private final UserService userService;
 
 
     @Autowired
-    public PinPadController(PinPadService pinPadService, EncryptionService encryptionService, KakaoAuthService kakaoAuthService, UserServcie userService){
+    public PinPadController(PinPadService pinPadService, EncryptionService encryptionService, KakaoAuthService kakaoAuthService, UserService userService){
         this.pinPadService=pinPadService;
         this.encryptionService=encryptionService;
         this.kakaoAuthService = kakaoAuthService;
