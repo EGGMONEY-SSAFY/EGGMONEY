@@ -3,7 +3,7 @@ package com.ssafy.eggmoney.user.controller;
 import com.ssafy.eggmoney.user.dto.reqeust.CreateUserReqeusetDto;
 import com.ssafy.eggmoney.user.dto.reqeust.UpdateUserRequestDto;
 import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
-import com.ssafy.eggmoney.user.service.UserServcie;
+import com.ssafy.eggmoney.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profile")
 public class UserController {
-    private final UserServcie userService;
+    private final UserService userService;
 
 //    유저 조회
     @GetMapping("/{userId}")
