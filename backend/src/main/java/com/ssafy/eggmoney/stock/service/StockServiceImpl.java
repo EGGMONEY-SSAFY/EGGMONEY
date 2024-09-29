@@ -16,9 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -47,38 +45,38 @@ public class StockServiceImpl implements StockService {
                 .block();
     }
 
-//    public List<StockPriceDto> getStockPrices(String token, String inputDate, String stockCode) {
-//        return this.webClient.get()
-//                .uri(uriBuilder -> uriBuilder
-//                        .path("/uapi/domestic-stock/v1/quotations/inquire-index-daily-price")
-//                        .queryParam("FID_PERIOD_DIV_CODE", "D")
-//                        .queryParam("FID_COND_MRKT_DIV_CODE", "U")
-//                        .queryParam("FID_INPUT_ISCD", stockCode)
-//                        .queryParam("FID_INPUT_DATE_1", inputDate)
-//                        .build())
-//                .headers(headers -> {
-//                    headers.set("content-type", "application/json");
-//                    headers.set("authorization", "Bearer " + token);
-//                    headers.set("appkey", apiConfig.getAppKey());
-//                    headers.set("appsecret", apiConfig.getAppSecret());
-//                    headers.set("tr_id", "FHPUP02120000");
-//                    headers.set("custtype", "P");
-//                })
-//                .retrieve()
-//                .bodyToMono(StockPricesDto.class)
-//                .map(StockPricesDto::getOutput2)
-//                .block();
-//    }
+    public List<StockPriceDto> getStockPrices(String token, String inputDate, String stockCode) {
+        return this.webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/uapi/domestic-stock/v1/quotations/inquire-index-daily-price")
+                        .queryParam("FID_PERIOD_DIV_CODE", "D")
+                        .queryParam("FID_COND_MRKT_DIV_CODE", "U")
+                        .queryParam("FID_INPUT_ISCD", stockCode)
+                        .queryParam("FID_INPUT_DATE_1", inputDate)
+                        .build())
+                .headers(headers -> {
+                    headers.set("content-type", "application/json");
+                    headers.set("authorization", "Bearer " + token);
+                    headers.set("appkey", apiConfig.getAppKey());
+                    headers.set("appsecret", apiConfig.getAppSecret());
+                    headers.set("tr_id", "FHPUP02120000");
+                    headers.set("custtype", "P");
+                })
+                .retrieve()
+                .bodyToMono(StockPricesDto.class)
+                .map(StockPricesDto::getOutput2)
+                .block();
+    }
 
-//    @Transactional
-//    public void saveStockPrices(List<StockPriceDto> stockPrices, StockItem stockItem) {
-//        List<Stock> stocks = new ArrayList<>();
-//        stockPrices.forEach(stockPrice -> {
+    @Transactional
+    public void saveStockPrices(List<StockPriceDto> stockPrices, StockItem stockItem) {
+        List<Stock> stocks = new ArrayList<>();
+        stockPrices.forEach(stockPrice -> {
 //            Stock stock = new Stock(stockItem, stockPrice.getBstp_nmix_prpr(), stockPrice.getStck_bsop_date());
 //            stocks.add(stock);
-//        });
-//        stockRepository.saveAll(stocks);
-//    }
+        });
+        stockRepository.saveAll(stocks);
+    }
 
     @Override
     public BigDecimal getCurrentStockPrice(String token, String stockCode) {
@@ -108,7 +106,7 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public List<StockPriceResponse> findLatestStockPrice() {
+    public List<StockPriceResponse> findLatestStockPrices() {
         List<StockPriceResponse> StockPrices = new ArrayList<>();
         List<StockItem> stockItems = stockRepository.findStockItems();
 
@@ -129,4 +127,12 @@ public class StockServiceImpl implements StockService {
     public List<StockPriceForYearResponse> findStockPricesForYear(StockItem stockItem) {
         return stockRepository.findStockPricesForYear(stockItem);
     }
+
+    @Override
+    public Stock findByStockItemAndDate(StockItem stockItem) {
+        LocalDateTime latestDate = findLatestDate();
+        return stockRepository.findByStockItemAndCreatedAt(stockItem, latestDate)
+                .orElseThrow(() -> new NoSuchElementException("해당 지수가 조회 되지 않습니다."));
+    }
+
 }

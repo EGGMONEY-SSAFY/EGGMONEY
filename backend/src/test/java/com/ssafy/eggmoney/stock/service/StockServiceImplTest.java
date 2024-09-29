@@ -20,6 +20,7 @@
 //import java.nio.file.attribute.BasicFileAttributes;
 //import java.time.Instant;
 //import java.time.LocalDate;
+//import java.time.LocalDateTime;
 //import java.time.temporal.ChronoUnit;
 //import java.util.ArrayList;
 //import java.util.List;
@@ -70,9 +71,9 @@
 //            throw new RuntimeException(e);
 //        }
 //
-//        List<StockPriceDto> stockPrices = stockService.getStockPrices(token, "20240921", "0001");
+////        List<StockPriceDto> stockPrices = stockService.getStockPrices(token, "20240921", "0001");
 //
-//        Assertions.assertThat(stockPrices).hasSize(100);
+////        Assertions.assertThat(stockPrices).hasSize(100);
 //    }
 //
 //    @Test
@@ -94,8 +95,8 @@
 //        }
 //
 //        for (int i = 0; i < stockCodes.length; i++) {
-//            List<StockPriceDto> stockPrices = stockService.getStockPrices(token, "20231130", stockCodes[i]);
-//            stockService.saveStockPrices(stockPrices, stockItems[i]);
+////            List<StockPriceDto> stockPrices = stockService.getStockPrices(token, "20231130", stockCodes[i]);
+////            stockService.saveStockPrices(stockPrices, stockItems[i]);
 //        }
 //    }
 //
@@ -143,7 +144,7 @@
 //        List<Stock> stocks = new ArrayList<>();
 //        for(int i = 0; i < stockCodes.length; i++) {
 //            BigDecimal currentStockPrice = stockService.getCurrentStockPrice(token, stockCodes[i]);
-//            Stock stock = new Stock(stockItems[i], currentStockPrice, LocalDate.now().minusDays(1));
+//            Stock stock = new Stock(stockItems[i], currentStockPrice);
 //            stocks.add(stock);
 //        }
 //
@@ -158,4 +159,5 @@
 //        Assertions.assertThat(stockItems).hasSize(13);
 //        Assertions.assertThat(top2LatestPrices).hasSize(2);
 //    }
+//
 //}
