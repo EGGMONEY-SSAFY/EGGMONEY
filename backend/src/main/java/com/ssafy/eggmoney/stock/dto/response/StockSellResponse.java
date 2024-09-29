@@ -6,14 +6,16 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Getter
-public class StockUserResponse {
+public class StockSellResponse {
     private int buyAverage;
     private int amount;
     private int totalInvestment;
     private int value;
     private int roi;
 
-    public StockUserResponse(int buyAverage, int amount, int price) {
+    public StockSellResponse() {}
+
+    public StockSellResponse(int buyAverage, int amount, int price) {
         this.buyAverage = buyAverage;
         this.amount = amount;
         this.totalInvestment = buyAverage * amount;
