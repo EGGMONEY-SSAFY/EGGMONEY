@@ -101,7 +101,7 @@ const formatExpireDate = (expireDate?: string) => {
         <h2 class="text-lg font-bold mb-4">정말 상환하시겠습니까?</h2>
         <div class="mb-5">
           <p class="text-sm text-red-500 mb-1">* 상환 후에는 취소가 불가능합니다.</p>
-          <p class="text-red-500">계속 진행하시겠습니까?</p>
+          <p class="text-sm text-red-500">계속 진행하시겠습니까?</p>
         </div>
         <div class="flex justify-end">
           <button class="bg-gray-500 text-white px-4 py-2 rounded mr-2" @click="closeModal">
