@@ -9,7 +9,7 @@ import BoxLoanListItem from "@/components/box/BoxLoanListItem.vue"
 const varStore = useVariableStore()
 
 const props = defineProps<{ user: User }>()
-const loanList = ref<Loan[] | null>(null)
+const myLoanList = ref<Loan[] | null>(null)
 
 watch(
   () => props.user,
@@ -18,10 +18,10 @@ watch(
       await finStore.getUserLoanList(newUser.userId)
       if (finStore.loanList != null) {
         if (typeof finStore.loanList === "object") {
-          loanList.value = finStore.loanList as Loan[]
+          myLoanList.value = finStore.loanList as Loan[]
         }
       } else {
-        loanList.value = null
+        myLoanList.value = null
       }
     }
   },
@@ -34,14 +34,14 @@ onMounted(async () => {
   await finStore.getUserLoanList(props.user.userId)
   if (finStore.loanList != null) {
     if (typeof finStore.loanList === "object") {
-      loanList.value = finStore.loanList as Loan[]
+      myLoanList.value = finStore.loanList as Loan[]
     }
   }
 })
 </script>
 <template>
-  <div v-if="loanList" class="grid grid-flow-row">
-    <BoxLoanListItem :user="props.user" :loan="loan" v-for="loan in loanList" :key="loan.loanId" />
+  <div v-if="myLoanList" class="grid grid-flow-row">
+    <BoxLoanListItem :user="props.user" :loan="data" v-for="data in myLoanList" :key="data.loanId" />
   </div>
   <div v-else>
     <div class="grid justify-center mt-20">

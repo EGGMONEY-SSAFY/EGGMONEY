@@ -158,7 +158,7 @@ export const useAssetStore = defineStore("asset", () => {
     })
       .then((res) => {
         withdrawalList.value = res.data
-        withdrawalList.value.reverse()
+        withdrawalList.value
       })
       .catch((err) => {
         console.error(err)
