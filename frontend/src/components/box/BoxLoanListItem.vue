@@ -26,13 +26,12 @@ function goLoanDetail(loanId: number) {
         <div
           class="border-gray-500 p-1 rounded-lg border-2 grid grid-flow-col"
           role="button"
-          tabindex="0" v-if="loan.loanId"
+          tabindex="0"
+          v-if="loan.loanId"
           @click="goLoanDetail(loan.loanId)"
         >
           <h1 class="text-sm px-1 font-semibold my-auto">상세보기</h1>
-          <RouterLink to="/">
-            <IconRightArrow class="size-6" />
-          </RouterLink>
+          <IconRightArrow class="size-6" />
         </div>
       </div>
       <h1

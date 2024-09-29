@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Line } from "vue-chartjs"
-import { ref, watch } from "vue"
+import { onUnmounted, ref, watch } from "vue"
 import "chartjs-adapter-date-fns" // 날짜 포맷을 위해 필요한 어댑터
 import { useAssetStore } from "@/stores/asset"
 import type { TradeData } from "@/stores/asset"
@@ -158,6 +158,10 @@ watch(
   },
   { immediate: true, deep: true }
 )
+
+onUnmounted(() => {
+  assetStore.logs = []
+})
 </script>
 
 <template>

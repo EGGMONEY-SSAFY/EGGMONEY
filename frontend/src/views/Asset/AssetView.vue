@@ -15,17 +15,15 @@ const userSelect = ref<User | null>(null)
 
 // 가족 탭으로 이동
 const goFamilyTab = () => {
-  router.push({ name: "AllView" })
+  router.push({ name: "FamilyCom" })
 }
 // 출금요청심사 탭으로 이동
 const goWithdrawalTab = () => {
-  router.push({ name: "AllView" })
+  router.push({ name: "AssetWithdrawalView" })
 }
-
 onMounted(async () => {
   // 유저 조회해서 유저 정보(역할, 자식 목록) 가져오기
-  await userStore.getUser(3)
-
+  await userStore.getUser(1)
   //  자녀가 로그인한 경우
   if (userStore.user && userStore.user.role === "자녀") {
     userSelect.value = userStore.user
@@ -49,7 +47,7 @@ onMounted(async () => {
 <template>
   <div class="grid grid-cols-1 grid-flow-row p-5">
     <!-- 등록된 가족이 있는 경우 -->
-    <div v-if="userStore.children.length > 0">
+    <div v-if="userStore.familyId">
       <!-- 부모일 경우 아이 Select Box -->
       <div v-if="userStore.user && userStore.user.role === `부모`" class="p-3 flex justify-between">
         <select
@@ -85,7 +83,6 @@ onMounted(async () => {
       <div class="flex justify-center items-center mt-16 mb-16">
         <img src="@/assets/asset/link.png" alt="link" class="w-32" />
       </div>
-
       <button class="bg-main-color rounded-full text-white text-sm py-2 mx-10" @click="goFamilyTab">
         등록하러가기
       </button>
