@@ -1,6 +1,5 @@
 package com.ssafy.eggmoney.stock.service;
 
-import com.ssafy.eggmoney.stock.dto.api.StockPriceDto;
 import com.ssafy.eggmoney.stock.dto.api.StockTokenDto;
 import com.ssafy.eggmoney.stock.dto.response.StockPriceForYearResponse;
 import com.ssafy.eggmoney.stock.dto.response.StockPriceResponse;
@@ -15,7 +14,8 @@ public interface StockService {
     StockTokenDto getAccessToken();
     BigDecimal getCurrentStockPrice(String token, String stockCode);
     void saveCurrentStockPrices(List<Stock> stocks);
-    List<StockPriceResponse> findLatestStockPrice();
+    List<StockPriceResponse> findLatestStockPrices();
     LocalDateTime findLatestDate();
     List<StockPriceForYearResponse> findStockPricesForYear(StockItem stockItem);
+    Stock findByStockItemAndDate(StockItem stockItem);
 }
