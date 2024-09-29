@@ -1,6 +1,15 @@
 <script setup lang="ts">
 import IconRightArrow from "../icons/IconRightArrow.vue"
 import IconSetting from "../icons/IconAllAssets.vue"
+import { useRouter } from "vue-router"
+
+const router = useRouter()
+function goAsset() {
+  router.push({ name: "AssetMainView" })
+}
+function goWithdrawalRequest() {
+  router.push({ name: "AssetWithdrawalView" })
+}
 </script>
 
 <template>
@@ -13,7 +22,7 @@ import IconSetting from "../icons/IconAllAssets.vue"
         <p></p>
       </div>
     </div>
-    <div class="flex justify-between cursor-pointer">
+    <div class="flex justify-between cursor-pointer" @click="goAsset">
       <div class="my-4 mx-8">
         <p>자산</p>
       </div>
@@ -22,7 +31,7 @@ import IconSetting from "../icons/IconAllAssets.vue"
       </div>
     </div>
 
-    <div class="flex justify-between mb-3 cursor-pointer">
+    <div class="flex justify-between mb-3 cursor-pointer" @click="goWithdrawalRequest">
       <div class="my-4 mx-8">
         <p>출금 요청</p>
       </div>

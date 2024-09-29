@@ -7,6 +7,11 @@ import com.ssafy.eggmoney.account.entity.AccountLog;
 import com.ssafy.eggmoney.account.service.AccountLogService;
 import com.ssafy.eggmoney.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,10 +30,14 @@ public class AccountController {
         return accountService.getAccount(userId);
     }
 
-//    메인계좌 로그 조회
+//    메인 계좌 로그 조회
     @GetMapping("/main-account/{userId}/log")
-    public List<GetAccountLogResponseDto> getAccountLogs(@PathVariable("userId") Long userId){
-        return accountLogService.getAccountLogs(userId);
+    public Page<GetAccountLogResponseDto> getAccountLogs(
+            @PathVariable("userId") Long userId,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return accountLogService.getAccountLogs(userId, pageable);
     }
 
 //    메인계좌 로그 조회 ( 3개월 기준 )

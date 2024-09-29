@@ -1,7 +1,6 @@
 package com.ssafy.eggmoney.withdrawal.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.eggmoney.account.entity.Account;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.repository.AccountRepository;
@@ -10,12 +9,10 @@ import com.ssafy.eggmoney.common.exception.ErrorType;
 import com.ssafy.eggmoney.common.webClient.ApiClient;
 import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
 import com.ssafy.eggmoney.family.entity.Family;
-import org.springframework.web.reactive.function.client.WebClient;
 import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import com.ssafy.eggmoney.withdrawal.dto.request.CreateWithdrawalRequestDto;
-import com.ssafy.eggmoney.withdrawal.dto.request.GetWithdrawalRequestDto;
 import com.ssafy.eggmoney.withdrawal.dto.request.JudgeWithdrawalRequestDto;
 import com.ssafy.eggmoney.withdrawal.dto.response.GetWithdrawalResponseDto;
 import com.ssafy.eggmoney.withdrawal.entity.Withdrawal;
@@ -24,7 +21,6 @@ import com.ssafy.eggmoney.withdrawal.repository.WithdrawalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Mono;
 
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -45,8 +41,8 @@ public class WithdrawalService {
     private BigInteger institutionTransactionUniqueNo = new BigInteger("0");
 
 //  출금요청 로그 조회
-    public List<GetWithdrawalResponseDto> getWithdrawalLogs(GetWithdrawalRequestDto dto){
-        User child = userRepository.findById(dto.getUserId())
+    public List<GetWithdrawalResponseDto> getWithdrawalLogs(Long userId){
+        User child = userRepository.findById(userId)
                 .orElseThrow( () -> new NoSuchElementException(ErrorType.NOT_FOUND_CHILD.toString()));
         User parent = userRepository.findById(child.getFamily().getPresentId())
                 .orElseThrow( () -> new NoSuchElementException(ErrorType.NOT_FOUND_PARENT.toString()));
@@ -56,8 +52,10 @@ public class WithdrawalService {
 
         List<GetWithdrawalResponseDto> logs = lst.stream()
                 .map( withdrawal -> GetWithdrawalResponseDto.builder()
+                    .withdrawalId(withdrawal.getId())
                     .applyer(
                             GetUserResponseDto.builder()
+                                    .userId(child.getId())
                                     .email(child.getEmail())
                                     .role(child.getRole())
                                     .family(
@@ -76,6 +74,7 @@ public class WithdrawalService {
                     )
                     .applyee(
                             GetUserResponseDto.builder()
+                            .userId(parent.getId())
                             .email(parent.getEmail())
                             .family(
                                     GetFamilyResponseDto.builder()
@@ -92,6 +91,8 @@ public class WithdrawalService {
                             .build())
                     .withdrawalPrice(withdrawal.getWithdrawalPrice())
                     .type(withdrawal.getWithdrawalStatus())
+                    .createdAt(withdrawal.getCreatedAt())
+                    .updatedAt(withdrawal.getUpdatedAt())
                 .build()
                 )
                 .collect(Collectors.toList());

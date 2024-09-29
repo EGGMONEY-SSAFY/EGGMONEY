@@ -1,6 +1,18 @@
 <script setup lang="ts">
 import IconRightArrow from "../icons/IconRightArrow.vue"
 import IconSetting from "../icons/IconAllFinance.vue"
+import { useRouter } from "vue-router"
+
+const router = useRouter()
+function goDeposit() {
+  router.push({ name: "FinDepositView" })
+}
+function goSavings() {
+  router.push({ name: "FinSavingsView" })
+}
+function goLoan() {
+  router.push({ name: "FinLoanView" })
+}
 </script>
 
 <template>
@@ -13,7 +25,7 @@ import IconSetting from "../icons/IconAllFinance.vue"
         <p></p>
       </div>
     </div>
-    <div class="flex justify-between cursor-pointer">
+    <div class="flex justify-between cursor-pointer" @click="goDeposit">
       <div class="my-4 mx-8">
         <p>예금 상품 조회</p>
       </div>
@@ -22,7 +34,7 @@ import IconSetting from "../icons/IconAllFinance.vue"
       </div>
     </div>
 
-    <div class="flex justify-between cursor-pointer">
+    <div class="flex justify-between cursor-pointer" @click="goSavings">
       <div class="my-4 mx-8">
         <p>적금 상품 조회</p>
       </div>
@@ -31,7 +43,7 @@ import IconSetting from "../icons/IconAllFinance.vue"
       </div>
     </div>
 
-    <div class="flex justify-between mb-3 cursor-pointer">
+    <div class="flex justify-between mb-3 cursor-pointer" @click="goLoan">
       <div class="my-4 mx-8">
         <p>대출</p>
       </div>
