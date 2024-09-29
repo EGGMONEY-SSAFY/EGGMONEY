@@ -1,6 +1,7 @@
 import { ref } from "vue"
 import { defineStore } from "pinia"
 import axios from "axios"
+import type { User } from "./user"
 
 export interface TradeData {
   accountId: number
@@ -25,6 +26,16 @@ export interface ChartData {
   }[]
 }
 
+export interface Withdrawal {
+  withdrawalId: number
+  applyer: User
+  applyee: User
+  withdrawalPrice: Number
+  type: string
+  createdAt: string
+  updatedAt: string
+}
+
 export const useAssetStore = defineStore("asset", () => {
   const API_URL = "/api/v1/asset"
   const deposit = ref<Number | null>(null)
@@ -33,6 +44,8 @@ export const useAssetStore = defineStore("asset", () => {
   const mainAccount = ref<Number | null>(null)
   const stock = ref<Number | null>(null)
   const logs = ref<TradeData[]>([])
+  const withdrawalList = ref<Withdrawal[]>([])
+  const mainAccountPages = ref<number>(1)
 
   // 유저 자산 조회
   const getPort = function (userId: number): Promise<void> {
@@ -52,8 +65,8 @@ export const useAssetStore = defineStore("asset", () => {
       })
   }
 
-  // 유저 로그 내역 조회
-  const getAccountLog = function (userId: number): Promise<void> {
+  // 유저 로그 내역 조회 ( 차트 그리기용 )
+  const getAccountChartLog = function (userId: number): Promise<void> {
     return axios({
       method: "get",
       url: `${API_URL}/main-account/${userId}/3/log`,
@@ -83,6 +96,42 @@ export const useAssetStore = defineStore("asset", () => {
       })
   }
 
+  // 유저 로그 내역 조회
+  const getAccountLog = function (userId: number, page: number): Promise<void> {
+    return axios({
+      method: "get",
+      url: `${API_URL}/main-account/${userId}/log`,
+      params: {
+        page: page - 1,
+        size: 10,
+      },
+    })
+      .then((res) => {
+        let logsArray: TradeData[] = []
+        res.data.content.forEach((data: TradeData) => {
+          if (data.tradeTarget === "WITHDRAWAL") {
+            data.tradeTarget = "출금"
+          } else if (data.tradeTarget === "LOAN") {
+            data.tradeTarget = "대출"
+          } else if (data.tradeTarget === "DEPOSIT") {
+            data.tradeTarget = "예금"
+          } else if (data.tradeTarget === "STOCK") {
+            data.tradeTarget = "주식"
+          } else if (data.tradeTarget === "SAVINGS") {
+            data.tradeTarget = "적금"
+          } else if (data.tradeTarget === "ALLOWANCE") {
+            data.tradeTarget = "용돈"
+          }
+          logsArray.push(data)
+        })
+        logs.value = logsArray
+        mainAccountPages.value = res.data.totalPages
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
   // 출금 요청 생성
   const createWithdrawal = function (userId: number, price: number): Promise<void> {
     return axios({
@@ -90,12 +139,47 @@ export const useAssetStore = defineStore("asset", () => {
       url: `${API_URL}/withdrawal/create`,
       data: {
         userId: userId,
-        price: price
-      }
+        price: price,
+      },
     })
       .then((res) => {
         console.log(res.data)
       })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
+  // 출금 요청 조회
+  const getWithdrawalList = function (userId: number): Promise<void> {
+    return axios({
+      method: "get",
+      url: `${API_URL}/withdrawal/log/${userId}`,
+    })
+      .then((res) => {
+        withdrawalList.value = res.data
+        withdrawalList.value
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
+  // 출금 요청 조회
+  const sendWithdrawalJudge = function (
+    withdrawalId: number,
+    judge: string,
+    userId: number
+  ): Promise<void> {
+    return axios({
+      method: "post",
+      url: `${API_URL}/withdrawal/judge/${withdrawalId}`,
+      data: {
+        userId: userId,
+        judge: judge,
+      },
+    })
+      .then((res) => {})
       .catch((err) => {
         console.error(err)
       })
@@ -108,8 +192,13 @@ export const useAssetStore = defineStore("asset", () => {
     mainAccount,
     stock,
     logs,
+    withdrawalList,
+    mainAccountPages,
     getPort,
     getAccountLog,
+    getAccountChartLog,
     createWithdrawal,
+    getWithdrawalList,
+    sendWithdrawalJudge,
   }
 })

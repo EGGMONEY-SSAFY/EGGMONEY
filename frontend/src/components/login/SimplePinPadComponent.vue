@@ -1,16 +1,17 @@
 <template>
-  <div class="flex flex-col items-center justify-center mx-auto h-screen">
+  <!-- 만들 때 -->
+  <div class="flex flex-col items-center justify-center mx-auto">
     <div v-if="step != 2">
       <div class="text-center mt-6 text-lg font-semibold text-gray-700">
         {{ instructionMessage }}
       </div>
 
       <!-- 비밀번호 입력 표시 -->
-      <div class="flex gap-3 mb-4">
+      <div class="flex gap-3 mb-4 mt-8">
         <div
           v-for="(digit, index) in 6"
           :key="index"
-          class="w-12 h-12 border border-gray-300 rounded bg-white flex items-center justify-center text-2xl font-bold shadow-md"
+          class="w-10 h-10 border border-gray-300 rounded bg-white flex items-center justify-center text-xl font-bold shadow-md"
         >
           {{ (step === 1 ? firstInput[index] : secondInput[index]) !== undefined ? "*" : "" }}
         </div>
@@ -18,11 +19,11 @@
 
       <!-- 이미지 및 핀 패드 -->
       <div class="bg-white flex justify-center items-center w-full max-w-md h-auto relative">
-        <img :src="pinPadImage" class="ml-11 w-full h-auto" alt="Pin Pad" v-if="pinPadImage" />
+        <img :src="pinPadImage" class="ml-8 w-3/4 h-auto" alt="Pin Pad" v-if="pinPadImage" />
         <button
           v-for="(number, index) in numbers"
           :key="index"
-          class="ml-12 my-9 absolute border border-gray-400 rounded-md shadow-md bg-white"
+          class="absolute border border-gray-400 rounded-md shadow-md bg-white w-10 h-10"
           :class="{ 'bg-white': clickedButton === index || randomButton === index }"
           :style="buttonStyle(index)"
           @click="onButtonClick(index)"
@@ -39,6 +40,10 @@ import { useAuthStore } from "@/stores/auth"
 import JSEncrypt from "jsencrypt"
 //@ts-ignore
 import CryptoJS from "crypto-js"
+import { useVariableStore } from "@/stores/variable"
+
+const store = useVariableStore()
+store.setTitle("간편 비밀번호")
 
 const emit = defineEmits<{
   (event: "pinSuccess"): void

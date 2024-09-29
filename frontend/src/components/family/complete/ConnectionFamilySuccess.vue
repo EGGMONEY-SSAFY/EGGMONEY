@@ -7,19 +7,19 @@
 </template>
 
 <script setup lang="ts">
-import { useFinStore } from "@/stores/fin";
+import { useFinStore } from "@/stores/fin"
 import { onMounted, onUnmounted } from "vue"
 import { useRouter } from "vue-router"
 const finStore = useFinStore()
 const router = useRouter()
 
-onMounted( ()=> {
+onMounted(() => {
   finStore.isYellowPage = true
-  // setTimeout(() => {
-  //   router.push("/family")
-  // }, 1500)
+  setTimeout(() => {
+    router.push("/family")
+  }, 1500)
 })
-onUnmounted( ()=> {
+onUnmounted(() => {
   finStore.isYellowPage = false
 })
 </script>

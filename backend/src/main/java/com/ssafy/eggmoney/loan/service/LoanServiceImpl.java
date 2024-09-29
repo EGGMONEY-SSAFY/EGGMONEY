@@ -117,6 +117,7 @@ public class LoanServiceImpl implements LoanService {
         Loan loan = loanRepository.findByIdAndLoanStatus(loanId, LoanStatus.APPROVAL).orElse(null);
 
         LoanDetailResponseDto loanDetail = LoanDetailResponseDto.builder()
+                .loanId(loanId)
                 .createdAt(loan.getCreatedAt())
                 .expirationDate(loan.getExpirationDate())
                 .loanAmount(loan.getLoanAmount())
@@ -197,6 +198,7 @@ public class LoanServiceImpl implements LoanService {
                         .id(loanLog.getId())
                         .createdAt(loanLog.getCreatedAt())
                         .repayment(loanLog.getRepayment())
+                        .balance(loanLog.getBalance())
                         .build()
                 ).collect(Collectors.toList());
 

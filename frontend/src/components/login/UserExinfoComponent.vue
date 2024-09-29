@@ -2,7 +2,7 @@
   <div class="flex flex-col items-center justify-center h-screen bg-gray-100">
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
       <div class="flex items-center mb-6">
-        <h2 class="text-xl font-bold text-gray-800">사용자 유형 선택</h2>
+        <h2 class="text-xl font-bold text-gray-800">👪 사용자 유형 선택</h2>
       </div>
 
       <div class="bg-gray-100 rounded-lg p-4">
@@ -47,7 +47,9 @@
 import { ref, type Ref } from "vue"
 import axios from "axios"
 import { useRouter } from "vue-router"
+import { useAuthStore } from "@/stores/auth";
 
+const authStore = useAuthStore();
 const router = useRouter()
 const role = ref<String>("최초") as Ref<String>
 const selectRole = (selectedRole: String) => {
@@ -59,12 +61,20 @@ const submitExinfo = async () => {
     alert("역할을 선택해주세요")
     return
   }
+  // const token = authStore.accessToken;
+  const token = "HpAwXfMaEpHRVBLX6CvO2-LUlcUMjy1EAAAAAQorDR4AAAGSPfkK3pCBbdpZdq0Z"
   try {
-    const userId=await axios.post('')
-    const response = await axios.post(`/api/v1/profile/${userId}/update`, {
-      role: role.value,
-    })
-    console.log(response)
+    const response = await axios.post(
+      "/api/v1/profile/update/ExInfo",
+      { role: role.value }, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log(response);
     router.push("/won")
   } catch (error) {
     console.error("Error:", error)

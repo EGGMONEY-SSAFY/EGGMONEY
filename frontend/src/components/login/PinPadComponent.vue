@@ -1,16 +1,16 @@
 <template>
-  <div class="flex flex-col items-center justify-center mx-auto h-screen">
+  <div class="flex flex-col items-center justify-center mx-auto">
     <div v-if="step != 3">
-      <div class="text-center mt-6 text-lg font-semibold text-gray-700">
+      <div class="text-center mt-16 text-sm font-semibold text-gray-700">
         {{ instructionMessage }}
       </div>
 
       <!-- 비밀번호 입력 표시 -->
-      <div class="flex gap-3 mb-4">
+      <div class="flex gap-2 mb-4 mt-8">
         <div
           v-for="(digit, index) in 6"
           :key="index"
-          class="w-12 h-12 border border-gray-300 rounded bg-white flex items-center justify-center text-2xl font-bold shadow-md"
+          class="w-10 h-10 border border-gray-300 rounded bg-white flex items-center justify-center text-xl font-bold shadow-md"
         >
           {{ (step === 1 ? firstInput[index] : secondInput[index]) !== undefined ? "*" : "" }}
         </div>
@@ -18,15 +18,16 @@
 
       <!-- 이미지 및 핀 패드 -->
       <div class="bg-white flex justify-center items-center w-full max-w-md h-auto relative">
-        <img :src="pinPadImage" class="ml-11 w-full h-auto" alt="Pin Pad" v-if="pinPadImage" />
+        <img :src="pinPadImage" class="ml-8 w-3/4 h-auto" alt="Pin Pad" v-if="pinPadImage" />
         <button
           v-for="(number, index) in numbers"
           :key="index"
-          class="ml-12 my-9 absolute border border-gray-400 rounded-md shadow-md bg-white"
+          class="absolute border border-gray-400 rounded-md shadow-md bg-white w-10 h-10"
           :class="{ 'bg-white': clickedButton === index || randomButton === index }"
           :style="buttonStyle(index)"
           @click="onButtonClick(index)"
-        ></button>
+        >
+        </button>
       </div>
     </div>
     <div v-if="step === 3">
@@ -42,8 +43,12 @@ import { useAuthStore } from "@/stores/auth"
 import JSEncrypt from "jsencrypt"
 //@ts-ignore
 import CryptoJS from "crypto-js"
-
 import CreateSimplePwdSuccess from "./complete/CreateSimplePwdSuccess.vue"
+import { useVariableStore } from "@/stores/variable"
+
+const store = useVariableStore()
+store.setTitle("간편 비밀번호")
+
 const pinPadImage = ref<string | null>(null)
 const numbers = ref<number[]>([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
 const firstInput = ref<number[]>([])
@@ -150,7 +155,7 @@ const getRandomIndex = (excludeIndex: number): number => {
 const verifyInput = () => {
   console.log(firstInput.value, secondInput.value)
   if (firstInput.value.join("") === secondInput.value.join("")) {
-    const pinString = firstInput.value.toString()
+    const pinString = firstInput.value.join("");
     encryptAndSendPin(pinString)
   } else {
     instructionMessage.value = "비밀번호가 일치하지 않습니다. 다시 시도해주세요"
@@ -159,21 +164,30 @@ const verifyInput = () => {
 }
 
 const encryptAndSendPin = (pin: string) => {
-  const encrypt = new JSEncrypt()
-  encrypt.setPublicKey(publicKey.value)
-  const encryptedPin = encrypt.encrypt(pin)
-  if (!encryptedPin) {
-    console.error("PIN 암호화 실패")
-    instructionMessage.value = "암호화 오류가 발생했습니다."
-    return
-  }
-  sendToBackend(encryptedPin)
+  // const encrypt = new JSEncrypt()
+  // encrypt.setPublicKey(publicKey.value)
+  // const encryptedPin = encrypt.encrypt(pin)
+  // if (!encryptedPin) {
+  //   console.error("PIN 암호화 실패")
+  //   instructionMessage.value = "암호화 오류가 발생했습니다."
+  //   return
+  // }
+  // sendToBackend(encryptedPin)
+  sendToBackend(pin)
 }
 const sendToBackend = async (encryptedPin: string) => {
+  // const token = authStore.accessToken;
+      const token = "4A9qnGHLH5c5SLbbotj4Ig3wE5u9qMtCAAAAAQoqJQ0AAAGSPikHMZCBbdpZdq0Z"
   try {
     await axios.post("http://localhost:8080/api/pinpad/verify", {
       encryptedPin: encryptedPin,
-    })
+    },
+    {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        })
     instructionMessage.value = "비밀번호 설정이 완료되었습니다!"
   } catch (error) {
     console.error(error)

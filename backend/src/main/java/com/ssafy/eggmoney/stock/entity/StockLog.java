@@ -2,6 +2,7 @@ package com.ssafy.eggmoney.stock.entity;
 
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,14 +21,18 @@ public class StockLog extends BaseTime {
     @Column(name = "stock_log_id")
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "stock_user_id")
     private StockUser stockUser;
 
+    @NotNull
     @Enumerated(value = STRING)
     private TradeType tradeType;
 
-    private boolean isExecution;
+    @NotNull
+    private int tradePrice;
+
+    @NotNull
     private int tradeAmount;
-    private int price;
 }

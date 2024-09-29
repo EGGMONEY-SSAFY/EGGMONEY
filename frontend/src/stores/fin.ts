@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 import axios from "axios"
 import { reactive, ref } from "vue"
+import type internal from "stream"
 export interface depositProducts {
   productId: number
   productName: string
@@ -42,7 +43,7 @@ export interface Deposit {
 }
 
 export interface Loan {
-  loanId: number | null
+  loanId: number
   userName: string | null
   loanType: string | null
   loanStatus: string | null
@@ -62,7 +63,12 @@ export interface LoanLog {
   repayment: number
   createdAt: string
 }
-
+export interface LoanCreate {
+  loanReason: string
+  loanAmount: number
+  loanDate: number
+  loanType: string
+}
 export const useFinStore = defineStore(
   "fin",
   () => {
@@ -95,12 +101,14 @@ export const useFinStore = defineStore(
       createdAt: null,
     })
 
+    const loanCreate = ref<LoanCreate | null>(null)
     const savingsLogs = ref<SavingsLogs[] | null>(null)
     const deposit = ref<Deposit | null>(null)
     const loan = ref<Loan | null>(null)
     const loanList = ref<Loan[] | null>(null)
     const loanLogs = ref<LoanLog[] | null>([])
 
+    // 예금상품조회
     const getDepositProduct = function () {
       axios({
         method: "GET",
@@ -115,6 +123,7 @@ export const useFinStore = defineStore(
         })
     }
 
+    // 적금상품조회
     const getSavingsProduct = function () {
       axios({
         method: "GET",
@@ -127,6 +136,17 @@ export const useFinStore = defineStore(
         .catch((err) => {
           console.error(err)
         })
+    }
+
+    // 대출신청정보 저장
+    const setLoanCreate = function (reason: string, amount: number, date: number, type: string) {
+      const loanType = type === "원리금균등상환" ? "EQUALR" : "LUMPSUM"
+      loanCreate.value = {
+        loanReason: reason,
+        loanAmount: amount,
+        loanDate: date,
+        loanType: loanType,
+      }
     }
 
     // User 적금 계좌 조회
@@ -182,6 +202,7 @@ export const useFinStore = defineStore(
       })
         .then((res) => {
           deposit.value = res.data
+          console.log(deposit.value)
         })
         .catch((err) => {
           deposit.value = null
@@ -246,11 +267,9 @@ export const useFinStore = defineStore(
     const sendSavings = function (userId: Number): Promise<void> {
       return axios({
         method: "post",
-        url: `${USER_SAVINGS_SEND_API_URL}/${userId}`
+        url: `${USER_SAVINGS_SEND_API_URL}/${userId}`,
       })
-        .then((res) => {
-          
-        })
+        .then((res) => {})
         .catch((err) => {
           console.error(err)
         })
@@ -260,11 +279,9 @@ export const useFinStore = defineStore(
     const sendLoan = function (loanId: Number): Promise<void> {
       return axios({
         method: "post",
-        url: `${USER_LOAN_SEND_API_URL}/${loanId}`
+        url: `${USER_LOAN_SEND_API_URL}/${loanId}`,
       })
-        .then((res) => {
-          
-        })
+        .then((res) => {})
         .catch((err) => {
           console.error(err)
         })
@@ -274,25 +291,21 @@ export const useFinStore = defineStore(
     const deleteSavings = function (savingsId: Number): Promise<void> {
       return axios({
         method: "post",
-        url: `${DELETE_SAVINGS_API_URL}/${savingsId}`
+        url: `${DELETE_SAVINGS_API_URL}/${savingsId}`,
       })
-        .then((res) => {
-          
-        })
+        .then((res) => {})
         .catch((err) => {
           console.error(err)
         })
     }
 
     // User 예금 해약
-    const deleteDeposit = function (userId: Number): Promise<void> {
+    const deleteDeposit = function (depositId: Number): Promise<void> {
       return axios({
         method: "post",
-        url: `${DELETE_DEPOSIT_API_URL}/${userId}`
+        url: `${DELETE_DEPOSIT_API_URL}/${depositId}`,
       })
-        .then((res) => {
-          
-        })
+        .then((res) => {})
         .catch((err) => {
           console.error(err)
         })
@@ -316,10 +329,12 @@ export const useFinStore = defineStore(
       getUserLoanLogs,
       getUserLoanList,
       loanList,
+      setLoanCreate,
+      loanCreate,
       isYellowPage,
       sendLoan,
       deleteDeposit,
-      deleteSavings 
+      deleteSavings,
     }
   }
   // {

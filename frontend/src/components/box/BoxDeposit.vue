@@ -2,7 +2,7 @@
 import { useUserStore } from "@/stores/user"
 import type { User } from "@/stores/user"
 import type { Deposit } from "@/stores/fin"
-import { useRouter } from "vue-router";
+import { useRouter } from "vue-router"
 
 const props = defineProps<{ user: User; deposit: Deposit | null }>()
 const router = useRouter()
@@ -19,7 +19,6 @@ const formatExpireDate = (expireDate?: string) => {
   const day = String(date.getDate()).padStart(2, "0")
   return `${year}. ${month}. ${day}`
 }
-
 </script>
 
 <template>
@@ -31,7 +30,12 @@ const formatExpireDate = (expireDate?: string) => {
         >
           {{ props.deposit?.depositProduct?.productName }}
         </h1>
-        <button class="text-main-color font-semibold text-base my-auto" @click="goDepositDetail(props.user.userId)">통장관리</button>
+        <button
+          class="text-main-color font-semibold text-base my-auto"
+          @click="goDepositDetail(props.user.userId)"
+        >
+          통장관리
+        </button>
       </div>
       <div class="text-center">
         <h1 class="mt-8 text-lg underline underline-offset-4">

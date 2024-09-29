@@ -15,7 +15,7 @@
         <i class="fas fa-bell text-orange-500"></i>
         <!-- 알림 아이콘 -->
       </div>
-      <div class="mt-4">
+      <div class="mt-">
         <!-- 자녀 정보 -->
         <span class="font-semibold">{{ parent.name }}님은 현재</span>
         <span class="font-bold text-orange-600">{{ selectedChild?.name }}</span
@@ -111,15 +111,21 @@
     </button>
 
     <!-- 수정완료 모달 -->
-    <div v-if="showModal" class="modal">
-      <img src="@/assets/common/완료 폭죽.png" />
-      <span>용돈 정보 수정 완료</span>
+    <div v-if="showModal" class="modal p-12">
+      <img src="@/assets/common/완료 폭죽.png" class="w-40 h-auto" />
+      <div class="mt-4">
+        <span class="text-blue-700 font-bold mt-4">용돈 정보 수정 완료</span>
+      </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import axios from "axios"
+import { useVariableStore } from "@/stores/variable"
+
+const store = useVariableStore()
+store.setTitle("용돈 수정")
 
 interface Child {
   name: string

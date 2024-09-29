@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 public class DepositResponseDto {
+    private Long depositId;
     private DepositProductDto depositProduct;
     private LocalDateTime createdAt;
     private LocalDateTime expireDate;
