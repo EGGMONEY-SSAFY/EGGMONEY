@@ -17,6 +17,7 @@ const goLoanDetail = () => {
 
 // 모달을 여는 함수
 const openModal = () => {
+  console.log(props.loan?.loanId)
   isModalOpen.value = true
 }
 
