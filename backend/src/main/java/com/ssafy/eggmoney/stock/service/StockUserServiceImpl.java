@@ -4,7 +4,9 @@ import com.ssafy.eggmoney.account.dto.responseDto.GetAnalyticsResponseDto;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
 import com.ssafy.eggmoney.stock.dto.request.StockBuyRequest;
-import com.ssafy.eggmoney.stock.dto.response.StockUserResponse;
+import com.ssafy.eggmoney.stock.dto.request.StockSellRequest;
+import com.ssafy.eggmoney.stock.dto.response.StockBuyResponse;
+import com.ssafy.eggmoney.stock.dto.response.StockSellResponse;
 import com.ssafy.eggmoney.stock.entity.Stock;
 import com.ssafy.eggmoney.stock.entity.StockUser;
 import com.ssafy.eggmoney.stock.entity.TradeType;
@@ -67,27 +69,51 @@ public class StockUserServiceImpl implements StockUserService {
 
     @Transactional
     @Override
-    public StockUserResponse buyStock(StockBuyRequest stockBuy) {
-        Stock stock = stockService.findByStockItemAndDate(stockBuy.getStockItem());
-        User user = userService.findUserEntity(stockBuy.getUserId());
+    public StockBuyResponse buyStock(StockBuyRequest stockBuyReq) {
+        Stock stock = stockService.findByStockItemAndDate(stockBuyReq.getStockItem());
+        User user = userService.findUserEntity(stockBuyReq.getUserId());
 
-        accountService.updateAccount(AccountLogType.STOCK, stockBuy.getUserId(),
-                stockBuy.getAmount() * stock.getStockPrice() * -1);
+        accountService.updateAccount(AccountLogType.STOCK, stockBuyReq.getUserId(),
+                stockBuyReq.getAmount() * stock.getStockPrice() * -1);
 
         StockUser stockUser = stockUserRepository.findByStockIdAndUserId(stock.getId(), user.getId())
                 .map(existingStockUser -> {
-                    existingStockUser.buyStock(stock.getStockPrice(), stockBuy.getAmount());
+                    existingStockUser.buyStock(stock.getStockPrice(), stockBuyReq.getAmount());
                     return existingStockUser;
                 })
                 .orElseGet(() -> {
-                    StockUser newStockUser = new StockUser(user, stock, stock.getStockPrice(), stockBuy.getAmount());
+                    StockUser newStockUser = new StockUser(user, stock, stock.getStockPrice(), stockBuyReq.getAmount());
                     stockUserRepository.save(newStockUser);
                     return newStockUser;
                 });
 
-        stockLogService.saveStockLog(stockUser, TradeType.BUY, stock.getStockPrice(), stockBuy.getAmount());
+        stockLogService.saveStockLog(stockUser, TradeType.BUY, stock.getStockPrice(), stockBuyReq.getAmount());
 
-        return new StockUserResponse(stockUser.getBuyAverage(), stockUser.getAmount(), stock.getStockPrice());
+        return new StockBuyResponse(stockUser.getBuyAverage(), stockUser.getAmount(), stock.getStockPrice());
     }
 
+    @Transactional
+    @Override
+    public StockSellResponse sellStock(StockSellRequest stockSellReq) {
+        Stock stock = stockService.findByStockItemAndDate(stockSellReq.getStockItem());
+        User user = userService.findUserEntity(stockSellReq.getUserId());
+
+        accountService.updateAccount(AccountLogType.STOCK, stockSellReq.getUserId(),
+                stockSellReq.getAmount() * stock.getStockPrice());
+
+        StockUser stockUser = stockUserRepository.findByStockIdAndUserId(stock.getId(), user.getId())
+                .map(existingStockUser -> {
+                    existingStockUser.sellStock(stockSellReq.getAmount());
+                    return existingStockUser;
+                })
+                .orElseThrow(() -> new IllegalArgumentException("팔수 있는 주식이 존재하지 않습니다."));
+
+        stockLogService.saveStockLog(stockUser, TradeType.SELL, stock.getStockPrice(), stockSellReq.getAmount());
+
+        if(stockUser.getAmount() == 0) {
+            return new StockSellResponse();
+        } else {
+            return new StockSellResponse(stockUser.getBuyAverage(), stockUser.getAmount(), stock.getStockPrice());
+        }
+    }
 }

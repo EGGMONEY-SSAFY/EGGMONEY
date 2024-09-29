@@ -1,7 +1,9 @@
 package com.ssafy.eggmoney.stock.controller;
 
 import com.ssafy.eggmoney.stock.dto.request.StockBuyRequest;
-import com.ssafy.eggmoney.stock.dto.response.StockUserResponse;
+import com.ssafy.eggmoney.stock.dto.request.StockSellRequest;
+import com.ssafy.eggmoney.stock.dto.response.StockBuyResponse;
+import com.ssafy.eggmoney.stock.dto.response.StockSellResponse;
 import com.ssafy.eggmoney.stock.service.StockUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,9 +25,17 @@ public class StockUserController {
 
     @PostMapping("/stock/user/buy")
     public ResponseEntity<Map<String, Object>> buyStock(@RequestBody StockBuyRequest stockBuyReq) {
-        StockUserResponse stockUserRes = stockUserService.buyStock(stockBuyReq);
+        StockBuyResponse stockBuyRes = stockUserService.buyStock(stockBuyReq);
         Map<String, Object> response = stockUserService.findInvestableRatio(stockBuyReq.getUserId());
-        response.put("stockInfo", stockUserRes);
+        response.put("stockInfo", stockBuyRes);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/stock/user/sell")
+    public ResponseEntity<Map<String, Object>> sellStock(@RequestBody StockSellRequest stockSellReq) {
+        StockSellResponse stockSellRes = stockUserService.sellStock(stockSellReq);
+        Map<String, Object> response = stockUserService.findInvestableRatio(stockSellReq.getUserId());
+        response.put("stockInfo", stockSellRes);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
