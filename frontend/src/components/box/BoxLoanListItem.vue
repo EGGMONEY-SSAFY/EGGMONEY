@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { User } from "@/stores/user"
 import type { Loan } from "@/stores/fin"
-import { onMounted } from "vue"
 import { useRouter } from "vue-router"
 import IconRightArrow from "../icons/IconRightArrow.vue"
 const props = defineProps<{ user: User; loan: Loan }>()
@@ -17,18 +16,18 @@ function goLoanDetail(loanId: number) {
     <div class="mt-3">
       <h1
         class="bg-red-500 rounded-lg text-white px-3 py-1 inline-flex"
-        v-if="loan.loanStatus === 'REFUSAL'"
+        v-if="props.loan.loanStatus === 'REFUSAL'"
       >
         거절
       </h1>
-      <div class="flex justify-between" v-if="loan.loanStatus === 'APPROVAL'">
+      <div class="flex justify-between" v-if="props.loan.loanStatus === 'APPROVAL'">
         <h1 class="bg-green-700 rounded-lg text-white px-3 py-1 inline-flex my-auto">승낙</h1>
         <div
           class="border-gray-500 p-1 rounded-lg border-2 grid grid-flow-col"
           role="button"
           tabindex="0"
           v-if="loan.loanId"
-          @click="goLoanDetail(loan.loanId)"
+          @click="goLoanDetail(props.loan.loanId)"
         >
           <h1 class="text-sm px-1 font-semibold my-auto">상세보기</h1>
           <IconRightArrow class="size-6" />
@@ -36,13 +35,13 @@ function goLoanDetail(loanId: number) {
       </div>
       <h1
         class="bg-main-color rounded-lg text-white px-3 py-1 inline-flex"
-        v-if="loan.loanStatus === 'PROGRESS'"
+        v-if="props.loan.loanStatus === 'PROGRESS'"
       >
         진행중
       </h1>
       <h1
         class="bg-gray-500 rounded-lg text-white px-3 py-1 inline-flex"
-        v-if="loan.loanStatus === 'EXPIRED'"
+        v-if="props.loan.loanStatus === 'EXPIRED'"
       >
         완납
       </h1>
