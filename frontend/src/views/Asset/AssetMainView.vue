@@ -41,6 +41,7 @@ watch(
       await assetStore.getAccountChartLog(props.user.userId)
       accountHistory.value = assetStore.logs
     }
+    console.log(newUser)
   },
   { deep: true }
 )
