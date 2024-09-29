@@ -137,7 +137,7 @@ const checkAuthNumber = async () => {
   if (selectaccount.value && checkAuth.value) {
     try {
       // const token = authStore.accessToken;
-      const token = "y8bVYxkfMkStpHnhnYsiwSh-aJr_XBwJAAAAAQo9cpcAAAGSML9Ig5CBbdpZdq0Z"
+      const token = "HpAwXfMaEpHRVBLX6CvO2-LUlcUMjy1EAAAAAQorDR4AAAGSPfkK3pCBbdpZdq0Z"
       const response = await axios.post(
         "http://localhost:8080/api/v1/auth/won/check",
 
