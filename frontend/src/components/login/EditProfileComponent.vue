@@ -23,18 +23,25 @@
       수정 완료
     </button>
     <!-- 수정완료 모달 -->
-    <div v-if="showModal" class="modal">
-      <img src="@/assets/common/완료 폭죽.png" />
-      <span>용돈 정보 수정 완료</span>
+    <div v-if="showModal" class="modal p-12">
+      <img src="@/assets/common/완료 폭죽.png" class="w-40 h-auto" />
+      <div class="mt-4">
+        <span class="text-blue-700 font-bold mt-4">용돈 정보 수정 완료</span>
+      </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import { useVariableStore } from "@/stores/variable"
 import axios from "axios"
 import { ref } from "vue"
+
+const store = useVariableStore()
+store.setTitle("회원정보 수정")
+
 // ref() 유저 이름 변경시
-const showModal =ref(false);
-const user = ref('');
+const showModal = ref(false)
+const user = ref("")
 function sumbitchanges() {
   try {
     // 유저 아이디로 수정 필요

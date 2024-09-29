@@ -2,12 +2,7 @@
 import { onMounted, ref } from "vue"
 import type { TradeData } from "@/stores/asset"
 
-// const assetStore = useAssetStore()
-const balance = ref<Number | null>(0)
-
 const props = defineProps<{ history: TradeData[] }>()
-
-onMounted(() => console.log(props.history))
 </script>
 
 <template>

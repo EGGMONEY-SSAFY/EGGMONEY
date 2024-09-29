@@ -97,11 +97,13 @@
 
 <script setup lang="ts">
 import axios from "axios"
-import { ref } from "vue"
+import { onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 import { useAuthStore } from "@/stores/auth"
+import { useVariableStore } from "@/stores/variable"
 
 const authStore = useAuthStore()
+const varStore = useVariableStore()
 const showModal = ref(false)
 const familyDescription = ref("")
 const imageBase64 = ref<string>("")
@@ -180,6 +182,8 @@ function goToFamilyInvite() {
 function goToFamilyConnection() {
   router.push("/family/family-connection")
 }
+
+onMounted(() => varStore.setTitle("가족 관리"))
 </script>
 
 <style scoped></style>

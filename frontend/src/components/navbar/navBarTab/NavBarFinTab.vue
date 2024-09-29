@@ -25,6 +25,5 @@ const isAtive = computed(() => {
       >대출</RouterLink
     >
   </div>
-    <RouterView></RouterView>
-
+  <RouterView></RouterView>
 </template>

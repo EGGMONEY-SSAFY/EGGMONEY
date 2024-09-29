@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface WithdrawalRepository extends JpaRepository<Withdrawal, Long> {
-    @Query("SELECT w FROM Withdrawal w WHERE w.user.id = :userId")
+    @Query("SELECT w FROM Withdrawal w WHERE w.user.id = :userId ORDER BY w.createdAt DESC")
     List<Withdrawal> findLogsByUserId(@Param("userId") Long userId);
 }

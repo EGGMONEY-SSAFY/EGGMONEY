@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @Getter
 public class LoanDetailResponseDto {
+    long loanId;
     LocalDateTime createdAt;
     LocalDateTime expirationDate;
     int loanAmount;

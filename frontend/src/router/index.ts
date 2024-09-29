@@ -39,6 +39,7 @@ import ExInfoView from "@/views/All/ExInfoView.vue"
 import AssetDepositDetailView from "@/views/Asset/AssetDepositDetailView.vue"
 import AssetSavingsDetailView from "@/views/Asset/AssetSavingsDetailView.vue"
 import StockOrderListView from "@/views/Stock/StockOrderListView.vue"
+import AssetWithdrawalView from "@/views/Asset/AssetWithdrawalView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -96,6 +97,11 @@ const router = createRouter({
           path: "loan",
           name: "AssetLoanListView",
           component: AssetLoanListView,
+        },
+        {
+          path: "withdrawal/judge",
+          name: "AssetWithdrawalView",
+          component: AssetWithdrawalView,
         },
       ],
     },
