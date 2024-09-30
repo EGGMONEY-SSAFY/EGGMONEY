@@ -47,9 +47,9 @@
 import { ref, type Ref } from "vue"
 import axios from "axios"
 import { useRouter } from "vue-router"
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/auth"
 
-const authStore = useAuthStore();
+const authStore = useAuthStore()
 const router = useRouter()
 const role = ref<String>("최초") as Ref<String>
 const selectRole = (selectedRole: String) => {
@@ -66,15 +66,15 @@ const submitExinfo = async () => {
   try {
     const response = await axios.post(
       "/api/v1/profile/update/ExInfo",
-      { role: role.value }, 
+      { role: role.value },
       {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       }
-    );
-    console.log(response);
+    )
+    console.log(response)
     router.push("/won")
   } catch (error) {
     console.error("Error:", error)
