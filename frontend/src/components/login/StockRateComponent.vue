@@ -27,7 +27,7 @@
           type="number"
           v-model="selectedStockRatio"
         />
-        <span>퍼센트로 주식투자비율을 제한하고 있습니다.</span>        
+        <span>퍼센트로 주식투자비율을 제한하고 있습니다.</span>
       </div>
     </div>
     <!-- 수정 완료 버튼 -->
@@ -39,7 +39,10 @@
     </button>
 
     <!-- 수정완료 모달 -->
-    <div v-if="showModal" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg w-64 h-auto">
+    <div
+      v-if="showModal"
+      class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-lg shadow-lg w-64 h-auto"
+    >
       <img src="@/assets/common/완료 폭죽.png" class="w-40 h-auto" />
       <div class="mt-4">
         <span class="text-blue-700 font-bold mt-4">주식 비율 수정 완료</span>
@@ -58,7 +61,7 @@ store.setTitle("주식 투자비율 제한")
 interface Child {
   name: string
   id: number
-  stockRatio:number
+  stockRatio: number
 }
 const parent = ref({ name: "김엄마" }) // 로그인 유저의 정보 user.name;
 
@@ -66,8 +69,8 @@ const children = ref<Child[]>([])
 const selectedChild = ref<Child | null>(null)
 const selectedChildId = ref<number | null>(null)
 const selectedStockRatio = ref<number | null>(null)
-  const showModal = ref(false)
-  onMounted(async () => {
+const showModal = ref(false)
+onMounted(async () => {
   const response = {
     data: [
       { name: "김아들", id: 1, stockRatio: 10 },
@@ -90,16 +93,12 @@ const updateSelectedChild = () => {
   if (child) {
     selectedChild.value = child
     selectedStockRatio.value = child.stockRatio
-
   }
 }
 const sumbitchanges = async () => {
   if (selectedChild.value) {
     try {
-      console.log(
-        selectedChild.value.id,
-        selectedStockRatio.value,
-      )
+      console.log(selectedChild.value.id, selectedStockRatio.value)
       // const response = await axios.post('/api/allowance', {
       // user_id: selectedChild.value.id,
       // allowance_period: selectedPeriodUnit.value,
@@ -115,6 +114,4 @@ const sumbitchanges = async () => {
   }
 }
 </script>
-<style>
-
-</style>
+<style></style>
