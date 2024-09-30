@@ -3,13 +3,16 @@ package com.ssafy.eggmoney.stock.controller;
 import com.ssafy.eggmoney.stock.dto.request.StockBuyRequest;
 import com.ssafy.eggmoney.stock.dto.request.StockSellRequest;
 import com.ssafy.eggmoney.stock.dto.response.StockBuyResponse;
+import com.ssafy.eggmoney.stock.dto.response.StockLogResponse;
 import com.ssafy.eggmoney.stock.dto.response.StockSellResponse;
+import com.ssafy.eggmoney.stock.service.StockLogService;
 import com.ssafy.eggmoney.stock.service.StockUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -17,6 +20,7 @@ import java.util.Map;
 @RequestMapping("/api/v1")
 public class StockUserController {
     private final StockUserService stockUserService;
+    private final StockLogService stockLogService;
 
     @GetMapping("/stock/user/{userId}/available-balance")
     public ResponseEntity<Map<String, Object>> getInvestableRatio(@PathVariable Long userId) {
@@ -37,5 +41,10 @@ public class StockUserController {
         Map<String, Object> response = stockUserService.findInvestableRatio(stockSellReq.getUserId());
         response.put("stockInfo", stockSellRes);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/stock/user/{userId}/log")
+    public ResponseEntity<List<StockLogResponse>> getStockLogByUser(@PathVariable Long userId) {
+        return new ResponseEntity<>(stockLogService.findStockLogByUserId(userId), HttpStatus.OK);
     }
 }
