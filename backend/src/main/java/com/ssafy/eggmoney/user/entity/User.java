@@ -33,6 +33,8 @@ public class User extends BaseTime {
     private String bank;
     private String simplePwd;
 
+    private String profileImageUrl;
+
     @ColumnDefault("50")
     private int stockRatio;
 
