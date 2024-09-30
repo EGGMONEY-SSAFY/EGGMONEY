@@ -15,12 +15,15 @@ import com.ssafy.eggmoney.loan.repository.LoanRepository;
 import com.ssafy.eggmoney.savings.entity.Savings;
 import com.ssafy.eggmoney.savings.entity.SavingsStatus;
 import com.ssafy.eggmoney.savings.repository.SavingsRepository;
+import com.ssafy.eggmoney.stock.entity.StockUser;
+import com.ssafy.eggmoney.stock.repository.StockUserRepository;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -35,6 +38,7 @@ public class AccountService {
     private final SavingsRepository savingsRepository;
     private final DepositRepository depositRepository;
     private final LoanRepository loanRepository;
+    private final StockUserRepository stockUserRepository;
 
 //    내 메인 계좌 조회
     public GetAccountResponseDto getAccount(Long userId) {
@@ -80,13 +84,29 @@ public class AccountService {
         Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElse(null);
         Loan loan = loanRepository.findByIdAndLoanStatus(userId, LoanStatus.APPROVAL).orElse(null);
         Deposit deposit = depositRepository.findByUserIdAndDepositStatus(userId, DepositStatus.AVAILABLE).orElse(null);
+
         GetAnalyticsResponseDto dto = GetAnalyticsResponseDto.builder()
                 .mainAccountBalance(account != null ? account.getBalance() : null)
                 .savings(savings != null ? savings.getBalance() : null)
                 .deposit(deposit != null ? deposit.getDepositMoney() : null)
-                .stock(0)
+                .stock(findUserTotalStockPrice(userId))
                 .loan(loan != null ? loan.getBalance() : null)
                 .build();
         return dto;
+    }
+
+    public Integer findUserTotalStockPrice(Long userId) {
+        List<StockUser> stockUsers = stockUserRepository.findByUserId(userId);
+
+        if(stockUsers.isEmpty()) {
+            return null;
+        }
+
+        int totalStockPrice = 0;
+        for(StockUser stockUser : stockUsers) {
+            totalStockPrice += stockUser.getAmount() * stockUser.getBuyAverage();
+        }
+
+        return totalStockPrice;
     }
 }
