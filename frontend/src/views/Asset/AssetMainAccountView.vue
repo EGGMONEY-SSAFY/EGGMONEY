@@ -125,7 +125,7 @@ onMounted(async () => {
     <BoxAccountLogs :history="accountHistory" />
     <!-- Pagination Controls -->
     <div class="flex items-center justify-between border-t px-4 py-3 sm:px-6">
-      <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+      <div class="flex sm:flex-1 sm:items-center sm:justify-between">
         <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
           <!-- << 버튼: 첫 페이지로 이동 -->
           <button
