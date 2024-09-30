@@ -8,7 +8,7 @@ import com.ssafy.eggmoney.stock.dto.response.StockSellResponse;
 import java.util.Map;
 
 public interface StockUserService {
-    Map<String, Object> findInvestableRatio(Long userId);
+    Map<String, Object> findInvestablePrice(Long userId);
     StockBuyResponse buyStock(StockBuyRequest stockBuy);
     StockSellResponse sellStock(StockSellRequest stockSellReq);
 }

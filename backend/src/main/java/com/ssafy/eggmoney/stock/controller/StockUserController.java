@@ -24,13 +24,13 @@ public class StockUserController {
 
     @GetMapping("/stock/user/{userId}/available-balance")
     public ResponseEntity<Map<String, Object>> getInvestableRatio(@PathVariable Long userId) {
-        return new ResponseEntity<>(stockUserService.findInvestableRatio(userId), HttpStatus.OK);
+        return new ResponseEntity<>(stockUserService.findInvestablePrice(userId), HttpStatus.OK);
     }
 
     @PostMapping("/stock/user/buy")
     public ResponseEntity<Map<String, Object>> buyStock(@RequestBody StockBuyRequest stockBuyReq) {
         StockBuyResponse stockBuyRes = stockUserService.buyStock(stockBuyReq);
-        Map<String, Object> response = stockUserService.findInvestableRatio(stockBuyReq.getUserId());
+        Map<String, Object> response = stockUserService.findInvestablePrice(stockBuyReq.getUserId());
         response.put("stockInfo", stockBuyRes);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -38,7 +38,7 @@ public class StockUserController {
     @PostMapping("/stock/user/sell")
     public ResponseEntity<Map<String, Object>> sellStock(@RequestBody StockSellRequest stockSellReq) {
         StockSellResponse stockSellRes = stockUserService.sellStock(stockSellReq);
-        Map<String, Object> response = stockUserService.findInvestableRatio(stockSellReq.getUserId());
+        Map<String, Object> response = stockUserService.findInvestablePrice(stockSellReq.getUserId());
         response.put("stockInfo", stockSellRes);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
