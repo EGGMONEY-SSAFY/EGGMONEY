@@ -43,5 +43,9 @@ public class UserController {
         User user = kakaoAuthService.verifyKakaoToken(token);
         userService.updateUser(user.getId(), dto);
     }
-
+    @GetMapping("/")
+    public GetUserResponseDto tokenGetUser(@RequestHeader(value = "Authorization", required = false) String token) {
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        return userService.getUser(user.getId());
+    }
 }

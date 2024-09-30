@@ -62,11 +62,12 @@ public class FamilyServcie {
     }
 
 //    가족 연결
-    public void connectFamily(Long familyId, ConnectFamilyRequestDto dto){
-        User user = userRepository.findById(dto.getUserId()).get();
+    public void connectFamily(Long familyId,User user, ConnectFamilyRequestDto dto){
+//        User user = userRepository.findById(dto.getUserId()).get();
         Family fam = familyRepository.findById(familyId).get();
         user.setFamily(fam);
         familyRepository.save(fam);
+        userRepository.save(user);
     }
 
 //    가족 대표 변경
