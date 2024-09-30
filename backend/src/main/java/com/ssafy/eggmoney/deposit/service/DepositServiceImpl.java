@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -147,5 +148,15 @@ public class DepositServiceImpl implements DepositService {
         log.info("예금 계좌 삭제");
 
         return deleteResponseDto;
+    }
+
+    // 만료 체크하기
+    @Override
+    public List<Long> checkExpiredDeposit(){
+        LocalDateTime start = LocalDate.now().atStartOfDay();
+        LocalDateTime end = LocalDate.now().atTime(23, 59, 59);
+        List<Long> depositIds = depositRepository.findIdByExpireDateBetween(start, end);
+
+        return depositIds;
     }
 }
