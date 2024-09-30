@@ -34,7 +34,7 @@ public class StockUserServiceImpl implements StockUserService {
 
     @Transactional
     @Override
-    public Map<String, Object> findInvestableRatio(Long userId) {
+    public Map<String, Object> findInvestablePrice(Long userId) {
         Map<String, Object> response = new HashMap<>();
 
         GetAnalyticsResponseDto analytics = accountService.getAnalytics(userId);
@@ -61,6 +61,8 @@ public class StockUserServiceImpl implements StockUserService {
                 .multiply(BigDecimal.valueOf(assets))
                 .setScale(0, RoundingMode.HALF_UP)
                 .intValue();
+
+        investablePrice -= accountService.findUserTotalStockPrice(userId);
 
         response.put("investablePrice", investablePrice);
         response.put("balance", analytics.getMainAccountBalance());
