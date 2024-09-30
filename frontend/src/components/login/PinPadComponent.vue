@@ -26,8 +26,7 @@
           :class="{ 'bg-white': clickedButton === index || randomButton === index }"
           :style="buttonStyle(index)"
           @click="onButtonClick(index)"
-        >
-        </button>
+        ></button>
       </div>
     </div>
     <div v-if="step === 3">
@@ -155,7 +154,7 @@ const getRandomIndex = (excludeIndex: number): number => {
 const verifyInput = () => {
   console.log(firstInput.value, secondInput.value)
   if (firstInput.value.join("") === secondInput.value.join("")) {
-    const pinString = firstInput.value.join("");
+    const pinString = firstInput.value.join("")
     encryptAndSendPin(pinString)
   } else {
     instructionMessage.value = "비밀번호가 일치하지 않습니다. 다시 시도해주세요"
@@ -177,17 +176,20 @@ const encryptAndSendPin = (pin: string) => {
 }
 const sendToBackend = async (encryptedPin: string) => {
   // const token = authStore.accessToken;
-      const token = "4A9qnGHLH5c5SLbbotj4Ig3wE5u9qMtCAAAAAQoqJQ0AAAGSPikHMZCBbdpZdq0Z"
+  const token = "4A9qnGHLH5c5SLbbotj4Ig3wE5u9qMtCAAAAAQoqJQ0AAAGSPikHMZCBbdpZdq0Z"
   try {
-    await axios.post("http://localhost:8080/api/pinpad/verify", {
-      encryptedPin: encryptedPin,
-    },
-    {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        })
+    await axios.post(
+      "http://localhost:8080/api/pinpad/verify",
+      {
+        encryptedPin: encryptedPin,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
     instructionMessage.value = "비밀번호 설정이 완료되었습니다!"
   } catch (error) {
     console.error(error)

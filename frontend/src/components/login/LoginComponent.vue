@@ -67,7 +67,7 @@ onMounted(() => {
           console.log(authStore)
           clearUrlParams()
           console.log(redirectUrl)
-          router.push(redirectUrl);
+          router.push(redirectUrl)
         }
       })
       .catch((error) => {

@@ -1,13 +1,13 @@
 <template>
   <!-- 만들 때 -->
-  <div class="flex flex-col items-center justify-center mx-auto">
+  <div class="flex flex-col items-center justify-center">
     <div v-if="step != 2">
-      <div class="text-center mt-6 text-lg font-semibold text-gray-700">
+      <div class="text-center m-8 text-lg font-bold text-gray-700">
         {{ instructionMessage }}
       </div>
 
       <!-- 비밀번호 입력 표시 -->
-      <div class="flex gap-3 mb-4 mt-8">
+      <div class="flex gap-3 m-8 justify-center items-center">
         <div
           v-for="(digit, index) in 6"
           :key="index"
@@ -18,16 +18,22 @@
       </div>
 
       <!-- 이미지 및 핀 패드 -->
-      <div class="bg-white flex justify-center items-center w-full max-w-md h-auto relative">
-        <img :src="pinPadImage" class="ml-8 w-3/4 h-auto" alt="Pin Pad" v-if="pinPadImage" />
-        <button
-          v-for="(number, index) in numbers"
-          :key="index"
-          class="absolute border border-gray-400 rounded-md shadow-md bg-white w-10 h-10"
-          :class="{ 'bg-white': clickedButton === index || randomButton === index }"
-          :style="buttonStyle(index)"
-          @click="onButtonClick(index)"
-        ></button>
+      <div class="bg-white">
+        <div
+          v-if="pinPadImage"
+          class="bg-no-repeat h-[393px] w-[393px]"
+          :style="{ backgroundImage: `url(${pinPadImage})` }"
+        >
+          <div class="flex justify-center flex-wrap mx-10 h-[393px]">
+            <button
+              v-for="index in numbers"
+              :key="index"
+              class="border rounded-md shadow-md size-16 m-4"
+              :class="{ 'bg-white': clickedButton === index || randomButton === index }"
+              @click="onButtonClick(index)"
+            ></button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -211,6 +217,17 @@ onMounted(() => {
   fetchPublicKey()
   fetchPinPadImage()
 })
+
+/*
+  <button
+    v-for="(number, index) in numbers"
+    :key="index"
+    class=" border border-gray-400 rounded-md shadow-md bg-white"
+    :class="{'bg-white': clickedButton === index || randomButton === index }"
+    :style="buttonStyle(index)"
+    @click="onButtonClick(index)"
+  ></button>
+*/
 
 // 버튼 스타일 설정
 const buttonStyle = (index: number) => {

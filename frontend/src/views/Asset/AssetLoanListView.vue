@@ -41,7 +41,12 @@ onMounted(async () => {
 </script>
 <template>
   <div v-if="myLoanList" class="grid grid-flow-row">
-    <BoxLoanListItem :user="props.user" :loan="data" v-for="data in myLoanList" :key="data.loanId" />
+    <BoxLoanListItem
+      :user="props.user"
+      :loan="data"
+      v-for="data in myLoanList"
+      :key="data.loanId"
+    />
   </div>
   <div v-else>
     <div class="grid justify-center mt-20">

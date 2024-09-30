@@ -49,7 +49,7 @@ watch(
 const goToPage = async (page: number) => {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page // 페이지 변경
-    adjustPageRange(page); // 페이지 범위 조정
+    adjustPageRange(page) // 페이지 범위 조정
     await fetchAccountLogs(page) // 해당 페이지 데이터 불러오기
   }
 }
@@ -58,12 +58,12 @@ const goToPage = async (page: number) => {
 const adjustPageRange = (page: number) => {
   if (page > pageRangeEnd.value) {
     // 현재 페이지가 범위 끝을 넘어가면 범위를 앞으로 이동
-    pageRangeStart.value = page - pageWindowSize.value + 1;
+    pageRangeStart.value = page - pageWindowSize.value + 1
   } else if (page < pageRangeStart.value) {
     // 현재 페이지가 범위 시작보다 작으면 범위를 뒤로 이동
-    pageRangeStart.value = page;
+    pageRangeStart.value = page
   }
-};
+}
 
 // 첫 페이지로 이동
 const moveToFirstPage = () => {
@@ -94,16 +94,16 @@ const moveToPrevPage = () => {
 // 페이지 범위를 오른쪽(다음)으로 이동
 const movePageWindowRight = () => {
   if (pageRangeEnd.value < totalPages.value) {
-    pageRangeStart.value++;
+    pageRangeStart.value++
   }
-};
+}
 
 // 페이지 범위를 왼쪽(이전)으로 이동
 const movePageWindowLeft = () => {
   if (pageRangeStart.value > 1) {
-    pageRangeStart.value--;
+    pageRangeStart.value--
   }
-};
+}
 
 // 로그 가져오기 함수 (페이지 번호 반영)
 const fetchAccountLogs = async (page: number) => {
