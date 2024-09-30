@@ -34,33 +34,9 @@ public class FamilyController {
 @PostMapping("/create")
 public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization", required = false) String token,
                                            @RequestBody CreateFamilyRequestDto dto) {
-    if (token == null || !token.startsWith("Bearer ")) {
-    System.out.println("1");
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Authorization 헤더가 필요합니다.");
-    }
-    System.out.println(token);
-    token = token.replace("Bearer ", "");
-    System.out.println(token);
+
+
     User user = kakaoAuthService.verifyKakaoToken(token);
-
-    if (user == null) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
-    }
-    logger.info("Create Family 요청 시작");
-    logger.info("Authorization 헤더 값: {}", token);
-    logger.info("CreateFamilyRequestDto 값: {}", dto);
-
-    // 토큰 디버깅
-    token = token.replace("Bearer ", "");
-    logger.info("Bearer 제거 후 토큰 값: {}", token);
-
-    // 토큰 검증
-    //User user = kakaoAuthService.verifyKakaoToken(token);
-    if (user == null) {
-        logger.error("유효하지 않은 토큰입니다.");
-        return ResponseEntity.badRequest().body("유효하지 않은 토큰입니다.");
-    }
-    logger.info("토큰이 유효합니다. 사용자: {}", user.getId());
 
     // 가족 생성 서비스 호출
     try {
@@ -77,11 +53,11 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
 //    }
 
 //    가족 연결
-    @PostMapping("/{family_id}/join")
-    public void connectFamily(@PathVariable("family_id") Long familyId, @RequestBody ConnectFamilyRequestDto dto) {
-        System.out.println("family 연결 Controller");
-        familyServcie.connectFamily(familyId, dto);
-    }
+//    @PostMapping("/{family_id}/join")
+//    public void connectFamily(@PathVariable("family_id") Long familyId, @RequestBody ConnectFamilyRequestDto dto) {
+//        System.out.println("family 연결 Controller");
+//        familyServcie.connectFamily(familyId, dto);
+//    }
 
 //    가족 대표 변경
     @PostMapping("/change")
@@ -89,4 +65,14 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
         familyServcie.changeFamilyPresent(dto);
     }
 
+
+    // Token 기반 가족 연결
+    @PostMapping("/{family_id}/join")
+    public void connectFamily(@PathVariable("family_id") Long familyId,
+                              @RequestHeader(value = "Authorization", required = false) String token,
+                              @RequestBody ConnectFamilyRequestDto dto) {
+
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        familyServcie.connectFamily(familyId, user, dto);
+    }
 }
