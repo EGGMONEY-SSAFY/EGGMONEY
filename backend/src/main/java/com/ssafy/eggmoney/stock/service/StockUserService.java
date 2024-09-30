@@ -9,6 +9,7 @@ import java.util.Map;
 
 public interface StockUserService {
     Map<String, Object> findInvestablePrice(Long userId);
+    Map<Object, Integer> findUserStocks(Long userId);
     StockBuyResponse buyStock(StockBuyRequest stockBuy);
     StockSellResponse sellStock(StockSellRequest stockSellReq);
 }

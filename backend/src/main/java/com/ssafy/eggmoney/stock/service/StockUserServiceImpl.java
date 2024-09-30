@@ -10,6 +10,7 @@ import com.ssafy.eggmoney.stock.dto.response.StockSellResponse;
 import com.ssafy.eggmoney.stock.entity.Stock;
 import com.ssafy.eggmoney.stock.entity.StockUser;
 import com.ssafy.eggmoney.stock.entity.TradeType;
+import com.ssafy.eggmoney.stock.repository.StockRepository;
 import com.ssafy.eggmoney.stock.repository.StockUserRepository;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.service.UserService;
@@ -20,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,6 +34,7 @@ public class StockUserServiceImpl implements StockUserService {
     private final StockService stockService;
     private final UserService userService;
     private final StockLogService stockLogService;
+    private final StockRepository stockRepository;
 
     @Transactional
     @Override
@@ -67,6 +71,31 @@ public class StockUserServiceImpl implements StockUserService {
         response.put("investablePrice", investablePrice);
         response.put("balance", analytics.getMainAccountBalance());
         return response;
+    }
+
+    @Override
+    public Map<Object, Integer> findUserStocks(Long userId) {
+        int totalPrice = 0;
+        Map<Object, Integer> stockPrices = new HashMap<>();
+        List<StockUser> stockUsers = stockUserRepository.findJoinByUserId(userId);
+
+        for(StockUser stockUser : stockUsers) {
+            if(stockUser.getAmount() == 0) {
+                continue;
+            }
+
+            Integer price = stockRepository.findTop2LatestPrices(stockUser.getStock().getStockItem()).get(0);
+            int sumPrice = stockUser.getAmount() * price;
+            totalPrice += sumPrice;
+            stockPrices.put(stockUser.getStock().getStockItem(), sumPrice);
+        }
+
+        if(totalPrice == 0) {
+            throw new NoSuchElementException("보유한 주식이 조회되지 않습니다.");
+        }
+
+        stockPrices.put("totalPrice", totalPrice);
+        return stockPrices;
     }
 
     @Transactional
