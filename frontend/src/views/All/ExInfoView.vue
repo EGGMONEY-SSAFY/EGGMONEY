@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import SimplePinPadComponent from "@/components/login/SimplePinPadComponent.vue"
 import UserExinfoComponent from "@/components/login/UserExinfoComponent.vue"
 </script>
@@ -6,6 +7,7 @@ import UserExinfoComponent from "@/components/login/UserExinfoComponent.vue"
 <template>
   <div class="">
     <!-- <UserExinfoComponent /> -->
-    <SimplePinPadComponent />
+    <!-- <SimplePinPadComponent /> -->
+    <NotFoundComponent />
   </div>
 </template>
