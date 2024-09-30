@@ -27,6 +27,11 @@ public class StockUserController {
         return new ResponseEntity<>(stockUserService.findInvestablePrice(userId), HttpStatus.OK);
     }
 
+    @GetMapping("/stock/user/{userId}/portfolio")
+    public ResponseEntity<Map<Object, Integer>> getUserStocks(@PathVariable Long userId) {
+        return new ResponseEntity<>(stockUserService.findUserStocks(userId), HttpStatus.OK);
+    }
+
     @PostMapping("/stock/user/buy")
     public ResponseEntity<Map<String, Object>> buyStock(@RequestBody StockBuyRequest stockBuyReq) {
         StockBuyResponse stockBuyRes = stockUserService.buyStock(stockBuyReq);
