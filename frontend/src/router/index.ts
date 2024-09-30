@@ -41,6 +41,7 @@ import AssetSavingsDetailView from "@/views/Asset/AssetSavingsDetailView.vue"
 import StockOrderListView from "@/views/Stock/StockOrderListView.vue"
 import AssetWithdrawalView from "@/views/Asset/AssetWithdrawalView.vue"
 import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
+import StockRateView from "@/views/All/StockRateView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -270,6 +271,12 @@ const router = createRouter({
       component: ExInfoView,
     },
     {
+      path: "/StockRate",
+      name: "StockRateView",
+      component: StockRateView,
+    },
+    // 최하단 배치 필요
+    { 
       path: "/:pathMatch(.*)*",
       name: "NotFound",
       component: NotFoundComponent, // 404 페이지 컴포넌트
