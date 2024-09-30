@@ -276,7 +276,7 @@ const router = createRouter({
       component: StockRateView,
     },
     // 최하단 배치 필요
-    { 
+    {
       path: "/:pathMatch(.*)*",
       name: "NotFound",
       component: NotFoundComponent, // 404 페이지 컴포넌트
