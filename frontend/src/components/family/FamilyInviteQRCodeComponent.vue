@@ -14,7 +14,7 @@ import axios from "axios"
 import { useAuthStore } from "@/stores/auth"
 import { useRouter } from "vue-router"
 
-const router = useRouter();
+const router = useRouter()
 const authStore = useAuthStore()
 const familyId = ref("1")
 const qrCode = ref<string | null>(null)
@@ -29,14 +29,14 @@ async function getfamilyId() {
       },
     })
     console.log(response.data.family)
-    familyId.value=response.data.family;
+    familyId.value = response.data.family
   } catch (error) {
     console.error("유저정보 로드 오류", error)
   }
 }
 // Function to generate QR code
 async function generateQRCode() {
-  if(familyId.value!=null){
+  if (familyId.value != null) {
     try {
       qrCode.value = await QRCode.toDataURL(
         `http://localhost:8080/api/v1/family/${familyId.value}/join`
@@ -44,10 +44,9 @@ async function generateQRCode() {
     } catch (error) {
       console.error("QR code generation error:", error)
     }
-  }else{
+  } else {
     router.push("/family")
   }
-  
 }
 
 onMounted(async () => {
