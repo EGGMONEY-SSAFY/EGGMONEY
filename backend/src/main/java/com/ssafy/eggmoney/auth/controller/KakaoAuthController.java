@@ -2,7 +2,7 @@ package com.ssafy.eggmoney.auth.controller;
 
 import com.ssafy.eggmoney.auth.dto.response.TokenResponse;
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
-import com.ssafy.eggmoney.global.dto.ResponseApi;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -49,7 +49,7 @@ public class KakaoAuthController {
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    })
 @GetMapping("/callback")
-public Mono<ResponseEntity<ResponseApi<TokenResponse>>> kakaoCallback(@RequestParam("code") String code) {
+public Mono<ResponseEntity<TokenResponse>> kakaoCallback(@RequestParam("code") String code) {
 //    System.out.println("callback with :" + code);
 //
 //    return kakaoService.handleUserLogin(code)
@@ -60,7 +60,7 @@ public Mono<ResponseEntity<ResponseApi<TokenResponse>>> kakaoCallback(@RequestPa
 //                        .build();
 //            });
     return kakaoService.handleUserLogin(code)
-            .map(tokens -> ResponseEntity.ok(ResponseApi.success(tokens)));
+            .map(tokens -> ResponseEntity.ok(tokens));
 }
 
 

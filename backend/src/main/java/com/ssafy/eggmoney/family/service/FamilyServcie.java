@@ -58,7 +58,7 @@ public class FamilyServcie {
     public void createFamily(CreateFamilyRequestDto dto, User user) {
         Optional<Family> existingFamily = familyRepository.findByPresentId(user.getId());// 해당 유저가 가족 테이블에서 present_id로 이미 가족을 가지고 있는지 확인
         if (existingFamily.isPresent()) {
-            throw new IllegalStateException("이미 가족이 존재합니다.");
+            throw new IllegalStateException("already Can Find Family");
         }
 
         Family newFamily = Family.builder()
@@ -116,4 +116,34 @@ public class FamilyServcie {
                 .collect(Collectors.toList());
 
     }
+
+    // 가족 삭제
+    public void deleteFamily(Long familyId){
+        Family family = familyRepository.findById(familyId)
+                .orElseThrow(()-> new IllegalStateException("Can't Find Family"));
+
+        List<User> familyMembers = userRepository.findAllByFamilyId(familyId);
+        for(User member: familyMembers){
+            member.setFamily(null);
+            userRepository.save(member);
+        }
+        familyRepository.delete(family);
+    }
+    // 가족 구성원 삭제
+    public void deleteFamilyMember(Long memberId){
+         User member = userRepository.findById(memberId)
+                         .orElseThrow(()-> new IllegalArgumentException("Can't Find Family Member"));
+         member.setFamily(null);
+         userRepository.save(member);
+    }
+    // 가족 정보 업데이트
+    public void updateFamily(Long familyId, CreateFamilyRequestDto dto){
+        Family family = familyRepository.findById(familyId)
+                        .orElseThrow(()->new IllegalArgumentException("Can't Find Family"));
+
+        family.setIntro(dto.getIntro());
+        familyRepository.save(family);
+
+    }
+
 }
