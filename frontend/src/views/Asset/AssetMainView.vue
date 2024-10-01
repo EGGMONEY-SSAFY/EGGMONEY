@@ -38,9 +38,10 @@ watch(
         대출: assetStore.loan,
         주식: assetStore.stock,
       }
-      await assetStore.getAccountLog(props.user.userId)
+      await assetStore.getAccountChartLog(props.user.userId)
       accountHistory.value = assetStore.logs
     }
+    console.log(newUser)
   },
   { deep: true }
 )
@@ -55,8 +56,7 @@ onMounted(async () => {
     대출: assetStore.loan,
     주식: assetStore.stock,
   }
-  console.log(analytics.value)
-  await assetStore.getAccountLog(props.user.userId)
+  await assetStore.getAccountChartLog(props.user.userId)
   accountHistory.value = assetStore.logs
 })
 </script>

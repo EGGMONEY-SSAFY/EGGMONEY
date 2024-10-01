@@ -4,6 +4,7 @@ import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 import com.ssafy.eggmoney.family.dto.request.ChangeFamilyPresentRequestDto;
 import com.ssafy.eggmoney.family.dto.request.ConnectFamilyRequestDto;
 import com.ssafy.eggmoney.family.dto.request.CreateFamilyRequestDto;
+import com.ssafy.eggmoney.family.dto.response.FamilyMemberResponseDto;
 import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
 import com.ssafy.eggmoney.family.service.FamilyServcie;
 import com.ssafy.eggmoney.user.entity.User;
@@ -13,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,33 +37,9 @@ public class FamilyController {
 @PostMapping("/create")
 public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization", required = false) String token,
                                            @RequestBody CreateFamilyRequestDto dto) {
-    if (token == null || !token.startsWith("Bearer ")) {
-    System.out.println("1");
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Authorization 헤더가 필요합니다.");
-    }
-    System.out.println(token);
-    token = token.replace("Bearer ", "");
-    System.out.println(token);
+
+
     User user = kakaoAuthService.verifyKakaoToken(token);
-
-    if (user == null) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 토큰입니다.");
-    }
-    logger.info("Create Family 요청 시작");
-    logger.info("Authorization 헤더 값: {}", token);
-    logger.info("CreateFamilyRequestDto 값: {}", dto);
-
-    // 토큰 디버깅
-    token = token.replace("Bearer ", "");
-    logger.info("Bearer 제거 후 토큰 값: {}", token);
-
-    // 토큰 검증
-    //User user = kakaoAuthService.verifyKakaoToken(token);
-    if (user == null) {
-        logger.error("유효하지 않은 토큰입니다.");
-        return ResponseEntity.badRequest().body("유효하지 않은 토큰입니다.");
-    }
-    logger.info("토큰이 유효합니다. 사용자: {}", user.getId());
 
     // 가족 생성 서비스 호출
     try {
@@ -77,11 +56,11 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
 //    }
 
 //    가족 연결
-    @PostMapping("/{family_id}/join")
-    public void connectFamily(@PathVariable("family_id") Long familyId, @RequestBody ConnectFamilyRequestDto dto) {
-        System.out.println("family 연결 Controller");
-        familyServcie.connectFamily(familyId, dto);
-    }
+//    @PostMapping("/{family_id}/join")
+//    public void connectFamily(@PathVariable("family_id") Long familyId, @RequestBody ConnectFamilyRequestDto dto) {
+//        System.out.println("family 연결 Controller");
+//        familyServcie.connectFamily(familyId, dto);
+//    }
 
 //    가족 대표 변경
     @PostMapping("/change")
@@ -89,4 +68,48 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
         familyServcie.changeFamilyPresent(dto);
     }
 
+
+    // Token 기반 가족 연결
+    @PostMapping("/{family_id}/join")
+    public void connectFamily(@PathVariable("family_id") Long familyId,
+                              @RequestHeader(value = "Authorization", required = false) String token,
+                              @RequestBody ConnectFamilyRequestDto dto) {
+
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        familyServcie.connectFamily(familyId, user, dto);
+    }
+    // Token 기반 가족 멤버 조회
+    @GetMapping("/searchMember")
+    public ResponseEntity<List<FamilyMemberResponseDto>> searchFamilyMembers(@RequestHeader(value = "Authorization") String token){
+        User user = kakaoAuthService.verifyKakaoToken(token);
+
+        List<FamilyMemberResponseDto> familyMembers = familyServcie.getFamilyMembers(user.getFamily().getId(), user.getId());
+        //familyServcie.searchFamily(user.getFamily());
+        return ResponseEntity.ok(familyMembers);
+    }
+
+    // 생성된 가족 삭제
+    // 삭제하면서 해당 가족에 소속된 User들 가족 id null값으로 변경
+    @PostMapping("/{family_id}/delete")
+    public ResponseEntity<String> deleteFamily(@PathVariable("familyId") Long familyId){
+
+        familyServcie.deleteFamily(familyId);
+        return ResponseEntity.ok("가족 삭제 완료");
+    }
+
+    // 소속 멤버 삭제
+    @PostMapping("/delete/member/{memberId}")
+    public ResponseEntity<String> deleteFamilyMember(@PathVariable("memberId") Long memberId){
+        familyServcie.deleteFamilyMember(memberId);
+        return ResponseEntity.ok("구성원 삭제 완료");
+    }
+
+    // 소속 가족 정보 변경
+    @PostMapping("/{family_id}/update")
+    public ResponseEntity<String> updateFamily(@PathVariable("familyId") Long familyId, @RequestBody CreateFamilyRequestDto dto){
+
+        familyServcie.updateFamily(familyId,dto);
+        return ResponseEntity.ok("가족 정보 업데이트 완료");
+
+    }
 }

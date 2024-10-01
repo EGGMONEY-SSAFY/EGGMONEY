@@ -39,6 +39,9 @@ import ExInfoView from "@/views/All/ExInfoView.vue"
 import AssetDepositDetailView from "@/views/Asset/AssetDepositDetailView.vue"
 import AssetSavingsDetailView from "@/views/Asset/AssetSavingsDetailView.vue"
 import StockOrderListView from "@/views/Stock/StockOrderListView.vue"
+import AssetWithdrawalView from "@/views/Asset/AssetWithdrawalView.vue"
+import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
+import StockRateView from "@/views/All/StockRateView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +54,9 @@ const router = createRouter({
       path: "/main",
       name: "MainView",
       component: MainView,
+      beforeEnter() {
+        console.log("MainView 로드됨")
+      },
     },
     {
       path: "/stock/order-list",
@@ -97,6 +103,11 @@ const router = createRouter({
           name: "AssetLoanListView",
           component: AssetLoanListView,
         },
+        {
+          path: "withdrawal/judge",
+          name: "AssetWithdrawalView",
+          component: AssetWithdrawalView,
+        },
       ],
     },
     {
@@ -123,6 +134,9 @@ const router = createRouter({
       path: "/all",
       name: "AllView",
       component: AllView,
+      beforeEnter() {
+        console.log("AllView 로드됨")
+      },
     },
     {
       path: "/fin",
@@ -255,6 +269,18 @@ const router = createRouter({
       path: "/ExInfo",
       name: "ExInfoView",
       component: ExInfoView,
+    },
+    {
+      path: "/StockRate",
+      name: "StockRateView",
+      component: StockRateView,
+    },
+    // 최하단 배치 필요
+    {
+      path: "/:pathMatch(.*)*",
+      name: "NotFound",
+      component: NotFoundComponent, // 404 페이지 컴포넌트
+      props: true,
     },
   ],
 })

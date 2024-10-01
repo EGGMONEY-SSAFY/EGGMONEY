@@ -40,7 +40,7 @@ watch(withdrawalAmount, (newVal) => {
 function confirmWithdrawal() {
   if (withdrawalAmount.value !== null && withdrawalAmount.value > 0) {
     // 출금 처리 로직
-    assetStore.createWithdrawal(userStore.user?.userId || 0, withdrawalAmount.value)
+    assetStore.createWithdrawal(props.user?.userId || 0, withdrawalAmount.value)
     closeModal()
   }
 }
@@ -66,7 +66,7 @@ function confirmWithdrawal() {
     </div>
     <div
       class="flex text-justify justify-around mt-8 px-5 mb-5"
-      v-if="userStore.user?.role === '부모'"
+      v-if="userStore.user?.role !== '부모'"
     >
       <button class="bg-red-500 px-5 py-2 rounded-xl text-white font-semibold" @click="openModal">
         출금요청

@@ -33,6 +33,8 @@ public class User extends BaseTime {
     private String bank;
     private String simplePwd;
 
+    private String profileImageUrl;
+
     @ColumnDefault("50")
     private int stockRatio;
 
@@ -61,6 +63,8 @@ public class User extends BaseTime {
     public void setStockRatio(int ratio) {
         this.stockRatio = ratio;
     }
+
+// 가족 정보 얻기
 
     public void updateUserInfo(String name, String bank, String realAccount, String simplePwd, String role){
         if(name != null) this.name = name;

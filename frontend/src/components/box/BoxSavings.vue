@@ -91,16 +91,17 @@ const formatExpireDate = (expireDate?: string) => {
     >
       <div class="bg-white p-6 rounded-lg shadow-lg w-80" v-if="userStore.user?.userId">
         <h2 class="text-base font-bold mb-4">정말 적금을 납입하시겠습니까?</h2>
-        <h2 class="text-wrap text-center pb-4 text-red-600 text-sm">
-          * 적금을 납입시 돈을 <br />돌려받을 수 없습니다.
-        </h2>
+        <div class="mb-5">
+          <p class="text-sm text-red-500 mb-1">* 적금을 납입시 돈을</p>
+          <p class="text-sm text-red-500">돌려받을 수 없습니다.</p>
+        </div>
         <div class="flex justify-end">
           <button class="bg-gray-500 text-white px-4 py-2 rounded mr-2" @click="closeModal">
             취소
           </button>
           <button
             class="bg-blue-500 text-white px-4 py-2 rounded"
-            @click="sendSavings(userStore.user?.userId)"
+            @click="sendSavings(props.user?.userId)"
           >
             확인
           </button>
