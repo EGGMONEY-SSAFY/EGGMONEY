@@ -216,12 +216,9 @@ onMounted(() => {
   fetchPublicKey()
   fetchPinPadImage()
 })
-
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
 <!-- 
 // 버튼 스타일 설정
 const buttonStyle = (index: number) => {
@@ -245,7 +242,7 @@ const buttonStyle = (index: number) => {
     transition: "background-color 0.5s ease",
   }
 } -->
-  <!-- .pin-container {
+<!-- .pin-container {
   width: 400px; /* 이미지 및 키패드의 너비 고정 */
 }
 

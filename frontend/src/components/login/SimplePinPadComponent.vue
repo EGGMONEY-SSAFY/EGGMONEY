@@ -217,13 +217,9 @@ onMounted(() => {
   fetchPublicKey()
   fetchPinPadImage()
 })
-
-
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
 <!-- /*
   <button
     v-for="(number, index) in numbers"
