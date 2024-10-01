@@ -33,7 +33,7 @@ public class StockCostomRepositoryImpl implements StockCostomRepository {
                 .fetch();
 
         if (prices.size() < 2) {
-            throw new NoSuchElementException("최신 날짜의 가격이 조회되지 않습니다.");
+            throw new NoSuchElementException("최신 날짜의 주식 가격이 조회되지 않습니다.");
         }
 
         return prices;
@@ -68,7 +68,7 @@ public class StockCostomRepositoryImpl implements StockCostomRepository {
                 .fetch();
 
         if (stockPricesForYear.isEmpty()) {
-            throw new NoSuchElementException("1년치 주식 데이터가 조회되지 않습니다.");
+            throw new NoSuchElementException("1년치 지수가 조회되지 않습니다.");
         }
 
         return stockPricesForYear;
