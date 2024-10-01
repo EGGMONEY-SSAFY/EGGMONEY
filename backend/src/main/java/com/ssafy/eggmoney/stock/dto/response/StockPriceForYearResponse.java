@@ -1,6 +1,5 @@
 package com.ssafy.eggmoney.stock.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.LocalDate;

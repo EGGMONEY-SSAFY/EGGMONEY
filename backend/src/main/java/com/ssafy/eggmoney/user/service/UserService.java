@@ -88,5 +88,8 @@ public class UserService {
         return user.getStockRatio();
     }
 
-
+    public User findUserEntity(Long userId){
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("해당 유저가 조회되지 않습니다."));
+    }
 }
