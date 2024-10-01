@@ -33,6 +33,7 @@ public class StockLogServiceImpl implements StockLogService {
          return stockLogs.stream()
                  .map(stockLog -> new StockLogResponse(
                          stockLog.getStockUser().getStock().getStockItem(),
+                         stockLog.getCreatedAt(),
                          stockLog.getTradeType(),
                          stockLog.getTradePrice(),
                          stockLog.getTradeAmount())
