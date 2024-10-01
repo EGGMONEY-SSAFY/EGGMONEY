@@ -87,4 +87,29 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
         //familyServcie.searchFamily(user.getFamily());
         return ResponseEntity.ok(familyMembers);
     }
+
+    // 생성된 가족 삭제
+    // 삭제하면서 해당 가족에 소속된 User들 가족 id null값으로 변경
+    @PostMapping("/{family_id}/delete")
+    public ResponseEntity<String> deleteFamily(@PathVariable("familyId") Long familyId){
+
+        familyServcie.deleteFamily(familyId);
+        return ResponseEntity.ok("가족 삭제 완료");
+    }
+
+    // 소속 멤버 삭제
+    @PostMapping("/delete/member/{memberId}")
+    public ResponseEntity<String> deleteFamilyMember(@PathVariable("memberId") Long memberId){
+        familyServcie.deleteFamilyMember(memberId);
+        return ResponseEntity.ok("구성원 삭제 완료");
+    }
+
+    // 소속 가족 정보 변경
+    @PostMapping("/{family_id}/update")
+    public ResponseEntity<String> updateFamily(@PathVariable("familyId") Long familyId, @RequestBody CreateFamilyRequestDto dto){
+
+        familyServcie.updateFamily(familyId,dto);
+        return ResponseEntity.ok("가족 정보 업데이트 완료");
+
+    }
 }

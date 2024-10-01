@@ -218,7 +218,13 @@ onMounted(() => {
   fetchPinPadImage()
 })
 
-/*
+
+</script>
+
+<style scoped>
+
+</style>
+<!-- /*
   <button
     v-for="(number, index) in numbers"
     :key="index"
@@ -230,31 +236,28 @@ onMounted(() => {
 */
 
 // 버튼 스타일 설정
-const buttonStyle = (index: number) => {
-  const row = Math.floor(index / 3)
-  const col = index % 3
-  const buttonSize = 80 // 버튼 크기
-  const padding = 20 // 버튼 사이 간격
-  // test
-  const backgroundColor =
-    clickedButton.value === index || randomButton.value === index ? "white" : "transparent"
+// const buttonStyle = (index: number) => {
+//   const row = Math.floor(index / 3)
+//   const col = index % 3
+//   const buttonSize = 80 // 버튼 크기
+//   const padding = 20 // 버튼 사이 간격
+//   // test
+//   const backgroundColor =
+//     clickedButton.value === index || randomButton.value === index ? "white" : "transparent"
 
-  return {
-    left: `${col * (buttonSize + padding)}px`,
-    top: `${row * (buttonSize + padding)}px`,
-    width: `${buttonSize}px`,
-    height: `${buttonSize}px`,
-    backgroundColor,
-    fontSize: "24px",
-    textAlign: "center" as const, // textAlign 타입을 올바르게 지정
-    cursor: "pointer",
-    transition: "background-color 0.5s ease",
-  }
-}
-</script>
-
-<style scoped>
-.pin-container {
+//   return {
+//     left: `${col * (buttonSize + padding)}px`,
+//     top: `${row * (buttonSize + padding)}px`,
+//     width: `${buttonSize}px`,
+//     height: `${buttonSize}px`,
+//     backgroundColor,
+//     fontSize: "24px",
+//     textAlign: "center" as const, // textAlign 타입을 올바르게 지정
+//     cursor: "pointer",
+//     transition: "background-color 0.5s ease",
+//   }
+// } -->
+<!-- .pin-container {
   width: 400px; /* 이미지 및 키패드의 너비 고정 */
 }
 
@@ -273,5 +276,4 @@ const buttonStyle = (index: number) => {
   gap: 10px;
   font-size: 24px;
   margin-bottom: 20px;
-}
-</style>
+} -->
