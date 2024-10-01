@@ -28,7 +28,10 @@
       <div class="bg-blue-700 p-4 rounded-lg mr-4">
         <div class="bg-white rounded-full p-2">
           <img
-            :src="member.profileImageUrl  || (member.role === '부모' ? parentDefaultImage : daughterDefaultImage)"
+            :src="
+              member.profileImageUrl ||
+              (member.role === '부모' ? parentDefaultImage : daughterDefaultImage)
+            "
             alt="프로필 이미지"
             class="w-12 h-12 rounded-full object-cover"
           />
@@ -106,16 +109,19 @@ const closeDeleteModal = () => {
 }
 
 const fetchFamilyData = async () => {
-  const token="ltTKtc55GJBtipKP_EjUXXoEKunA-gU0AAAAAQo9c00AAAGSQYw9ZZCBbdpZdq0Z"
+  const token = "ltTKtc55GJBtipKP_EjUXXoEKunA-gU0AAAAAQo9c00AAAGSQYw9ZZCBbdpZdq0Z"
   try {
     // const familyImageResponse = await axios.get("http://localhost:8080/api/family/image")
     // familyImageUrl.value = familyImageResponse.data.imageUrl
 
-    const familyMembersResponse = await axios.get("http://localhost:8080/api/v1/family/searchMember", {
-      headers: {
-        Authorization: `Bearer ${token}`, // 토큰이 필요한 경우 추가
-      },
-    });
+    const familyMembersResponse = await axios.get(
+      "http://localhost:8080/api/v1/family/searchMember",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // 토큰이 필요한 경우 추가
+        },
+      }
+    )
     console.log(familyMembersResponse)
     familyMembers.value = familyMembersResponse.data
   } catch (error) {
@@ -126,7 +132,9 @@ const fetchFamilyData = async () => {
 const deleteSelectedMember = async () => {
   if (selectedMemberId.value !== null) {
     try {
-      await axios.post(`http://localhost:8080/api/v1/family/delete/member/${selectedMemberId.value}`)
+      await axios.post(
+        `http://localhost:8080/api/v1/family/delete/member/${selectedMemberId.value}`
+      )
       fetchFamilyData()
     } catch (error) {
       console.error("가족 맴버 삭제 실패", error)
