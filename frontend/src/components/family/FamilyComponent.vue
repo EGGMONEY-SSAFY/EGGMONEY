@@ -150,23 +150,23 @@ async function createFamily() {
   const familyData = {
     intro: familyDescription.value,
     // familyImage: imageBase64.value,
-  };
-  const token ="e4wl00RLjFl6Q8-ihDGphvKm2sfq31j9AAAAAQo8JCEAAAGSQUsZUJCBbdpZdq0Z"
+  }
+  const token = "e4wl00RLjFl6Q8-ihDGphvKm2sfq31j9AAAAAQo8JCEAAAGSQUsZUJCBbdpZdq0Z"
   try {
-  //   const token = authStore.accessToken;
-    console.log(token);
+    //   const token = authStore.accessToken;
+    console.log(token)
     await axios.post("http://localhost:8080/api/v1/family/create", familyData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-    });
-  //alert("가족 생성 완료!");
-  showModal.value = false
-  router.push("/family/create")
+    })
+    //alert("가족 생성 완료!");
+    showModal.value = false
+    router.push("/family/create")
   } catch (error) {
-    console.error("가족 생성 오류:", error);
-    alert("가족 생성에 실패했습니다.");
+    console.error("가족 생성 오류:", error)
+    alert("가족 생성에 실패했습니다.")
   }
 }
 

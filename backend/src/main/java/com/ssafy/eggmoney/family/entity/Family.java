@@ -29,6 +29,9 @@ public class Family extends BaseTime {
         this.presentId = userId;
     }
 
+    // Intro 설정하기
+    public void setIntro(String intro){this.intro = intro;}
+
     @Builder
     private Family(String intro, String qrCode, Long presentId) {
         this.intro = intro;
