@@ -84,7 +84,7 @@ public class SavingServiceImpl implements SavingService {
                 .user(user)
                 .savingsProduct(savingsProduct)
                 .expireDate(LocalDateTime.now().plusMonths(savingsProduct.getSavingsDate()))
-                .paymentDate(savingsProduct.getSavingsDate())
+                .paymentDate(savingsProduct.getSavingsDate() - 1) // 적금 생성 시 1회 납부를 하기 때문에
                 .balance(requestDto.getPaymentMoney())
                 .paymentMoney(requestDto.getPaymentMoney())
                 .savingsStatus(SavingsStatus.AVAILABLE)
@@ -180,17 +180,26 @@ public class SavingServiceImpl implements SavingService {
     public SavingsDeleteResponseDto deleteSavings(Long savingsId) {
 
         Savings savings = savingsRepository.findByIdAndSavingsStatus(savingsId, SavingsStatus.AVAILABLE).orElse(null);
-        double interestMoney;
+        double interest;
+        int paymentDate;
         int expiredMoney;
-        log.info("{}", savings.toString());
+        double interestMoney = 0;
 
+        log.info("{}", savings.toString());
         if(savings.getExpireDate().toLocalDate().isAfter(LocalDate.now())){
-            interestMoney = savings.getBalance() * (savings.getSavingsProduct().getSavingsRate() - 2.0) / 100 * savings.getSavingsProduct().getSavingsDate() / 12;
-            expiredMoney = savings.getBalance() + (int) interestMoney;
+            interest = (savings.getSavingsProduct().getSavingsRate() - 2.0);
+            paymentDate = savings.getSavingsProduct().getSavingsDate() - savings.getPaymentDate();
         }else{
-            interestMoney = savings.getBalance() * savings.getSavingsProduct().getSavingsRate() / 100 * savings.getSavingsProduct().getSavingsDate() / 12;
-            expiredMoney = savings.getBalance() + (int) interestMoney;
+            interest= savings.getSavingsProduct().getSavingsRate();
+            paymentDate = savings.getSavingsProduct().getSavingsDate();
         }
+
+        for(int i = 1; i <= paymentDate; i++){
+            interestMoney += Math.round(savings.getPaymentMoney() * (interest / 100 * i / 12));
+            log.info("interestMoney : {}", interestMoney);
+        }
+
+        expiredMoney = savings.getBalance() + (int) interestMoney;
         log.info("interestMoney: {}, expiredMoney: {}", interestMoney, expiredMoney);
 
         accountService.updateAccount(AccountLogType.SAVINGS, savings.getUser().getId(), expiredMoney);
@@ -202,7 +211,6 @@ public class SavingServiceImpl implements SavingService {
         savingsRepository.save(updateSavings);
         log.info("적금 해지 성공");
 
-
         SavingsDeleteResponseDto deleteResponseDto = SavingsDeleteResponseDto.builder()
                 .savingsId(savings.getId())
                 .interestMoney(interestMoney)
@@ -211,5 +219,38 @@ public class SavingServiceImpl implements SavingService {
                 .build();
 
         return deleteResponseDto;
+    }
+
+    // 만기일 된 통장 확인(scheduler)
+    @Override
+    public List<Long> checkExpiredSavings() {
+        LocalDateTime start = LocalDate.now().atStartOfDay();
+        LocalDateTime end = LocalDate.now().atTime(23, 59, 59);
+        List<Long> savingsIds = savingsRepository.findIdByExpireDateBetweenAndSavingsStatus(start, end, SavingsStatus.AVAILABLE);
+
+        return savingsIds;
+    }
+
+    // 매달 적금 넣었는지 확인하기
+    @Override
+    public List<Long> checkingPayId(){
+        List<Long> savingsIds = savingsRepository.findIdBySavingsStatusAndPaymentDateNot(SavingsStatus.AVAILABLE, 0);
+
+        LocalDateTime start = LocalDate.now().minusMonths(1).withDayOfMonth(1).atStartOfDay();
+        LocalDateTime end = LocalDate.now().minusDays(1).atTime(23, 59, 59);
+        List<Long> sendIds = savingsLogRepository.findSavingsIdByCreatedAtBetween(start, end);
+
+        savingsIds.removeAll(sendIds);
+
+        return savingsIds;
+    }
+
+    // 적금 납부 안한 계좌의 만기일 + 1 하기
+    @Override
+    public void plusExpired(List<Long> savingsId){
+        savingsRepository.extendSavingsExpireDateByOneMonth(savingsId);
+        log.info("적금 미납자 계좌 만기일 연장");
+
+
     }
 }

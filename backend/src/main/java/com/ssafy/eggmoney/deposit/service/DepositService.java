@@ -13,4 +13,5 @@ public interface DepositService {
     List<DepositProductListResponseDto> getDepositProducts();
 
     DeleteDepositResponseDto deleteDeposit(long depositId);
+    List<Long> checkExpiredDeposit();
 }
