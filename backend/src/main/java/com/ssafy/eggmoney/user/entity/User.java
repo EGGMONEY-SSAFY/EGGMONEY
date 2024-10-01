@@ -64,6 +64,8 @@ public class User extends BaseTime {
         this.stockRatio = ratio;
     }
 
+// 가족 정보 얻기
+
     public void updateUserInfo(String name, String bank, String realAccount, String simplePwd, String role){
         if(name != null) this.name = name;
         if(bank!=null) this.bank = bank;

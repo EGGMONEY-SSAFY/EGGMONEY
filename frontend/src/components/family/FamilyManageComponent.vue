@@ -88,7 +88,7 @@ const familyMembers = ref<FamilyMembers[]>([
     profileImageUrl: parentDefaultImage, // 더미 이미지 URL
   },
   {
-    id: 3,
+    id: 100,
     name: "김자녀",
     role: "자녀",
     profileImageUrl: daughterDefaultImage, // 더미 이미지 URL
@@ -126,7 +126,7 @@ const fetchFamilyData = async () => {
 const deleteSelectedMember = async () => {
   if (selectedMemberId.value !== null) {
     try {
-      await axios.delete(`http://localhost:8080/api/family/member/${selectedMemberId.value}`)
+      await axios.post(`http://localhost:8080/api/v1/family/delete/member/${selectedMemberId.value}`)
       fetchFamilyData()
     } catch (error) {
       console.error("가족 맴버 삭제 실패", error)

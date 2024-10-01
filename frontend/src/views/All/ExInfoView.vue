@@ -7,7 +7,7 @@ import UserExinfoComponent from "@/components/login/UserExinfoComponent.vue"
 <template>
   <div class="">
     <!-- <UserExinfoComponent /> -->
-    <!-- <SimplePinPadComponent /> -->
-    <NotFoundComponent />
+    <SimplePinPadComponent />
+    <!-- <NotFoundComponent /> -->
   </div>
 </template>
