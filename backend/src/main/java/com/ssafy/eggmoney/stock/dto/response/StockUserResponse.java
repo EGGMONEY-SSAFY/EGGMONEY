@@ -1,21 +1,21 @@
 package com.ssafy.eggmoney.stock.dto.response;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+@NoArgsConstructor
 @Getter
-public class StockSellResponse {
+public class StockUserResponse {
     private int buyAverage;
     private int amount;
     private int totalInvestment;
     private int value;
     private int roi;
 
-    public StockSellResponse() {}
-
-    public StockSellResponse(int buyAverage, int amount, int price) {
+    public StockUserResponse(int buyAverage, int amount, int price) {
         this.buyAverage = buyAverage;
         this.amount = amount;
         this.totalInvestment = buyAverage * amount;
