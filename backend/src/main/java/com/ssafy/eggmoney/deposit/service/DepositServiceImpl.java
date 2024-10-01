@@ -115,6 +115,8 @@ public class DepositServiceImpl implements DepositService {
                 .build();
     }
 
+
+    // 예금 해지(만기일 이전 해지시 이율, 만기일 이후 해지시 이율 고려)
     @Override
     @Transactional
     public DeleteDepositResponseDto deleteDeposit(long depositId) {
@@ -150,7 +152,7 @@ public class DepositServiceImpl implements DepositService {
         return deleteResponseDto;
     }
 
-    // 만료 체크하기
+    // 만료 체크하기(scheduler)
     @Override
     public List<Long> checkExpiredDeposit(){
         LocalDateTime start = LocalDate.now().atStartOfDay();
