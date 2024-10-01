@@ -72,7 +72,7 @@ public class PinPadService {
     }
 
     private BufferedImage createPinPadImage(List<Integer> pinPad) {
-        int imageSize = 400;
+        int imageSize = 393;
         int cellSize = imageSize / 4; // 4x3 그리드에 맞추기 위해 cellSize 설정
         BufferedImage pinPadImage = new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = pinPadImage.createGraphics();
@@ -82,7 +82,7 @@ public class PinPadService {
         graphics.fillRect(0, 0, imageSize, imageSize);
         graphics.setComposite(AlphaComposite.SrcOver);
 
-        int padding = 10;
+        int padding = 0;
 
         // 모든 요소를 3x4 배열로 배치 (숫자 10개 + back, check 버튼)
         for (int i = 0; i < pinPad.size(); i++) {
@@ -101,7 +101,7 @@ public class PinPadService {
             Image scaledImage = img.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
 
             // 좌표 계산
-            int x = (i % 3) * (cellSize + padding);
+            int x = (i % 3) * (cellSize + padding) + 48;
             int y = (i / 3) * (cellSize + padding);
 
             // Image를 BufferedImage로 변환하여 그리기

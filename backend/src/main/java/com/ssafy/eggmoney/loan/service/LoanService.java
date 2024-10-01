@@ -20,4 +20,8 @@ public interface LoanService {
     void sendRepayment(long loanId);
 
     List<LoanLogListResponseDto> getLoanLogs(long loanId);
+
+    void expiredRepayment(Long loanId);
+
+    List<Long> checkingExpired();
 }

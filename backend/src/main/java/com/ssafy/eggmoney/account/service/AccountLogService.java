@@ -9,6 +9,8 @@ import com.ssafy.eggmoney.account.repository.AccountLogRepository;
 import com.ssafy.eggmoney.account.repository.AccountRepository;
 import com.ssafy.eggmoney.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,17 +25,15 @@ public class AccountLogService {
 
 
 //    메인계좌 로그 조회
-    public List<GetAccountLogResponseDto> getAccountLogs(Long userId){
-        List<GetAccountLogResponseDto> dto = accountLogRepository.findLogsByAccountId(userId).stream()
+    public Page<GetAccountLogResponseDto> getAccountLogs(Long userId, Pageable pageable){
+        return accountLogRepository.findLogsByAccountId(userId, pageable)
                 .map( log -> GetAccountLogResponseDto.builder()
                         .accountId(log.getAccount().getId())
                         .currentBalance(log.getCurrentBalance())
                         .tradePrice(log.getTradePrice())
                         .tradeTarget(log.getTradeTarget())
                         .createdAt(log.getCreatedAt())
-                        .build())
-                .collect(Collectors.toList());
-        return dto;
+                        .build());
     }
 
 //    메인계좌 로그 조회 ( 3개월 이내 - 일 단위 )

@@ -15,4 +15,7 @@ public interface SavingService {
     void sendSavings(Long userId);
     List<SavingsLogResponseDto> getSavingsLogs(Long savingsId);
     SavingsDeleteResponseDto deleteSavings(Long savingsId);
+    List<Long> checkExpiredSavings();
+    List<Long> checkingPayId();
+    void plusExpired(List<Long> savingsId);
 }

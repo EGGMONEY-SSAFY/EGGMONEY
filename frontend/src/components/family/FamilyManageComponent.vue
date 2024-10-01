@@ -28,7 +28,10 @@
       <div class="bg-blue-700 p-4 rounded-lg mr-4">
         <div class="bg-white rounded-full p-2">
           <img
-            :src="member.profileImageUrl"
+            :src="
+              member.profileImageUrl ||
+              (member.role === '부모' ? parentDefaultImage : daughterDefaultImage)
+            "
             alt="프로필 이미지"
             class="w-12 h-12 rounded-full object-cover"
           />
@@ -88,7 +91,7 @@ const familyMembers = ref<FamilyMembers[]>([
     profileImageUrl: parentDefaultImage, // 더미 이미지 URL
   },
   {
-    id: 3,
+    id: 100,
     name: "김자녀",
     role: "자녀",
     profileImageUrl: daughterDefaultImage, // 더미 이미지 URL
@@ -106,12 +109,21 @@ const closeDeleteModal = () => {
 }
 
 const fetchFamilyData = async () => {
+  const token = "ltTKtc55GJBtipKP_EjUXXoEKunA-gU0AAAAAQo9c00AAAGSQYw9ZZCBbdpZdq0Z"
   try {
-    const familyImageResponse = await axios.get("http://localhost:8080/api/family/image")
-    familyImageUrl.value = familyImageResponse.data.imageUrl
+    // const familyImageResponse = await axios.get("http://localhost:8080/api/family/image")
+    // familyImageUrl.value = familyImageResponse.data.imageUrl
 
-    const familyMembersResponse = await axios.get("http://localhost:8080/api/family/members")
-    familyMembers.value = familyMembersResponse.data.members
+    const familyMembersResponse = await axios.get(
+      "http://localhost:8080/api/v1/family/searchMember",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // 토큰이 필요한 경우 추가
+        },
+      }
+    )
+    console.log(familyMembersResponse)
+    familyMembers.value = familyMembersResponse.data
   } catch (error) {
     console.error("가족 정보 업데이트 실패", error)
   }
@@ -120,7 +132,9 @@ const fetchFamilyData = async () => {
 const deleteSelectedMember = async () => {
   if (selectedMemberId.value !== null) {
     try {
-      await axios.delete(`http://localhost:8080/api/family/member/${selectedMemberId.value}`)
+      await axios.post(
+        `http://localhost:8080/api/v1/family/delete/member/${selectedMemberId.value}`
+      )
       fetchFamilyData()
     } catch (error) {
       console.error("가족 맴버 삭제 실패", error)

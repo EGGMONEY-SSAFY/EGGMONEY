@@ -14,7 +14,7 @@ const finStore = useFinStore()
       :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }"
     >
       <NavBarTop />
-      <RouterView class="mt-12 mb-24" />
+      <RouterView class="mt-12 mb-20" />
       <NavBar />
     </div>
   </div>

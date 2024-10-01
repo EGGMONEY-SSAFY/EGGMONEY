@@ -86,7 +86,7 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    <div class="pt-5 text-end grid" v-if="userStore.user?.role !== '자녀'" @click="">
+    <div class="pt-5 text-end grid" v-if="userStore.user?.role === '자녀'" @click="">
       <button class="bg-red-500 rounded-lg text-white p-2" @click="openModal">해지하기</button>
     </div>
     <!-- 모달 창 -->

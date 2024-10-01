@@ -3,6 +3,7 @@ package com.ssafy.eggmoney.family.service;
 import com.ssafy.eggmoney.family.dto.request.ChangeFamilyPresentRequestDto;
 import com.ssafy.eggmoney.family.dto.request.ConnectFamilyRequestDto;
 import com.ssafy.eggmoney.family.dto.request.CreateFamilyRequestDto;
+import com.ssafy.eggmoney.family.dto.response.FamilyMemberResponseDto;
 import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
 import com.ssafy.eggmoney.family.entity.Family;
 import com.ssafy.eggmoney.family.repository.FamilyRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -54,19 +56,34 @@ public class FamilyServcie {
 
 //    가족 생성
     public void createFamily(CreateFamilyRequestDto dto, User user) {
-        familyRepository.save(Family.builder()
-                .intro(dto.getIntro())
-                .qrCode(dto.getQrCode())
-                .presentId(user.getId())//dto.getPresentId()
-                .build());
+        Optional<Family> existingFamily = familyRepository.findByPresentId(user.getId());// 해당 유저가 가족 테이블에서 present_id로 이미 가족을 가지고 있는지 확인
+        if (existingFamily.isPresent()) {
+            throw new IllegalStateException("already Can Find Family");
+        }
+
+        Family newFamily = Family.builder()
+                        .intro(dto.getIntro())
+                                .qrCode(dto.getQrCode())
+                                        .presentId(user.getId())
+                                                .build();
+//        familyRepository.save(Family.builder()
+//                .intro(dto.getIntro())
+//                .qrCode(dto.getQrCode())
+//                .presentId(user.getId())//dto.getPresentId()
+//                .build());
+        familyRepository.save(newFamily);
+        user.setFamily(newFamily);
+        userRepository.save(user);
+
     }
 
 //    가족 연결
-    public void connectFamily(Long familyId, ConnectFamilyRequestDto dto){
-        User user = userRepository.findById(dto.getUserId()).get();
+    public void connectFamily(Long familyId,User user, ConnectFamilyRequestDto dto){
+//        User user = userRepository.findById(dto.getUserId()).get();
         Family fam = familyRepository.findById(familyId).get();
         user.setFamily(fam);
         familyRepository.save(fam);
+        userRepository.save(user);
     }
 
 //    가족 대표 변경
@@ -80,6 +97,53 @@ public class FamilyServcie {
             System.out.println(fam.getId());
         }
         familyRepository.save(fam);
+    }
+
+
+    //가족 맴버 조회
+    public List<FamilyMemberResponseDto> getFamilyMembers(Long familyId, Long currentUserId){
+
+        List<User> familyMembers = userRepository.findAllByFamilyId(familyId);
+
+        return familyMembers.stream()
+                .filter(user -> !user.getId().equals(currentUserId))
+                .map(user -> new FamilyMemberResponseDto(
+                        user.getId(),
+                        user.getName(),
+                        user.getRole(),
+                        user.getProfileImageUrl()
+                ))
+                .collect(Collectors.toList());
+
+    }
+
+    // 가족 삭제
+    public void deleteFamily(Long familyId){
+        Family family = familyRepository.findById(familyId)
+                .orElseThrow(()-> new IllegalStateException("Can't Find Family"));
+
+        List<User> familyMembers = userRepository.findAllByFamilyId(familyId);
+        for(User member: familyMembers){
+            member.setFamily(null);
+            userRepository.save(member);
+        }
+        familyRepository.delete(family);
+    }
+    // 가족 구성원 삭제
+    public void deleteFamilyMember(Long memberId){
+         User member = userRepository.findById(memberId)
+                         .orElseThrow(()-> new IllegalArgumentException("Can't Find Family Member"));
+         member.setFamily(null);
+         userRepository.save(member);
+    }
+    // 가족 정보 업데이트
+    public void updateFamily(Long familyId, CreateFamilyRequestDto dto){
+        Family family = familyRepository.findById(familyId)
+                        .orElseThrow(()->new IllegalArgumentException("Can't Find Family"));
+
+        family.setIntro(dto.getIntro());
+        familyRepository.save(family);
+
     }
 
 }

@@ -47,7 +47,9 @@
 import { ref, type Ref } from "vue"
 import axios from "axios"
 import { useRouter } from "vue-router"
+import { useAuthStore } from "@/stores/auth"
 
+const authStore = useAuthStore()
 const router = useRouter()
 const role = ref<String>("최초") as Ref<String>
 const selectRole = (selectedRole: String) => {
@@ -59,10 +61,19 @@ const submitExinfo = async () => {
     alert("역할을 선택해주세요")
     return
   }
+  // const token = authStore.accessToken;
+  const token = "HpAwXfMaEpHRVBLX6CvO2-LUlcUMjy1EAAAAAQorDR4AAAGSPfkK3pCBbdpZdq0Z"
   try {
-    const response = await axios.post("/api/v1/profile/1/update", {
-      role: role.value,
-    })
+    const response = await axios.post(
+      "/api/v1/profile/update/ExInfo",
+      { role: role.value },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
     console.log(response)
     router.push("/won")
   } catch (error) {

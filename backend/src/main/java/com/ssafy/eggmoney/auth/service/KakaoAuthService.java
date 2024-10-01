@@ -93,15 +93,28 @@ public class KakaoAuthService {
                                 Optional<User> optionalUser = userRepository.findByEmail(email);
                                 if (optionalUser.isPresent()) {
                                     // 기존 유저일 경우
-                                    tokens.setRedirectUrl("http://localhost:5173");
-                                } else {
+                                    User user = optionalUser.get();
+                                    if(user.getRole()==null){
+                                        tokens.setRedirectUrl("ExInfo");
+                                    }else if(user.getRealAccount()==null){
+                                        tokens.setRedirectUrl("won");
+                                    }else if(user.getSimplePwd()==null){
+                                        tokens.setRedirectUrl("pinpad");
+                                    }else if(user.getFamily()==null){
+                                        tokens.setRedirectUrl("family");
+                                    }else{
+                                        tokens.setRedirectUrl("");
+                                    }
+
+                                }
+                                else {
                                     // 새 유저일 경우
                                     User newUser = User.builder()
                                             .email(email)
                                             .name(name)
                                             .build();
                                     userRepository.save(newUser);
-                                    tokens.setRedirectUrl("http://localhost:5173/selectRole");
+                                    tokens.setRedirectUrl("ExInfo");
                                 }
                                 return Mono.just(tokens);
                             });
@@ -113,8 +126,8 @@ public class KakaoAuthService {
         String url = "https://kapi.kakao.com/v2/user/me";
         final String accessToken;
         if (token.startsWith("Bearer ")) {
-            accessToken = token.substring(7);  // "Bearer " 부분을 제거
-        }else {
+            accessToken = token.substring(7);  // "Bearer " 부분 제거
+        } else {
             accessToken = token;
         }
         log.info("카카오 토큰 검증 시작 - 토큰 값: {}", accessToken);  // 토큰 로그
@@ -127,24 +140,29 @@ public class KakaoAuthService {
                 .doOnNext(kakaoUserResponse -> log.info("카카오 API 응답: {}", kakaoUserResponse)) // 카카오 API 응답 로그
                 .flatMap(kakaoUserResponse -> {
                     String email = kakaoUserResponse.getKakaoAccount().getEmail();
-                    Optional<User> optionalUser = userRepository.findByEmail(email);
-
-                    if (optionalUser.isPresent()) {
-                        log.info("기존 사용자 이메일: {}", email);  // 기존 사용자 로그
-                        return Mono.just(optionalUser.get());
-                    } else {
-                        User newUser = User.builder()
-                                .email(email)
-                                .name(kakaoUserResponse.getKakaoAccount().getProfile().getNickname())
-                                .build();
-
-                        log.info("새 사용자 생성 - 이메일: {}, 이름: {}", email, kakaoUserResponse.getKakaoAccount().getProfile().getNickname());  // 새 사용자 로그
-                        return Mono.just(userRepository.save(newUser));  // 저장 후 반환
-                    }
+                    return Mono.justOrEmpty(userRepository.findByEmail(email))  // Optional<User>를 Mono<User>로 변환
+                            .map(existingUser -> {
+                                log.info("기존 사용자 이메일: {}", email);
+                                return existingUser;
+                            })
+                            .switchIfEmpty(Mono.defer(() -> {
+                                User newUser = User.builder()
+                                        .email(email)
+                                        .name(kakaoUserResponse.getKakaoAccount().getProfile().getNickname())
+                                        .build();
+                                log.info("새 사용자 생성 - 이메일: {}, 이름: {}", email, kakaoUserResponse.getKakaoAccount().getProfile().getNickname());
+                                return Mono.just(userRepository.save(newUser));
+                            }));
                 })
                 .doOnNext(user -> log.info("최종 반환된 사용자: {}", user))  // 반환되는 사용자 로그
-                .block();
+                .onErrorMap(e -> {
+                    log.error("카카오 토큰 검증 오류 발생", e);
+                    return new IllegalArgumentException("카카오 토큰 검증 실패");
+                })  // 예외 변환 및 로깅
+                .block();  // 동기식 처리
     }
+
+
 //    public Mono<User> handleUserLogin(String code) {
 //        return getAccessToken(code)
 //                .flatMap(this::getUserInfo)

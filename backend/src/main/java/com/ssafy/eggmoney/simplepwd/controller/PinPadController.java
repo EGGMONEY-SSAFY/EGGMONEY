@@ -5,6 +5,7 @@ import com.ssafy.eggmoney.simplepwd.dto.request.PinVerificationRequest;
 import com.ssafy.eggmoney.simplepwd.dto.response.PinPadResponse;
 import com.ssafy.eggmoney.simplepwd.service.EncryptionService;
 import com.ssafy.eggmoney.simplepwd.service.PinPadService;
+import com.ssafy.eggmoney.user.dto.reqeust.UpdateUserRequestDto;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,19 +48,24 @@ public class PinPadController {
         return ResponseEntity.ok(response);
     }
     @PostMapping("/api/pinpad/verify")
-    public ResponseEntity<Map<String, String>> verifyPin(@RequestBody String encryptyedPassword) throws Exception{
-        byte[] decodedPassword = Base64.getDecoder().decode(encryptyedPassword);
+    public ResponseEntity<Map<String, String>> verifyPin(@RequestHeader(value="Authorization") String token,@RequestBody Map<String, String> requestBody) throws Exception{
+//        byte[] decodedPassword = Base64.getDecoder().decode(encryptyedPassword);
 
-        Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.DECRYPT_MODE, encryptionService.getPrivateKey());
-        byte[] decryptedPassword = cipher.doFinal(decodedPassword);
-
-        String decryptedPasswordString = new String(decryptedPassword, StandardCharsets.UTF_8);
-        System.out.println("복호화된 비밀번호:" + decryptedPasswordString);
-
+//        Cipher cipher = Cipher.getInstance("RSA");
+//        cipher.init(Cipher.DECRYPT_MODE, encryptionService.getPrivateKey());
+//        byte[] decryptedPassword = cipher.doFinal(decodedPassword);
+//
+//        String decryptedPasswordString = new String(decryptedPassword, StandardCharsets.UTF_8);
+//        System.out.println("복호화된 비밀번호:" + decryptedPasswordString);
+//
         Map<String, String> response = new HashMap<>();
-        response.put("message","비밀번호 검증 성공");
-        response.put("Pwd",decryptedPasswordString);
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        String encryptedPin = requestBody.get("encryptedPin");
+        UpdateUserRequestDto updateUserRequestDto = new UpdateUserRequestDto();
+        updateUserRequestDto.setSimplePwd(encryptedPin);
+        userService.updateUser(user.getId(), updateUserRequestDto);
+        response.put("message","비밀번호 생성 성공");
+//        response.put("Pwd",decryptedPasswordString);
         return ResponseEntity.ok(response);
     }
     @PostMapping("/api/pinpad/verify/check")
@@ -67,10 +73,10 @@ public class PinPadController {
         String encryptedPassword = request.getEncryptedPin();
 
         User user = kakaoAuthService.verifyKakaoToken(token);
-        System.out.println("카카오 토큰 검증된 유저 ID: " + user.getId());
+
         // 저장된 비밀번호 확인
         String userStoredPwd = userService.getUser(user.getId()).getPwd();
-        System.out.println("저장된 비밀번호: " + userStoredPwd);
+
         Map<String, String> response = new HashMap<>();
 //        if(decryptedPassword.equals(userStoredPwd)){
         if(encryptedPassword.equals(userStoredPwd)){

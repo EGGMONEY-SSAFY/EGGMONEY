@@ -6,7 +6,7 @@
       </div>
 
       <!-- 비밀번호 입력 표시 -->
-      <div class="flex gap-2 mb-4 mt-8">
+      <div class="flex gap-3 m-8 justify-center items-center">
         <div
           v-for="(digit, index) in 6"
           :key="index"
@@ -17,18 +17,22 @@
       </div>
 
       <!-- 이미지 및 핀 패드 -->
-      <div class="bg-white flex justify-center items-center w-full max-w-md h-auto relative">
-        <img :src="pinPadImage" class="ml-8 w-3/4 h-auto" alt="Pin Pad" v-if="pinPadImage" />
-        <button
-          v-for="(number, index) in numbers"
-          :key="index"
-          class="absolute border border-gray-400 rounded-md shadow-md bg-white w-10 h-10"
-          :class="{ 'bg-white': clickedButton === index || randomButton === index }"
-          :style="buttonStyle(index)"
-          @click="onButtonClick(index)"
+      <div class="bg-white">
+        <div
+          v-if="pinPadImage"
+          class="bg-no-repeat h-[393px] w-[393px]"
+          :style="{ backgroundImage: `url(${pinPadImage})` }"
         >
-          {{ number }}
-        </button>
+          <div class="flex justify-center flex-wrap mx-10 h-[393px]">
+            <button
+              v-for="index in numbers"
+              :key="index"
+              class="border rounded-md shadow-md size-16 m-4"
+              :class="{ 'bg-white': clickedButton === index || randomButton === index }"
+              @click="onButtonClick(index)"
+            ></button>
+          </div>
+        </div>
       </div>
     </div>
     <div v-if="step === 3">
@@ -156,7 +160,7 @@ const getRandomIndex = (excludeIndex: number): number => {
 const verifyInput = () => {
   console.log(firstInput.value, secondInput.value)
   if (firstInput.value.join("") === secondInput.value.join("")) {
-    const pinString = firstInput.value.toString()
+    const pinString = firstInput.value.join("")
     encryptAndSendPin(pinString)
   } else {
     instructionMessage.value = "비밀번호가 일치하지 않습니다. 다시 시도해주세요"
@@ -165,21 +169,33 @@ const verifyInput = () => {
 }
 
 const encryptAndSendPin = (pin: string) => {
-  const encrypt = new JSEncrypt()
-  encrypt.setPublicKey(publicKey.value)
-  const encryptedPin = encrypt.encrypt(pin)
-  if (!encryptedPin) {
-    console.error("PIN 암호화 실패")
-    instructionMessage.value = "암호화 오류가 발생했습니다."
-    return
-  }
-  sendToBackend(encryptedPin)
+  // const encrypt = new JSEncrypt()
+  // encrypt.setPublicKey(publicKey.value)
+  // const encryptedPin = encrypt.encrypt(pin)
+  // if (!encryptedPin) {
+  //   console.error("PIN 암호화 실패")
+  //   instructionMessage.value = "암호화 오류가 발생했습니다."
+  //   return
+  // }
+  // sendToBackend(encryptedPin)
+  sendToBackend(pin)
 }
 const sendToBackend = async (encryptedPin: string) => {
+  // const token = authStore.accessToken;
+  const token = "4A9qnGHLH5c5SLbbotj4Ig3wE5u9qMtCAAAAAQoqJQ0AAAGSPikHMZCBbdpZdq0Z"
   try {
-    await axios.post("http://localhost:8080/api/pinpad/verify", {
-      encryptedPin: encryptedPin,
-    })
+    await axios.post(
+      "http://localhost:8080/api/pinpad/verify",
+      {
+        encryptedPin: encryptedPin,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
     instructionMessage.value = "비밀번호 설정이 완료되었습니다!"
   } catch (error) {
     console.error(error)
@@ -200,7 +216,10 @@ onMounted(() => {
   fetchPublicKey()
   fetchPinPadImage()
 })
+</script>
 
+<style scoped></style>
+<!-- 
 // 버튼 스타일 설정
 const buttonStyle = (index: number) => {
   const row = Math.floor(index / 3)
@@ -222,11 +241,8 @@ const buttonStyle = (index: number) => {
     cursor: "pointer",
     transition: "background-color 0.5s ease",
   }
-}
-</script>
-
-<style scoped>
-.pin-container {
+} -->
+<!-- .pin-container {
   width: 400px; /* 이미지 및 키패드의 너비 고정 */
 }
 
@@ -245,9 +261,7 @@ const buttonStyle = (index: number) => {
   gap: 10px;
   font-size: 24px;
   margin-bottom: 20px;
-}
-</style>
-
+} -->
 <!-- 클릭 이벤트를 받는 투명한 상자들 -->
 <!-- const onBackClick = () => {
   console.log('뒤로가기 버튼 클릭됨');
