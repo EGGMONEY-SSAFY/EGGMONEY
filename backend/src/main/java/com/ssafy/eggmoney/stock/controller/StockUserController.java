@@ -2,9 +2,9 @@ package com.ssafy.eggmoney.stock.controller;
 
 import com.ssafy.eggmoney.stock.dto.request.StockBuyRequest;
 import com.ssafy.eggmoney.stock.dto.request.StockSellRequest;
-import com.ssafy.eggmoney.stock.dto.response.StockBuyResponse;
+import com.ssafy.eggmoney.stock.dto.request.StockUserRequest;
 import com.ssafy.eggmoney.stock.dto.response.StockLogResponse;
-import com.ssafy.eggmoney.stock.dto.response.StockSellResponse;
+import com.ssafy.eggmoney.stock.dto.response.StockUserResponse;
 import com.ssafy.eggmoney.stock.service.StockLogService;
 import com.ssafy.eggmoney.stock.service.StockUserService;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class StockUserController {
 
     @PostMapping("/stock/user/buy")
     public ResponseEntity<Map<String, Object>> buyStock(@RequestBody StockBuyRequest stockBuyReq) {
-        StockBuyResponse stockBuyRes = stockUserService.buyStock(stockBuyReq);
+        StockUserResponse stockBuyRes = stockUserService.buyStock(stockBuyReq);
         Map<String, Object> response = stockUserService.findInvestablePrice(stockBuyReq.getUserId());
         response.put("stockInfo", stockBuyRes);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -42,10 +42,15 @@ public class StockUserController {
 
     @PostMapping("/stock/user/sell")
     public ResponseEntity<Map<String, Object>> sellStock(@RequestBody StockSellRequest stockSellReq) {
-        StockSellResponse stockSellRes = stockUserService.sellStock(stockSellReq);
+        StockUserResponse stockSellRes = stockUserService.sellStock(stockSellReq);
         Map<String, Object> response = stockUserService.findInvestablePrice(stockSellReq.getUserId());
         response.put("stockInfo", stockSellRes);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/stock/user/info")
+    public ResponseEntity<StockUserResponse> getStockUser(@RequestBody StockUserRequest stockUserReq) {
+        return new ResponseEntity<>(stockUserService.findStockUserInfo(stockUserReq), HttpStatus.OK);
     }
 
     @GetMapping("/stock/user/{userId}/log")
