@@ -23,9 +23,8 @@ public class DepositScheduler {
 
         for(Long depositId : depositIds){
             depositService.deleteDeposit(depositId);
-
         }
-
+        log.info("스케줄러 종료");
     }
 
 }

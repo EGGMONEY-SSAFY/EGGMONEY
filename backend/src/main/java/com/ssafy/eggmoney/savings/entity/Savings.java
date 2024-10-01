@@ -34,9 +34,9 @@ public class Savings extends BaseTime {
     private SavingsProduct savingsProduct;
 
     private LocalDateTime expireDate;
-    private int paymentDate; // 납입 횟수
+    private int paymentDate; // 남은 납입 횟수
     private int paymentMoney; // 정액 적금 금액
-    private int balance; // 납부금
+    private int balance; // 총 납부금
 
     @Enumerated(value = EnumType.STRING)
     private SavingsStatus savingsStatus; // AVAILABLE, EXPIRED
