@@ -4,6 +4,7 @@ import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 import com.ssafy.eggmoney.family.dto.request.ChangeFamilyPresentRequestDto;
 import com.ssafy.eggmoney.family.dto.request.ConnectFamilyRequestDto;
 import com.ssafy.eggmoney.family.dto.request.CreateFamilyRequestDto;
+import com.ssafy.eggmoney.family.dto.response.FamilyMemberResponseDto;
 import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
 import com.ssafy.eggmoney.family.service.FamilyServcie;
 import com.ssafy.eggmoney.user.entity.User;
@@ -13,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -74,5 +77,14 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
 
         User user = kakaoAuthService.verifyKakaoToken(token);
         familyServcie.connectFamily(familyId, user, dto);
+    }
+    // Token 기반 가족 멤버 조회
+    @GetMapping("/searchMember")
+    public ResponseEntity<List<FamilyMemberResponseDto>> searchFamilyMembers(@RequestHeader(value = "Authorization") String token){
+        User user = kakaoAuthService.verifyKakaoToken(token);
+
+        List<FamilyMemberResponseDto> familyMembers = familyServcie.getFamilyMembers(user.getFamily().getId(), user.getId());
+        //familyServcie.searchFamily(user.getFamily());
+        return ResponseEntity.ok(familyMembers);
     }
 }
