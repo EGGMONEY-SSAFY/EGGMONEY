@@ -1,4 +1,26 @@
 import { defineStore } from "pinia"
+import {openDB} from "idb"
+
+// IndexedDB 설정
+async function saveTokensToIndexedDB(accessToken:string, refreshToken: string){
+  const db = await openDB('authDB', 1, {
+    upgrade(db){
+      db.createObjectStore('tokenStore');
+    },
+  });
+  await db.put('tokenStore', {accessToken, refreshToken}, 'authTokens');
+}
+
+async function loadTokensFromIndexedDB() {
+  const db = await openDB('authDB',1);
+  return await db.get('tokenStore','authTokens');
+}
+
+async function clearTokensFromIndexedDB() {
+  const db = await openDB('authDB',1);
+  await db.delete('tokenStore','authTokens');
+  
+}
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -6,13 +28,22 @@ export const useAuthStore = defineStore("auth", {
     refreshToken: null as string | null,
   }),
   actions: {
-    setTokens(accessToken: string, refreshToken: string) {
+    async setTokens(accessToken: string, refreshToken: string) {
       this.accessToken = accessToken
       this.refreshToken = refreshToken
+      await saveTokensToIndexedDB(accessToken,refreshToken);
     },
-    clearToken() {
+    async loadTokens(){
+      const tokens = await loadTokensFromIndexedDB();
+      if(tokens){
+        this.accessToken = tokens.accessToken;
+        this.refreshToken = tokens.refreshToken;
+      }
+    },
+    async clearToken() {
       this.accessToken = null
       this.refreshToken = null
+      await clearTokensFromIndexedDB();
     },
   },
 })

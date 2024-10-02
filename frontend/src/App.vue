@@ -3,8 +3,14 @@ import { RouterView } from "vue-router"
 import NavBar from "./components/navbar/NavBar.vue"
 import NavBarTop from "./components/navbar/NavBarTop.vue"
 import { useFinStore } from "./stores/fin"
-
+import { useAuthStore } from "@/stores/auth"
+import { onMounted } from "vue"
 const finStore = useFinStore()
+
+const authStore = useAuthStore();
+onMounted(()=>{
+  authStore.loadTokens();
+})
 </script>
 
 <template>
