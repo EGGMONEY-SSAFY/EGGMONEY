@@ -8,6 +8,7 @@ import com.ssafy.eggmoney.stock.dto.request.StockSellRequest;
 import com.ssafy.eggmoney.stock.dto.request.StockUserRequest;
 import com.ssafy.eggmoney.stock.dto.response.StockUserResponse;
 import com.ssafy.eggmoney.stock.entity.Stock;
+import com.ssafy.eggmoney.stock.entity.StockItem;
 import com.ssafy.eggmoney.stock.entity.StockUser;
 import com.ssafy.eggmoney.stock.entity.TradeType;
 import com.ssafy.eggmoney.stock.repository.StockRepository;
@@ -31,10 +32,10 @@ import java.util.NoSuchElementException;
 public class StockUserServiceImpl implements StockUserService {
     private final StockUserRepository stockUserRepository;
     private final AccountService accountService;
-    private final StockService stockService;
     private final UserService userService;
     private final StockLogService stockLogService;
     private final StockRepository stockRepository;
+    private final StockService stockService;
 
     @Transactional
     @Override
@@ -74,34 +75,41 @@ public class StockUserServiceImpl implements StockUserService {
     }
 
     @Override
-    public Map<Object, Integer> findUserStocks(Long userId) {
+    public Map<String, Object> findUserStocks(Long userId) {
+        Map<String, Object> response = new HashMap<>();
         int totalPrice = 0;
-        Map<Object, Integer> stockPrices = new HashMap<>();
+        int[] prices = new int[13];
+
+        List<Stock> stocks = stockRepository.findTop13ByOrderByUpdatedAtDesc();
         List<StockUser> stockUsers = stockUserRepository.findJoinByUserId(userId);
+        StockItem[] stockItems = stockService.getStockItems();
 
-        for(StockUser stockUser : stockUsers) {
-            if(stockUser.getAmount() == 0) {
-                continue;
+        for(int i = 0; i < stockItems.length; i++) {
+            for(StockUser stockUser : stockUsers) {
+                if(stockItems[i] == stockUser.getStock().getStockItem()) {
+                    int price = stocks.get(stockItems.length - i - 1).getStockPrice() * stockUser.getAmount();
+                    prices[i] = price;
+                    totalPrice += price;
+                }
             }
-
-            Integer price = stockRepository.findTop2LatestPrices(stockUser.getStock().getStockItem()).get(0);
-            int sumPrice = stockUser.getAmount() * price;
-            totalPrice += sumPrice;
-            stockPrices.put(stockUser.getStock().getStockItem(), sumPrice);
         }
 
-        if(totalPrice == 0) {
-            throw new NoSuchElementException("보유한 주식이 조회되지 않습니다.");
-        }
+        response.put("stockItems", stockItems);
+        response.put("prices", prices);
+        response.put("totalPrice", totalPrice);
 
-        stockPrices.put("totalPrice", totalPrice);
-        return stockPrices;
+        return response;
     }
 
     @Transactional
     @Override
     public StockUserResponse buyStock(StockBuyRequest stockBuyReq) {
-        Stock stock = stockService.findByStockItemAndDate(stockBuyReq.getStockItem());
+        List<Stock> stocks = stockRepository.findTop2ByStockItemOrderByUpdatedAtDesc(stockBuyReq.getStockItem());
+        if(stocks.isEmpty()) {
+            throw new NoSuchElementException("최신 주식 가격이 조회 되지 않습니다.");
+        }
+        Stock stock = stocks.get(0);
+
         User user = userService.findUserEntity(stockBuyReq.getUserId());
 
         accountService.updateAccount(AccountLogType.STOCK, stockBuyReq.getUserId(),

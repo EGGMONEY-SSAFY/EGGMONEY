@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -24,6 +23,16 @@ public class StockServiceImpl implements StockService {
     private final StockApiConfig apiConfig;
     private final WebClient webClient;
     private final StockRepository stockRepository;
+
+    private StockItem[] stockItems = {StockItem.KOSPI, StockItem.KOSDAQ, StockItem.AUTOMOTIVE,
+            StockItem.SEMICONDUCTOR, StockItem.HEALTHCARE, StockItem.BANKING, StockItem.ENERGY_CHEMICAL,
+            StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
+            StockItem.IT, StockItem.UTILITIES};
+
+    @Override
+    public StockItem[] getStockItems() {
+        return stockItems;
+    }
 
     public StockServiceImpl(StockApiConfig stockApiConfig, WebClient.Builder webClientBuilder, StockRepository stockRepository) {
         this.apiConfig = stockApiConfig;

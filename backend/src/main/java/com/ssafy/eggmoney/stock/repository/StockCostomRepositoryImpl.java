@@ -22,41 +22,6 @@ public class StockCostomRepositoryImpl implements StockCostomRepository {
     }
 
     @Override
-    public List<Integer> findTop2LatestPrices(StockItem stockItem) {
-        List<Integer> prices = queryFactory
-                .select(stock.stockPrice)
-                .from(stock)
-                .where(stock.stockItem.eq(stockItem))
-                .orderBy(stock.createdAt.desc())
-                .offset(0)
-                .limit(2)
-                .fetch();
-
-        if (prices.size() < 2) {
-            throw new NoSuchElementException("최신 날짜의 주식 가격이 조회되지 않습니다.");
-        }
-
-        return prices;
-    }
-
-    @Override
-    public LocalDateTime findLatestDate() {
-        LocalDateTime date = queryFactory
-                .select(stock.createdAt)
-                .from(stock)
-                .orderBy(stock.createdAt.desc())
-                .offset(0)
-                .limit(1)
-                .fetchOne();
-
-        if (date == null) {
-            throw new NoSuchElementException("최신 날짜 조회를 할 수 없습니다.");
-        }
-
-        return date;
-    }
-
-    @Override
     public List<StockPriceForYearResponse> findStockPricesForYear(StockItem stockItem) {
         List<StockPriceForYearResponse> stockPricesForYear = queryFactory
                 .select(Projections.constructor(StockPriceForYearResponse.class,
