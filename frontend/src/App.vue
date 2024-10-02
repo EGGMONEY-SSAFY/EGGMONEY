@@ -31,7 +31,7 @@ onMounted(()=>{
 .main-container {
   width: 100%;
   height: 100%;
-  min-height: 101vh;
+  min-height: 100.1vh;
 }
 
 @media (min-width: 393px) {
