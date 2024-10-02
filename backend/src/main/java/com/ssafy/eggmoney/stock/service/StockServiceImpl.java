@@ -12,12 +12,15 @@ import com.ssafy.eggmoney.stock.entity.StockPrice;
 import com.ssafy.eggmoney.stock.entity.StockItem;
 import com.ssafy.eggmoney.stock.repository.StockPriceRepository;
 import com.ssafy.eggmoney.stock.repository.StockRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -124,21 +127,21 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public List<StockPriceResponse> findLatestStockPrices() {
-        List<StockPriceResponse> stockPricesRes = new ArrayList<>();
+        PageRequest pageReq = PageRequest.of(1, 13, Sort.by(Sort.Direction.DESC, "updatedAt"));
+        List<StockPrice> stockPrices = stockPriceRepository.findJoinStock(pageReq);
 
-        for (StockItem stockItem : stockItems) {
-            List<Stock> stocks = stockRepository.findTop2ByStockItemOrderByUpdatedAtDesc(stockItem);
-
-            if(stocks.size() < 2) {
-                stockPricesRes.add(new StockPriceResponse(null, stockItem, null, 0, 0));
-            }
-
-            Stock stock = stocks.get(0);
-            stockPricesRes.add(new StockPriceResponse(stock.getId(), stockItem, stock.getUpdatedAt(),
-                    stock.getStockPrice(), stocks.get(1).getStockPrice()));
+        if(stockPrices.isEmpty()) {
+            throw new NoSuchElementException("지수 가격들을 찾을 수 없습니다.");
         }
 
-        return stockPricesRes;
+        List<StockPriceResponse> stockPriceResponses = stockPrices.stream().map(stockPrice -> new StockPriceResponse(
+                stockPrice.getStock().getId(), stockPrice.getStock().getStockItem(),
+                stockPrice.getStock().getUpdatedAt(), stockPrice.getStock().getCurrentPrice(), stockPrice.getPrice()
+        )).collect(Collectors.toList());
+
+        stockPriceResponses.sort(Comparator.comparing(StockPriceResponse::getStockId));
+
+        return stockPriceResponses;
     }
 
     @Override
