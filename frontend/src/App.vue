@@ -7,9 +7,9 @@ import { useAuthStore } from "@/stores/auth"
 import { onMounted } from "vue"
 const finStore = useFinStore()
 
-const authStore = useAuthStore();
-onMounted(()=>{
-  authStore.loadTokens();
+const authStore = useAuthStore()
+onMounted(() => {
+  authStore.loadTokens()
 })
 </script>
 

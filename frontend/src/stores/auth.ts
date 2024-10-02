@@ -1,25 +1,24 @@
 import { defineStore } from "pinia"
-import {openDB} from "idb"
+import { openDB } from "idb"
 import axios from "axios"
 // IndexedDB 설정
-async function saveTokensToIndexedDB(accessToken:string, refreshToken: string){
-  const db = await openDB('authDB', 1, {
-    upgrade(db){
-      db.createObjectStore('tokenStore');
+async function saveTokensToIndexedDB(accessToken: string, refreshToken: string) {
+  const db = await openDB("authDB", 1, {
+    upgrade(db) {
+      db.createObjectStore("tokenStore")
     },
-  });
-  await db.put('tokenStore', {accessToken, refreshToken}, 'authTokens');
+  })
+  await db.put("tokenStore", { accessToken, refreshToken }, "authTokens")
 }
 
 async function loadTokensFromIndexedDB() {
-  const db = await openDB('authDB',1);
-  return await db.get('tokenStore','authTokens');
+  const db = await openDB("authDB", 1)
+  return await db.get("tokenStore", "authTokens")
 }
 
 async function clearTokensFromIndexedDB() {
-  const db = await openDB('authDB',1);
-  await db.delete('tokenStore','authTokens');
-  
+  const db = await openDB("authDB", 1)
+  await db.delete("tokenStore", "authTokens")
 }
 
 export const useAuthStore = defineStore("auth", {
@@ -31,36 +30,35 @@ export const useAuthStore = defineStore("auth", {
     async setTokens(accessToken: string, refreshToken: string) {
       this.accessToken = accessToken
       this.refreshToken = refreshToken
-      await saveTokensToIndexedDB(accessToken,refreshToken);
+      await saveTokensToIndexedDB(accessToken, refreshToken)
     },
-    async loadTokens(){
-      const tokens = await loadTokensFromIndexedDB();
-      if(tokens){
-        this.accessToken = tokens.accessToken;
-        this.refreshToken = tokens.refreshToken;
+    async loadTokens() {
+      const tokens = await loadTokensFromIndexedDB()
+      if (tokens) {
+        this.accessToken = tokens.accessToken
+        this.refreshToken = tokens.refreshToken
       }
     },
     async clearToken() {
       this.accessToken = null
       this.refreshToken = null
-      await clearTokensFromIndexedDB();
+      await clearTokensFromIndexedDB()
     },
-    async logout(){
-      if(this.accessToken){
-        try{
-        // await axios.post("/api/kakao/logout",{},{
-        //   headers:{
-        //     Authorization:`Bearer ${this.accessToken}`,
-        //   }
-        // })
-        window.location.href = "/api/kakao/logout";
-        await this.clearToken();
-        console.log("로그아웃 성공");
-      } catch(error){
-        console.error("로그아웃 실패:", error);
+    async logout() {
+      if (this.accessToken) {
+        try {
+          // await axios.post("/api/kakao/logout",{},{
+          //   headers:{
+          //     Authorization:`Bearer ${this.accessToken}`,
+          //   }
+          // })
+          window.location.href = "/api/kakao/logout"
+          await this.clearToken()
+          console.log("로그아웃 성공")
+        } catch (error) {
+          console.error("로그아웃 실패:", error)
+        }
       }
-      }
-      
-    }
+    },
   },
 })
