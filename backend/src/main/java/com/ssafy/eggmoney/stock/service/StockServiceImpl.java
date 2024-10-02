@@ -8,7 +8,9 @@ import com.ssafy.eggmoney.stock.dto.api.StockTokenDto;
 import com.ssafy.eggmoney.stock.dto.response.StockPriceForYearResponse;
 import com.ssafy.eggmoney.stock.dto.response.StockPriceResponse;
 import com.ssafy.eggmoney.stock.entity.Stock;
+import com.ssafy.eggmoney.stock.entity.StockPrice;
 import com.ssafy.eggmoney.stock.entity.StockItem;
+import com.ssafy.eggmoney.stock.repository.StockPriceRepository;
 import com.ssafy.eggmoney.stock.repository.StockRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ public class StockServiceImpl implements StockService {
     private final StockApiConfig apiConfig;
     private final WebClient webClient;
     private final StockRepository stockRepository;
+    private final StockPriceRepository stockPriceRepository;
 
     private StockItem[] stockItems = {StockItem.KOSPI, StockItem.KOSDAQ, StockItem.AUTOMOTIVE,
             StockItem.SEMICONDUCTOR, StockItem.HEALTHCARE, StockItem.BANKING, StockItem.ENERGY_CHEMICAL,
@@ -34,10 +37,12 @@ public class StockServiceImpl implements StockService {
         return stockItems;
     }
 
-    public StockServiceImpl(StockApiConfig stockApiConfig, WebClient.Builder webClientBuilder, StockRepository stockRepository) {
+    public StockServiceImpl(StockApiConfig stockApiConfig, WebClient.Builder webClientBuilder,
+                            StockRepository stockRepository, StockPriceRepository stockPriceRepository) {
         this.apiConfig = stockApiConfig;
         this.webClient = webClientBuilder.baseUrl("https://openapi.koreainvestment.com:9443").build();
         this.stockRepository = stockRepository;
+        this.stockPriceRepository = stockPriceRepository;
     }
 
     @Override
@@ -54,6 +59,7 @@ public class StockServiceImpl implements StockService {
                 .block();
     }
 
+    @Override
     public List<StockPriceDto> getStockPrices(String token, String inputDate, String stockCode) {
         return this.webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -78,13 +84,14 @@ public class StockServiceImpl implements StockService {
     }
 
     @Transactional
-    public void saveStockPrices(List<StockPriceDto> stockPrices, StockItem stockItem) {
-        List<Stock> stocks = new ArrayList<>();
-        stockPrices.forEach(stockPrice -> {
-//            Stock stock = new Stock(stockItem, stockPrice.getBstp_nmix_prpr(), stockPrice.getStck_bsop_date());
-//            stocks.add(stock);
-        });
-        stockRepository.saveAll(stocks);
+    @Override
+    public void saveStockPrices(Stock stock, List<StockPriceDto> stockPriceDtos) {
+//        List<StockPrice> stockPrices = new ArrayList<>();
+//        stockPriceDtos.forEach(stockPriceDto -> {
+//            StockPrice stockprice = new StockPrice(stock, stockPriceDto.getBstp_nmix_prpr(), stockPriceDto.getStck_bsop_date());
+//            stockPrices.add(stockprice);
+//        });
+//        stockPriceRepository.saveAll(stockPrices);
     }
 
     @Override
@@ -110,8 +117,9 @@ public class StockServiceImpl implements StockService {
     }
 
     @Transactional
-    public void saveCurrentStockPrices(List<Stock> stocks) {
-        stockRepository.saveAll(stocks);
+    @Override
+    public void saveCurrentStockPrices(List<StockPrice> stockPrices) {
+        stockPriceRepository.saveAll(stockPrices);
     }
 
     @Override

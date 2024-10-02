@@ -29,4 +29,8 @@ public class Stock extends BaseTime {
     public Stock(StockItem stockItem) {
         this.stockItem = stockItem;
     }
+
+    public void changeCurrentPrice(int currentPrice) {
+        this.currentPrice = currentPrice;
+    }
 }
