@@ -5,16 +5,22 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 
 @Getter
 public class StockPriceResponse {
+    private Long stockId;
     private StockItem stockItem;
+    private LocalDateTime updatedDate;
     private int price;
     private int gap;
     private BigDecimal ratio;
 
-    public StockPriceResponse(StockItem stockItem, int price, int previousPrice) {
+    public StockPriceResponse(Long stockId, StockItem stockItem, LocalDateTime updatedDate,
+                              int price, int previousPrice) {
+        this.stockId = stockId;
         this.stockItem = stockItem;
+        this.updatedDate = updatedDate;
         this.price = price;
         this.gap = price - previousPrice;
 

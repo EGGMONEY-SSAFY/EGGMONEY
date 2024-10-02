@@ -107,18 +107,25 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public List<StockPriceResponse> findLatestStockPrices() {
-        List<StockPriceResponse> StockPrices = new ArrayList<>();
+        List<StockPriceResponse> StockPricesRes = new ArrayList<>();
         StockItem[] stockItems = {StockItem.KOSPI, StockItem.KOSDAQ, StockItem.AUTOMOTIVE,
                 StockItem.SEMICONDUCTOR, StockItem.HEALTHCARE, StockItem.BANKING, StockItem.ENERGY_CHEMICAL,
                 StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
                 StockItem.IT, StockItem.UTILITIES};
 
         for (StockItem stockItem : stockItems) {
-            List<Integer> prices = stockRepository.findTop2LatestPrices(stockItem);
-            StockPrices.add(new StockPriceResponse(stockItem, prices.get(0), prices.get(1)));
+            List<Stock> stocks = stockRepository.findTop2ByStockItemOrderByCreatedAtDesc(stockItem);
+
+            if(stocks.size() < 2) {
+                throw new NoSuchElementException("최신 주식 가격이 조회 되지 않습니다.");
+            }
+
+            Stock stock = stocks.get(0);
+            StockPricesRes.add(new StockPriceResponse(stock.getId(), stockItem, stock.getUpdatedAt(),
+                    stock.getStockPrice(), stocks.get(1).getStockPrice()));
         }
 
-        return StockPrices;
+        return StockPricesRes;
     }
 
     @Override

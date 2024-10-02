@@ -11,4 +11,5 @@ import java.util.Optional;
 
 public interface StockRepository extends JpaRepository<Stock, Long>, StockCostomRepository {
     Optional<Stock> findByStockItemAndCreatedAt(StockItem stockItem, LocalDateTime date);
+    List<Stock> findTop2ByStockItemOrderByCreatedAtDesc(StockItem stockItem);
 }
