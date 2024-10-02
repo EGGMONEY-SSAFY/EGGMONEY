@@ -38,7 +38,7 @@ const nameMap: Record<string, string> = {
     </div>
     <RouterLink
       :to="`/stock/detail/${props.stockprice?.stockItem}`"
-      class="m-6 flex justify-center items-center gap-4"
+      class="flex justify-center items-center p-6"
     >
       <IconRightArrow class="size-6" />
     </RouterLink>
