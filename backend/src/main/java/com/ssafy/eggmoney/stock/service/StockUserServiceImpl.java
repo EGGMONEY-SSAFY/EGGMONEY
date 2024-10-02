@@ -21,10 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -115,7 +112,8 @@ public class StockUserServiceImpl implements StockUserService {
         accountService.updateAccount(AccountLogType.STOCK, stockBuyReq.getUserId(),
                 stockBuyReq.getAmount() * stock.getStockPrice() * -1);
 
-        StockUser stockUser = stockUserRepository.findByStockIdAndUserId(stock.getId(), user.getId())
+        StockUser stockUser = stockUserRepository.findByUserIdAndStockItem(
+                stockBuyReq.getUserId(), stockBuyReq.getStockItem())
                 .map(existingStockUser -> {
                     existingStockUser.buyStock(stock.getStockPrice(), stockBuyReq.getAmount());
                     return existingStockUser;
@@ -134,10 +132,14 @@ public class StockUserServiceImpl implements StockUserService {
     @Transactional
     @Override
     public StockUserResponse sellStock(StockSellRequest stockSellReq) {
-        Stock stock = stockService.findByStockItemAndDate(stockSellReq.getStockItem());
-        User user = userService.findUserEntity(stockSellReq.getUserId());
+        List<Stock> stocks = stockRepository.findTop2ByStockItemOrderByUpdatedAtDesc(stockSellReq.getStockItem());
+        if(stocks.isEmpty()) {
+            throw new NoSuchElementException("최신 주식 가격이 조회 되지 않습니다.");
+        }
+        Stock stock = stocks.get(0);
 
-        StockUser stockUser = stockUserRepository.findByStockIdAndUserId(stock.getId(), user.getId())
+        StockUser stockUser = stockUserRepository.findByUserIdAndStockItem(
+                stockSellReq.getUserId(), stockSellReq.getStockItem())
                 .map(existingStockUser -> {
                     existingStockUser.sellStock(stockSellReq.getAmount());
                     return existingStockUser;
@@ -158,14 +160,16 @@ public class StockUserServiceImpl implements StockUserService {
 
     @Override
     public StockUserResponse findStockUserInfo(StockUserRequest stockUserReq) {
-        Stock stock = stockService.findByStockItemAndDate(stockUserReq.getStockItem());
-        StockUser stockUser = stockUserRepository.findByStockIdAndUserId(stock.getId(), stockUserReq.getUserId())
-                .orElseGet(() -> new StockUser(null, null, 0, 0));
-
-        if (stockUser.getAmount() == 0) {
-            return new StockUserResponse();
-        } else {
-            return new StockUserResponse(stockUser.getBuyAverage(), stockUser.getAmount(), stock.getStockPrice());
+        List<Stock> stocks = stockRepository.findTop2ByStockItemOrderByUpdatedAtDesc(stockUserReq.getStockItem());
+        if(stocks.isEmpty()) {
+            throw new NoSuchElementException("최신 주식 가격이 조회 되지 않습니다.");
         }
+        Stock stock = stocks.get(0);
+
+        return stockUserRepository.findByUserIdAndStockItem(
+                stockUserReq.getUserId(), stockUserReq.getStockItem())
+                .map(stockUser -> new StockUserResponse(
+                        stockUser.getBuyAverage(), stockUser.getAmount(), stock.getStockPrice()
+                )).orElseGet(StockUserResponse::new);
     }
 }

@@ -116,42 +116,25 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public List<StockPriceResponse> findLatestStockPrices() {
-        List<StockPriceResponse> StockPricesRes = new ArrayList<>();
-        StockItem[] stockItems = {StockItem.KOSPI, StockItem.KOSDAQ, StockItem.AUTOMOTIVE,
-                StockItem.SEMICONDUCTOR, StockItem.HEALTHCARE, StockItem.BANKING, StockItem.ENERGY_CHEMICAL,
-                StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
-                StockItem.IT, StockItem.UTILITIES};
+        List<StockPriceResponse> stockPricesRes = new ArrayList<>();
 
         for (StockItem stockItem : stockItems) {
-            List<Stock> stocks = stockRepository.findTop2ByStockItemOrderByCreatedAtDesc(stockItem);
+            List<Stock> stocks = stockRepository.findTop2ByStockItemOrderByUpdatedAtDesc(stockItem);
 
             if(stocks.size() < 2) {
-                throw new NoSuchElementException("최신 주식 가격이 조회 되지 않습니다.");
+                stockPricesRes.add(new StockPriceResponse(null, stockItem, null, 0, 0));
             }
 
             Stock stock = stocks.get(0);
-            StockPricesRes.add(new StockPriceResponse(stock.getId(), stockItem, stock.getUpdatedAt(),
+            stockPricesRes.add(new StockPriceResponse(stock.getId(), stockItem, stock.getUpdatedAt(),
                     stock.getStockPrice(), stocks.get(1).getStockPrice()));
         }
 
-        return StockPricesRes;
-    }
-
-    @Override
-    public LocalDateTime findLatestDate() {
-        return stockRepository.findLatestDate();
+        return stockPricesRes;
     }
 
     @Override
     public List<StockPriceForYearResponse> findStockPricesForYear(StockItem stockItem) {
         return stockRepository.findStockPricesForYear(stockItem);
     }
-
-    @Override
-    public Stock findByStockItemAndDate(StockItem stockItem) {
-        LocalDateTime latestDate = findLatestDate();
-        return stockRepository.findByStockItemAndCreatedAt(stockItem, latestDate)
-                .orElseThrow(() -> new NoSuchElementException("해당 지수가 조회 되지 않습니다."));
-    }
-
 }
