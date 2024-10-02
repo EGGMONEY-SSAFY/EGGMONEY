@@ -6,6 +6,18 @@ export const useStockStore = defineStore(
   () => {
     const API_URL = "/api/v1"
 
+    const getStockPrice = async () => {
+      try {
+        const response = await axios({
+          method: "get",
+          url: `${API_URL}/stock/price`,
+        })
+        return response.data
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
     const getNews = async () => {
       try {
         const response = await axios({
@@ -30,7 +42,7 @@ export const useStockStore = defineStore(
       }
     }
 
-    return { getNews, getArticle }
+    return { getNews, getArticle, getStockPrice }
   },
   {
     persist: {
