@@ -16,7 +16,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin(origins="http://localhost:5173")
+
 @RestController
 @RequestMapping("/api/kakao")
 public class KakaoAuthController {
