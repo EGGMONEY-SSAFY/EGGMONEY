@@ -7,15 +7,13 @@ import com.ssafy.eggmoney.stock.entity.Stock;
 import com.ssafy.eggmoney.stock.entity.StockItem;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface StockService {
+    StockItem[] getStockItems();
     StockTokenDto getAccessToken();
     BigDecimal getCurrentStockPrice(String token, String stockCode);
     void saveCurrentStockPrices(List<Stock> stocks);
     List<StockPriceResponse> findLatestStockPrices();
-    LocalDateTime findLatestDate();
     List<StockPriceForYearResponse> findStockPricesForYear(StockItem stockItem);
-    Stock findByStockItemAndDate(StockItem stockItem);
 }
