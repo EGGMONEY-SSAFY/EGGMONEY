@@ -10,7 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AllowanceUpdateResponseDto {
-    private Long userId;
+    private Long allowanceId;
+//    private Long userId;
     private int price;
     private String allowancePeriod;
     private int allowanceDay;
@@ -19,7 +20,8 @@ public class AllowanceUpdateResponseDto {
         if (allowance == null) {
             throw new IllegalArgumentException("Allowance Object:null");
         }
-        this.userId = allowance.getChild().getId();
+//        this.userId = allowance.getChild().getId();
+        this.allowanceId = allowance.getId();
         this.price = allowance.getPrice();
         this.allowancePeriod = allowance.getAllowancePeriod().name();
         this.allowanceDay = allowance.getAllowanceDay();

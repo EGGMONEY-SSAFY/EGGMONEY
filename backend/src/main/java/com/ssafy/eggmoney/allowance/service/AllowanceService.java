@@ -30,9 +30,11 @@ public class AllowanceService {
         throw new IllegalArgumentException("user is not your child");
     }
 
-    public AllowanceUpdateResponseDto updateAllowance(Long childId, AllowanceUpdateResponseDto updateDto){
-        Allowance allowance = allowanceRepository.findByChildId(childId)
-                .orElseThrow(()-> new IllegalArgumentException("User didnt have allowance"));
+    public AllowanceUpdateResponseDto updateAllowance(Long allowanceId, AllowanceUpdateResponseDto updateDto){
+          Allowance allowance = allowanceRepository.findById(allowanceId)
+                  .orElseThrow(() -> new IllegalArgumentException("해당 ID의 용돈 정보가 존재하지 않습니다."));
+//        Allowance allowance = allowanceRepository.findByChildId(childId)
+//                .orElseThrow(()-> new IllegalArgumentException("User didnt have allowance"));
         allowance.setPrice(updateDto.getPrice());
         allowance.setAllowanceDay(updateDto.getAllowanceDay());
         allowance.setAllowancePeriod(AllowancePeriod.valueOf(updateDto.getAllowancePeriod()));

@@ -33,7 +33,7 @@ public class AllowanceController {
         User user = kakaoAuthService.verifyKakaoToken(token);
         // user가 해당 user_id의 가족 테이블의 present_id일 경우, 용돈테이블의 user_id와 일치하는 유저를 찾아서 업데이트를 한다.
         // 아닐경우 실패를 던진다. 물론 그럴 경우는 없을 것이다.
-        AllowanceUpdateResponseDto response = allowanceService.updateAllowance(updateDto.getUserId(), updateDto);
+        AllowanceUpdateResponseDto response = allowanceService.updateAllowance(updateDto.getAllowanceId(), updateDto);
         return ResponseEntity.ok(response);
     }
 
