@@ -5,5 +5,6 @@ import PocketMoneyComponent from "@/components/login/PocketMoneyComponent.vue"
 <template>
   <div class="">
     <PocketMoneyComponent />
+    <!--  -->
   </div>
 </template>
