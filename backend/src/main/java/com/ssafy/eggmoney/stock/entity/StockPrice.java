@@ -42,8 +42,8 @@ public class StockPrice extends BaseTime {
 //        this.date = date.atTime(16, 50, 0);
 //    }
 
-    public StockPrice(Stock stock, BigDecimal price) {
+    public StockPrice(Stock stock, int price) {
         this.stock = stock;
-        this.price = price.setScale(0, RoundingMode.HALF_UP).intValue();
+        this.price = price;
     }
 }

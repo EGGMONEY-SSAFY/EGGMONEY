@@ -9,8 +9,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ public class StockScheduler {
             StockItem.IT, StockItem.UTILITIES};
 
 //    @Scheduled(cron = "0 50 16 * * MON-FRI", zone = "Asia/Seoul")
+    @Transactional
     public void saveDailyStockPrice() {
         log.info("주식 스케쥴링 시작: " + LocalDateTime.now());
         List<StockPrice> stockPrices = new ArrayList<>();
@@ -38,9 +41,13 @@ public class StockScheduler {
             String token = stockService.getAccessToken().getAccessToken();
 
             for(int i = 0; i < stockCodes.length; i++) {
-                BigDecimal currentStockPrice = stockService.getCurrentStockPrice(token, stockCodes[i]);
+                int currentStockPrice = stockService.getCurrentStockPrice(token, stockCodes[i])
+                        .setScale(0, RoundingMode.HALF_UP).intValue();
+
                 Stock stock = stockRepository.findByStockItem(stockItems[i])
                         .orElseThrow(() -> new NoSuchElementException("Stock 엔티티 조회에 실패했습니다."));
+                stock.changeCurrentPrice(currentStockPrice);
+
                 StockPrice stockPrice = new StockPrice(stock, currentStockPrice);
                 stockPrices.add(stockPrice);
             }
