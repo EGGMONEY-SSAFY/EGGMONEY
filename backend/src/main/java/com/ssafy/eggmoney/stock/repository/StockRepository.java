@@ -10,8 +10,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StockRepository extends JpaRepository<Stock, Long>, StockCostomRepository {
-    @Query("SELECT DISTINCT s.stockItem FROM Stock s")
-    List<StockItem> findStockItems();
-    
     Optional<Stock> findByStockItemAndCreatedAt(StockItem stockItem, LocalDateTime date);
 }
