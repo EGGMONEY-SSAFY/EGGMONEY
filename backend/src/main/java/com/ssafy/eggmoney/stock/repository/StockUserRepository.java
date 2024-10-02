@@ -15,7 +15,7 @@ public interface StockUserRepository extends JpaRepository<StockUser, Long> {
     List<StockUser> findByUserId(Long userId);
 
     @EntityGraph(attributePaths = {"stock"})
-    List<StockUser> findJoinByUserId(Long userId);
+    List<StockUser> findJoinStockByUserId(Long userId);
 
     @Query("select su from StockUser su left join fetch su.stock s " +
             "where su.user.id = :userId and s.stockItem = :item")
