@@ -14,7 +14,7 @@ onMounted(()=>{
 </script>
 
 <template>
-  <!-- tedddd2222522333322255-->
+  <!-- teddd22255-->
   <div class="flex justify-center bg-gray-800">
     <div
       class="main-container bg-gray-200"
