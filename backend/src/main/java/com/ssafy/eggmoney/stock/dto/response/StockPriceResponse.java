@@ -24,11 +24,15 @@ public class StockPriceResponse {
         this.price = price;
         this.gap = price - previousPrice;
 
-        BigDecimal priceBD = BigDecimal.valueOf(price);
-        BigDecimal previousPriceBD = BigDecimal.valueOf(previousPrice);
-        BigDecimal result = priceBD.subtract(previousPriceBD)
-                .divide(previousPriceBD, 4, RoundingMode.HALF_UP)
-                .multiply(BigDecimal.valueOf(100));
-        ratio = result.setScale(2, RoundingMode.HALF_UP);
+        if(previousPrice != 0) {
+            BigDecimal priceBD = BigDecimal.valueOf(price);
+            BigDecimal previousPriceBD = BigDecimal.valueOf(previousPrice);
+            BigDecimal result = priceBD.subtract(previousPriceBD)
+                    .divide(previousPriceBD, 4, RoundingMode.HALF_UP)
+                    .multiply(BigDecimal.valueOf(100));
+            ratio = result.setScale(2, RoundingMode.HALF_UP);
+        } else {
+            ratio = BigDecimal.ZERO;
+        }
     }
 }
