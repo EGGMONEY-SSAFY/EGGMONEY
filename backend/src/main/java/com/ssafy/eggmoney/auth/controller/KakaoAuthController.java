@@ -27,6 +27,9 @@ public class KakaoAuthController {
     @Value("${kakao.redirect.uri}")
     private String kakaoRedirectUri;
 
+    @Value("${kakao.redirect.logout}")
+    private String KAKAO_LOGOUT_URL;
+
     @Autowired
     private KakaoAuthService kakaoService;
 
@@ -63,5 +66,24 @@ public Mono<ResponseEntity<TokenResponse>> kakaoCallback(@RequestParam("code") S
             .map(tokens -> ResponseEntity.ok(tokens));
 }
 
+//@PostMapping("/logout")
+//public Mono<ResponseEntity<Void>> logout(@RequestHeader("Authorization") String accessToken){
+//        return kakaoService.logout(accessToken)
+//                .thenReturn(ResponseEntity.status(HttpStatus.FOUND)
+//                        .location(URI.create(KAKAO_LOGOUT_URL))  // 로그아웃 후 프론트엔드 로그인 페이지로 리다이렉트
+//                        .build());
+//}
 
+    @GetMapping("/logout")
+    public Mono<ResponseEntity<Void>> kakaoLogout(){
+
+        String logoutUrl = UriComponentsBuilder
+                .fromHttpUrl("https://kauth.kakao.com/oauth/logout")
+                .queryParam("client_id", kakaoClientId)
+                .queryParam("logout_redirect_uri", KAKAO_LOGOUT_URL)
+                .toUriString();
+        return Mono.just(ResponseEntity.status(HttpStatus.FOUND)
+                .location(URI.create(logoutUrl))
+                .build());
+    }
 }

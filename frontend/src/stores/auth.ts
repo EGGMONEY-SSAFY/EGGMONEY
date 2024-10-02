@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import {openDB} from "idb"
-
+import axios from "axios"
 // IndexedDB 설정
 async function saveTokensToIndexedDB(accessToken:string, refreshToken: string){
   const db = await openDB('authDB', 1, {
@@ -45,5 +45,22 @@ export const useAuthStore = defineStore("auth", {
       this.refreshToken = null
       await clearTokensFromIndexedDB();
     },
+    async logout(){
+      if(this.accessToken){
+        try{
+        // await axios.post("/api/kakao/logout",{},{
+        //   headers:{
+        //     Authorization:`Bearer ${this.accessToken}`,
+        //   }
+        // })
+        window.location.href = "/api/kakao/logout";
+        await this.clearToken();
+        console.log("로그아웃 성공");
+      } catch(error){
+        console.error("로그아웃 실패:", error);
+      }
+      }
+      
+    }
   },
 })
