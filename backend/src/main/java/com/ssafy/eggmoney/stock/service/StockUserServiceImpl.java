@@ -7,14 +7,14 @@ import com.ssafy.eggmoney.stock.dto.request.StockBuyRequest;
 import com.ssafy.eggmoney.stock.dto.request.StockSellRequest;
 import com.ssafy.eggmoney.stock.dto.request.StockUserRequest;
 import com.ssafy.eggmoney.stock.dto.response.StockUserResponse;
-import com.ssafy.eggmoney.stock.entity.Stock;
+import com.ssafy.eggmoney.stock.entity.StockPrice;
 import com.ssafy.eggmoney.stock.entity.StockItem;
 import com.ssafy.eggmoney.stock.entity.StockUser;
 import com.ssafy.eggmoney.stock.entity.TradeType;
 import com.ssafy.eggmoney.stock.repository.StockRepository;
 import com.ssafy.eggmoney.stock.repository.StockUserRepository;
 import com.ssafy.eggmoney.user.entity.User;
-import com.ssafy.eggmoney.user.service.UserService;
+import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +29,7 @@ import java.util.*;
 public class StockUserServiceImpl implements StockUserService {
     private final StockUserRepository stockUserRepository;
     private final AccountService accountService;
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final StockLogService stockLogService;
     private final StockRepository stockRepository;
     private final StockService stockService;
@@ -57,8 +57,10 @@ public class StockUserServiceImpl implements StockUserService {
             assets += analytics.getStock();
         }
 
-        BigDecimal investableRatio = BigDecimal.valueOf(userService.findInvestableRatio(userId));
-        int investablePrice = investableRatio
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다.")
+        );
+        int investablePrice = BigDecimal.valueOf(user.getStockRatio())
                 .divide(BigDecimal.valueOf(100))
                 .multiply(BigDecimal.valueOf(assets))
                 .setScale(0, RoundingMode.HALF_UP)
