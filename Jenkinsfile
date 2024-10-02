@@ -26,7 +26,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                checkout scm(
+                checkout scmGit(
                     branches: [[name: 'develop']],
                     userRemoteConfigs: [[ credentialsId: 'egg2', url: 'https://lab.ssafy.com/s11-fintech-finance-sub1/S11P21C204.git']]
                 )
