@@ -124,9 +124,9 @@
 import { ref, onMounted } from "vue"
 import axios from "axios"
 import { useVariableStore } from "@/stores/variable"
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/auth"
 
-const authStore = useAuthStore();
+const authStore = useAuthStore()
 
 const store = useVariableStore()
 store.setTitle("용돈 수정")
@@ -149,7 +149,7 @@ const selectedAllowanceDay = ref<number | null>(null)
 const allowanceAmount = ref(0)
 
 const showModal = ref(false)
-const isLoading = ref(true);
+const isLoading = ref(true)
 const daysOfWeek = ["월", "화", "수", "목", "금", "토", "일"]
 onMounted(async () => {
   // const response = {
@@ -159,41 +159,41 @@ onMounted(async () => {
   //   ],
   // }
   // const token = authStore.accessToken;
-  const token  ="_hY7xGfo9UfUokhsO-xd8eLTYiIxygDrAAAAAQopyWAAAAGSSv-H8ZCBbdpZdq0Z"
+  const token = "_hY7xGfo9UfUokhsO-xd8eLTYiIxygDrAAAAAQopyWAAAAGSSv-H8ZCBbdpZdq0Z"
   try {
-    const response = await axios.get('/api/v1/total/money/search',{
-      headers:{
-        Authorization:`Bearer ${token}`,
-        'Content-Type':'application/json',
-      }
-    });
+    const response = await axios.get("/api/v1/total/money/search", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
     console.log(response)
     children.value = response.data
     selectedChild.value = children.value[0]
     selectedPeriodUnit.value = selectedChild.value?.allowancePeriod ?? ""
     allowanceAmount.value = selectedChild.value?.price ?? 0
-    isLoading.value = false;
+    isLoading.value = false
   } catch (error) {
     console.error("자녀 정보를 불러오는 중 오류", error)
   }
 })
 const getTranslatedPeriod = (period: any) => {
-  if (period === 'WEEK') {
-    return '주';
-  } else if (period === 'MONTH') {
-    return '월';
+  if (period === "WEEK") {
+    return "주"
+  } else if (period === "MONTH") {
+    return "월"
   }
   console.log(period)
-  return period; // 기본값 그대로 반환
-};
+  return period // 기본값 그대로 반환
+}
 const translatePeriodForServer = (period: string) => {
-  if (period === '주') {
-    return 'WEEK';
-  } else if (period === '월') {
-    return 'MONTH';
+  if (period === "주") {
+    return "WEEK"
+  } else if (period === "월") {
+    return "MONTH"
   }
-  return period;
-};
+  return period
+}
 const updateSelectedChild = () => {
   const child = children.value.find((c) => c.id === selectedChildId.value)
   if (child) {
@@ -204,27 +204,31 @@ const updateSelectedChild = () => {
   }
 }
 const sumbitchanges = async () => {
-  const token  ="_hY7xGfo9UfUokhsO-xd8eLTYiIxygDrAAAAAQopyWAAAAGSSv-H8ZCBbdpZdq0Z"
+  const token = "_hY7xGfo9UfUokhsO-xd8eLTYiIxygDrAAAAAQopyWAAAAGSSv-H8ZCBbdpZdq0Z"
   if (selectedChild.value) {
     try {
-      const periodForServer = translatePeriodForServer(selectedPeriodUnit.value);
+      const periodForServer = translatePeriodForServer(selectedPeriodUnit.value)
       console.log(
         selectedChild.value.id,
         selectedPeriodUnit.value,
         selectedAllowanceDay.value,
         allowanceAmount.value
       )
-      const response = await axios.post('/api/v1/total/money/update', {
-      allowanceId: selectedChild.value.id,
-      allowancePeriod: periodForServer,
-      allowanceDay: selectedAllowanceDay.value,
-      price: allowanceAmount.value,
-      }
-      ,{
-      headers:{
-        Authorization:`Bearer ${token}`,
-        'Content-Type':'application/json',
-      }});
+      const response = await axios.post(
+        "/api/v1/total/money/update",
+        {
+          allowanceId: selectedChild.value.id,
+          allowancePeriod: periodForServer,
+          allowanceDay: selectedAllowanceDay.value,
+          price: allowanceAmount.value,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
       showModal.value = true
       setTimeout(() => {
         showModal.value = false
