@@ -215,7 +215,7 @@ const sumbitchanges = async () => {
         allowanceAmount.value
       )
       const response = await axios.post('/api/v1/total/money/update', {
-      userId: selectedChild.value.id,
+      allowanceId: selectedChild.value.id,
       allowancePeriod: periodForServer,
       allowanceDay: selectedAllowanceDay.value,
       price: allowanceAmount.value,
