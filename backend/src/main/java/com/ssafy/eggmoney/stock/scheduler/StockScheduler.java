@@ -2,7 +2,6 @@ package com.ssafy.eggmoney.stock.scheduler;
 
 import com.ssafy.eggmoney.stock.entity.Stock;
 import com.ssafy.eggmoney.stock.entity.StockPrice;
-import com.ssafy.eggmoney.stock.entity.StockItem;
 import com.ssafy.eggmoney.stock.repository.StockRepository;
 import com.ssafy.eggmoney.stock.service.StockService;
 import lombok.RequiredArgsConstructor;
@@ -11,12 +10,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Component
 @RequiredArgsConstructor
@@ -26,10 +23,6 @@ public class StockScheduler {
     private final StockRepository stockRepository;
     String[] stockCodes = {"0001", "1001", "4002", "4003", "4004", "4005", "4007",
             "4008", "4011", "4016", "4063", "4064", "4065"};
-    StockItem[] stockItems = {StockItem.KOSPI, StockItem.KOSDAQ, StockItem.AUTOMOTIVE,
-            StockItem.SEMICONDUCTOR, StockItem.HEALTHCARE, StockItem.BANKING, StockItem.ENERGY_CHEMICAL,
-            StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
-            StockItem.IT, StockItem.UTILITIES};
 
 //    @Scheduled(cron = "0 50 16 * * MON-FRI", zone = "Asia/Seoul")
     @Transactional
@@ -39,13 +32,17 @@ public class StockScheduler {
 
         try {
             String token = stockService.getAccessToken().getAccessToken();
+            List<Stock> stocks = stockRepository.findAll();
+
+            if(stocks.size() != stockCodes.length) {
+                throw new IllegalStateException("조회된 지수의 개수가 잘못됐습니다.");
+            }
 
             for(int i = 0; i < stockCodes.length; i++) {
                 int currentStockPrice = stockService.getCurrentStockPrice(token, stockCodes[i])
                         .setScale(0, RoundingMode.HALF_UP).intValue();
 
-                Stock stock = stockRepository.findByStockItem(stockItems[i])
-                        .orElseThrow(() -> new NoSuchElementException("Stock 엔티티 조회에 실패했습니다."));
+                Stock stock = stocks.get(i);
                 stock.changeCurrentPrice(currentStockPrice);
 
                 StockPrice stockPrice = new StockPrice(stock, currentStockPrice);
@@ -54,7 +51,7 @@ public class StockScheduler {
 
             stockService.saveCurrentStockPrices(stockPrices);
         } catch (Exception e) {
-            log.error("지수 현재 가격 api 요청 에러 발생: ", e);
+            log.error("현재 지수 업데이트 에러 발생: ", e);
         }
     }
 }

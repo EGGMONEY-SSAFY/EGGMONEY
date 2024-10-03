@@ -4,30 +4,30 @@
 //import com.ssafy.eggmoney.stock.dto.api.StockTokenDto;
 //import com.ssafy.eggmoney.stock.entity.Stock;
 //import com.ssafy.eggmoney.stock.entity.StockItem;
+//import com.ssafy.eggmoney.stock.entity.StockPrice;
+//import com.ssafy.eggmoney.stock.repository.StockPriceRepository;
 //import com.ssafy.eggmoney.stock.repository.StockRepository;
 //import org.assertj.core.api.Assertions;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.test.annotation.Rollback;
 //import org.springframework.transaction.annotation.Transactional;
 //
 //import java.io.IOException;
 //import java.math.BigDecimal;
+//import java.math.RoundingMode;
 //import java.nio.file.Files;
 //import java.nio.file.Path;
 //import java.nio.file.Paths;
 //import java.nio.file.attribute.BasicFileAttributes;
 //import java.time.Instant;
-//import java.time.LocalDate;
-//import java.time.LocalDateTime;
 //import java.time.temporal.ChronoUnit;
 //import java.util.ArrayList;
 //import java.util.List;
+//import java.util.NoSuchElementException;
 //
 //@SpringBootTest
 //@Transactional
-//@Rollback(value = false)
 //class StockServiceImplTest {
 //    @Autowired StockService stockService;
 //    @Autowired StockRepository stockRepository;
@@ -37,6 +37,8 @@
 //            StockItem.SEMICONDUCTOR, StockItem.HEALTHCARE, StockItem.BANKING, StockItem.ENERGY_CHEMICAL,
 //            StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
 //            StockItem.IT, StockItem.UTILITIES};
+//    @Autowired
+//    private StockPriceRepository stockPriceRepository;
 //
 //    @Test
 //    void getToken() {
@@ -53,8 +55,7 @@
 //        }
 //    }
 //
-//    @Test
-//    void getStockPrices() {
+//    String getTokenFile() {
 //        String token;
 //        Path path = Paths.get("C:/Temp/stock_token.txt");
 //        try {
@@ -71,52 +72,32 @@
 //            throw new RuntimeException(e);
 //        }
 //
-////        List<StockPriceDto> stockPrices = stockService.getStockPrices(token, "20240921", "0001");
+//        return token;
+//    }
 //
-////        Assertions.assertThat(stockPrices).hasSize(100);
+//    @Test
+//    void getStockPrices() {
+//        String token = getTokenFile();
+//        List<StockPriceDto> stockPrices = stockService.getStockPrices(token, "20240921", "0001");
+//
+//        Assertions.assertThat(stockPrices).hasSize(100);
 //    }
 //
 //    @Test
 //    public void saveStockPrices() {
-//        String token;
-//        Path path = Paths.get("C:/Temp/stock_token.txt");
-//        try {
-//            BasicFileAttributes basicFileAttributes = Files.readAttributes(path, BasicFileAttributes.class);
-//            Instant lastModifiedTime = basicFileAttributes.lastModifiedTime().toInstant();
-//            Instant now = Instant.now();
-//
-//            if(lastModifiedTime.isBefore(now.minus(24, ChronoUnit.HOURS))) {
-//                getToken();
-//            }
-//
-//            token = String.join("\n", Files.readAllLines(path));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+//        String token = getTokenFile();
 //
 //        for (int i = 0; i < stockCodes.length; i++) {
-////            List<StockPriceDto> stockPrices = stockService.getStockPrices(token, "20231130", stockCodes[i]);
-////            stockService.saveStockPrices(stockPrices, stockItems[i]);
+//            List<StockPriceDto> stockPrices = stockService.getStockPrices(token, "20231205", stockCodes[i]);
+//            Stock stock = stockRepository.findByStockItem(stockItems[i])
+//                    .orElseThrow(() -> new NoSuchElementException("주식 조회 실패"));
+//            stockService.saveStockPrices(stock, stockPrices);
 //        }
 //    }
 //
 //    @Test
 //    void getCurrentStockPrice() {
-//        String token;
-//        Path path = Paths.get("C:/Temp/stock_token.txt");
-//        try {
-//            BasicFileAttributes basicFileAttributes = Files.readAttributes(path, BasicFileAttributes.class);
-//            Instant lastModifiedTime = basicFileAttributes.lastModifiedTime().toInstant();
-//            Instant now = Instant.now();
-//
-//            if(lastModifiedTime.isBefore(now.minus(24, ChronoUnit.HOURS))) {
-//                getToken();
-//            }
-//
-//            token = String.join("\n", Files.readAllLines(path));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+//        String token = getTokenFile();
 //
 //        BigDecimal currentStockPrice = stockService.getCurrentStockPrice(token, stockCodes[0]);
 //
@@ -125,39 +106,30 @@
 //
 //    @Test
 //    void saveCurrentStockPrice() {
-//        String token;
-//        Path path = Paths.get("C:/Temp/stock_token.txt");
-//        try {
-//            BasicFileAttributes basicFileAttributes = Files.readAttributes(path, BasicFileAttributes.class);
-//            Instant lastModifiedTime = basicFileAttributes.lastModifiedTime().toInstant();
-//            Instant now = Instant.now();
+//        String token = getTokenFile();
+//        List<StockPrice> stockPrices = new ArrayList<>();
+//        long beforeCount = stockPriceRepository.count();
 //
-//            if(lastModifiedTime.isBefore(now.minus(24, ChronoUnit.HOURS))) {
-//                getToken();
-//            }
+//        List<Stock> stocks = stockRepository.findAll();
 //
-//            token = String.join("\n", Files.readAllLines(path));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
+//        if(stocks.size() != stockCodes.length) {
+//            throw new IllegalStateException("조회된 지수의 개수가 잘못됐습니다.");
 //        }
 //
-//        List<Stock> stocks = new ArrayList<>();
 //        for(int i = 0; i < stockCodes.length; i++) {
-//            BigDecimal currentStockPrice = stockService.getCurrentStockPrice(token, stockCodes[i]);
-//            Stock stock = new Stock(stockItems[i], currentStockPrice);
-//            stocks.add(stock);
+//            int currentStockPrice = stockService.getCurrentStockPrice(token, stockCodes[i])
+//                    .setScale(0, RoundingMode.HALF_UP).intValue();
+//
+//            Stock stock = stocks.get(i);
+//            stock.changeCurrentPrice(currentStockPrice);
+//
+//            StockPrice stockPrice = new StockPrice(stock, currentStockPrice);
+//            stockPrices.add(stockPrice);
 //        }
+//        stockService.saveCurrentStockPrices(stockPrices);
 //
-//        stockService.saveCurrentStockPrices(stocks);
+//        long count = stockPriceRepository.count();
+//
+//        Assertions.assertThat(count).isEqualTo(beforeCount + stockCodes.length);
 //    }
-//
-//    @Test
-//    void getLatestDateStocks() {
-//        List<StockItem> stockItems = stockRepository.findStockItems();
-//        List<Integer> top2LatestPrices = stockRepository.findTop2LatestPrices(StockItem.KOSPI);
-//
-//        Assertions.assertThat(stockItems).hasSize(13);
-//        Assertions.assertThat(top2LatestPrices).hasSize(2);
-//    }
-//
 //}
