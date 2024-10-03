@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface StockService {
-    StockItem[] getStockItems();
     StockTokenDto getAccessToken();
     List<StockPriceDto> getStockPrices(String token, String inputDate, String stockCode);
     void saveStockPrices(Stock stock, List<StockPriceDto> stockPrices);
