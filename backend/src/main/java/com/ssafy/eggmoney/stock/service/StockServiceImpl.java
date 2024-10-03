@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -145,7 +147,16 @@ public class StockServiceImpl implements StockService {
     }
 
     @Override
-    public List<StockPriceForYearResponse> findStockPricesForYear(StockItem stockItem) {
-        return stockRepository.findStockPricesForYear(stockItem);
+    public List<StockPriceForYearResponse> findStockPricesForYear(Long stockId) {
+        LocalDateTime yearAgo = LocalDate.now().atStartOfDay().minusYears(1);
+        List<StockPrice> stockPrices = stockPriceRepository.findByStockIdAndDate(stockId, yearAgo);
+
+        if(stockPrices.isEmpty()) {
+            throw new NoSuchElementException("1년 치 지수 정보를 찾을 수 없습니다.");
+        }
+
+        return stockPrices.stream().map(stockPrice -> new StockPriceForYearResponse(
+                        stockPrice.getCreatedAt(), stockPrice.getPrice()
+                )).collect(Collectors.toList());
     }
 }

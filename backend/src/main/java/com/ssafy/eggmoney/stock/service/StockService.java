@@ -19,5 +19,5 @@ public interface StockService {
     BigDecimal getCurrentStockPrice(String token, String stockCode);
     void saveCurrentStockPrices(List<StockPrice> stockPrices);
     List<StockPriceResponse> findLatestStockPrices();
-    List<StockPriceForYearResponse> findStockPricesForYear(StockItem stockItem);
+    List<StockPriceForYearResponse> findStockPricesForYear(Long stockId);
 }
