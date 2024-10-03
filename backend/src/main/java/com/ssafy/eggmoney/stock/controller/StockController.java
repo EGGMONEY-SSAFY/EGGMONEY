@@ -2,7 +2,6 @@ package com.ssafy.eggmoney.stock.controller;
 
 import com.ssafy.eggmoney.stock.dto.response.StockPriceForYearResponse;
 import com.ssafy.eggmoney.stock.dto.response.StockPriceResponse;
-import com.ssafy.eggmoney.stock.entity.StockItem;
 import com.ssafy.eggmoney.stock.service.StockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,8 +21,8 @@ public class StockController {
         return new ResponseEntity<>(stockService.findLatestStockPrices(), HttpStatus.OK);
     }
 
-    @GetMapping("/stock/price/year")
-    public ResponseEntity<List<StockPriceForYearResponse>> getStockPricesForYear(@RequestParam StockItem stockItem) {
-        return new ResponseEntity<>(stockService.findStockPricesForYear(stockItem), HttpStatus.OK);
+    @GetMapping("/stock/{stockId}/price/year")
+    public ResponseEntity<List<StockPriceForYearResponse>> getStockPricesForYear(@PathVariable Long stockId) {
+        return new ResponseEntity<>(stockService.findStockPricesForYear(stockId), HttpStatus.OK);
     }
 }
