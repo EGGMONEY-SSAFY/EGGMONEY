@@ -8,15 +8,15 @@ import java.time.LocalDateTime;
 
 @Getter
 public class StockLogResponse {
-    private StockItem stockItem;
+    private Long stockId;
     private LocalDateTime tradeDate;
     private TradeType tradeType;
     private int price;
     private int amount;
     private int totalPrice;
 
-    public StockLogResponse(StockItem stockItem, LocalDateTime tradeDate, TradeType tradeType, int price, int amount) {
-        this.stockItem = stockItem;
+    public StockLogResponse(Long stockId, LocalDateTime tradeDate, TradeType tradeType, int price, int amount) {
+        this.stockId = stockId;
         this.tradeDate = tradeDate;
         this.tradeType = tradeType;
         this.price = price;
