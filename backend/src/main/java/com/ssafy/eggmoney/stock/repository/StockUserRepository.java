@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface StockUserRepository extends JpaRepository<StockUser, Long> {
     @EntityGraph(attributePaths = {"stock"})
-    List<StockUser> findJoinStockByUserId(Long userId);
+    List<StockUser> findJoinStockByUserIdOrderByStockId(Long userId);
 
     @EntityGraph(attributePaths = {"stock"})
     Optional<StockUser> findJoinStockByUserIdAndStockId(Long userId, Long stockId);

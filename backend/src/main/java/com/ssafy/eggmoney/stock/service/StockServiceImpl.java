@@ -29,24 +29,12 @@ import java.util.stream.Collectors;
 public class StockServiceImpl implements StockService {
     private final StockApiConfig apiConfig;
     private final WebClient webClient;
-    private final StockRepository stockRepository;
     private final StockPriceRepository stockPriceRepository;
 
-    private StockItem[] stockItems = {StockItem.KOSPI, StockItem.KOSDAQ, StockItem.AUTOMOTIVE,
-            StockItem.SEMICONDUCTOR, StockItem.HEALTHCARE, StockItem.BANKING, StockItem.ENERGY_CHEMICAL,
-            StockItem.STEEL, StockItem.CONSTRUCTION, StockItem.TRANSPORTATION, StockItem.MEDIA_ENTERTAINMENT,
-            StockItem.IT, StockItem.UTILITIES};
-
-    @Override
-    public StockItem[] getStockItems() {
-        return stockItems;
-    }
-
     public StockServiceImpl(StockApiConfig stockApiConfig, WebClient.Builder webClientBuilder,
-                            StockRepository stockRepository, StockPriceRepository stockPriceRepository) {
+                            StockPriceRepository stockPriceRepository) {
         this.apiConfig = stockApiConfig;
         this.webClient = webClientBuilder.baseUrl("https://openapi.koreainvestment.com:9443").build();
-        this.stockRepository = stockRepository;
         this.stockPriceRepository = stockPriceRepository;
     }
 

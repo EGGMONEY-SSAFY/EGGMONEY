@@ -96,7 +96,7 @@ public class AccountService {
     }
 
     public Integer findUserTotalStockPrice(Long userId) {
-        List<StockUser> stockUsers = stockUserRepository.findJoinStockByUserId(userId);
+        List<StockUser> stockUsers = stockUserRepository.findJoinStockByUserIdOrderByStockId(userId);
 
         if(stockUsers == null || stockUsers.isEmpty()) {
             return null;
