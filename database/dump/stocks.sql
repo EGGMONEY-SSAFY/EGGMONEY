@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `stocks` (
   `current_price` int(11) NOT NULL,
   `stock_item` enum('AUTOMOTIVE','BANKING','CONSTRUCTION','ENERGY_CHEMICAL','HEALTHCARE','IT','KOSDAQ','KOSPI','MEDIA_ENTERTAINMENT','SEMICONDUCTOR','STEEL','TRANSPORTATION','UTILITIES') NOT NULL,
   PRIMARY KEY (`stock_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- 테이블 데이터 egg_money.stocks:~13 rows (대략적) 내보내기
 INSERT INTO `stocks` (`stock_id`, `created_at`, `updated_at`, `current_price`, `stock_item`) VALUES
