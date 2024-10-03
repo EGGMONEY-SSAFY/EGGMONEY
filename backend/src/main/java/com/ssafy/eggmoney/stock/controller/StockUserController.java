@@ -23,7 +23,7 @@ public class StockUserController {
     private final StockLogService stockLogService;
 
     @GetMapping("/stock/user/{userId}/available-balance")
-    public ResponseEntity<Map<String, Object>> getInvestableRatio(@PathVariable Long userId) {
+    public ResponseEntity<Map<String, Object>> getInvestablePrice(@PathVariable Long userId) {
         return new ResponseEntity<>(stockUserService.findInvestablePrice(userId), HttpStatus.OK);
     }
 

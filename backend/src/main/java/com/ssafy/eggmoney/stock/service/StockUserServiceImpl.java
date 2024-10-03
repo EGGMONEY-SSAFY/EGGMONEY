@@ -29,11 +29,15 @@ public class StockUserServiceImpl implements StockUserService {
     private final UserRepository userRepository;
     private final StockLogService stockLogService;
     private final StockRepository stockRepository;
+    private final StockPendingService stockPendingService;
 
     @Transactional
     @Override
     public Map<String, Object> findInvestablePrice(Long userId) {
         Map<String, Object> response = new HashMap<>();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다.")
+                );
 
         GetAnalyticsResponseDto analytics = accountService.getAnalytics(userId);
         int assets = 0;
@@ -53,16 +57,15 @@ public class StockUserServiceImpl implements StockUserService {
             assets += analytics.getStock();
         }
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다.")
-        );
         int investablePrice = BigDecimal.valueOf(user.getStockRatio())
                 .divide(BigDecimal.valueOf(100))
                 .multiply(BigDecimal.valueOf(assets))
                 .setScale(0, RoundingMode.HALF_UP)
                 .intValue();
 
-        investablePrice -= accountService.findUserTotalStockPrice(userId);
+        int totalPendingPrice = stockPendingService.findPendingBuyTotalPrice(user.getId());
+
+        investablePrice -= accountService.findUserTotalStockPrice(userId) + totalPendingPrice;
 
         response.put("investablePrice", investablePrice);
         response.put("balance", analytics.getMainAccountBalance());
