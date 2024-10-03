@@ -28,7 +28,7 @@ public class StockUserController {
     }
 
     @GetMapping("/stock/user/{userId}/portfolio")
-    public ResponseEntity<Map<Object, Integer>> getUserStocks(@PathVariable Long userId) {
+    public ResponseEntity<Map<String, Object>> getUserStocks(@PathVariable Long userId) {
         return new ResponseEntity<>(stockUserService.findUserStocks(userId), HttpStatus.OK);
     }
 

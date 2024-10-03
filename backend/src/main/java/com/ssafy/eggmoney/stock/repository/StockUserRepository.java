@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StockUserRepository extends JpaRepository<StockUser, Long> {
-    Optional<StockUser> findByStockIdAndUserId(Long stockId, Long userId);
-    List<StockUser> findByUserId(Long userId);
+    @EntityGraph(attributePaths = {"stock"})
+    List<StockUser> findJoinStockByUserIdOrderByStockId(Long userId);
 
     @EntityGraph(attributePaths = {"stock"})
-    List<StockUser> findJoinByUserId(Long userId);
+    Optional<StockUser> findJoinStockByUserIdAndStockId(Long userId, Long stockId);
+
+    Optional<StockUser> findByUserIdAndStockId(Long userId, Long stockId);
 }

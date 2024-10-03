@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,19 +25,16 @@ public class StockLogServiceImpl implements StockLogService {
     }
 
     public List<StockLogResponse> findStockLogByUserId(Long userId) {
-        List<StockLog> stockLogs = stockLogRepository.findStockLogByUserId(userId);
+        List<StockLog> stockLogs = stockLogRepository.findByUserId(userId);
 
-        if(stockLogs.isEmpty()) {
-            throw new NoSuchElementException("주식 거래 내역이 조회되지 않습니다.");
+        if (stockLogs.isEmpty()) {
+            throw new NoSuchElementException("주식 거래 내역을 찾을 수 없습니다.");
         }
 
-         return stockLogs.stream()
-                 .map(stockLog -> new StockLogResponse(
-                         stockLog.getStockUser().getStock().getStockItem(),
-                         stockLog.getCreatedAt(),
-                         stockLog.getTradeType(),
-                         stockLog.getTradePrice(),
-                         stockLog.getTradeAmount())
-        ).toList();
+        return stockLogs.stream()
+                .map(stockLog -> new StockLogResponse(
+                        stockLog.getStockUser().getStock().getId(), stockLog.getCreatedAt(),
+                        stockLog.getTradeType(), stockLog.getTradePrice(), stockLog.getTradeAmount()
+                )).collect(Collectors.toList());
     }
 }

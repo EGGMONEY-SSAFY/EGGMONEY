@@ -96,15 +96,15 @@ public class AccountService {
     }
 
     public Integer findUserTotalStockPrice(Long userId) {
-        List<StockUser> stockUsers = stockUserRepository.findByUserId(userId);
+        List<StockUser> stockUsers = stockUserRepository.findJoinStockByUserIdOrderByStockId(userId);
 
-        if(stockUsers.isEmpty()) {
+        if(stockUsers == null || stockUsers.isEmpty()) {
             return null;
         }
 
         int totalStockPrice = 0;
         for(StockUser stockUser : stockUsers) {
-            totalStockPrice += stockUser.getAmount() * stockUser.getBuyAverage();
+            totalStockPrice += stockUser.getAmount() * stockUser.getStock().getCurrentPrice();
         }
 
         return totalStockPrice;

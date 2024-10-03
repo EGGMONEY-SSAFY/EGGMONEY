@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface StockLogRepository extends JpaRepository<StockLog, Long> {
-    @Query("select sl from StockLog sl left join fetch sl.stockUser su left join fetch su.stock s " +
+    @Query("select sl from StockLog sl left join fetch sl.stockUser su " +
             "where su.user.id = :userId order by sl.createdAt desc")
-    List<StockLog> findStockLogByUserId(@Param("userId") Long userId);
+    List<StockLog> findByUserId(@Param("userId") Long userId);
 }

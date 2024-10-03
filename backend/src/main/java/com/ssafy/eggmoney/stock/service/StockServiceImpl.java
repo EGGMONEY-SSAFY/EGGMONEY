@@ -8,27 +8,34 @@ import com.ssafy.eggmoney.stock.dto.api.StockTokenDto;
 import com.ssafy.eggmoney.stock.dto.response.StockPriceForYearResponse;
 import com.ssafy.eggmoney.stock.dto.response.StockPriceResponse;
 import com.ssafy.eggmoney.stock.entity.Stock;
+import com.ssafy.eggmoney.stock.entity.StockPrice;
 import com.ssafy.eggmoney.stock.entity.StockItem;
+import com.ssafy.eggmoney.stock.repository.StockPriceRepository;
 import com.ssafy.eggmoney.stock.repository.StockRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
 public class StockServiceImpl implements StockService {
     private final StockApiConfig apiConfig;
     private final WebClient webClient;
-    private final StockRepository stockRepository;
+    private final StockPriceRepository stockPriceRepository;
 
-    public StockServiceImpl(StockApiConfig stockApiConfig, WebClient.Builder webClientBuilder, StockRepository stockRepository) {
+    public StockServiceImpl(StockApiConfig stockApiConfig, WebClient.Builder webClientBuilder,
+                            StockPriceRepository stockPriceRepository) {
         this.apiConfig = stockApiConfig;
         this.webClient = webClientBuilder.baseUrl("https://openapi.koreainvestment.com:9443").build();
-        this.stockRepository = stockRepository;
+        this.stockPriceRepository = stockPriceRepository;
     }
 
     @Override
@@ -45,6 +52,7 @@ public class StockServiceImpl implements StockService {
                 .block();
     }
 
+    @Override
     public List<StockPriceDto> getStockPrices(String token, String inputDate, String stockCode) {
         return this.webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -69,13 +77,14 @@ public class StockServiceImpl implements StockService {
     }
 
     @Transactional
-    public void saveStockPrices(List<StockPriceDto> stockPrices, StockItem stockItem) {
-        List<Stock> stocks = new ArrayList<>();
-        stockPrices.forEach(stockPrice -> {
-//            Stock stock = new Stock(stockItem, stockPrice.getBstp_nmix_prpr(), stockPrice.getStck_bsop_date());
-//            stocks.add(stock);
-        });
-        stockRepository.saveAll(stocks);
+    @Override
+    public void saveStockPrices(Stock stock, List<StockPriceDto> stockPriceDtos) {
+//        List<StockPrice> stockPrices = new ArrayList<>();
+//        stockPriceDtos.forEach(stockPriceDto -> {
+//            StockPrice stockprice = new StockPrice(stock, stockPriceDto.getBstp_nmix_prpr(), stockPriceDto.getStck_bsop_date());
+//            stockPrices.add(stockprice);
+//        });
+//        stockPriceRepository.saveAll(stockPrices);
     }
 
     @Override
@@ -101,38 +110,41 @@ public class StockServiceImpl implements StockService {
     }
 
     @Transactional
-    public void saveCurrentStockPrices(List<Stock> stocks) {
-        stockRepository.saveAll(stocks);
+    @Override
+    public void saveCurrentStockPrices(List<StockPrice> stockPrices) {
+        stockPriceRepository.saveAll(stockPrices);
     }
 
     @Override
     public List<StockPriceResponse> findLatestStockPrices() {
-        List<StockPriceResponse> StockPrices = new ArrayList<>();
-        List<StockItem> stockItems = stockRepository.findStockItems();
+        PageRequest pageReq = PageRequest.of(1, 13, Sort.by(Sort.Direction.DESC, "updatedAt"));
+        List<StockPrice> stockPrices = stockPriceRepository.findJoinStock(pageReq);
 
-        for (StockItem stockItem : stockItems) {
-            List<Integer> prices = stockRepository.findTop2LatestPrices(stockItem);
-            StockPrices.add(new StockPriceResponse(stockItem, prices.get(0), prices.get(1)));
+        if(stockPrices.isEmpty()) {
+            throw new NoSuchElementException("지수 가격들을 찾을 수 없습니다.");
         }
 
-        return StockPrices;
+        List<StockPriceResponse> stockPriceResponses = stockPrices.stream().map(stockPrice -> new StockPriceResponse(
+                stockPrice.getStock().getId(), stockPrice.getStock().getStockItem(),
+                stockPrice.getStock().getUpdatedAt(), stockPrice.getStock().getCurrentPrice(), stockPrice.getPrice()
+        )).collect(Collectors.toList());
+
+        stockPriceResponses.sort(Comparator.comparing(StockPriceResponse::getStockId));
+
+        return stockPriceResponses;
     }
 
     @Override
-    public LocalDateTime findLatestDate() {
-        return stockRepository.findLatestDate();
-    }
+    public List<StockPriceForYearResponse> findStockPricesForYear(Long stockId) {
+        LocalDateTime yearAgo = LocalDate.now().atStartOfDay().minusYears(1);
+        List<StockPrice> stockPrices = stockPriceRepository.findByStockIdAndDate(stockId, yearAgo);
 
-    @Override
-    public List<StockPriceForYearResponse> findStockPricesForYear(StockItem stockItem) {
-        return stockRepository.findStockPricesForYear(stockItem);
-    }
+        if(stockPrices.isEmpty()) {
+            throw new NoSuchElementException("1년 치 지수 정보를 찾을 수 없습니다.");
+        }
 
-    @Override
-    public Stock findByStockItemAndDate(StockItem stockItem) {
-        LocalDateTime latestDate = findLatestDate();
-        return stockRepository.findByStockItemAndCreatedAt(stockItem, latestDate)
-                .orElseThrow(() -> new NoSuchElementException("해당 지수가 조회 되지 않습니다."));
+        return stockPrices.stream().map(stockPrice -> new StockPriceForYearResponse(
+                        stockPrice.getCreatedAt(), stockPrice.getPrice()
+                )).collect(Collectors.toList());
     }
-
 }
