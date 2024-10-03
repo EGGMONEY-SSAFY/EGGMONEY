@@ -7,23 +7,18 @@ import com.ssafy.eggmoney.stock.dto.request.StockBuyRequest;
 import com.ssafy.eggmoney.stock.dto.request.StockSellRequest;
 import com.ssafy.eggmoney.stock.dto.request.StockUserRequest;
 import com.ssafy.eggmoney.stock.dto.response.StockUserResponse;
-import com.ssafy.eggmoney.stock.entity.Stock;
-import com.ssafy.eggmoney.stock.entity.StockUser;
-import com.ssafy.eggmoney.stock.entity.TradeType;
+import com.ssafy.eggmoney.stock.entity.*;
 import com.ssafy.eggmoney.stock.repository.StockRepository;
 import com.ssafy.eggmoney.stock.repository.StockUserRepository;
 import com.ssafy.eggmoney.user.entity.User;
-import com.ssafy.eggmoney.user.service.UserService;
+import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,8 +26,7 @@ import java.util.NoSuchElementException;
 public class StockUserServiceImpl implements StockUserService {
     private final StockUserRepository stockUserRepository;
     private final AccountService accountService;
-    private final StockService stockService;
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final StockLogService stockLogService;
     private final StockRepository stockRepository;
 
@@ -59,8 +53,10 @@ public class StockUserServiceImpl implements StockUserService {
             assets += analytics.getStock();
         }
 
-        BigDecimal investableRatio = BigDecimal.valueOf(userService.findInvestableRatio(userId));
-        int investablePrice = investableRatio
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다.")
+        );
+        int investablePrice = BigDecimal.valueOf(user.getStockRatio())
                 .divide(BigDecimal.valueOf(100))
                 .multiply(BigDecimal.valueOf(assets))
                 .setScale(0, RoundingMode.HALF_UP)
@@ -74,90 +70,93 @@ public class StockUserServiceImpl implements StockUserService {
     }
 
     @Override
-    public Map<Object, Integer> findUserStocks(Long userId) {
+    public Map<String, Object> findUserStocks(Long userId) {
+        Map<String, Object> response = new HashMap<>();
         int totalPrice = 0;
-        Map<Object, Integer> stockPrices = new HashMap<>();
-        List<StockUser> stockUsers = stockUserRepository.findJoinByUserId(userId);
+        int[] prices = new int[14];
 
-        for(StockUser stockUser : stockUsers) {
-            if(stockUser.getAmount() == 0) {
-                continue;
+        List<StockUser> stockUsers = stockUserRepository.findJoinStockByUserIdOrderByStockId(userId);
+        long stockCount = stockRepository.count();
+
+        for(int i = 1; i <= stockCount; i++) {
+            for(StockUser stockUser : stockUsers) {
+                if(i == stockUser.getStock().getId()) {
+                    int price = stockUser.getStock().getCurrentPrice() * stockUser.getAmount();
+                    prices[i] = price;
+                    totalPrice += price;
+                }
             }
-
-            Integer price = stockRepository.findTop2LatestPrices(stockUser.getStock().getStockItem()).get(0);
-            int sumPrice = stockUser.getAmount() * price;
-            totalPrice += sumPrice;
-            stockPrices.put(stockUser.getStock().getStockItem(), sumPrice);
         }
 
-        if(totalPrice == 0) {
-            throw new NoSuchElementException("보유한 주식이 조회되지 않습니다.");
-        }
+        response.put("prices", prices);
+        response.put("totalPrice", totalPrice);
 
-        stockPrices.put("totalPrice", totalPrice);
-        return stockPrices;
+        return response;
     }
 
     @Transactional
     @Override
     public StockUserResponse buyStock(StockBuyRequest stockBuyReq) {
-        Stock stock = stockService.findByStockItemAndDate(stockBuyReq.getStockItem());
-        User user = userService.findUserEntity(stockBuyReq.getUserId());
+        Stock stock = stockRepository.findById(stockBuyReq.getStockId())
+                .orElseThrow(() -> new NoSuchElementException("해당 주식을 찾을 수 없습니다."));
+        User user = userRepository.findById(stockBuyReq.getUserId())
+                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."));
 
-        accountService.updateAccount(AccountLogType.STOCK, stockBuyReq.getUserId(),
-                stockBuyReq.getAmount() * stock.getStockPrice() * -1);
+        accountService.updateAccount(
+                AccountLogType.STOCK, stockBuyReq.getUserId(),
+                stockBuyReq.getAmount() * stock.getCurrentPrice() * -1
+        );
 
-        StockUser stockUser = stockUserRepository.findByStockIdAndUserId(stock.getId(), user.getId())
-                .map(existingStockUser -> {
-                    existingStockUser.buyStock(stock.getStockPrice(), stockBuyReq.getAmount());
-                    return existingStockUser;
-                })
-                .orElseGet(() -> {
-                    StockUser newStockUser = new StockUser(user, stock, stock.getStockPrice(), stockBuyReq.getAmount());
+        StockUser stockUser = stockUserRepository.findByUserIdAndStockId(
+                stockBuyReq.getUserId(), stockBuyReq.getStockId()
+                ).map(stockUserExist -> {
+                    stockUserExist.buyStock(stock.getCurrentPrice(), stockBuyReq.getAmount());
+                    return stockUserExist;
+                }).orElseGet(() -> {
+                    StockUser newStockUser = new StockUser(user, stock, stock.getCurrentPrice(), stockBuyReq.getAmount());
                     stockUserRepository.save(newStockUser);
                     return newStockUser;
                 });
 
-        stockLogService.saveStockLog(stockUser, TradeType.BUY, stock.getStockPrice(), stockBuyReq.getAmount());
+        stockLogService.saveStockLog(stockUser, TradeType.BUY, stock.getCurrentPrice(), stockBuyReq.getAmount());
 
-        return new StockUserResponse(stockUser.getBuyAverage(), stockUser.getAmount(), stock.getStockPrice());
+        return new StockUserResponse(stockUser.getBuyAverage(), stockUser.getAmount(), stock.getCurrentPrice());
     }
 
     @Transactional
     @Override
     public StockUserResponse sellStock(StockSellRequest stockSellReq) {
-        Stock stock = stockService.findByStockItemAndDate(stockSellReq.getStockItem());
-        User user = userService.findUserEntity(stockSellReq.getUserId());
+        StockUser stockUser = stockUserRepository.findJoinStockByUserIdAndStockId(
+                stockSellReq.getUserId(), stockSellReq.getStockId()
+                ).map(stockUserExist -> {
+                    stockUserExist.sellStock(stockSellReq.getAmount());
+                    return stockUserExist;
+                }).orElseThrow(() -> new IllegalArgumentException("팔수 있는 주식이 존재하지 않습니다."));
 
-        StockUser stockUser = stockUserRepository.findByStockIdAndUserId(stock.getId(), user.getId())
-                .map(existingStockUser -> {
-                    existingStockUser.sellStock(stockSellReq.getAmount());
-                    return existingStockUser;
-                })
-                .orElseThrow(() -> new IllegalArgumentException("팔수 있는 주식이 존재하지 않습니다."));
+        stockLogService.saveStockLog(
+                stockUser, TradeType.SELL, stockUser.getStock().getCurrentPrice(), stockSellReq.getAmount()
+        );
 
-        stockLogService.saveStockLog(stockUser, TradeType.SELL, stock.getStockPrice(), stockSellReq.getAmount());
-
-        accountService.updateAccount(AccountLogType.STOCK, stockSellReq.getUserId(),
-                stockSellReq.getAmount() * stock.getStockPrice());
+        accountService.updateAccount(
+                AccountLogType.STOCK, stockSellReq.getUserId(),
+                stockSellReq.getAmount() * stockUser.getStock().getCurrentPrice()
+        );
 
         if (stockUser.getAmount() == 0) {
             return new StockUserResponse();
         } else {
-            return new StockUserResponse(stockUser.getBuyAverage(), stockUser.getAmount(), stock.getStockPrice());
+            return new StockUserResponse(
+                    stockUser.getBuyAverage(), stockUser.getAmount(), stockUser.getStock().getCurrentPrice()
+            );
         }
     }
 
     @Override
     public StockUserResponse findStockUserInfo(StockUserRequest stockUserReq) {
-        Stock stock = stockService.findByStockItemAndDate(stockUserReq.getStockItem());
-        StockUser stockUser = stockUserRepository.findByStockIdAndUserId(stock.getId(), stockUserReq.getUserId())
-                .orElseGet(() -> new StockUser(null, null, 0, 0));
-
-        if (stockUser.getAmount() == 0) {
-            return new StockUserResponse();
-        } else {
-            return new StockUserResponse(stockUser.getBuyAverage(), stockUser.getAmount(), stock.getStockPrice());
-        }
+        return stockUserRepository.findJoinStockByUserIdAndStockId(
+                stockUserReq.getUserId(), stockUserReq.getStockId()
+                ).map(stockUser -> new StockUserResponse(
+                        stockUser.getBuyAverage(), stockUser.getAmount(), stockUser.getStock().getCurrentPrice()
+                )).orElseGet(StockUserResponse::new);
     }
 }
