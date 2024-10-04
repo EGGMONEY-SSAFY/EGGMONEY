@@ -1,5 +1,6 @@
 package com.ssafy.eggmoney.stock.entity;
 
+import com.ssafy.eggmoney.common.entity.BaseTime;
 import com.ssafy.eggmoney.user.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Table(name = "stock_pendings")
 @NoArgsConstructor(access = PROTECTED)
-public class StockPending {
+public class StockPending extends BaseTime {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "stock_pending_id")

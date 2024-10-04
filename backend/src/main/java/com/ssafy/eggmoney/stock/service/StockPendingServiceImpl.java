@@ -1,6 +1,7 @@
 package com.ssafy.eggmoney.stock.service;
 
-import com.ssafy.eggmoney.stock.dto.request.PendingRequest;
+import com.ssafy.eggmoney.stock.dto.request.PendingTradeRequest;
+import com.ssafy.eggmoney.stock.dto.response.StockPendingResponse;
 import com.ssafy.eggmoney.stock.entity.Stock;
 import com.ssafy.eggmoney.stock.entity.StockPending;
 import com.ssafy.eggmoney.stock.entity.TradeType;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,14 +27,14 @@ public class StockPendingServiceImpl implements StockPendingService {
 
     @Transactional
     @Override
-    public void saveStockPending(PendingRequest pendingReq, TradeType tradeType, Long userId) {
+    public void saveStockPending(PendingTradeRequest pendingTradeReq, TradeType tradeType, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."));
-        Stock stock = stockRepository.findById(pendingReq.getStockId())
+        Stock stock = stockRepository.findById(pendingTradeReq.getStockId())
                 .orElseThrow(() -> new NoSuchElementException("해당 주식을 찾을 수 없습니다."));
 
         stockPendingRepository.save(new StockPending(
-                user, stock, tradeType, pendingReq.getPendingPrice(), pendingReq.getPendingAmount())
+                user, stock, tradeType, pendingTradeReq.getPendingPrice(), pendingTradeReq.getPendingAmount())
         );
     }
 
@@ -58,5 +60,19 @@ public class StockPendingServiceImpl implements StockPendingService {
         }
 
         return totalPendigAmount;
+    }
+
+    public List<StockPendingResponse> findPendingLog(Long userId) {
+        List<StockPending> stockPendings = stockPendingRepository.findByUserId(userId);
+
+        if(stockPendings.isEmpty()) {
+            throw new NoSuchElementException("지정 거래 예약을 찾을 수 없습니다.");
+        }
+
+        return stockPendings.stream().map(stockPending ->
+            new StockPendingResponse(
+                    stockPending.getStock().getId(), stockPending.getId(), stockPending.getTradeType(),
+                    stockPending.getPendingPrice(), stockPending.getPendingAmount(), stockPending.getUpdatedAt()
+            )).collect(Collectors.toList());
     }
 }
