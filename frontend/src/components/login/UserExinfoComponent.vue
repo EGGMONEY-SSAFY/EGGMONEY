@@ -61,7 +61,7 @@ const submitExinfo = async () => {
     alert("역할을 선택해주세요")
     return
   }
-  const token = authStore.accessToken;
+  const token = authStore.accessToken
   //const token = "HpAwXfMaEpHRVBLX6CvO2-LUlcUMjy1EAAAAAQorDR4AAAGSPfkK3pCBbdpZdq0Z"
   try {
     const response = await axios.post(

@@ -84,7 +84,10 @@ onMounted(async () => {
       <div class="flex justify-center items-center mt-16 mb-16">
         <img src="@/assets/asset/link.png" alt="link" class="w-32" />
       </div>
-      <button class="mx-10 w-3/4 px-3 py-2 bg-orange-500 text-white font-semibold rounded-full mt-8 hover:bg-orange-600" @click="goFamilyTab">
+      <button
+        class="mx-10 w-3/4 px-3 py-2 bg-orange-500 text-white font-semibold rounded-full mt-8 hover:bg-orange-600"
+        @click="goFamilyTab"
+      >
         등록하러가기
       </button>
     </div>
