@@ -129,12 +129,18 @@ public class StockUserServiceImpl implements StockUserService {
     @Transactional
     @Override
     public StockUserResponse sellStock(StockSellRequest stockSellReq) {
+        int pendingSellAmount = stockPendingService.findPendingSellTotalAmount(stockSellReq.getUserId());
+
         StockUser stockUser = stockUserRepository.findJoinStockByUserIdAndStockId(
                 stockSellReq.getUserId(), stockSellReq.getStockId()
                 ).map(stockUserExist -> {
                     stockUserExist.sellStock(stockSellReq.getAmount());
                     return stockUserExist;
-                }).orElseThrow(() -> new IllegalArgumentException("팔수 있는 주식이 존재하지 않습니다."));
+                }).orElseThrow(() -> new IllegalArgumentException("팔 수 있는 주식이 존재하지 않습니다."));
+
+        if(stockUser.getAmount() - pendingSellAmount - stockSellReq.getAmount() < 0) {
+            throw new IllegalArgumentException("판매하는 주식이 보유 주식에서 지정 매수를 뺀 수량을 초과하실 수 없습니다.");
+        }
 
         stockLogService.saveStockLog(
                 stockUser, TradeType.SELL, stockUser.getStock().getCurrentPrice(), stockSellReq.getAmount()

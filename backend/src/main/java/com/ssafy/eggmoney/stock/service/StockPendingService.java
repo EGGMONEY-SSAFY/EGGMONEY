@@ -6,4 +6,5 @@ import com.ssafy.eggmoney.stock.entity.TradeType;
 public interface StockPendingService {
     void saveStockPending(PendingRequest pendingReq, TradeType type);
     int findPendingBuyTotalPrice(Long userId);
+    int findPendingSellTotalAmount(Long userId);
 }

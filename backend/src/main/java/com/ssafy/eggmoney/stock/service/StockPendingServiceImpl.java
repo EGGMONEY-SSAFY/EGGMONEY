@@ -47,4 +47,16 @@ public class StockPendingServiceImpl implements StockPendingService {
 
         return totalPendigPrice;
     }
+
+    @Override
+    public int findPendingSellTotalAmount(Long userId) {
+        List<StockPending> stockPendings = stockPendingRepository.findByUserIdAndTradeType(userId, TradeType.SELL);
+
+        int totalPendigAmount = 0;
+        for(StockPending stockPending : stockPendings) {
+            totalPendigAmount += stockPending.getPendingAmount();
+        }
+
+        return totalPendigAmount;
+    }
 }
