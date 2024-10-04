@@ -73,4 +73,12 @@ public class User extends BaseTime {
         if(simplePwd != null) this.simplePwd = simplePwd;
         if(role != null) this.role = role;
     }
+
+    public void changeStockRatio(int ratio){
+        if(ratio >= 0 && ratio <= 100) {
+            this.stockRatio = ratio;
+        } else {
+            throw new IllegalArgumentException("주식 비율은 0 ~ 100로 설정 가능합니다.");
+        }
+    }
 }
