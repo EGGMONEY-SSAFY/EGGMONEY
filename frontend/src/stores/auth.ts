@@ -6,7 +6,10 @@ import axios from "axios"
 async function saveTokensToIndexedDB(accessToken: string, refreshToken: string) {
   const db = await openDB("authDB", 1, {
     upgrade(db) {
-      db.createObjectStore("tokenStore")
+      // tokenStore가 존재하지 않으면 새로 생성
+      if (!db.objectStoreNames.contains("tokenStore")) {
+        db.createObjectStore("tokenStore")
+      }
     },
   })
   await db.put("tokenStore", { accessToken, refreshToken }, "authTokens")
@@ -20,6 +23,10 @@ async function loadTokensFromIndexedDB() {
 
 async function clearTokensFromIndexedDB() {
   const db = await openDB("authDB", 1)
+  if (!db.objectStoreNames.contains("tokenStore")) {
+    console.error("tokenStore 객체 저장소가 존재하지 않습니다.")
+    return null
+  }
   await db.delete("tokenStore", "authTokens")
 }
 
