@@ -73,7 +73,7 @@ const fetchPublicKey = async () => {
   try {
     const token = authStore.accessToken
     console.log(token)
-    const response = await axios.get("http://localhost:8080/api/public-key", {
+    const response = await axios.get("/api/public-key", {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -90,7 +90,7 @@ const fetchPinPadImage = async () => {
   try {
     const token = authStore.accessToken
     console.log(token)
-    const response = await axios.get("http://localhost:8080/api/pinpad", {
+    const response = await axios.get("/api/pinpad", {
       //headers: {
       //Authorization: `Bearer ${token}`,
       //'Content-Type':'application/json',
@@ -169,7 +169,7 @@ const sendToBackend = async (encryptedPin: string) => {
     // const token = authStore.accessToken
     const token = "8CHnOwrEfKz3D_d9svUewrgwa0qyWihdAAAAAQoqJZAAAAGSMhZ9aJCBbdpZdq0Z"
     const response = await axios.post(
-      "http://localhost:8080/api/pinpad/verify/check",
+      "/api/pinpad/verify/check",
       {
         encryptedPin: encryptedPin,
       },
