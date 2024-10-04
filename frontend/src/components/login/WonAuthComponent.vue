@@ -136,8 +136,8 @@ const sendWonAuth = async () => {
 const checkAuthNumber = async () => {
   if (selectaccount.value && checkAuth.value) {
     try {
-        const token = authStore.accessToken;
-    //  const token = "HpAwXfMaEpHRVBLX6CvO2-LUlcUMjy1EAAAAAQorDR4AAAGSPfkK3pCBbdpZdq0Z"
+      const token = authStore.accessToken
+      //  const token = "HpAwXfMaEpHRVBLX6CvO2-LUlcUMjy1EAAAAAQorDR4AAAGSPfkK3pCBbdpZdq0Z"
       const response = await axios.post(
         "/api/v1/auth/won/check",
 
