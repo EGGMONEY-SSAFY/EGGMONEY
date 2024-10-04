@@ -1,9 +1,13 @@
 <template>
-  <div class="flex flex-col justify-center items-center h-screen text-center">
-    <img src="@/assets/all/404.png" alt="" />
+  <div class="mt-52 mb-4 flex flex-col justify-center items-center text-center">
+    <img
+  class="w-3/4 mx-4"  
+  src="@/assets/all/404.png"
+  alt=""
+/>
 
     <button
-      class="w-full px-4 py-3 bg-orange-500 text-white font-semibold rounded-lg mt-6 hover:bg-orange-600"
+      class="w-3/4 px-3 py-2 bg-orange-500 text-white font-semibold rounded-full mt-20 hover:bg-orange-600"
       @click="moveToHomePage"
     >
       홈으로

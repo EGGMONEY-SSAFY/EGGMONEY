@@ -6,15 +6,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
-@Table(name = "stocks", uniqueConstraints = @UniqueConstraint(columnNames = {"stockItem", "createdAt"}))
+@Table(name = "stocks")
 @NoArgsConstructor(access = PROTECTED)
 public class Stock extends BaseTime {
     @Id
@@ -27,19 +24,13 @@ public class Stock extends BaseTime {
     private StockItem stockItem;
 
     @NotNull
-    private int stockPrice;
+    private int currentPrice;
 
-//    @NotNull
-//    private LocalDate date;
-
-//    public Stock(StockItem stockItem, BigDecimal stockPrice, LocalDate date) {
-//        this.stockItem = stockItem;
-//        this.stockPrice = stockPrice.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
-//        this.date = date;
-//    }
-
-    public Stock(StockItem stockItem, BigDecimal stockPrice) {
+    public Stock(StockItem stockItem) {
         this.stockItem = stockItem;
-        this.stockPrice = stockPrice.setScale(0, BigDecimal.ROUND_HALF_UP).intValue();
+    }
+
+    public void changeCurrentPrice(int currentPrice) {
+        this.currentPrice = currentPrice;
     }
 }
