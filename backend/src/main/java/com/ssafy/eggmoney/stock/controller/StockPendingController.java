@@ -53,4 +53,11 @@ public class StockPendingController {
     public ResponseEntity<List<StockPendingResponse>> getStockPendingLog(@RequestHeader("Authorization") String token) {
         return new ResponseEntity<>(stockPendingService.findPendingLog(1L), HttpStatus.OK);
     }
+
+    @PostMapping("/stock/pending/{stockPendingId}/cancel")
+    public ResponseEntity<Void> cancelStockPending(@PathVariable Long stockPendingId,
+                                                   @RequestHeader("Authorization") String token) {
+        stockPendingService.deleteStockPending(stockPendingId, 1L);
+        return ResponseEntity.ok().build();
+    }
 }
