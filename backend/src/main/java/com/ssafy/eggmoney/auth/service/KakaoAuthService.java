@@ -6,6 +6,7 @@ import com.ssafy.eggmoney.auth.dto.response.KakaoUserResponse;
 import com.ssafy.eggmoney.auth.dto.response.TokenResponse;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.stereotype.Service;
@@ -16,13 +17,19 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+//import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-@Slf4j // 로그 사용을 위한 어노테이션
+//@Slf4j // 로그 사용을 위한 어노테이션
 @Service
 public class KakaoAuthService {
+
+    private static final Logger log = LoggerFactory.getLogger(KakaoAuthService.class);
 
     @Value("${kakao.client.id}")
     private String clientId;
@@ -44,10 +51,12 @@ public class KakaoAuthService {
     }
 
     public Mono<String> getKakaoAuthUrl() {
+        log.info("Generating Kakao Auth URL");  // 로그 추가
         String url = "https://kauth.kakao.com/oauth/authorize" +
                 "?client_id=" + clientId +
                 "&redirect_uri=" + redirectUri +
                 "&response_type=code";
+        log.info("Kakao Auth URL generated: " + url);  // 로그 추가
         return Mono.just(url);
     }
 
