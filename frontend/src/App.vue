@@ -15,8 +15,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- test111111-->
-  <!-- <div class="flex justify-center bg-gray-800">
+  <!-- test111133331122222-->
+  <div class="flex justify-center bg-gray-800">
     <div
       class="main-container bg-gray-200"
       :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }"
