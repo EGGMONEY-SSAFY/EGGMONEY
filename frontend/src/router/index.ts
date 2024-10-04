@@ -3,7 +3,7 @@ import AssetView from "@/views/Asset/AssetView.vue"
 import AllView from "@/views/All/AllView.vue"
 import FinView from "@/views/Fin/FinView.vue"
 import StockView from "@/views/Stock/StockView.vue"
-import StockHistoryView from "@/views/Stock/StockHistoryView.vue"
+import StockLogView from "@/views/Stock/StockLogView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
 import WonAuthView from "@/views/All/WonAuthView.vue"
 import StockDetail from "@/views/Stock/StockDetail.vue"
@@ -202,9 +202,9 @@ const router = createRouter({
       component: StockView,
     },
     {
-      path: "/stock/history",
-      name: "StockHistoryView",
-      component: StockHistoryView,
+      path: "/stock/log",
+      name: "StockLogView",
+      component: StockLogView,
     },
     {
       path: "/stock/news",

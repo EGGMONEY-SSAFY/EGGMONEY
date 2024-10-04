@@ -35,4 +35,11 @@ public class StockLog extends BaseTime {
 
     @NotNull
     private int tradeAmount;
+
+    public StockLog(StockUser stockUser, TradeType tradeType, int tradePrice, int tradeAmount) {
+        this.stockUser = stockUser;
+        this.tradeType = tradeType;
+        this.tradePrice = tradePrice;
+        this.tradeAmount = tradeAmount;
+    }
 }

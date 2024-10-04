@@ -12,7 +12,6 @@ import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -79,14 +78,4 @@ public class UserService {
             throw new IllegalArgumentException("유저를 찾을 수 없습니다.");
         }
     }
-
-    public int findInvestableRatio(Long userId){
-        User user = userRepository.findById(userId).orElseThrow(() ->
-                new NoSuchElementException("유저를 찾을 수 없습니다.")
-        );
-
-        return user.getStockRatio();
-    }
-
-
 }
