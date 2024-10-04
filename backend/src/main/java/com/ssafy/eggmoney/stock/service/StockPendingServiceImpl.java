@@ -10,6 +10,7 @@ import com.ssafy.eggmoney.stock.repository.StockRepository;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,6 +63,7 @@ public class StockPendingServiceImpl implements StockPendingService {
         return totalPendigAmount;
     }
 
+    @Override
     public List<StockPendingResponse> findPendingLog(Long userId) {
         List<StockPending> stockPendings = stockPendingRepository.findByUserId(userId);
 
@@ -74,5 +76,18 @@ public class StockPendingServiceImpl implements StockPendingService {
                     stockPending.getStock().getId(), stockPending.getId(), stockPending.getTradeType(),
                     stockPending.getPendingPrice(), stockPending.getPendingAmount(), stockPending.getUpdatedAt()
             )).collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public void deleteStockPending(Long stockPendingId,Long userId) {
+        StockPending stockPending = stockPendingRepository.findById(stockPendingId)
+                .orElseThrow(() -> new NoSuchElementException("해당 지정거래를 찾을 수 없습니다."));
+
+        if(!stockPending.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("다른 사람의 지정 거래를 취소하실 수 없습니다.");
+        }
+
+        stockPendingRepository.deleteById(stockPendingId);
     }
 }

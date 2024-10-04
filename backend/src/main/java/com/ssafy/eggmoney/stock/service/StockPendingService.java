@@ -11,4 +11,5 @@ public interface StockPendingService {
     int findPendingBuyTotalPrice(Long userId);
     int findPendingSellTotalAmount(Long userId);
     List<StockPendingResponse> findPendingLog(Long userId);
+    void deleteStockPending(Long stockPendingId,Long userId);
 }
