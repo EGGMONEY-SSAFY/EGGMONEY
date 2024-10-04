@@ -3,7 +3,8 @@ package com.ssafy.eggmoney.stock.dto.request;
 import lombok.Getter;
 
 @Getter
-public class StockUserRequest {
-    private Long userId;
+public class PendingRequest {
     private Long stockId;
+    private int pendingPrice;
+    private int pendingAmount;
 }
