@@ -7,24 +7,21 @@ import NavBarTab from "@/components/navbar/navBarTab/NavBarTab.vue"
 import { useStockStore } from "@/stores/stock"
 import { onMounted, ref } from "vue"
 
-interface StockPrice {
+interface StockList {
+  stockId: number
   stockItem: string
+  updatedDate: string
   price: number
   gap: number
   ratio: number
 }
 
-interface PriceList {
-  date: string
-  stockPrices: StockPrice[]
-}
-
 const store = useVariableStore()
 const storeStock = useStockStore()
-const priceList = ref<PriceList | null>(null)
+const stockList = ref<StockList[]>([])
 onMounted(async () => {
   const fetchedStockPrice = await storeStock.getStockPrice()
-  priceList.value = fetchedStockPrice
+  stockList.value = fetchedStockPrice
 })
 
 store.setTitle("증권")
@@ -39,9 +36,9 @@ const userData = { 현재잔액: 135000, 투자가능금액: 35000 }
     <BoxUserInfo :userData="userData" />
     <div class="text-center">총 주식 금액 {{ total.toLocaleString() }} 알</div>
     <HeldStocksChart :total="total" />
-    <div v-if="priceList">
-      <div v-for="stockprice in priceList.stockPrices" :key="stockprice.stockItem">
-        <BoxStock :stockprice="stockprice" />
+    <div v-if="stockList">
+      <div v-for="stock in stockList" :key="stock.stockItem">
+        <BoxStock :stock="stock" />
       </div>
     </div>
   </div>

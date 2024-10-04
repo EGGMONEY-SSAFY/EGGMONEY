@@ -3,7 +3,7 @@ import { RouterLink } from "vue-router"
 import IconRightArrow from "@/components/icons/IconRightArrow.vue"
 
 const props = defineProps({
-  stockprice: Object,
+  stock: Object,
 })
 
 const nameMap: Record<string, string> = {
@@ -26,18 +26,18 @@ const nameMap: Record<string, string> = {
 <template>
   <div class="bg-white m-4 rounded-lg shadow flex justify-between">
     <div class="m-6 flex self-center font-bold w-full">
-      {{ nameMap[props.stockprice?.stockItem] }}
+      {{ nameMap[props.stock?.stockItem] }}
     </div>
     <div class="flex flex-col justify-center items-center w-full">
-      <div>{{ props.stockprice?.price }}</div>
-      <div class="text-xs" :class="props.stockprice?.gap > 0 ? 'text-red-500' : 'text-blue-500'">
-        {{ props.stockprice?.gap > 0 ? "+" + props.stockprice?.gap : props.stockprice?.gap }} ({{
-          props.stockprice?.ratio
+      <div>{{ props.stock?.price }}</div>
+      <div class="text-xs" :class="props.stock?.gap > 0 ? 'text-red-500' : 'text-blue-500'">
+        {{ props.stock?.gap > 0 ? "+" + props.stock?.gap : props.stock?.gap }} ({{
+          props.stock?.ratio
         }}%)
       </div>
     </div>
     <RouterLink
-      :to="`/stock/detail/${props.stockprice?.stockItem}`"
+      :to="`/stock/detail/${props.stock?.stockItem}`"
       class="flex justify-center items-center p-6"
     >
       <IconRightArrow class="size-6" />
