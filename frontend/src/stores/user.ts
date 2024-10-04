@@ -33,8 +33,6 @@ export const useUserStore = defineStore("user", () => {
   const children = ref<User[]>([])
   const familyId = ref<number | null>(null)
 
-  const userData = { 현재잔액: 135000, 투자가능금액: 35000 }
-
   // 유저 조회
   const getUser = function (userId: number): Promise<void> {
     return axios({
@@ -51,6 +49,7 @@ export const useUserStore = defineStore("user", () => {
           stockRatio: res.data.stockRatio,
         }
         familyId.value = res.data.family.familyId
+        /* eslint-disable prefer-const */
         let childrenArray = <User[]>[]
         if (familyId.value && user.value.role === "부모") {
           res.data.family.members.forEach((member: User) => {
@@ -66,5 +65,5 @@ export const useUserStore = defineStore("user", () => {
       })
   }
 
-  return { user, children, familyId, getUser, userData }
+  return { user, children, familyId, getUser }
 })

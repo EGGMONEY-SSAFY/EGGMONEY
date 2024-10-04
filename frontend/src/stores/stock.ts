@@ -4,6 +4,18 @@ import { defineStore } from "pinia"
 export const useStockStore = defineStore("stock", () => {
   const API_URL = "/api/v1"
 
+  const getMyStock = async () => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: `${API_URL}/stock/user/info`,
+      })
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const getStockPrice = async () => {
     try {
       const response = await axios({
