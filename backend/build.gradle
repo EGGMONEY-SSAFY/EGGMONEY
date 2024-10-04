@@ -58,7 +58,7 @@ dependencies {
 
 	//S3 설정
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.42'
+	implementation 'software.amazon.awssdk:s3:2.20.40'
 }
 
 tasks.named('test') {
