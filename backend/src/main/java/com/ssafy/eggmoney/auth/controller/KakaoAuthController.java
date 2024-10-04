@@ -3,6 +3,8 @@ package com.ssafy.eggmoney.auth.controller;
 import com.ssafy.eggmoney.auth.dto.response.TokenResponse;
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/kakao")
 public class KakaoAuthController {
+
+    private static final Logger logger = LoggerFactory.getLogger(KakaoAuthController.class);
 
     @Value("${kakao.client.id}")
     private String kakaoClientId;
@@ -40,6 +44,7 @@ public class KakaoAuthController {
 //        ResponseEntity<Void> response = ResponseEntity.status(HttpStatus.FOUND)
 //                .location(URI.create(kakaoAuthUrl))  // 리다이렉트 URL 설정
 //                .build();
+        logger.info("Kakao login request received");  // 로그 추가
         return kakaoService.getKakaoAuthUrl()
                 .map(kakaoAuthUrl -> ResponseEntity.status(HttpStatus.FOUND)
                         .location(URI.create(kakaoAuthUrl))
