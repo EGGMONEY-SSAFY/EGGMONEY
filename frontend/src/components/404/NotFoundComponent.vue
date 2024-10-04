@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-56 mb-4 flex flex-col justify-center items-center text-center">
+  <div class="mt-52 mb-4 flex flex-col justify-center items-center text-center">
     <img
   class="w-3/4 mx-4"  
   src="@/assets/all/404.png"
