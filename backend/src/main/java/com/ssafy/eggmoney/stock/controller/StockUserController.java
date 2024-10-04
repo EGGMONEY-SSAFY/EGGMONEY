@@ -2,7 +2,6 @@ package com.ssafy.eggmoney.stock.controller;
 
 import com.ssafy.eggmoney.stock.dto.request.StockBuyRequest;
 import com.ssafy.eggmoney.stock.dto.request.StockSellRequest;
-import com.ssafy.eggmoney.stock.dto.request.StockUserRequest;
 import com.ssafy.eggmoney.stock.dto.response.StockLogResponse;
 import com.ssafy.eggmoney.stock.dto.response.StockUserResponse;
 import com.ssafy.eggmoney.stock.service.StockLogService;
@@ -36,7 +35,7 @@ public class StockUserController {
     public ResponseEntity<Map<String, Object>> buyStock(
             @RequestBody StockBuyRequest stockBuyReq, @RequestHeader("Authorization") String token) {
         StockUserResponse stockBuyRes = stockUserService.buyStock(stockBuyReq, 1L);
-        Map<String, Object> response = stockUserService.findInvestablePrice(stockBuyReq.getUserId());
+        Map<String, Object> response = stockUserService.findInvestablePrice(1L);
         response.put("stockInfo", stockBuyRes);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -45,7 +44,7 @@ public class StockUserController {
     public ResponseEntity<Map<String, Object>> sellStock(@RequestBody StockSellRequest stockSellReq,
                                                          @RequestHeader("Authorization") String token) {
         StockUserResponse stockSellRes = stockUserService.sellStock(stockSellReq, 1L);
-        Map<String, Object> response = stockUserService.findInvestablePrice(stockSellReq.getUserId());
+        Map<String, Object> response = stockUserService.findInvestablePrice(1L);
         response.put("stockInfo", stockSellRes);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

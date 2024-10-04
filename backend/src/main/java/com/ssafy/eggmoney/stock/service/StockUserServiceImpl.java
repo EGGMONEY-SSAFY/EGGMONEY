@@ -5,7 +5,6 @@ import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
 import com.ssafy.eggmoney.stock.dto.request.StockBuyRequest;
 import com.ssafy.eggmoney.stock.dto.request.StockSellRequest;
-import com.ssafy.eggmoney.stock.dto.request.StockUserRequest;
 import com.ssafy.eggmoney.stock.dto.response.StockUserResponse;
 import com.ssafy.eggmoney.stock.entity.*;
 import com.ssafy.eggmoney.stock.repository.StockRepository;
