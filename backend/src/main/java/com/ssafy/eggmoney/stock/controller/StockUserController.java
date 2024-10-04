@@ -2,7 +2,6 @@ package com.ssafy.eggmoney.stock.controller;
 
 import com.ssafy.eggmoney.stock.dto.request.StockBuyRequest;
 import com.ssafy.eggmoney.stock.dto.request.StockSellRequest;
-import com.ssafy.eggmoney.stock.dto.request.StockUserRequest;
 import com.ssafy.eggmoney.stock.dto.response.StockLogResponse;
 import com.ssafy.eggmoney.stock.dto.response.StockUserResponse;
 import com.ssafy.eggmoney.stock.service.StockLogService;
@@ -22,39 +21,41 @@ public class StockUserController {
     private final StockUserService stockUserService;
     private final StockLogService stockLogService;
 
-    @GetMapping("/stock/user/{userId}/available-balance")
-    public ResponseEntity<Map<String, Object>> getInvestableRatio(@PathVariable Long userId) {
-        return new ResponseEntity<>(stockUserService.findInvestablePrice(userId), HttpStatus.OK);
+    @GetMapping("/stock/user/available-balance")
+    public ResponseEntity<Map<String, Object>> getInvestablePrice(@RequestHeader("Authorization") String token) {
+        return new ResponseEntity<>(stockUserService.findInvestablePrice(1L), HttpStatus.OK);
     }
 
-    @GetMapping("/stock/user/{userId}/portfolio")
-    public ResponseEntity<Map<String, Object>> getUserStocks(@PathVariable Long userId) {
-        return new ResponseEntity<>(stockUserService.findUserStocks(userId), HttpStatus.OK);
+    @GetMapping("/stock/user/portfolio")
+    public ResponseEntity<Map<String, Object>> getUserStocks(@RequestHeader("Authorization") String token) {
+        return new ResponseEntity<>(stockUserService.findUserStocks(1L), HttpStatus.OK);
     }
 
     @PostMapping("/stock/user/buy")
-    public ResponseEntity<Map<String, Object>> buyStock(@RequestBody StockBuyRequest stockBuyReq) {
-        StockUserResponse stockBuyRes = stockUserService.buyStock(stockBuyReq);
-        Map<String, Object> response = stockUserService.findInvestablePrice(stockBuyReq.getUserId());
+    public ResponseEntity<Map<String, Object>> buyStock(
+            @RequestBody StockBuyRequest stockBuyReq, @RequestHeader("Authorization") String token) {
+        StockUserResponse stockBuyRes = stockUserService.buyStock(stockBuyReq, 1L);
+        Map<String, Object> response = stockUserService.findInvestablePrice(1L);
         response.put("stockInfo", stockBuyRes);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/stock/user/sell")
-    public ResponseEntity<Map<String, Object>> sellStock(@RequestBody StockSellRequest stockSellReq) {
-        StockUserResponse stockSellRes = stockUserService.sellStock(stockSellReq);
-        Map<String, Object> response = stockUserService.findInvestablePrice(stockSellReq.getUserId());
+    public ResponseEntity<Map<String, Object>> sellStock(@RequestBody StockSellRequest stockSellReq,
+                                                         @RequestHeader("Authorization") String token) {
+        StockUserResponse stockSellRes = stockUserService.sellStock(stockSellReq, 1L);
+        Map<String, Object> response = stockUserService.findInvestablePrice(1L);
         response.put("stockInfo", stockSellRes);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/stock/user/info")
-    public ResponseEntity<StockUserResponse> getStockUser(@RequestBody StockUserRequest stockUserReq) {
-        return new ResponseEntity<>(stockUserService.findStockUserInfo(stockUserReq), HttpStatus.OK);
+    @GetMapping("/stock/{stockId}/user/info")
+    public ResponseEntity<StockUserResponse> getStockUser(@PathVariable Long stockId, @RequestHeader("Authorization") String token) {
+        return new ResponseEntity<>(stockUserService.findStockUserInfo(stockId, 1L), HttpStatus.OK);
     }
 
-    @GetMapping("/stock/user/{userId}/log")
-    public ResponseEntity<List<StockLogResponse>> getStockLogByUser(@PathVariable Long userId) {
-        return new ResponseEntity<>(stockLogService.findStockLogByUserId(userId), HttpStatus.OK);
+    @GetMapping("/stock/user/log")
+    public ResponseEntity<List<StockLogResponse>> getStockLogByUser(@RequestHeader("Authorization") String token) {
+        return new ResponseEntity<>(stockLogService.findStockLogByUserId(1L), HttpStatus.OK);
     }
 }
