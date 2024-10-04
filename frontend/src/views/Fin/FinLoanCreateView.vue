@@ -5,7 +5,6 @@ import IconQuestionMark from "@/components/icons/IconQuestionMark.vue"
 import InputMoney from "@/components/input/InputMoney.vue"
 import { useFinStore } from "@/stores/fin"
 import { useUserStore } from "@/stores/user"
-import { assert } from "console"
 import { reactive, ref } from "vue"
 import { useRouter } from "vue-router"
 
