@@ -11,12 +11,6 @@ import { ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
 const route = useRoute()
-// interface Product {
-//   productId: number
-//   productName: string
-//   depositRate: number
-//   depositDate: number
-// }
 
 const productId = Number(route.query.productId)
 const productName = route.query.productName

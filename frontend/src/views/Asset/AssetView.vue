@@ -23,7 +23,7 @@ const goWithdrawalTab = () => {
 }
 onMounted(async () => {
   // 유저 조회해서 유저 정보(역할, 자식 목록) 가져오기
-  await userStore.getUser(1)
+  await userStore.getUser(3)
   //  자녀가 로그인한 경우
   if (userStore.user && userStore.user.role === "자녀") {
     userSelect.value = userStore.user

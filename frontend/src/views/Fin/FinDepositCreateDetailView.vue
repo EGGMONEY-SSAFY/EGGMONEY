@@ -17,7 +17,7 @@ const repayment = (money + (((money * depositRate) / 100) * depositDate) / 12).t
 
 const handleClick = () => {
   router.push({
-    name: "FinView", // 추후 간편 비밀번호로 변경되어야 한다.
+    name: "FinPinPadView", // 추후 간편 비밀번호로 변경되어야 한다.
     query: {
       money: money,
       productId: productId,
@@ -70,9 +70,9 @@ const handleClick = () => {
         ※ 예상 만기액은 <span class="font-bold text-red-500">{{ repayment }}원</span> 입니다.
       </div>
 
-      <!-- 다음으로 넘어가는 버튼 : FinView를 간편비밀번호로 넘기고, 해당 값들은 route.query에 들어있다.-->
+      <!-- 다음으로 넘어가는 버튼 -->
       <div class="mt-4 text-center">
-        <NextButton routeName="FinView" @click="handleClick"></NextButton>
+        <NextButton routeName="FinPinPadView" @click="handleClick"></NextButton>
       </div>
     </div>
   </div>

@@ -4,6 +4,7 @@ import { useFinStore } from "@/stores/fin"
 import { onMounted } from "vue"
 
 const finStore = useFinStore()
+
 onMounted(() => {
   if (finStore.depositProducts.length === 0) {
     finStore.getDepositProduct()

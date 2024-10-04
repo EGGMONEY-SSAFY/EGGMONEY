@@ -5,7 +5,6 @@ import IconQuestionMark from "@/components/icons/IconQuestionMark.vue"
 import InputMoney from "@/components/input/InputMoney.vue"
 import { useFinStore } from "@/stores/fin"
 import { useUserStore } from "@/stores/user"
-import { assert } from "console"
 import { reactive, ref } from "vue"
 import { useRouter } from "vue-router"
 
@@ -20,7 +19,6 @@ const router = useRouter()
 const isModalVisible = ref(false)
 const finStore = useFinStore()
 const userStore = useUserStore()
-const user = userStore.user
 
 const showModal = () => {
   isModalVisible.value = true
@@ -44,27 +42,43 @@ const handleClick = () => {
     return
   } else {
     isValid.value = true
-    finStore.setLoanCreate(reason.value, money.value, loanDate.value, loanType.value)
+    console.log("userID", userStore.user?.userId)
+    if (userStore.user?.userId) {
+      finStore.setLoanCreate(
+        reason.value,
+        money.value,
+        loanDate.value,
+        loanType.value,
+        userStore.user?.userId
+      )
+    }
 
     router.push({
-      name: "FinView",
+      name: "FinPinPadView",
     })
   }
 }
 
 const updateMoney = (value: number) => {
   money.value = value
+  if(money.value && loanDate.value){
+    maxPrice.value = money.value / loanDate.value
+  }
 }
 
 const updateSelectedDate = (event: Event) => {
   const target = event.target as HTMLSelectElement
   loanDate.value = Number(target.value)
+  if(money.value && loanDate.value){
+    maxPrice.value = money.value / loanDate.value
+  }
 }
 
 const updateSelectedType = (event: Event) => {
   const target = event.target as HTMLSelectElement
   if (!money.value) {
     alert("대출 금액을 입력해주세요.")
+
     return
   } else if (!loanDate.value) {
     alert("대출 기간을 선택해주세요.")
@@ -168,7 +182,7 @@ const updateSelectedType = (event: Event) => {
 
       <div class="mt-8">
         <NextButton
-          routeName="FinView"
+          routeName="FinLoanJudgeView"
           content="부모님에게 신청하기"
           :disabled="isValid"
           @click="handleClick"
