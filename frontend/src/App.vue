@@ -3,12 +3,18 @@ import { RouterView } from "vue-router"
 import NavBar from "./components/navbar/NavBar.vue"
 import NavBarTop from "./components/navbar/NavBarTop.vue"
 import { useFinStore } from "./stores/fin"
-
+import { useAuthStore } from "@/stores/auth"
+import { onMounted } from "vue"
 const finStore = useFinStore()
+
+const authStore = useAuthStore()
+onMounted(() => {
+  authStore.loadTokens()
+})
 </script>
 
 <template>
-  <!-- test11 -->
+  <!-- test-->
   <div class="flex justify-center bg-gray-800">
     <div
       class="main-container bg-gray-200"
@@ -25,7 +31,7 @@ const finStore = useFinStore()
 .main-container {
   width: 100%;
   height: 100%;
-  min-height: 101vh;
+  min-height: 100.1vh;
 }
 
 @media (min-width: 393px) {
