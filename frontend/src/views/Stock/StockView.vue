@@ -27,13 +27,14 @@ onMounted(async () => {
 store.setTitle("증권")
 const stockData = { 코스피: 30000, 코스닥: 20000, 반도체: 10000, 바이오: 5000 }
 const total = Object.values(stockData).reduce((acc, value) => acc + value, 0)
-const userData = { 현재잔액: 135000, 투자가능금액: 35000 }
+
 </script>
 
 <template>
   <div>
     <NavBarTab />
-    <BoxUserInfo :userData="userData" />
+    <BoxUserInfo />
+    <!-- {{ storeStock.getMyStock }} -->
     <div class="text-center">총 주식 금액 {{ total.toLocaleString() }} 알</div>
     <HeldStocksChart :total="total" />
     <div v-if="stockList">
