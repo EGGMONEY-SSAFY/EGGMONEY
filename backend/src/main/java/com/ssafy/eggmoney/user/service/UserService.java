@@ -5,18 +5,21 @@ import com.ssafy.eggmoney.family.entity.Family;
 import com.ssafy.eggmoney.family.repository.FamilyRepository;
 import com.ssafy.eggmoney.family.service.FamilyServcie;
 import com.ssafy.eggmoney.user.dto.reqeust.CreateUserReqeusetDto;
+import com.ssafy.eggmoney.user.dto.reqeust.InvestmentRatioRequest;
 import com.ssafy.eggmoney.user.dto.reqeust.UpdateUserRequestDto;
 import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-//@Transactional
+@Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
     private final AccountService accountService;
@@ -77,5 +80,17 @@ public class UserService {
         }else {
             throw new IllegalArgumentException("유저를 찾을 수 없습니다.");
         }
+    }
+
+    public int updateInvestmentRatio(Long userId, InvestmentRatioRequest investmentRatioReq){
+        Long familyId = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."))
+                .getFamily().getId();
+
+
+        User child = userRepository.findById(investmentRatioReq.getChildId())
+                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."));
+        child.changeStockRatio(investmentRatioReq.getRatio());
+        return investmentRatioReq.getRatio();
     }
 }
