@@ -17,9 +17,10 @@ public class StockPendingController {
     private final StockUserService stockUserService;
 
     @PostMapping("/stock/pending/buy")
-    public ResponseEntity<Integer> buyPending(@RequestBody PendingRequest pendingReq) {
-        Object investablePriceObj = stockUserService.findInvestablePrice(pendingReq.getUserId()).get("investablePrice");
-        Object balanceObj = stockUserService.findInvestablePrice(pendingReq.getUserId()).get("balance");
+    public ResponseEntity<Integer> buyPending(@RequestBody PendingRequest pendingReq,
+                                              @RequestHeader("Authorization") String token) {
+        Object investablePriceObj = stockUserService.findInvestablePrice(1L).get("investablePrice");
+        Object balanceObj = stockUserService.findInvestablePrice(1L).get("balance");
         int pendingPrice = pendingReq.getPendingPrice() * pendingReq.getPendingAmount();
 
         if(investablePriceObj instanceof Integer && balanceObj instanceof Integer) {
@@ -30,7 +31,7 @@ public class StockPendingController {
                 throw new IllegalArgumentException("지정 매수 금액은 투자 가능 금액이나 잔액 보다 클 수 없습니다.");
             }
 
-            stockPendingService.saveStockPending(pendingReq, TradeType.BUY);
+            stockPendingService.saveStockPending(pendingReq, TradeType.BUY, 1L);
 
             return new ResponseEntity<>(investablePrice - pendingPrice, HttpStatus.OK);
         } else {
@@ -39,8 +40,9 @@ public class StockPendingController {
     }
 
     @PostMapping("/stock/pending/sell")
-    public ResponseEntity<Void> sellPending(@RequestBody PendingRequest pendingReq) {
-        stockPendingService.saveStockPending(pendingReq, TradeType.SELL);
+    public ResponseEntity<Void> sellPending(@RequestBody PendingRequest pendingReq,
+                                            @RequestHeader("Authorization") String token) {
+        stockPendingService.saveStockPending(pendingReq, TradeType.SELL, 1L);
         return ResponseEntity.ok().build();
     }
 }

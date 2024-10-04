@@ -25,8 +25,8 @@ public class StockPendingServiceImpl implements StockPendingService {
 
     @Transactional
     @Override
-    public void saveStockPending(PendingRequest pendingReq, TradeType tradeType) {
-        User user = userRepository.findById(pendingReq.getUserId())
+    public void saveStockPending(PendingRequest pendingReq, TradeType tradeType, Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."));
         Stock stock = stockRepository.findById(pendingReq.getStockId())
                 .orElseThrow(() -> new NoSuchElementException("해당 주식을 찾을 수 없습니다."));
