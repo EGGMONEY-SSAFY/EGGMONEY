@@ -40,4 +40,12 @@ public class StockPending {
 
     @NotNull
     private int pendingAmount;
+
+    public StockPending(User user, Stock stock, TradeType tradeType, int pendingPrice, int pendingAmount) {
+        this.user = user;
+        this.stock = stock;
+        this.tradeType = tradeType;
+        this.pendingPrice = pendingPrice;
+        this.pendingAmount = pendingAmount;
+    }
 }

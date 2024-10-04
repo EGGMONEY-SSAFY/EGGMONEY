@@ -26,15 +26,15 @@ public class StockPrice extends BaseTime {
     private Long id;
 
     @NotNull
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "stock_id")
+    private Stock stock;
+
+    @NotNull
     private int price;
 
 //    @NotNull
 //    private LocalDateTime date;
-
-    @NotNull
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "stock_id")
-    private Stock stock;
 
 //    public StockPrice(Stock stock, BigDecimal price, LocalDate date) {
 //        this.stock = stock;

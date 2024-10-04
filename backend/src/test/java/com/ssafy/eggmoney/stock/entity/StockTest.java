@@ -28,7 +28,7 @@
 //
 //    @Test
 //    public void saveAll() {
-//        List<Stock> beforeFindStocks = stockRepository.findAll();
+//        long beforeCount = stockRepository.count();
 //
 //        List<Stock> stocks = new ArrayList<>();
 //        for (StockItem stockItem : stockItems) {
@@ -40,8 +40,8 @@
 //        em.flush();
 //        em.clear();
 //
-//        List<Stock> findStocks = stockRepository.findAll();
+//        long count = stockRepository.count();
 //
-//        Assertions.assertThat(findStocks.size() - beforeFindStocks.size()).isEqualTo(stockItems.length);
+//        Assertions.assertThat(count - beforeCount).isEqualTo(stockItems.length);
 //    }
 //}
