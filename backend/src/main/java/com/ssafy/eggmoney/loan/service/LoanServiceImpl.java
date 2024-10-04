@@ -42,7 +42,12 @@ public class LoanServiceImpl implements LoanService {
     @Transactional
     public void createLoan(LoanCreateRequestDto requestDto) {
 
-        User user = userRepository.findById(requestDto.getUserId()).orElse(null);
+        User user = userRepository.findById(requestDto.getUserId()).orElse(
+                    null
+        );
+        if(user == null){
+            log.error("대출을 생성할 user가 없습니다.");
+        }
         if(!user.getRole().equals("자녀")){
             log.error("대출생성 권한이 없습니다.");
         }
@@ -97,6 +102,8 @@ public class LoanServiceImpl implements LoanService {
                         .refuseReason(loan.getRefuseReason())
                         .loanRate(loan.getLoanRate())
                         .expirationDate(loan.getExpirationDate())
+                        .createdAt(loan.getCreatedAt())
+                        .updatedAt(loan.getUpdatedAt())
                         .build()
         ).collect(Collectors.toList());
 
