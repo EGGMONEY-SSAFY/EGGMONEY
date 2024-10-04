@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+
 @RestController
 @RequestMapping("/api/kakao")
 public class KakaoAuthController {
@@ -38,17 +39,23 @@ public class KakaoAuthController {
     private KakaoAuthService kakaoService;
 
     @GetMapping("/login")
-    public Mono<ResponseEntity<Void>> kakaoLogin() {
+    public Mono<ResponseEntity<String>> kakaoLogin() {
 
 //        String kakaoAuthUrl = kakaoService.getKakaoAuthUrl().block();  // URL을 가져오는 부분
 //        ResponseEntity<Void> response = ResponseEntity.status(HttpStatus.FOUND)
 //                .location(URI.create(kakaoAuthUrl))  // 리다이렉트 URL 설정
 //                .build();
-        logger.info("Kakao login request received");  // 로그 추가
+//        logger.info("Kakao login request received");  // 로그 추가
+//        return kakaoService.getKakaoAuthUrl()
+//                .map(kakaoAuthUrl -> ResponseEntity.status(HttpStatus.FOUND)
+//                        .location(URI.create(kakaoAuthUrl))
+//                        .build());
+        logger.info("Kakao login URL request received");
         return kakaoService.getKakaoAuthUrl()
-                .map(kakaoAuthUrl -> ResponseEntity.status(HttpStatus.FOUND)
-                        .location(URI.create(kakaoAuthUrl))
-                        .build());
+                .map(kakaoAuthUrl -> {
+                    logger.info("Returning Kakao login URL: " + kakaoAuthUrl);
+                    return ResponseEntity.ok(kakaoAuthUrl);  // URL을 문자열로 반환
+                });
     }
 
 
