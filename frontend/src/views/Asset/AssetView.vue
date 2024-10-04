@@ -79,12 +79,12 @@ onMounted(async () => {
     </div>
 
     <!-- 등록된 가족이 없는 경우 -->
-    <div v-else class="pt-20 text-center grid grid-cols-1 grid-flow-row">
+    <div v-else class="pt-28 text-center grid grid-cols-1 grid-flow-row">
       <h1 class="text-lg font-bold text-blue-700">가족을 등록해 주세요.</h1>
       <div class="flex justify-center items-center mt-16 mb-16">
         <img src="@/assets/asset/link.png" alt="link" class="w-32" />
       </div>
-      <button class="bg-main-color rounded-full text-white text-sm py-2 mx-10" @click="goFamilyTab">
+      <button class="mx-10 w-3/4 px-3 py-2 bg-orange-500 text-white font-semibold rounded-full mt-8 hover:bg-orange-600" @click="goFamilyTab">
         등록하러가기
       </button>
     </div>
