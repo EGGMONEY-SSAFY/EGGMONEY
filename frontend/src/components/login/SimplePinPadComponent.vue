@@ -72,7 +72,7 @@ const authStore = useAuthStore()
 const fetchPublicKey = async () => {
   try {
     const token = authStore.accessToken
-    console.log(token)
+    console.log("token : ", token?.slice(0, 10))
     const response = await axios.get("http://localhost:8080/api/public-key", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -89,7 +89,7 @@ const fetchPublicKey = async () => {
 const fetchPinPadImage = async () => {
   try {
     const token = authStore.accessToken
-    console.log(token)
+    console.log("token : ", token?.slice(0, 10))
     const response = await axios.get("http://localhost:8080/api/pinpad", {
       //headers: {
       //Authorization: `Bearer ${token}`,
@@ -97,7 +97,6 @@ const fetchPinPadImage = async () => {
       //}
     })
     const encryptedImage = response.data.encryptedImage
-    console.log(encryptedImage)
     // const decrypt = new JSEncrypt();
     // decrypt.setPrivateKey(''
     //   // `${env.RSA.key}`
@@ -110,7 +109,6 @@ const fetchPinPadImage = async () => {
     const decryptedBase64Image = encryptedImage
     // decrypted.toString(CryptoJS.enc.Base64);
     pinPadImage.value = `data:image/png;base64,${decryptedBase64Image}`
-    console.log(pinPadImage.value)
   } catch (error) {
     console.error("이미지 불러오기 실패:", error)
   }

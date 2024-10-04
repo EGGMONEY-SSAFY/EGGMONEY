@@ -42,7 +42,8 @@ import StockOrderListView from "@/views/Stock/StockOrderListView.vue"
 import AssetWithdrawalView from "@/views/Asset/AssetWithdrawalView.vue"
 import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import StockRateView from "@/views/All/StockRateView.vue"
-
+import FinPinPadView from "@/views/Fin/FinPinPadView.vue"
+import FinLoanJudgeView from "@/views/Fin/FinLoanJudgeView.vue"
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -182,6 +183,16 @@ const router = createRouter({
           path: "savings/create/detail",
           name: "FinSavingsCreateDetailView",
           component: FinSavingsCreateDetailView,
+        },
+        {
+          path: "pinpad",
+          name: "FinPinPadView",
+          component: FinPinPadView,
+        },
+        {
+          path: "loan/create/judge",
+          name: "FinLoanJudgeView",
+          component: FinLoanJudgeView,
         },
       ],
     },

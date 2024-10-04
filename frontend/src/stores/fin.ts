@@ -55,6 +55,7 @@ export interface Loan {
   loanRate: number | null
   expirationDate: string | null
   createdAt: string | null
+  updatedAt: string | null
 }
 
 export interface LoanLog {
@@ -68,6 +69,7 @@ export interface LoanCreate {
   loanAmount: number
   loanDate: number
   loanType: string
+  userId : number
 }
 export const useFinStore = defineStore(
   "fin",
@@ -80,10 +82,13 @@ export const useFinStore = defineStore(
     const USER_LOAN_API_URL = "/api/v1/fin/loan"
     const USER_LOAN_LOG_API_URL = "/api/v1/fin/loan/log"
     const USER_LOAN_DETAIL_API_URL = "/api/v1/fin/loan/detail"
+    const USER_LOAN_JUDGE_API_URL = "/api/v1/fin/loan/judge"
     const USER_SAVINGS_SEND_API_URL = "/api/v1/fin/savings/send"
     const USER_LOAN_SEND_API_URL = "/api/v1/fin/loan/send"
     const DELETE_SAVINGS_API_URL = "/api/v1/fin/savings/delete"
     const DELETE_DEPOSIT_API_URL = "/api/v1/fin/deposit/delete"
+    const USER_LOAN_CREATE_API_URL = "/api/v1/fin/loan/create"
+
 
     const isYellowPage = ref<boolean>(false)
     const depositProducts = reactive<depositProducts[]>([])
@@ -139,13 +144,14 @@ export const useFinStore = defineStore(
     }
 
     // 대출신청정보 저장
-    const setLoanCreate = function (reason: string, amount: number, date: number, type: string) {
+    const setLoanCreate = function (reason: string, amount: number, date: number, type: string, userId : number) {
       const loanType = type === "원리금균등상환" ? "EQUALR" : "LUMPSUM"
       loanCreate.value = {
         loanReason: reason,
         loanAmount: amount,
         loanDate: date,
         loanType: loanType,
+        userId : userId,
       }
     }
 
@@ -311,6 +317,50 @@ export const useFinStore = defineStore(
         })
     }
 
+    // User 대출 심사
+    const sendfinLoanJudge = function (
+      loanId: number,
+      judge: string,
+      userId: number,
+      reason: String,
+      rate: number
+    ) {
+      return axios({
+        method: "post",
+        url: `${USER_LOAN_JUDGE_API_URL}/${loanId}`,
+        data: {
+          loanStatus: judge,
+          refuseReason: reason,
+          loanRate: rate,
+        },
+      })
+        .then((res) => {})
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+
+    // 유저대출생성
+    const postUserLoan = function (
+    ){
+      return axios({
+        method: "post",
+        url: `${USER_LOAN_CREATE_API_URL}`,
+        data: {
+          userId : loanCreate.value?.userId,
+          loanType : loanCreate.value?.loanType,
+          loanAmount : loanCreate.value?.loanAmount,
+          loanDate : loanCreate.value?.loanDate,
+          balance : (loanCreate.value?.loanAmount ?? 0) / (loanCreate.value?.loanDate ?? 1),
+          loanReason : loanCreate.value?.loanReason,
+        },
+      })
+        .then((res) => {})
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+
     return {
       depositProducts,
       getDepositProduct,
@@ -335,6 +385,8 @@ export const useFinStore = defineStore(
       sendLoan,
       deleteDeposit,
       deleteSavings,
+      sendfinLoanJudge,
+      postUserLoan,
     }
   }
   // {
