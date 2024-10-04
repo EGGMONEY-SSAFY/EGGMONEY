@@ -1,17 +1,29 @@
 import axios from "axios"
 import { defineStore } from "pinia"
-import { useAuthStore } from "./auth"
 
 export const useStockStore = defineStore("stock", () => {
-
   const API_URL = "/api/v1"
-
+  const token = "q"
+  // const authStore = useAuthStore()
+  // authStore.accessToken
   const getMyStock = async () => {
     try {
-      // const authStore = useAuthStore()
-      const token =  "q" // authStore.accessToken
-      console.log(token);
-      
+      const response = await axios({
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "applications/json",
+        },
+        method: "get",
+        url: `${API_URL}/stock/user/portfolio`,
+      })
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const getMoneyInfo = async () => {
+    try {
       const response = await axios({
         headers: {
           Authorization: `Bearer ${token}`,
@@ -61,5 +73,5 @@ export const useStockStore = defineStore("stock", () => {
       console.error("Failed to fetch news:", error) // 에러 핸들링
     }
   }
-  return { getNews, getArticle, getStockPrice, getMyStock }
+  return { getNews, getArticle, getStockPrice, getMoneyInfo, getMyStock }
 })

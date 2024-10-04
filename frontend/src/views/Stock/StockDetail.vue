@@ -4,18 +4,16 @@ import BoxCurrentBuy from "@/components/box/BoxCurrentBuy.vue"
 import BoxCurrentSell from "@/components/box/BoxCurrentSell.vue"
 import BoxStockInfo from "@/components/box/BoxStockInfo.vue"
 import HeldStocksChart from "@/components/cart/HeldStocksChart.vue"
-import { useVariableStore } from "@/stores/variable"
-import { useRoute } from "vue-router"
 import BoxLimitBuy from "@/components/box/BoxLimitBuy.vue"
 import BoxLimitSell from "@/components/box/BoxLimitSell.vue"
-import { useUserStore } from "@/stores/user"
-import { onMounted, ref } from "vue"
-import type { User } from "@/stores/user"
+import { useRoute } from "vue-router"
+import { useStockStore } from "@/stores/stock"
+import { computed, onMounted } from "vue"
 
-// 임시
-
+const stockStore = useStockStore()
 const route = useRoute()
-const store = useVariableStore()
+const path = computed(() => route.path)
+onMounted(async () => {})
 
 let price = 0
 let Quantity = 0
@@ -24,6 +22,7 @@ let Quantity = 0
 <template>
   <div>
     <BoxUserInfo :price="price" class="mt-16 sticky top-16" />
+    <!-- {{ chartData }} -->
     <!-- 임시 -->
     <HeldStocksChart />
     <h1 class="text-center">주식 정보</h1>
