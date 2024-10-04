@@ -25,15 +25,16 @@ import { useAuthStore } from "@/stores/auth"
 import { useRouter } from "vue-router"
 function redirectToLogin() {
   // window.location.href = "/api/kakao/login" // 백엔드 로그인 URL
-  axios.get('/api/kakao/login')
+  axios
+    .get("/api/kakao/login")
     .then((response) => {
       // 성공적으로 로그인 URL을 가져온 경우
-      console.log(response.data);
-      window.location.href = response.data;
+      console.log(response.data)
+      window.location.href = response.data
     })
     .catch((error) => {
-      console.error('로그인 요청 중 오류 발생:', error);
-    });
+      console.error("로그인 요청 중 오류 발생:", error)
+    })
 }
 
 interface TokenResponse {

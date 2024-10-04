@@ -28,16 +28,19 @@ interface StockList {
   ratio: number
 }
 
+const AuthStore = useStockStore()
+const myStock = ref()
 const storeStock = useStockStore()
 const stockList = ref<StockList[]>([])
+const route = useRoute()
+const name = route.params.stock as string
+
 onMounted(async () => {
   const fetchedStockPrice = await storeStock.getStockPrice()
   stockList.value = fetchedStockPrice
+  myStock.value = await AuthStore.getMyStock()
+  console.log(myStock.value);
 })
-
-const userData = { 현재잔액: 135000, 투자가능금액: 35000 }
-const route = useRoute()
-const name = route.params.stock as string
 
 const matchingStock = computed(() => {
   return stockList.value.find((stock) => stock.stockItem === name)
@@ -48,11 +51,11 @@ const matchingStock = computed(() => {
   <div class="bg-white m-4 rounded-lg shadow flex flex-col gap-2">
     <div class="mx-4 mt-4">
       <span>현재 잔액 : </span>
-      <span class="font-bold">{{ userData["현재잔액"].toLocaleString() }} 알</span>
+      <span class="font-bold">{{ myStock.balance.toLocaleString() }} 알</span>
     </div>
     <div class="mx-4">
       <span>투자 가능 금액 : </span>
-      <span class="font-bold">{{ userData["투자가능금액"].toLocaleString() }} 알</span>
+      <span class="font-bold">{{ myStock.investablePrice.toLocaleString() }} 알</span>
     </div>
     <div class="mx-4 mb-4">
       <span>{{ nameMap[name] }} 가격 : </span>
