@@ -99,19 +99,19 @@ public class StockUserServiceImpl implements StockUserService {
 
     @Transactional
     @Override
-    public StockUserResponse buyStock(StockBuyRequest stockBuyReq) {
+    public StockUserResponse buyStock(StockBuyRequest stockBuyReq, Long userId) {
         Stock stock = stockRepository.findById(stockBuyReq.getStockId())
                 .orElseThrow(() -> new NoSuchElementException("해당 주식을 찾을 수 없습니다."));
-        User user = userRepository.findById(stockBuyReq.getUserId())
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."));
 
         accountService.updateAccount(
-                AccountLogType.STOCK, stockBuyReq.getUserId(),
+                AccountLogType.STOCK, userId,
                 stockBuyReq.getAmount() * stock.getCurrentPrice() * -1
         );
 
         StockUser stockUser = stockUserRepository.findByUserIdAndStockId(
-                stockBuyReq.getUserId(), stockBuyReq.getStockId()
+                userId, stockBuyReq.getStockId()
                 ).map(stockUserExist -> {
                     stockUserExist.buyStock(stock.getCurrentPrice(), stockBuyReq.getAmount());
                     return stockUserExist;
@@ -128,11 +128,11 @@ public class StockUserServiceImpl implements StockUserService {
 
     @Transactional
     @Override
-    public StockUserResponse sellStock(StockSellRequest stockSellReq) {
-        int pendingSellAmount = stockPendingService.findPendingSellTotalAmount(stockSellReq.getUserId());
+    public StockUserResponse sellStock(StockSellRequest stockSellReq, Long userId) {
+        int pendingSellAmount = stockPendingService.findPendingSellTotalAmount(userId);
 
         StockUser stockUser = stockUserRepository.findJoinStockByUserIdAndStockId(
-                stockSellReq.getUserId(), stockSellReq.getStockId()
+                userId, stockSellReq.getStockId()
                 ).map(stockUserExist -> {
                     stockUserExist.sellStock(stockSellReq.getAmount());
                     return stockUserExist;
@@ -147,7 +147,7 @@ public class StockUserServiceImpl implements StockUserService {
         );
 
         accountService.updateAccount(
-                AccountLogType.STOCK, stockSellReq.getUserId(),
+                AccountLogType.STOCK, userId,
                 stockSellReq.getAmount() * stockUser.getStock().getCurrentPrice()
         );
 
@@ -161,9 +161,9 @@ public class StockUserServiceImpl implements StockUserService {
     }
 
     @Override
-    public StockUserResponse findStockUserInfo(StockUserRequest stockUserReq) {
+    public StockUserResponse findStockUserInfo(Long stockId, Long userId) {
         return stockUserRepository.findJoinStockByUserIdAndStockId(
-                stockUserReq.getUserId(), stockUserReq.getStockId()
+                userId, stockId
                 ).map(stockUser -> new StockUserResponse(
                         stockUser.getBuyAverage(), stockUser.getAmount(), stockUser.getStock().getCurrentPrice()
                 )).orElseGet(StockUserResponse::new);
