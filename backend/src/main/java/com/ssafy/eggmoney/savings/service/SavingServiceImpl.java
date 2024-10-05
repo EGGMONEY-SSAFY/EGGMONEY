@@ -61,9 +61,8 @@ public class SavingServiceImpl implements SavingService {
     // 적금 생성하기
     @Override
     @Transactional
-    public void createSaving(SavingsCreateRequestDto requestDto){
+    public void createSaving(SavingsCreateRequestDto requestDto, User user){
 
-        User user = userRepository.findById(requestDto.getUserId()).orElse(null);
         SavingsProduct savingsProduct = savingsProductRepository.findById(requestDto.getSavingsProductId()).orElse(null);
 
         if(!user.getRole().equals("자녀")){
@@ -71,7 +70,7 @@ public class SavingServiceImpl implements SavingService {
             log.error("적금 가입 권한이 없는 유저입니다.");
         }
 
-        if(savingsRepository.findByUserIdAndSavingsStatus(requestDto.getUserId(), SavingsStatus.AVAILABLE).isPresent()){
+        if(savingsRepository.findByUserIdAndSavingsStatus(user.getId(), SavingsStatus.AVAILABLE).isPresent()){
             // 에러발생
             log.error("이미 사용자가 적금상품을 가지고 있습니다.");
         }

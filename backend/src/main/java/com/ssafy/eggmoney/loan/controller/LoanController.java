@@ -1,11 +1,14 @@
 package com.ssafy.eggmoney.loan.controller;
 
+import com.ssafy.eggmoney.auth.service.KakaoAuthService;
+import com.ssafy.eggmoney.loan.dto.request.GetPrivateLoansRequestDto;
 import com.ssafy.eggmoney.loan.dto.request.LoanCreateRequestDto;
 import com.ssafy.eggmoney.loan.dto.request.LoanEvaluationRequestDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanDetailResponseDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanLogListResponseDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanPrivateListResponseDto;
 import com.ssafy.eggmoney.loan.service.LoanService;
+import com.ssafy.eggmoney.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +21,7 @@ import java.util.List;
 public class LoanController {
 
     private final LoanService loanService;
+    private final KakaoAuthService kakaoAuthService;
 
     /**
      * 대출생성
@@ -25,9 +29,10 @@ public class LoanController {
      * return
      * */
     @PostMapping("/create")
-    public ResponseEntity<?> createLoan(@RequestBody LoanCreateRequestDto requestDto) {
-        System.out.println("in");
-        loanService.createLoan(requestDto);
+    public ResponseEntity<?> createLoan(@RequestHeader(value = "Authorization") String token,
+                                        @RequestBody LoanCreateRequestDto requestDto) {
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        loanService.createLoan(requestDto, user);
         return ResponseEntity.ok().build();
     }
 
@@ -36,9 +41,11 @@ public class LoanController {
      * @param userId
      * return List<LoanPrivateListResponseDto>
      * */
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<LoanPrivateListResponseDto>> getPrivateLoans(@PathVariable long userId) {
-        List<LoanPrivateListResponseDto> result = loanService.getPrivateLoans(userId);
+    @PostMapping("")
+    public ResponseEntity<List<LoanPrivateListResponseDto>> getPrivateLoans(@RequestHeader(value = "Authorization") String token,
+                                                                            @RequestBody GetPrivateLoansRequestDto dto) {
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        List<LoanPrivateListResponseDto> result = loanService.getPrivateLoans(dto.getUserId());
 
         return ResponseEntity.ok().body(result);
     }
