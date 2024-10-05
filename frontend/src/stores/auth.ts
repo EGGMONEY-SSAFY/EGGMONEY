@@ -14,22 +14,28 @@ import axios from "axios"
 // }
 
 async function saveTokensToIndexedDB(accessToken: string, refreshToken: string) {
-  const db = await openDB("authDB", 2, {
+  const db = await openDB('authDB', 2, {
     upgrade(db) {
-      // tokenStore가 존재하지 않으면 새로 생성
-      if (!db.objectStoreNames.contains("tokenStore")) {
-        db.createObjectStore("tokenStore")
+      // 'tokenStore'가 존재하지 않으면 새로 생성
+      if (!db.objectStoreNames.contains('tokenStore')) {
+        db.createObjectStore('tokenStore');
       }
     },
-  })
-  // console.log("DB opened:", db)
-  await db.put("tokenStore", { accessToken, refreshToken }, "authTokens")
-  // console.log(accessToken, refreshToken, db)
+  });
+  await db.put('tokenStore', { accessToken, refreshToken }, 'authTokens');
 }
 
 async function loadTokensFromIndexedDB() {
-  const db = await openDB("authDB", 2)
-  return await db.get("tokenStore", "authTokens")
+  const db = await openDB('authDB', 2, {
+    upgrade(db) {
+      // 'tokenStore'가 존재하지 않으면 새로 생성
+      if (!db.objectStoreNames.contains('tokenStore')) {
+        db.createObjectStore('tokenStore');
+      }
+    },
+  });
+  const tokens = await db.get('tokenStore', 'authTokens');
+  return tokens;
 }
 
 async function clearTokensFromIndexedDB() {
