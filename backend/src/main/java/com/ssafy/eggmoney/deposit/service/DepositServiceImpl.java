@@ -92,8 +92,8 @@ public class DepositServiceImpl implements DepositService {
 
     @Override
     @Transactional(readOnly = true)
-    public DepositResponseDto getDeposits(long userId){
-        Deposit deposit = depositRepository.findByUserIdAndDepositStatus(userId, DepositStatus.AVAILABLE).orElse(null);
+    public DepositResponseDto getDeposits(User user){
+        Deposit deposit = depositRepository.findByUserIdAndDepositStatus(user.getId(), DepositStatus.AVAILABLE).orElse(null);
 
         if(deposit == null){
             log.info("가입된 예금 상품이 없습니다.");

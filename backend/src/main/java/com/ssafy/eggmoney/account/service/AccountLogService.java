@@ -26,6 +26,7 @@ public class AccountLogService {
 
 //    메인계좌 로그 조회
     public Page<GetAccountLogResponseDto> getAccountLogs(Long userId, Pageable pageable){
+
         return accountLogRepository.findLogsByAccountId(userId, pageable)
                 .map( log -> GetAccountLogResponseDto.builder()
                         .accountId(log.getAccount().getId())

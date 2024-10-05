@@ -12,6 +12,7 @@ import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -24,8 +25,8 @@ public class UserService {
     private final FamilyServcie familyServcie;
 
 //    유저 조회
-    public GetUserResponseDto getUser(Long userId) {
-        User user = userRepository.findById(userId).get();
+    public GetUserResponseDto getUser(User user) {
+//        User user = userRepository.findById(dto.).get();
         Family fam = user.getFamily();
 
         GetUserResponseDto.GetUserResponseDtoBuilder builder = GetUserResponseDto.builder()
@@ -68,14 +69,8 @@ public class UserService {
     }
 
     // 유저 정보 업데이트
-    public void updateUser(Long userId, UpdateUserRequestDto dto){
-        Optional<User> userOptional = userRepository.findById(userId);
-        if(userOptional.isPresent()){
-            User user = userOptional.get();
-            user.updateUserInfo(dto.getName(), dto.getBank(), dto.getRealAccount(), dto.getSimplePwd(),dto.getRole());
-            userRepository.save(user);
-        }else {
-            throw new IllegalArgumentException("유저를 찾을 수 없습니다.");
-        }
+    public void updateUser(User user, UpdateUserRequestDto dto){
+        user.updateUserInfo(dto.getName(), dto.getBank(), dto.getRealAccount(), dto.getSimplePwd(),dto.getRole());
+        userRepository.save(user);
     }
 }

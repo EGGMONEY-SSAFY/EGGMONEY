@@ -14,6 +14,7 @@ watch(
   async (newUser) => {
     if (newUser) {
       await assetStore.getWithdrawalList(newUser.userId)
+      console.log(newUser.name)
     }
   },
   { deep: true }
