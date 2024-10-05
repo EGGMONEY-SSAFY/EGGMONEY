@@ -38,7 +38,6 @@ onMounted( async () => {
   <!-- test11kkk1111-->
   <div class="flex justify-center bg-gray-800" >
     <div v-if="isLoading">
-    <!-- 로딩 스피너나 로딩 메시지 -->
     <p>Loading...</p>
   </div>
     <div
