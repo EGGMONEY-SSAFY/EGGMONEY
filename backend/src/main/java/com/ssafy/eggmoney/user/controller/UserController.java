@@ -40,7 +40,6 @@ public class UserController {
         return new ResponseEntity<>(userService.updateInvestmentRatio(2L, investmentRatioReq), HttpStatus.OK);
     }
 
-
     // Token 기반 컨트롤러
     @PostMapping("/update/ExInfo")
     public void tokenUpdateUser(@RequestHeader(value = "Authorization", required = false) String token, @RequestBody UpdateUserRequestDto dto){
