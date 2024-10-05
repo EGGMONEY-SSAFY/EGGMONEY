@@ -37,7 +37,7 @@ public class AccountService {
     private final UserRepository userRepository;
     private final SavingsRepository savingsRepository;
     private final DepositRepository depositRepository;
-    private final LoanRepository loanRepository;
+    private final com.ssafy.eggmoney.loan.repository.LoanRepository loanRepository;
     private final StockUserRepository stockUserRepository;
 
 //    내 메인 계좌 조회

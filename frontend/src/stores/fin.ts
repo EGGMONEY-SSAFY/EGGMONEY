@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import axios from "axios"
 import { reactive, ref } from "vue"
 import type internal from "stream"
+import { useAuthStore } from "./auth"
 export interface depositProducts {
   productId: number
   productName: string
@@ -101,6 +102,7 @@ export const useFinStore = defineStore(
       createdAt: null,
     })
 
+    const authStore = useAuthStore()
     const loanCreate = ref<LoanCreate | null>(null)
     const savingsLogs = ref<SavingsLogs[] | null>(null)
     const deposit = ref<Deposit | null>(null)
@@ -152,8 +154,14 @@ export const useFinStore = defineStore(
     // User 적금 계좌 조회
     const getUserSavings = function (userId: Number): Promise<void> {
       return axios({
-        method: "get",
-        url: `${USER_SAVINGS_API_URL}/${userId}`,
+        method: "post",
+        url: `${USER_SAVINGS_API_URL}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
+        data: {
+          userId: userId,
+        },
       })
         .then((res) => {
           {
@@ -181,6 +189,9 @@ export const useFinStore = defineStore(
       return axios({
         method: "get",
         url: `${USER_SAVINGS_LOG_API_URL}/${savingsId}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
       })
         .then((res) => {
           let logsArray: SavingsLogs[] = []
@@ -197,8 +208,14 @@ export const useFinStore = defineStore(
     // User 예금 계좌 조회
     const getUserDeposit = function (userId: Number): Promise<void> {
       return axios({
-        method: "get",
-        url: `${USER_DEPOSIT_API_URL}/${userId}`,
+        method: "post",
+        url: `${USER_DEPOSIT_API_URL}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
+        data: {
+          userId: userId,
+        },
       })
         .then((res) => {
           deposit.value = res.data
@@ -213,8 +230,14 @@ export const useFinStore = defineStore(
     // User 대출 리스트 조회
     const getUserLoanList = function (userId: Number): Promise<void> {
       return axios({
-        method: "get",
-        url: `${USER_LOAN_API_URL}/${userId}`,
+        method: "post",
+        url: `${USER_LOAN_API_URL}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
+        data: {
+          userId: userId,
+        },
       })
         .then((res) => {
           let loanValue: Loan[] = []
@@ -234,6 +257,9 @@ export const useFinStore = defineStore(
       return axios({
         method: "get",
         url: `${USER_LOAN_DETAIL_API_URL}/${loanId}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
       })
         .then((res) => {
           loan.value = res.data
@@ -249,6 +275,9 @@ export const useFinStore = defineStore(
       return axios({
         method: "get",
         url: `${USER_LOAN_LOG_API_URL}/${loanId}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
       })
         .then((res) => {
           let logsArray: LoanLog[] = []
@@ -267,7 +296,10 @@ export const useFinStore = defineStore(
     const sendSavings = function (userId: Number): Promise<void> {
       return axios({
         method: "post",
-        url: `${USER_SAVINGS_SEND_API_URL}/${userId}`,
+        url: `${USER_SAVINGS_SEND_API_URL}`,
+        data: {
+          userId: userId,
+        },
       })
         .then((res) => {})
         .catch((err) => {
@@ -280,6 +312,9 @@ export const useFinStore = defineStore(
       return axios({
         method: "post",
         url: `${USER_LOAN_SEND_API_URL}/${loanId}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
       })
         .then((res) => {})
         .catch((err) => {
@@ -292,6 +327,9 @@ export const useFinStore = defineStore(
       return axios({
         method: "post",
         url: `${DELETE_SAVINGS_API_URL}/${savingsId}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
       })
         .then((res) => {})
         .catch((err) => {
@@ -304,6 +342,9 @@ export const useFinStore = defineStore(
       return axios({
         method: "post",
         url: `${DELETE_DEPOSIT_API_URL}/${depositId}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
       })
         .then((res) => {})
         .catch((err) => {

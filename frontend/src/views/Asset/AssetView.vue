@@ -23,7 +23,7 @@ const goWithdrawalTab = () => {
 }
 onMounted(async () => {
   // 유저 조회해서 유저 정보(역할, 자식 목록) 가져오기
-  await userStore.getUser(1)
+  await userStore.getUser()
   //  자녀가 로그인한 경우
   if (userStore.user && userStore.user.role === "자녀") {
     userSelect.value = userStore.user
@@ -79,7 +79,7 @@ onMounted(async () => {
     </div>
 
     <!-- 등록된 가족이 없는 경우 -->
-    <div v-else class="pt-28 text-center grid grid-cols-1 grid-flow-row">
+    <div v-else class="pt-20 text-center grid grid-cols-1 grid-flow-row">
       <h1 class="text-lg font-bold text-blue-700">가족을 등록해 주세요.</h1>
       <div class="flex justify-center items-center mt-16 mb-16">
         <img src="@/assets/asset/link.png" alt="link" class="w-32" />

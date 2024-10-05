@@ -64,8 +64,9 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
 
 //    가족 대표 변경
     @PostMapping("/change")
-    public void changeFamilyPresent(@RequestBody ChangeFamilyPresentRequestDto dto) {
-        familyServcie.changeFamilyPresent(dto);
+    public void changeFamilyPresent(@RequestHeader(value = "Authorization") String token) {
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        familyServcie.changeFamilyPresent(user);
     }
 
 

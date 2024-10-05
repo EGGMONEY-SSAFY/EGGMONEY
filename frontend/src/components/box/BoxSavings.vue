@@ -11,11 +11,12 @@ const finStore = useFinStore()
 const isModalOpen = ref(false)
 
 const props = defineProps<{ user: User; savings: Savings | null }>()
-function goSavingsDetail(userId: number) {
-  router.push({ name: "AssetSavingsDetailView", params: { userId: userId } })
+
+function goSavingsDetail() {
+  router.push({ name: "AssetSavingsDetailView", params: { userId: props.user.userId } })
 }
 
-async function sendSavings(userId: number) {
+async function sendSavings(userId: Number) {
   await finStore.sendSavings(userId)
   closeModal()
   window.location.reload()
@@ -51,10 +52,7 @@ const formatExpireDate = (expireDate?: string) => {
         >
           {{ props.savings?.productName }}
         </h1>
-        <button
-          class="text-main-color font-semibold text-base my-auto"
-          @click="goSavingsDetail(props.user.userId)"
-        >
+        <button class="text-main-color font-semibold text-base my-auto" @click="goSavingsDetail()">
           통장관리
         </button>
       </div>
@@ -101,7 +99,7 @@ const formatExpireDate = (expireDate?: string) => {
           </button>
           <button
             class="bg-blue-500 text-white px-4 py-2 rounded"
-            @click="sendSavings(props.user?.userId)"
+            @click="sendSavings(props.user.userId)"
           >
             확인
           </button>

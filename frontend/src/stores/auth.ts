@@ -3,8 +3,18 @@ import { openDB } from "idb"
 import axios from "axios"
 
 // IndexedDB 설정
+// async function saveTokensToIndexedDB(accessToken: string, refreshToken: string) {
+//   const db = await openDB("authDB", 1, {
+//     upgrade(db) {
+//       db.createObjectStore("tokenStore")
+//     },
+//   })
+//   await db.put("tokenStore", { accessToken, refreshToken }, "authTokens")
+//   console.log(accessToken,refreshToken,db)
+// }
+
 async function saveTokensToIndexedDB(accessToken: string, refreshToken: string) {
-  const db = await openDB("authDB", 1, {
+  const db = await openDB("authDB", 2, {
     upgrade(db) {
       // tokenStore가 존재하지 않으면 새로 생성
       if (!db.objectStoreNames.contains("tokenStore")) {
@@ -12,6 +22,7 @@ async function saveTokensToIndexedDB(accessToken: string, refreshToken: string) 
       }
     },
   })
+  console.log("DB opened:", db)
   await db.put("tokenStore", { accessToken, refreshToken }, "authTokens")
   console.log(accessToken, refreshToken, db)
 }
