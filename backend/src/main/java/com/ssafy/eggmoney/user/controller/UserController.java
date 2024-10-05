@@ -25,21 +25,24 @@ public class UserController {
     // 유저 임시 Controller
 
 //    유저 조회
-    @GetMapping("/{userId}")
-    public GetUserResponseDto getUser(@PathVariable("userId") Long userId) {
-        return userService.getUser(userId);
+    @GetMapping("")
+    public GetUserResponseDto getUser(@RequestHeader(value = "Authorization") String token)
+    {
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        return userService.getUser(user);
     }
 
 //    유저 생성
     @PostMapping("/create")
     public void createuser(@RequestBody CreateUserReqeusetDto dto) {
-        System.out.println(dto.getBank());
+//        System.out.println(dto.getBank());
         userService.createUser(dto);
     }
 
-    @GetMapping("/investment-ratio")
-    public ResponseEntity<List<InvestmentRatioResponse>> getInvestmentRatio(@RequestHeader("Authorization") String token){
-        return new ResponseEntity<>(userService.findInvestmentRatio(2L), HttpStatus.OK);
+    @PostMapping("/update")
+    public void updateUser(@RequestHeader(value = "Authorization") String token, @RequestBody UpdateUserRequestDto dto){
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        userService.updateUser(user, dto);
     }
 
     @PostMapping("/investment-ratio/update")
@@ -52,11 +55,11 @@ public class UserController {
     @PostMapping("/update/ExInfo")
     public void tokenUpdateUser(@RequestHeader(value = "Authorization", required = false) String token, @RequestBody UpdateUserRequestDto dto){
         User user = kakaoAuthService.verifyKakaoToken(token);
-        userService.updateUser(user.getId(), dto);
+        userService.updateUser(user, dto);
     }
     @GetMapping("/search")
     public GetUserResponseDto tokenGetUser(@RequestHeader(value = "Authorization", required = false) String token) {
         User user = kakaoAuthService.verifyKakaoToken(token);
-        return userService.getUser(user.getId());
+        return userService.getUser(user);
     }
 }
