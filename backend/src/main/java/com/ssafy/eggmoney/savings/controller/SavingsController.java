@@ -2,6 +2,7 @@ package com.ssafy.eggmoney.savings.controller;
 
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 import com.ssafy.eggmoney.savings.dto.request.SavingsCreateRequestDto;
+import com.ssafy.eggmoney.savings.dto.request.SavingsRequestDto;
 import com.ssafy.eggmoney.savings.dto.response.SavingsDeleteResponseDto;
 import com.ssafy.eggmoney.savings.dto.response.SavingsLogResponseDto;
 import com.ssafy.eggmoney.savings.dto.response.SavingsProductListResponseDto;
@@ -52,10 +53,11 @@ public class SavingsController {
      * @param userId
      * return SavingsResponseDto
     * */
-    @GetMapping("")
-    public ResponseEntity<SavingsResponseDto> getSavings(@RequestHeader(value = "Authorization") String token) {
+    @PostMapping("")
+    public ResponseEntity<SavingsResponseDto> getSavings(@RequestHeader(value = "Authorization") String token,
+                                                         @RequestBody SavingsRequestDto dto) {
         User user = kakaoAuthService.verifyKakaoToken(token);
-        SavingsResponseDto result = savingService.getSavings(user.getId());
+        SavingsResponseDto result = savingService.getSavings(dto.getUserId());
         return ResponseEntity.ok().body(result);
     }
 
@@ -64,9 +66,10 @@ public class SavingsController {
      * @param userId
      * */
     @PostMapping("/send")
-    public ResponseEntity<?> sendSavings(@RequestHeader(value = "Authorization") String token) {
+    public ResponseEntity<?> sendSavings(@RequestHeader(value = "Authorization") String token,
+                                         @RequestBody SavingsRequestDto dto) {
         User user = kakaoAuthService.verifyKakaoToken(token);
-        savingService.sendSavings(user.getId());
+        savingService.sendSavings(dto.getUserId());
         return ResponseEntity.ok().build();
     }
 

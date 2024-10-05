@@ -4,11 +4,13 @@ import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
 import type { User } from "@/stores/user"
 import { useVariableStore } from "@/stores/variable"
+import { useAuthStore } from "@/stores/auth"
 
 const store = useVariableStore()
 store.setTitle("자산")
 
 const userStore = useUserStore()
+const authStore = useAuthStore()
 const router = useRouter()
 
 const userSelect = ref<User | null>(null)
@@ -21,9 +23,11 @@ const goFamilyTab = () => {
 const goWithdrawalTab = () => {
   router.push({ name: "AssetWithdrawalView" })
 }
-onMounted(async () => {
+onMounted( async () => {
   // 유저 조회해서 유저 정보(역할, 자식 목록) 가져오기
-  await userStore.getUser()
+  
+  console.log("가져온 familyId:", userStore.familyId)
+
   //  자녀가 로그인한 경우
   if (userStore.user && userStore.user.role === "자녀") {
     userSelect.value = userStore.user
@@ -41,12 +45,11 @@ onMounted(async () => {
       console.log("가족 미구성")
     }
   }
-  console.log(userSelect.value)
 })
 </script>
 
 <template>
-  <div class="grid grid-cols-1 grid-flow-row p-5">
+  <div class="grid grid-cols-1 grid-flow-row p-5" v-if="userSelect">
     <!-- 등록된 가족이 있는 경우 -->
     <div v-if="userStore.familyId">
       <!-- 부모일 경우 아이 Select Box -->

@@ -34,7 +34,6 @@ export const useUserStore = defineStore("user", () => {
   const user = ref<User | null>(null)
   const children = ref<User[]>([])
   const familyId = ref<number | null>(null)
-
   const userData = { 현재잔액: 135000, 투자가능금액: 35000 }
 
   // 유저 조회
@@ -42,9 +41,8 @@ export const useUserStore = defineStore("user", () => {
     return axios({
       method: "get",
       url: `${USER_API_URL}`,
-      headers: {
-        // 'Authorization': `Bearer ${authStore.accessToken}`
-        Authorization: `Bearer -e6liz0kZu36BEBW0tA5Qwh-Oi0WI0q7AAAAAQoqJY4AAAGSVoIiIEe54X7lJw5n`,
+      headers: {        
+        Authorization: `Bearer ${authStore.accessToken}`,
       },
     })
       .then((res) => {

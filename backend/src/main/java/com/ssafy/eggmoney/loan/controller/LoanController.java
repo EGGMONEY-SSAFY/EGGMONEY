@@ -41,7 +41,7 @@ public class LoanController {
      * @param userId
      * return List<LoanPrivateListResponseDto>
      * */
-    @GetMapping("")
+    @PostMapping("")
     public ResponseEntity<List<LoanPrivateListResponseDto>> getPrivateLoans(@RequestHeader(value = "Authorization") String token,
                                                                             @RequestBody GetPrivateLoansRequestDto dto) {
         User user = kakaoAuthService.verifyKakaoToken(token);

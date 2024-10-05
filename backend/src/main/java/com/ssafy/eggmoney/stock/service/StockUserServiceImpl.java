@@ -1,6 +1,6 @@
 package com.ssafy.eggmoney.stock.service;
 
-import com.ssafy.eggmoney.account.dto.responseDto.GetAnalyticsResponseDto;
+import com.ssafy.eggmoney.account.dto.response.GetAnalyticsResponseDto;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
 import com.ssafy.eggmoney.stock.dto.request.StockBuyRequest;

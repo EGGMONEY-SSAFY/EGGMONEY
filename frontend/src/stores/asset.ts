@@ -64,8 +64,7 @@ export const useAssetStore = defineStore("asset", () => {
         savings.value = res.data.savings
         mainAccount.value = res.data.mainAccountBalance
         loan.value = res.data.loan
-        stock.value = res.data.stock
-        console.log(res.data)
+        stock.value = res.data.stock        
       })
       .catch((err) => {
         console.error(err)
