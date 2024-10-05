@@ -85,7 +85,7 @@ public class StockPendingServiceImpl implements StockPendingService {
                 .orElseThrow(() -> new NoSuchElementException("해당 지정거래를 찾을 수 없습니다."));
 
         if(!stockPending.getUser().getId().equals(userId)) {
-            throw new AccessDeniedException("다른 사람의 지정 거래를 취소하실 수 없습니다.");
+            throw new AccessDeniedException("본인의 지정 거래만 취소하실 수 있습니다.");
         }
 
         stockPendingRepository.deleteById(stockPendingId);
