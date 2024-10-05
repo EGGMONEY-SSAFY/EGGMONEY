@@ -5,12 +5,15 @@ import com.ssafy.eggmoney.user.dto.reqeust.CreateUserReqeusetDto;
 import com.ssafy.eggmoney.user.dto.reqeust.InvestmentRatioRequest;
 import com.ssafy.eggmoney.user.dto.reqeust.UpdateUserRequestDto;
 import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
+import com.ssafy.eggmoney.user.dto.response.InvestmentRatioResponse;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,6 +35,11 @@ public class UserController {
     public void createuser(@RequestBody CreateUserReqeusetDto dto) {
         System.out.println(dto.getBank());
         userService.createUser(dto);
+    }
+
+    @GetMapping("/investment-ratio")
+    public ResponseEntity<List<InvestmentRatioResponse>> getInvestmentRatio(@RequestHeader("Authorization") String token){
+        return new ResponseEntity<>(userService.findInvestmentRatio(2L), HttpStatus.OK);
     }
 
     @PostMapping("/investment-ratio/update")

@@ -8,6 +8,7 @@ import com.ssafy.eggmoney.user.dto.reqeust.CreateUserReqeusetDto;
 import com.ssafy.eggmoney.user.dto.reqeust.InvestmentRatioRequest;
 import com.ssafy.eggmoney.user.dto.reqeust.UpdateUserRequestDto;
 import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
+import com.ssafy.eggmoney.user.dto.response.InvestmentRatioResponse;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -81,6 +84,30 @@ public class UserService {
         }else {
             throw new IllegalArgumentException("유저를 찾을 수 없습니다.");
         }
+    }
+
+    public List<InvestmentRatioResponse> findInvestmentRatio(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."));
+        List<InvestmentRatioResponse> investmentRatios = new ArrayList<>();
+
+        if(user.getRole().equals("부모")) {
+            List<User> family = userRepository.findAllByFamilyId(user.getFamily().getId());
+
+            if(family.isEmpty()) {
+                throw new NoSuchElementException("해당 가족을 찾을 수 없습니다.");
+            }
+
+            for(User u : family) {
+                if(u.getRole().equals("자녀")) {
+                    investmentRatios.add(new InvestmentRatioResponse(u.getId(), u.getName(), u.getStockRatio()));
+                }
+            }
+        } else {
+            investmentRatios.add(new InvestmentRatioResponse(userId, user.getName(), user.getStockRatio()));
+        }
+
+        return investmentRatios;
     }
 
     @Transactional
