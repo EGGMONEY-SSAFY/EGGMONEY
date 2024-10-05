@@ -24,10 +24,10 @@ import java.util.*;
 @RequiredArgsConstructor
 public class StockUserServiceImpl implements StockUserService {
     private final StockUserRepository stockUserRepository;
-    private final AccountService accountService;
     private final UserRepository userRepository;
-    private final StockLogService stockLogService;
     private final StockRepository stockRepository;
+    private final AccountService accountService;
+    private final StockLogService stockLogService;
     private final StockPendingService stockPendingService;
 
     @Transactional
