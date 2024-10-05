@@ -4,6 +4,7 @@ import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.withdrawal.dto.request.CreateWithdrawalRequestDto;
 import com.ssafy.eggmoney.withdrawal.dto.request.JudgeWithdrawalRequestDto;
+import com.ssafy.eggmoney.withdrawal.dto.request.WithdrawalRequestDto;
 import com.ssafy.eggmoney.withdrawal.dto.response.GetWithdrawalResponseDto;
 import com.ssafy.eggmoney.withdrawal.service.WithdrawalService;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,11 @@ public class WithdrawalController {
     private final KakaoAuthService kakaoAuthService;
 
 //    출금 요청 로그 조회
-    @GetMapping("/log")
-    public List<GetWithdrawalResponseDto> getWithdrawalLogs(@RequestHeader(value = "Authorization") String token){
+    @PostMapping("/log")
+    public List<GetWithdrawalResponseDto> getWithdrawalLogs(@RequestHeader(value = "Authorization") String token,
+                                                            @RequestBody WithdrawalRequestDto dto){
         User user = kakaoAuthService.verifyKakaoToken(token);
-        return withdrawalService.getWithdrawalLogs(user.getId());
+        return withdrawalService.getWithdrawalLogs(dto.getUserId());
     }
 
 //    출금 요청 심사

@@ -3,6 +3,7 @@ package com.ssafy.eggmoney.deposit.controller;
 
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 import com.ssafy.eggmoney.deposit.dto.request.DepositCreateRequestDto;
+import com.ssafy.eggmoney.deposit.dto.request.DepositRequestDto;
 import com.ssafy.eggmoney.deposit.dto.response.DeleteDepositResponseDto;
 import com.ssafy.eggmoney.deposit.dto.response.DepositProductListResponseDto;
 import com.ssafy.eggmoney.deposit.dto.response.DepositResponseDto;
@@ -53,10 +54,11 @@ public class DepositController {
      * @param userId
      * return DepositResponseDto
     * */
-    @GetMapping("")
-    public ResponseEntity<DepositResponseDto> getDeposits(@RequestHeader(value = "Authorization") String token) {
+    @PostMapping("")
+    public ResponseEntity<DepositResponseDto> getDeposits(@RequestHeader(value = "Authorization") String token,
+                                                          @RequestBody DepositRequestDto dto) {
         User user = kakaoAuthService.verifyKakaoToken(token);
-        DepositResponseDto result = depositService.getDeposits(user);
+        DepositResponseDto result = depositService.getDeposits(dto.getUserId());
         return ResponseEntity.ok().body(result);
     }
 

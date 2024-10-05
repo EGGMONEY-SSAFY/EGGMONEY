@@ -72,7 +72,7 @@ const formatExpireDate = (expireDate?: string) => {
       </div>
       <div
         class="flex text-justify justify-center mt-8 px-5 gap-4"
-        v-if="userStore.user?.role !== '자녀'"
+        v-if="userStore.user?.role === '자녀'"
       >
         <button
           class="bg-lime-700 px-3 py-2 rounded-xl text-white font-semibold"

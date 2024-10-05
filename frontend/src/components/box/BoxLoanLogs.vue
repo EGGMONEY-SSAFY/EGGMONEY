@@ -24,7 +24,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg py-3 mt-8" v-if="props.history">
+  <div class="bg-white m-4 rounded-lg py-3 mt-8" v-if="props.history && props.history.length > 0">
     <div v-for="(log, idx) in props.history" :key="log.createdAt">
       <div class="m-4 flex justify-between px-5 py-1">
         <div class="text-start">

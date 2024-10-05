@@ -22,18 +22,18 @@ async function saveTokensToIndexedDB(accessToken: string, refreshToken: string) 
       }
     },
   })
-  console.log("DB opened:", db)
+  // console.log("DB opened:", db)
   await db.put("tokenStore", { accessToken, refreshToken }, "authTokens")
-  console.log(accessToken, refreshToken, db)
+  // console.log(accessToken, refreshToken, db)
 }
 
 async function loadTokensFromIndexedDB() {
-  const db = await openDB("authDB", 1)
+  const db = await openDB("authDB", 2)
   return await db.get("tokenStore", "authTokens")
 }
 
 async function clearTokensFromIndexedDB() {
-  const db = await openDB("authDB", 1)
+  const db = await openDB("authDB", 2)
   if (!db.objectStoreNames.contains("tokenStore")) {
     console.error("tokenStore 객체 저장소가 존재하지 않습니다.")
     return null
@@ -50,7 +50,7 @@ export const useAuthStore = defineStore("auth", {
     async setTokens(accessToken: string, refreshToken: string) {
       this.accessToken = accessToken
       this.refreshToken = refreshToken
-      console.log(accessToken, refreshToken)
+      // console.log(accessToken, refreshToken)
       await saveTokensToIndexedDB(accessToken, refreshToken)
     },
     async loadTokens(router: any) {
@@ -73,6 +73,7 @@ export const useAuthStore = defineStore("auth", {
         this.accessToken = tokens.accessToken
         this.refreshToken = tokens.refreshToken
       }
+      
     },
     async clearToken() {
       this.accessToken = null

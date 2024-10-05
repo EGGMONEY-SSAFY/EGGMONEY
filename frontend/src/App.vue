@@ -4,13 +4,22 @@ import NavBar from "./components/navbar/NavBar.vue"
 import NavBarTop from "./components/navbar/NavBarTop.vue"
 import { useFinStore } from "./stores/fin"
 import { useAuthStore } from "@/stores/auth"
-import { onMounted } from "vue"
+import { onMounted, ref } from "vue"
+import { useUserStore } from "./stores/user"
 const finStore = useFinStore()
 const route = useRoute() // 현재 경로를 가져옴
 const authStore = useAuthStore()
 const router = useRouter()
-onMounted(() => {
-  authStore.loadTokens(router)
+const userStore = useUserStore()
+const isLoading = ref(true)
+
+onMounted( async () => { 
+  console.log("App.vue Loaded")
+  await authStore.loadTokens(router)
+  // 유저 조회해서 유저 정보(역할, 자식 목록) 가져오기
+  await userStore.getUser()
+  console.log("App.vue 작업 완료")
+  isLoading.value = false
 })
 </script>
 
@@ -27,10 +36,14 @@ onMounted(() => {
     </div>
   </div> -->
   <!-- test11kkk1111-->
-  <div class="flex justify-center bg-gray-800">
+  <div class="flex justify-center bg-gray-800" >
+    <div v-if="isLoading">
+    <!-- 로딩 스피너나 로딩 메시지 -->
+    <p>Loading...</p>
+  </div>
     <div
       class="main-container bg-gray-200"
-      :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }"
+      :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage } " v-else
     >
       <!-- /main 또는 /login일 경우 상단바와 하단바 숨김 -->
       <NavBarTop v-if="route.path !== '/main' && route.path !== '/login'" />

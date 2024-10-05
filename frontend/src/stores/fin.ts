@@ -297,6 +297,9 @@ export const useFinStore = defineStore(
       return axios({
         method: "post",
         url: `${USER_SAVINGS_SEND_API_URL}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
         data: {
           userId: userId,
         },

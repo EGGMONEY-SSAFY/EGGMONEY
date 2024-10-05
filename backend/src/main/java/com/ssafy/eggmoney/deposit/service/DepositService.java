@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface DepositService {
     void createDeposit(DepositCreateRequestDto requestDto);
-    DepositResponseDto getDeposits(User user);
+    DepositResponseDto getDeposits(Long userId);
     List<DepositProductListResponseDto> getDepositProducts();
 
     DeleteDepositResponseDto deleteDeposit(long depositId);
