@@ -45,6 +45,11 @@ public class UserController {
         userService.updateUser(user, dto);
     }
 
+    @GetMapping("/investment-ratio")
+    public ResponseEntity<List<InvestmentRatioResponse>> getInvestmentRatio(@RequestHeader("Authorization") String token) {
+        return new ResponseEntity<>(userService.findInvestmentRatio(2L), HttpStatus.OK);
+    }
+
     @PostMapping("/investment-ratio/update")
     public ResponseEntity<Integer> updateInvestmentRatio(@RequestBody InvestmentRatioRequest investmentRatioReq,
                                                          @RequestHeader("Authorization") String token){
