@@ -6,6 +6,39 @@ export const useStockStore = defineStore("stock", () => {
   const token = "q"
   // const authStore = useAuthStore()
   // authStore.accessToken
+
+  const getMyStockLog = async () => {
+    try {
+      const response = await axios({
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "applications/json",
+        },
+        method: "get",
+        url: `${API_URL}/stock/user/log`,
+      })
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const getMyStockInfo = async (stockId: number) => {
+    try {
+      const response = await axios({
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "applications/json",
+        },
+        method: "get",
+        url: `${API_URL}/stock/${stockId}/user/info`,
+      })
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const getMyStock = async () => {
     try {
       const response = await axios({
@@ -73,5 +106,13 @@ export const useStockStore = defineStore("stock", () => {
       console.error("Failed to fetch news:", error) // 에러 핸들링
     }
   }
-  return { getNews, getArticle, getStockPrice, getMoneyInfo, getMyStock }
+  return {
+    getNews,
+    getArticle,
+    getStockPrice,
+    getMoneyInfo,
+    getMyStock,
+    getMyStockInfo,
+    getMyStockLog,
+  }
 })

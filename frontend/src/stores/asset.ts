@@ -72,6 +72,7 @@ export const useAssetStore = defineStore("asset", () => {
       url: `${API_URL}/main-account/${userId}/3/log`,
     })
       .then((res) => {
+        /* eslint-disable prefer-const */
         let logsArray: TradeData[] = []
         res.data.forEach((data: TradeData) => {
           if (data.tradeTarget === "WITHDRAWAL") {
