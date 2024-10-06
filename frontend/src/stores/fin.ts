@@ -194,6 +194,7 @@ export const useFinStore = defineStore(
         },
       })
         .then((res) => {
+          /* eslint-disable prefer-const */
           let logsArray: SavingsLogs[] = []
           res.data.forEach((log: SavingsLogs) => {
             logsArray.push(log)
@@ -240,6 +241,7 @@ export const useFinStore = defineStore(
         },
       })
         .then((res) => {
+          /* eslint-disable prefer-const */
           let loanValue: Loan[] = []
           res.data.forEach((data: Loan) => {
             loanValue.push(data)
