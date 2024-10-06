@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { useFinStore } from "@/stores/fin"
+import { useUserStore } from "@/stores/user"
 import { RouterLink } from "vue-router"
+
+const finStore = useFinStore()
 
 const props = defineProps({
   product: {
@@ -7,6 +11,7 @@ const props = defineProps({
     required: true,
   },
 })
+
 const name = "FinDepositCreateView"
 </script>
 
@@ -18,9 +23,6 @@ const name = "FinDepositCreateView"
         name: `${name}`,
         query: {
           productId: product.productId,
-          productName: product.productName,
-          depositDate: product.depositDate,
-          depositRate: product.depositRate,
         },
       }"
       class="m-2 flex justify-center w-full items-center"

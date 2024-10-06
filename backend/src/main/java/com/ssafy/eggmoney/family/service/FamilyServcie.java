@@ -1,5 +1,6 @@
 package com.ssafy.eggmoney.family.service;
 
+import com.ssafy.eggmoney.common.exception.ErrorType;
 import com.ssafy.eggmoney.family.dto.request.ChangeFamilyPresentRequestDto;
 import com.ssafy.eggmoney.family.dto.request.ConnectFamilyRequestDto;
 import com.ssafy.eggmoney.family.dto.request.CreateFamilyRequestDto;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -36,6 +38,7 @@ public class FamilyServcie {
                 .intro(fam.getIntro())
                 .qrcode(fam.getQrCode())
                 .members( userList.stream()
+                        .filter(user -> !user.getId().equals(fam.getPresentId())) // presentId와 다른 사용자만 포함
                         .map( user -> GetUserResponseDto.builder()
                                 .userId(user.getId())
                                 .email(user.getEmail())
@@ -87,18 +90,18 @@ public class FamilyServcie {
     }
 
 //    가족 대표 변경
-    public void changeFamilyPresent(ChangeFamilyPresentRequestDto dto){
-        User user = userRepository.findById(dto.getUserId()).get();
-        Family fam = familyRepository.findById(dto.getFamilyId()).get();
-        System.out.println(user.getId());
-//        유저가 대표를 바꾸려는 가족에 속해있는지 확인하고 변경
-        if ( user.getFamily().getId().equals(fam.getId()) ) {
-            fam.setPresentId(user.getId());
-            System.out.println(fam.getId());
+    public void changeFamilyPresent(User user){
+        Optional<Family> opfam = familyRepository.findById(user.getFamily().getId());
+        Family family;
+        if ( opfam.isPresent() ) {
+            family = opfam.get();
         }
-        familyRepository.save(fam);
+        else {
+            throw new NoSuchElementException(ErrorType.NOT_FOUND_FAMILY.toString());
+        }
+        family.setPresentId(user.getId());
+        familyRepository.save(family);
     }
-
 
     //가족 맴버 조회
     public List<FamilyMemberResponseDto> getFamilyMembers(Long familyId, Long currentUserId){

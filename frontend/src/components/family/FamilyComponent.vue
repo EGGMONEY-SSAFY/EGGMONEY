@@ -151,9 +151,8 @@ async function createFamily() {
     intro: familyDescription.value,
     // familyImage: imageBase64.value,
   }
-  const token = "e4wl00RLjFl6Q8-ihDGphvKm2sfq31j9AAAAAQo8JCEAAAGSQUsZUJCBbdpZdq0Z"
+  const token = authStore.accessToken
   try {
-    //   const token = authStore.accessToken;
     console.log(token)
     await axios.post("http://localhost:8080/api/v1/family/create", familyData, {
       headers: {

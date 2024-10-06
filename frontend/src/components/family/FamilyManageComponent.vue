@@ -2,19 +2,36 @@
   <div class="flex flex-col items-center justify-center bg-gray-200 min-h-screen">
     <!-- 가족 이미지 섹션 -->
     <div class="bg-white px-4 pb-4 pt-4 rounded-lg shadow-lg w-80 max-w-xl mb-6 mx-4 mt-8">
-      <img
-        :src="familyImageUrl || familyDefaultImage"
-        alt="가족 기본이미지"
-        class="w-full h-48 object-cover mb-4"
-      />
+      <div @click="triggerFileUpload" class="cursor-pointer">
+        <img
+          :src="familyImageUrl || familyDefaultImage"
+          alt="가족 기본이미지"
+          class="w-full h-48 object-cover mb-4"
+        />
+      </div>
+      <!-- 숨겨진 파일 입력 -->
+      <input ref="fileInput" type="file" accept="image/*" @change="onImageChange" class="hidden" />
+
       <div class="flex flex-col justify-center items-center cursor-pointer">
-        <div class="flex items-center mb-4">
-          <h2 class="text-lg font-bold text-blue-700">&nbsp;착하게 살자&nbsp;</h2>
+        <div class="flex items-center mb-4" @click="editIntro = true">
+          <h2 v-if="!editIntro" class="text-lg font-bold text-blue-700">{{ familyInfo.intro }}</h2>
+          <input
+            v-else
+            v-model="editedIntro"
+            @blur="updateFamilyInfo"
+            @keyup.enter="updateFamilyInfo"
+            class="text-lg font-bold text-blue-700"
+          />
           <IconFamilyEdit />
           <br />
         </div>
         <div class="w-full flex justify-end ml-4 pr-2">
-          <button class="px-2 py-2 bg-orange-500 text-white rounded-lg text-sm">가족삭제</button>
+          <button
+            @click="deleteFamily"
+            class="px-2 py-2 bg-orange-500 text-white rounded-lg text-sm"
+          >
+            가족삭제
+          </button>
         </div>
       </div>
     </div>
@@ -22,7 +39,7 @@
     <!-- 구성원 목록 -->
     <div
       v-for="member in familyMembers"
-      :key="member.id"
+      :key="member.userId"
       class="bg-white p-4 rounded-lg shadow-lg w-80 max-w-xl mb-4 flex items-center"
     >
       <div class="bg-blue-700 p-4 rounded-lg mr-4">
@@ -46,7 +63,7 @@
           <span class="text-blue-700 font-bold">{{ member.role }}</span>
         </p>
         <button
-          @click="openDeleteModal(member.id)"
+          @click="openDeleteModal(member.userId)"
           class="px-4 py-1 bg-red-500 text-white rounded-lg text-sm mt-12 ml-28"
         >
           삭제
@@ -68,38 +85,34 @@ import parentDefaultImage from "@/assets/family/부모 기본이미지.png"
 import daughterDefaultImage from "@/assets/family/딸 기본이미지.png"
 import DeleteFamilyComponent from "./DeleteFamilyComponent.vue"
 import IconFamilyEdit from "../icons/IconFamilyEdit.vue"
+import { useAuthStore } from "@/stores/auth"
+import { useRouter } from "vue-router"
+
+interface FamilyInfo {
+  intro: string
+  profileImageUrl: string
+}
 interface FamilyMembers {
-  id: number
+  userId: number
   name: string
   role: string
   profileImageUrl: string
 }
-
+const editedIntro = ref<string>("")
+const editIntro = ref<boolean>(false)
+const editImage = ref<boolean>(false)
+const authStore = useAuthStore()
+const token = authStore.accessToken
 const familyImageUrl = ref<string>("")
-// const familyMembers = ref<FamilyMembers[]>([])
-const familyMembers = ref<FamilyMembers[]>([
-  {
-    id: 1,
-    name: "김엄마",
-    role: "부모님",
-    profileImageUrl: parentDefaultImage, // 더미 이미지 URL
-  },
-  {
-    id: 2,
-    name: "김아빠",
-    role: "부모님",
-    profileImageUrl: parentDefaultImage, // 더미 이미지 URL
-  },
-  {
-    id: 100,
-    name: "김자녀",
-    role: "자녀",
-    profileImageUrl: daughterDefaultImage, // 더미 이미지 URL
-  },
-])
+const familyInfo = ref<FamilyInfo>({
+  intro: "",
+  profileImageUrl: "",
+})
+const fileInput = ref<HTMLInputElement | null>(null)
+const familyMembers = ref<FamilyMembers[]>([])
 
 const selectedMemberId = ref<number | null>(null)
-
+const router = useRouter()
 const openDeleteModal = (memberId: number) => {
   selectedMemberId.value = memberId
 }
@@ -107,33 +120,61 @@ const openDeleteModal = (memberId: number) => {
 const closeDeleteModal = () => {
   selectedMemberId.value = null
 }
-
+const triggerFileUpload = () => {
+  fileInput.value?.click()
+}
 const fetchFamilyData = async () => {
-  const token = "ltTKtc55GJBtipKP_EjUXXoEKunA-gU0AAAAAQo9c00AAAGSQYw9ZZCBbdpZdq0Z"
   try {
-    // const familyImageResponse = await axios.get("http://localhost:8080/api/family/image")
-    // familyImageUrl.value = familyImageResponse.data.imageUrl
-
-    const familyMembersResponse = await axios.get(
-      "http://localhost:8080/api/v1/family/searchMember",
+    const familyResponse = await axios.get("/api/v1/family/searchFamily", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    console.log(familyMembers)
+    if (!familyResponse.data) {
+      alert("가족 정보가 존재하지 않습니다.")
+      router.back() // 이전 페이지로 이동
+    } else {
+      familyInfo.value.intro = familyResponse.data.intro // 가훈 할당
+      familyImageUrl.value = familyResponse.data.profileImageUrl // 가족 이미지 할당
+      familyMembers.value = familyResponse.data.members // 가족 구성원 할당
+    }
+  } catch (error) {
+    console.error("가족 정보 업데이트 실패", error)
+    router.back() // 오류 발생 시 이전 페이지로 이동
+  }
+}
+const deleteFamily = async () => {
+  try {
+    await axios.post(
+      "/api/v1/family/delete",
+      {},
       {
         headers: {
-          Authorization: `Bearer ${token}`, // 토큰이 필요한 경우 추가
+          Authorization: `Bearer ${token}`,
         },
       }
     )
-    console.log(familyMembersResponse)
-    familyMembers.value = familyMembersResponse.data
+    alert("가족 삭제 완료")
+    // 삭제 후 새로고침
+    fetchFamilyData()
   } catch (error) {
-    console.error("가족 정보 업데이트 실패", error)
+    console.error("가족 삭제 실패", error)
   }
 }
 
 const deleteSelectedMember = async () => {
+  console.log(selectedMemberId.value)
   if (selectedMemberId.value !== null) {
     try {
       await axios.post(
-        `http://localhost:8080/api/v1/family/delete/member/${selectedMemberId.value}`
+        `/api/v1/family/delete/member`,
+        { memberId: selectedMemberId.value },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       fetchFamilyData()
     } catch (error) {
@@ -143,8 +184,105 @@ const deleteSelectedMember = async () => {
     }
   }
 }
+const onImageChange = async (event: Event) => {
+  const file = (event.target as HTMLInputElement).files?.[0]
+  if (file) {
+    const formData = new FormData()
+    formData.append("file", file)
+
+    try {
+      const response = await axios.post("/api/v1/family/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      familyImageUrl.value = response.data.imageUrl // 업로드된 이미지 URL 저장
+      fetchFamilyData() // 이미지 업데이트 후 가족 정보 업데이트 실행
+    } catch (error) {
+      console.error("이미지 업로드 실패", error)
+    }
+  }
+}
+const updateFamilyInfo = async () => {
+  try {
+    await axios.post(
+      `/api/v1/family/update`,
+      {
+        intro: editedIntro.value,
+        // profileImageUrl:familyImageUrl.value,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    familyInfo.value.intro = editedIntro.value
+    editIntro.value = false
+    fetchFamilyData()
+  } catch (error) {
+    console.error("가족 정보 업데이트 실패", error)
+  }
+}
 onMounted(() => {
   fetchFamilyData()
 })
 </script>
 <style lang=""></style>
+
+<!-- try{
+  //   // 가훈 및 가족 정보 찾기 
+  //   const familyResponse = await axios.get("/api/v1/family/searchFamily", {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   });
+  //   // 가족 정보가 없으면 이전 페이지로 돌아가기
+  //   if (!familyResponse.data ) {
+  //     alert("가족 정보가 존재하지 않습니다.");
+  //     router.back(); // 이전 페이지로 이동
+  //   } else {
+  //     familyInfo.value = familyResponse.data;
+  //   }
+  // }catch (error) {
+  //   console.error("가족 정보 업데이트 실패", error);
+  //   router.back();
+  // }
+  // try {
+  //   // familyImageUrl.value = familyImageResponse.data.imageUrl
+
+  //   const familyMembersResponse = await axios.get(
+  //     "/api/v1/family/searchMember",
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`, // 토큰이 필요한 경우 추가
+  //       },
+  //     }
+  //   )
+   
+  //     familyMembers.value = familyMembersResponse.data;
+    
+  // } catch (error) {
+  //   console.error("가족 정보 업데이트 실패", error);
+
+  // } -->
+<!-- 
+  {
+    userId: 1,
+    name: "김엄마",
+    role: "부모님",
+    profileImageUrl: parentDefaultImage, // 더미 이미지 URL
+  },
+  {
+    userId: 2,
+    name: "김아빠",
+    role: "부모님",
+    profileImageUrl: parentDefaultImage, // 더미 이미지 URL
+  },
+  {
+    userId: 100,
+    name: "김자녀",
+    role: "자녀",
+    profileImageUrl: daughterDefaultImage, // 더미 이미지 URL
+  }, -->

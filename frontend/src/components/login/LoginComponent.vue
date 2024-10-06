@@ -23,15 +23,18 @@ import { ref, onMounted } from "vue"
 import axios from "axios"
 import { useAuthStore } from "@/stores/auth"
 import { useRouter } from "vue-router"
-declare const Kakao: any
-const tokenResult = ref<string | null>(null)
 function redirectToLogin() {
-  window.location.href = "/api/kakao/login" // 백엔드 로그인 URL
-}
-interface ResponseApi<T> {
-  success: boolean
-  data: T | null
-  message: string
+  // window.location.href = "/api/kakao/login" // 백엔드 로그인 URL
+  axios
+    .get("/api/kakao/login")
+    .then(async (response) => {
+      // 성공적으로 로그인 URL을 가져온 경우
+      console.log(response.data)
+      window.location.href = response.data
+    })
+    .catch((error) => {
+      console.error("로그인 요청 중 오류 발생:", error)
+    })
 }
 
 interface TokenResponse {
@@ -51,27 +54,27 @@ function clearUrlParams() {
 onMounted(() => {
   const urlParams = new URLSearchParams(window.location.search)
   const code = urlParams.get("code")
-  console.log(code)
+  // console.log(code)
   if (code) {
     axios
-      .get<ResponseApi<TokenResponse>>(`/api/kakao/callback`, {
+      .get<TokenResponse>(`/api/kakao/callback`, {
         params: { code },
         withCredentials: true,
       })
       .then((response) => {
-        console.log("Response Data:", response.data)
+        // console.log("Response Data:", response.data)
 
-        if (response.data.success && response.data.data) {
-          const { accessToken, refreshToken, redirectUrl } = response.data.data
+        if (response.data) {
+          const { accessToken, refreshToken, redirectUrl } = response.data
           authStore.setTokens(accessToken, refreshToken)
-          console.log(authStore)
+          // console.log(response.data)
           clearUrlParams()
-          console.log(redirectUrl)
+          // console.log(redirectUrl)
           router.push(redirectUrl)
         }
       })
       .catch((error) => {
-        console.error("Error:", error) // 에러 처리
+        console.error("Error:", error)
       })
   }
 })

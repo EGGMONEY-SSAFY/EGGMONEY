@@ -2,6 +2,7 @@ package com.ssafy.eggmoney.savings.service;
 
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
+import com.ssafy.eggmoney.common.exception.ErrorType;
 import com.ssafy.eggmoney.savings.dto.request.SavingsCreateRequestDto;
 import com.ssafy.eggmoney.savings.dto.response.SavingsDeleteResponseDto;
 import com.ssafy.eggmoney.savings.dto.response.SavingsLogResponseDto;
@@ -18,23 +19,24 @@ import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class SavingServiceImpl implements SavingService {
-
     private final SavingsRepository savingsRepository;
     private final SavingsProductRepository savingsProductRepository;
     private final SavingsLogRepository savingsLogRepository;
-    private final UserRepository userRepository;
     private final AccountService accountService;
 
 
@@ -61,23 +63,25 @@ public class SavingServiceImpl implements SavingService {
     // 적금 생성하기
     @Override
     @Transactional
-    public void createSaving(SavingsCreateRequestDto requestDto){
+    public void createSaving(SavingsCreateRequestDto requestDto, User user){
 
-        User user = userRepository.findById(requestDto.getUserId()).orElse(null);
-        SavingsProduct savingsProduct = savingsProductRepository.findById(requestDto.getSavingsProductId()).orElse(null);
+        SavingsProduct savingsProduct = savingsProductRepository.findById(requestDto.getSavingsProductId()).orElseThrow(
+                () -> new NoSuchElementException(ErrorType.NOT_FOUND_PRODUCT.toString())
+        );
 
         if(!user.getRole().equals("자녀")){
-            // 에러발생
             log.error("적금 가입 권한이 없는 유저입니다.");
+            throw new AccessDeniedException(ErrorType.NOT_CREATED_ROLE.toString());
         }
 
-        if(savingsRepository.findByUserIdAndSavingsStatus(requestDto.getUserId(), SavingsStatus.AVAILABLE).isPresent()){
-            // 에러발생
+        if(savingsRepository.findByUserIdAndSavingsStatus(user.getId(), SavingsStatus.AVAILABLE).isPresent()){
             log.error("이미 사용자가 적금상품을 가지고 있습니다.");
+            throw new AccessDeniedException(ErrorType.NOT_CREATED_ACCOUNT.toString());
         }
 
         if(savingsProduct.getMaxPrice() < requestDto.getPaymentMoney() * savingsProduct.getSavingsDate()){
             log.error("적금 최대 납입 금액을 넘는 값입니다.");
+            throw new IllegalArgumentException(ErrorType.EXCEED_MAX_PRICE.toString());
         }
 
         Savings savings = Savings.builder()
@@ -110,7 +114,9 @@ public class SavingServiceImpl implements SavingService {
     @Override
     @Transactional(readOnly = true)
     public SavingsResponseDto getSavings(Long userId){
-        Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElse(null);
+        Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElseThrow(
+                () -> new NoSuchElementException(ErrorType.NOT_FOUND_SAVINGS.toString())
+        );
 
         log.info("개인 적금 조회 성공");
         return SavingsResponseDto.builder()
@@ -130,14 +136,16 @@ public class SavingServiceImpl implements SavingService {
     @Override
     @Transactional
     public void sendSavings(Long userId){
-        Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElse(null);
+        Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElseThrow(
+                () -> new NoSuchElementException(ErrorType.NOT_FOUND_SAVINGS.toString())
+        );
 
         // 메인계좌에서 돈 빼오기
         accountService.updateAccount(AccountLogType.SAVINGS, userId, -1 * savings.getPaymentMoney());
 
         if(savings.getPaymentDate() <= 0){
-            // 에러발생
             log.error("적금을 모두 납부하셨습니다.");
+            throw new IllegalArgumentException(ErrorType.ALREADY_PAY_SAVINGS.toString());
         }
         Savings updateSavings = savings.toBuilder()
                 .balance(savings.getPaymentMoney() + savings.getBalance())
@@ -179,13 +187,14 @@ public class SavingServiceImpl implements SavingService {
     @Transactional
     public SavingsDeleteResponseDto deleteSavings(Long savingsId) {
 
-        Savings savings = savingsRepository.findByIdAndSavingsStatus(savingsId, SavingsStatus.AVAILABLE).orElse(null);
+        Savings savings = savingsRepository.findByIdAndSavingsStatus(savingsId, SavingsStatus.AVAILABLE).orElseThrow(
+                () -> new NoSuchElementException(ErrorType.NOT_FOUND_SAVINGS.toString())
+        );
         double interest;
         int paymentDate;
         int expiredMoney;
         double interestMoney = 0;
 
-        log.info("{}", savings.toString());
         if(savings.getExpireDate().toLocalDate().isAfter(LocalDate.now())){
             interest = (savings.getSavingsProduct().getSavingsRate() - 2.0);
             paymentDate = savings.getSavingsProduct().getSavingsDate() - savings.getPaymentDate();
@@ -250,7 +259,5 @@ public class SavingServiceImpl implements SavingService {
     public void plusExpired(List<Long> savingsId){
         savingsRepository.extendSavingsExpireDateByOneMonth(savingsId);
         log.info("적금 미납자 계좌 만기일 연장");
-
-
     }
 }

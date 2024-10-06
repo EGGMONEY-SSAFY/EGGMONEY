@@ -5,19 +5,24 @@ import com.ssafy.eggmoney.family.entity.Family;
 import com.ssafy.eggmoney.family.repository.FamilyRepository;
 import com.ssafy.eggmoney.family.service.FamilyServcie;
 import com.ssafy.eggmoney.user.dto.reqeust.CreateUserReqeusetDto;
+import com.ssafy.eggmoney.user.dto.reqeust.InvestmentRatioRequest;
 import com.ssafy.eggmoney.user.dto.reqeust.UpdateUserRequestDto;
 import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
+import com.ssafy.eggmoney.user.dto.response.InvestmentRatioResponse;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-//@Transactional
+@Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
     private final AccountService accountService;
@@ -25,8 +30,8 @@ public class UserService {
     private final FamilyServcie familyServcie;
 
 //    유저 조회
-    public GetUserResponseDto getUser(Long userId) {
-        User user = userRepository.findById(userId).get();
+    public GetUserResponseDto getUser(User user) {
+//        User user = userRepository.findById(dto.).get();
         Family fam = user.getFamily();
 
         GetUserResponseDto.GetUserResponseDtoBuilder builder = GetUserResponseDto.builder()
@@ -69,24 +74,45 @@ public class UserService {
     }
 
     // 유저 정보 업데이트
-    public void updateUser(Long userId, UpdateUserRequestDto dto){
-        Optional<User> userOptional = userRepository.findById(userId);
-        if(userOptional.isPresent()){
-            User user = userOptional.get();
-            user.updateUserInfo(dto.getName(), dto.getBank(), dto.getRealAccount(), dto.getSimplePwd(),dto.getRole());
-            userRepository.save(user);
-        }else {
-            throw new IllegalArgumentException("유저를 찾을 수 없습니다.");
+    public void updateUser(User user, UpdateUserRequestDto dto){
+        user.updateUserInfo(dto.getName(), dto.getBank(), dto.getRealAccount(), dto.getSimplePwd(),dto.getRole());
+        userRepository.save(user);
+    }
+
+    public List<InvestmentRatioResponse> findInvestmentRatio(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."));
+        List<InvestmentRatioResponse> investmentRatios = new ArrayList<>();
+
+        if(user.getRole().equals("부모")) {
+            List<User> family = userRepository.findAllByFamilyId(user.getFamily().getId());
+
+            if(family.isEmpty()) {
+                throw new NoSuchElementException("해당 가족을 찾을 수 없습니다.");
+            }
+
+            for(User u : family) {
+                if(u.getRole().equals("자녀")) {
+                    investmentRatios.add(new InvestmentRatioResponse(u.getId(), u.getName(), u.getStockRatio()));
+                }
+            }
+        } else {
+            investmentRatios.add(new InvestmentRatioResponse(userId, user.getName(), user.getStockRatio()));
         }
+
+        return investmentRatios;
     }
 
-    public int findInvestableRatio(Long userId){
-        User user = userRepository.findById(userId).orElseThrow(() ->
-                new NoSuchElementException("유저를 찾을 수 없습니다.")
-        );
+    @Transactional
+    public int updateInvestmentRatio(Long userId, InvestmentRatioRequest investmentRatioReq){
+        User child = userRepository.findJoinFamilyById(investmentRatioReq.getChildId())
+                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."));
 
-        return user.getStockRatio();
+        if(!userId.equals(child.getFamily().getPresentId())) {
+            throw new AccessDeniedException("투자 비율 설정은 대표 부모만 가능합니다.");
+        }
+
+        child.changeStockRatio(investmentRatioReq.getRatio());
+        return investmentRatioReq.getRatio();
     }
-
-
 }

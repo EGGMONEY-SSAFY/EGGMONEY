@@ -5,13 +5,14 @@ import com.ssafy.eggmoney.loan.dto.request.LoanEvaluationRequestDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanDetailResponseDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanLogListResponseDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanPrivateListResponseDto;
+import com.ssafy.eggmoney.user.entity.User;
 
 import java.util.List;
 
 public interface LoanService {
-    void createLoan(LoanCreateRequestDto requestDto);
+    void createLoan(LoanCreateRequestDto requestDto, User user);
 
-    List<LoanPrivateListResponseDto> getPrivateLoans(long userId);
+    List<LoanPrivateListResponseDto> getPrivateLoans(User user);
 
     LoanDetailResponseDto getDetailLoan(long loanId);
 
