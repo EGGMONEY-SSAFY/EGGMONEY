@@ -9,7 +9,7 @@ export interface depositProducts {
   depositDate: Number
 }
 export interface savingsProducts {
-  productId: number
+  id: number
   productName: string
   savingsRate: number
   savingsDate: number
@@ -62,6 +62,12 @@ export interface depositCreateInfo {
   userId: number
   depositMoney: number
   depositProductId: number
+}
+
+export interface savingsCreateInfo{
+  userId : number
+  paymentMoney : number
+  savingsProductId : number
 }
 
 export interface LoanLog {
@@ -121,6 +127,8 @@ export const useFinStore = defineStore(
     const loanList = ref<Loan[] | null>(null)
     const loanLogs = ref<LoanLog[] | null>([])
     const depositCreateInfo = ref<depositCreateInfo | null>(null)
+    const savingsCreateInfo = ref<savingsCreateInfo | null>(null)
+
 
     // 예금상품조회
     const getDepositProduct = function () {
@@ -179,7 +187,13 @@ export const useFinStore = defineStore(
     }
 
     // 적금 신청 정보 저장
-    const setSavingsCreateInfo = function () {}
+    const setSavingsCreateInfo = function (paymentMoney : number, savingsProductId : number, userId: number) {
+      savingsCreateInfo.value ={
+        paymentMoney,
+        savingsProductId,
+        userId
+      }
+    }
 
     // User 적금 계좌 조회
     const getUserSavings = function (userId: Number): Promise<void> {
@@ -388,14 +402,6 @@ export const useFinStore = defineStore(
 
     // User 예금 신청
     const postUserDeposit = function () {
-      console.log(
-        depositCreateInfo.value?.userId,
-        ", ",
-        depositCreateInfo.value?.depositMoney,
-        ", ",
-        depositCreateInfo.value?.depositProductId,
-        "예금 신청"
-      )
       return axios({
         method: "post",
         url: `${USER_DEPOSIT_CREATE_API_URL}`,
@@ -412,6 +418,21 @@ export const useFinStore = defineStore(
     }
 
     // User 적금 신청
+    const postUserSavings = function () {
+      return axios({
+        method: "post",
+        url: `${USER_SAVINGS_CREATE_API_URL}`,
+        data: {
+          userId: savingsCreateInfo.value?.userId,
+          savingsMoney: savingsCreateInfo.value?.paymentMoney,
+          savingsProductId: savingsCreateInfo.value?.savingsProductId,
+        },
+      })
+        .then((res) => {})
+        .catch((err) => {
+          console.error(err)
+        })
+    }
 
     return {
       depositProducts,
@@ -442,8 +463,11 @@ export const useFinStore = defineStore(
       setDepositCreateInfo,
       setSavingsCreateInfo,
       depositCreateInfo,
+      savingsCreateInfo,
       postUserLoan,
       postUserDeposit,
+      postUserSavings,
+
     }
   }
   // {

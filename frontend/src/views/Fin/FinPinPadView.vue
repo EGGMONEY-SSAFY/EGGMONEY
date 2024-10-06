@@ -25,6 +25,7 @@ const handleSuccess = () => {
 
   }else if(previousRoute?.toString().includes('savings')){
     console.log("적금이 포함된 주소")
+    finStore.postUserSavings()
   
   }else if(previousRoute?.toString().includes('loan')){
     console.log("대출 생성 요청")
@@ -40,10 +41,10 @@ const handleFail = () => {
   console.log('비밀번호 검증 실패');
   // 실패 횟수에 따라 추가 로직 처리 가능
 
-  if(previousRoute?.toString().includes('deposit')){
-    console.log("예금생성 요청")
-    finStore.postUserDeposit()
-
+  if(previousRoute?.toString().includes('savings')){
+    console.log("적금이 포함된 주소")
+    finStore.postUserSavings()
+  
   }
   router.push({name : "FinSuccessView"})
 

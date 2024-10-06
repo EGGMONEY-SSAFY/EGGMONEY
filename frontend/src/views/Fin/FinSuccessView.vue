@@ -14,7 +14,7 @@ onMounted(() => {
   finStore.isYellowPage = true
   finStore.isTab = true
   setTimeout(() => {
-    router.push({ name: "assetMainView" })
+    router.push({ name: "AssetMainView" })
   }, 3000)
 })
 
