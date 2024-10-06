@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from "vue"
+import { useStockStore } from "@/stores/stock"
+import { computed, onMounted, ref } from "vue"
 
 const props = defineProps({
   price: {
@@ -10,10 +11,16 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
-  userData: {
-    type: Object,
-  },
 })
+
+interface StockList {
+  stockId: number
+  stockItem: string
+  updatedDate: string
+  price: number
+  gap: number
+  ratio: number
+}
 
 const buyQuantity = ref(0)
 const totalBuyAmount = computed(() => {
@@ -27,8 +34,26 @@ const preventNegativeQuantity = (event: Event) => {
   }
 }
 
+const storeStock = useStockStore()
+const myStock = ref()
+const myStockB = ref()
+const myStockI = ref()
+const stockList = ref<StockList[]>([])
+
+onMounted(async () => {
+  const fetchedStockPrice = await storeStock.getStockPrice()
+  stockList.value = fetchedStockPrice
+  myStock.value = await storeStock.getMoneyInfo()
+  myStockB.value = myStock.value.balance
+  myStockI.value = myStock.value.investablePrice
+})
+
 const postBuyAmt = computed(() => {
-  return props.userData?.["투자가능금액"] - totalBuyAmount.value
+  return myStockI.value - totalBuyAmount.value
+})
+
+const postBuyAmt1 = computed(() => {
+  return myStockB.value - totalBuyAmount.value
 })
 </script>
 
@@ -61,6 +86,15 @@ const postBuyAmt = computed(() => {
 
     <div class="flex justify-between">
       <div class="m-4">
+        <p>매수 후 잔액</p>
+      </div>
+      <div class="m-4 flex justify-center items-center">
+        <p :class="postBuyAmt1 < 0 ? 'text-red-500' : ''">{{ postBuyAmt1.toLocaleString() }}</p>
+      </div>
+    </div>
+
+    <div class="flex justify-between">
+      <div class="m-4">
         <p>매수 후 투자 가능 금액</p>
       </div>
       <div class="m-4 flex justify-center items-center">
@@ -72,7 +106,7 @@ const postBuyAmt = computed(() => {
       <button
         class="m-4 rounded-lg p-1 px-3 text-white"
         :class="
-          postBuyAmt < 0 || buyQuantity == 0
+          postBuyAmt < 0 || buyQuantity == 0 || postBuyAmt1 < 0
             ? 'cursor-not-allowed bg-red-200'
             : 'bg-red-500 cursor-pointer hover:bg-red-600'
         "

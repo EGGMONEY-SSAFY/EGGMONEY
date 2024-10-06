@@ -1,3 +1,4 @@
+z
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import IconChashed from "@/components/icons/IconChashed.vue"

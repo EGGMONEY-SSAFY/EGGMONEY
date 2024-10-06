@@ -17,8 +17,6 @@ const logList = ref()
 onMounted(async () => {
   logList.value = await stockStore.getMyStockLog()
 })
-
-
 </script>
 
 <template>
