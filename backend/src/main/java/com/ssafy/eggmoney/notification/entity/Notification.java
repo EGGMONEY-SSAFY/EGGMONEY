@@ -21,20 +21,24 @@ public class Notification extends BaseTime {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "pub_user_id")
-    private User pub;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="sub_user_id")
-    private User sub;
+    @JoinColumn(name ="send_user_id")
+    private User sendUser;
 
     @Enumerated(value = STRING)
     private NotificationType notificationType;
 
     private String message;
     private Boolean isRead;
-    private Boolean isValid;
 
-    // 리다이렉트 url 인데 알림 하는 사람이 로직 구상해서 필요하면 추가하기.
-    // private String url;
+    public Notification(User user, User sendUser, NotificationType notificationType, String message) {
+        this.user = user;
+        this.sendUser = sendUser;
+        this.notificationType = notificationType;
+        this.message = message;
+        this.isRead = false;
+    }
 }
