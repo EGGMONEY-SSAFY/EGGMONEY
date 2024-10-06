@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 import axios from "axios"
 import { reactive, ref } from "vue"
-import type internal from "stream"
+
 export interface depositProducts {
   productId: number
   productName: string
@@ -58,6 +58,12 @@ export interface Loan {
   updatedAt: string | null
 }
 
+export interface depositCreateInfo {
+  userId: number
+  depositMoney: number
+  depositProductId: number
+}
+
 export interface LoanLog {
   id: number
   balance: number
@@ -69,7 +75,7 @@ export interface LoanCreate {
   loanAmount: number
   loanDate: number
   loanType: string
-  userId : number
+  userId: number
 }
 export const useFinStore = defineStore(
   "fin",
@@ -88,9 +94,11 @@ export const useFinStore = defineStore(
     const DELETE_SAVINGS_API_URL = "/api/v1/fin/savings/delete"
     const DELETE_DEPOSIT_API_URL = "/api/v1/fin/deposit/delete"
     const USER_LOAN_CREATE_API_URL = "/api/v1/fin/loan/create"
-
+    const USER_DEPOSIT_CREATE_API_URL = "/api/v1/fin/deposit/create"
+    const USER_SAVINGS_CREATE_API_URL = "/api/v1/fin/savings/create"
 
     const isYellowPage = ref<boolean>(false)
+    const isTab = ref<boolean>(false)
     const depositProducts = reactive<depositProducts[]>([])
     const savingsProducts = reactive<savingsProducts[]>([])
 
@@ -112,6 +120,7 @@ export const useFinStore = defineStore(
     const loan = ref<Loan | null>(null)
     const loanList = ref<Loan[] | null>(null)
     const loanLogs = ref<LoanLog[] | null>([])
+    const depositCreateInfo = ref<depositCreateInfo | null>(null)
 
     // 예금상품조회
     const getDepositProduct = function () {
@@ -144,16 +153,33 @@ export const useFinStore = defineStore(
     }
 
     // 대출신청정보 저장
-    const setLoanCreate = function (reason: string, amount: number, date: number, type: string, userId : number) {
+    const setLoanCreate = function (
+      reason: string,
+      amount: number,
+      date: number,
+      type: string,
+      userId: number
+    ) {
       const loanType = type === "원리금균등상환" ? "EQUALR" : "LUMPSUM"
       loanCreate.value = {
         loanReason: reason,
         loanAmount: amount,
         loanDate: date,
         loanType: loanType,
-        userId : userId,
+        userId: userId,
       }
     }
+
+    const setDepositCreateInfo = function (money: number, productId: number, userId: number) {
+      depositCreateInfo.value = {
+        depositMoney: money,
+        depositProductId: productId,
+        userId,
+      }
+    }
+
+    // 적금 신청 정보 저장
+    const setSavingsCreateInfo = function () {}
 
     // User 적금 계좌 조회
     const getUserSavings = function (userId: Number): Promise<void> {
@@ -341,18 +367,17 @@ export const useFinStore = defineStore(
     }
 
     // 유저대출생성
-    const postUserLoan = function (
-    ){
+    const postUserLoan = function () {
       return axios({
         method: "post",
         url: `${USER_LOAN_CREATE_API_URL}`,
         data: {
-          userId : loanCreate.value?.userId,
-          loanType : loanCreate.value?.loanType,
-          loanAmount : loanCreate.value?.loanAmount,
-          loanDate : loanCreate.value?.loanDate,
-          balance : (loanCreate.value?.loanAmount ?? 0) / (loanCreate.value?.loanDate ?? 1),
-          loanReason : loanCreate.value?.loanReason,
+          userId: loanCreate.value?.userId,
+          loanType: loanCreate.value?.loanType,
+          loanAmount: loanCreate.value?.loanAmount,
+          loanDate: loanCreate.value?.loanDate,
+          balance: (loanCreate.value?.loanAmount ?? 0) / (loanCreate.value?.loanDate ?? 1),
+          loanReason: loanCreate.value?.loanReason,
         },
       })
         .then((res) => {})
@@ -360,6 +385,33 @@ export const useFinStore = defineStore(
           console.error(err)
         })
     }
+
+    // User 예금 신청
+    const postUserDeposit = function () {
+      console.log(
+        depositCreateInfo.value?.userId,
+        ", ",
+        depositCreateInfo.value?.depositMoney,
+        ", ",
+        depositCreateInfo.value?.depositProductId,
+        "예금 신청"
+      )
+      return axios({
+        method: "post",
+        url: `${USER_DEPOSIT_CREATE_API_URL}`,
+        data: {
+          userId: depositCreateInfo.value?.userId,
+          depositMoney: depositCreateInfo.value?.depositMoney,
+          depositProductId: depositCreateInfo.value?.depositProductId,
+        },
+      })
+        .then((res) => {})
+        .catch((err) => {
+          console.error(err)
+        })
+    }
+
+    // User 적금 신청
 
     return {
       depositProducts,
@@ -382,11 +434,16 @@ export const useFinStore = defineStore(
       setLoanCreate,
       loanCreate,
       isYellowPage,
+      isTab,
       sendLoan,
       deleteDeposit,
       deleteSavings,
       sendfinLoanJudge,
+      setDepositCreateInfo,
+      setSavingsCreateInfo,
+      depositCreateInfo,
       postUserLoan,
+      postUserDeposit,
     }
   }
   // {

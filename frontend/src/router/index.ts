@@ -44,6 +44,7 @@ import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import StockRateView from "@/views/All/StockRateView.vue"
 import FinPinPadView from "@/views/Fin/FinPinPadView.vue"
 import FinLoanJudgeView from "@/views/Fin/FinLoanJudgeView.vue"
+import FinSuccessView from "@/views/Fin/FinSuccessView.vue"
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -194,6 +195,11 @@ const router = createRouter({
           name: "FinLoanJudgeView",
           component: FinLoanJudgeView,
         },
+        {
+          path: "success",
+          name: "FinSuccessView",
+          component : FinSuccessView
+        }
       ],
     },
     {

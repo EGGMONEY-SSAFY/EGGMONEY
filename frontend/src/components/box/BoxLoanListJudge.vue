@@ -145,7 +145,7 @@ function goLoanDetail(loanId: number) {
       <h1 v-if="loan.loanRate" class="text-wrap">{{ loan.loanRate?.toFixed(2) }} %</h1>
       <h1 v-else class="text-gray-300">심사를 해주세요</h1>
     </div>
-    <div class="flex justify-between pe-5 text-end">
+    <div v-if="loan.loanStatus !== 'REFUSAL'" class="flex justify-between pe-5 text-end">
       <h1>대출 잔액</h1>
       <h1 class="text-wrap">{{ loan.balance.toLocaleString() }}</h1>
     </div>
@@ -154,7 +154,7 @@ function goLoanDetail(loanId: number) {
       <h1 class="text-wrap">{{ loan.loanReason }}</h1>
     </div>
     <div class="flex justify-between pe-5 text-end" v-if="props.loan.loanStatus === 'REFUSAL'">
-      <h1>거절 사유</h1>
+      <h1 class="w-28 text-left">거절 사유</h1>
       <h1 class="text-wrap">{{ props.loan.refuseReason }}</h1>
     </div>
   </div>
@@ -167,20 +167,17 @@ function goLoanDetail(loanId: number) {
       <h2 class="text-xl text-center font-bold mb-4">대출 심사</h2>
 
       <div class="flex flex-col gap-2">
-        <div>
-          요청 자녀 : {{ loan.userName }}
-        </div>
+        <div>요청 자녀 : {{ loan.userName }}</div>
         <div>
           요청 금액 : <span class="">{{ loan.loanAmount?.toLocaleString() }}</span
-            >알
-            
-              <p class="text-sm text-red-500 mb-1 text-wrap">* 실물 계좌에서 돈이 빠져나갑니다</p>
-          </div>  
-          <div class="text-wrap mb-4">
-            요청 이유 : <span class="text-sm text-wrap"> {{ loan.loanReason }}</span
-              >
-            </div>
-          </div>
+          >알
+
+          <p class="text-sm text-red-500 mb-1 text-wrap">* 실물 계좌에서 돈이 빠져나갑니다</p>
+        </div>
+        <div class="text-wrap mb-4">
+          요청 이유 : <span class="text-sm text-wrap"> {{ loan.loanReason }}</span>
+        </div>
+      </div>
 
       <div v-if="loanJudge === 'REFUSAL'">
         <div v-if="loanJudge === 'REFUSAL'" class="items-center">

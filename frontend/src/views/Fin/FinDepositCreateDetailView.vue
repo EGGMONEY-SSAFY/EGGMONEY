@@ -2,29 +2,45 @@
 <script setup lang="ts">
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
+import { useFinStore, type depositCreateInfo } from "@/stores/fin"
+import { computed, onMounted, reactive, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
 const router = useRouter()
 const route = useRoute()
+const finStore = useFinStore()
+const createInfo = ref<depositCreateInfo | null>(null)
+createInfo.value = finStore.depositCreateInfo
+const productId = Number(createInfo.value?.depositProductId)
+const productName = ref("")
+const depositRate = ref(0)
+const depositDate = ref(0)
 
-const productId = Number(route.query.productId)
-const productName = route.query.productName
-const depositRate = Number(route.query.depositRate)
-const depositDate = Number(route.query.depositDate)
-const money = Number(route.query.money)
+onMounted(() => {
+  const depositProduct = finStore.depositProducts.find((product) => product.productId === productId)
+  if (depositProduct) {
+    productName.value = depositProduct.productName
+    depositRate.value = Number(depositProduct.depositRate)
+    depositDate.value = Number(depositProduct.depositDate)
+  }
+})
 
-const repayment = (money + (((money * depositRate) / 100) * depositDate) / 12).toFixed(0)
+const repayment = computed(() => {
+  if (productId !== null) {
+    const depositMoney = Number(createInfo.value?.depositMoney)
+    
+    return Math.round(
+      depositMoney +
+      (((depositMoney * depositRate.value) / 100) * depositDate.value) / 12
+    ).toLocaleString()
+  }
 
+  return "0" // Default repayment value when data is invalid
+})
+console.log("repayment", repayment)
 const handleClick = () => {
   router.push({
     name: "FinPinPadView", // 추후 간편 비밀번호로 변경되어야 한다.
-    query: {
-      money: money,
-      productId: productId,
-      productName: productName,
-      depositDate: depositDate,
-      depositRate: depositRate,
-    },
   })
 }
 </script>
@@ -49,7 +65,10 @@ const handleClick = () => {
           </div>
 
           <div class="m-2 text-sm">
-            <span class="font-bold">{{ money }}</span> 알을 예금해 둘 예정이에요
+            <span v-if="createInfo?.depositMoney" class="font-bold">{{
+              createInfo.depositMoney.toLocaleString()
+            }}</span>
+            알을 예금해 둘 예정이에요
           </div>
         </div>
       </div>

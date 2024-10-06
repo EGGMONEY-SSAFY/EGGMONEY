@@ -8,7 +8,7 @@ import { onMounted } from "vue"
 const finStore = useFinStore()
 const route = useRoute() // 현재 경로를 가져옴
 const authStore = useAuthStore()
-const router = useRouter() 
+const router = useRouter()
 onMounted(() => {
   authStore.loadTokens(router)
 })
@@ -16,7 +16,7 @@ onMounted(() => {
 
 <template>
   <!-- test1113333333332-->
-  <div class="flex justify-center bg-gray-800">
+  <!-- <div class="flex justify-center bg-gray-800">
     <div
       class="main-container bg-gray-200"
       :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }"
@@ -25,7 +25,8 @@ onMounted(() => {
       <RouterView class="mt-12 mb-20" />
       <NavBar />
     </div>
-  </div> -->
+  </div>  -->
+  <!-- -->
   <!-- test111111-->
   <div class="flex justify-center bg-gray-800">
     <div
