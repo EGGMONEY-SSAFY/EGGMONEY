@@ -2,6 +2,7 @@ import { ref } from "vue"
 import { defineStore } from "pinia"
 import axios from "axios"
 import type { User } from "./user"
+import { useAuthStore } from "./auth"
 
 export interface TradeData {
   accountId: number
@@ -18,14 +19,12 @@ export interface Analytics {
   대출: Number | null
   주식: Number | null
 }
-
 export interface ChartData {
   labels: string[]
   datasets: {
     data: number[]
   }[]
 }
-
 export interface Withdrawal {
   withdrawalId: number
   applyer: User
@@ -46,12 +45,19 @@ export const useAssetStore = defineStore("asset", () => {
   const logs = ref<TradeData[]>([])
   const withdrawalList = ref<Withdrawal[]>([])
   const mainAccountPages = ref<number>(1)
+  const authStore = useAuthStore()
 
   // 유저 자산 조회
-  const getPort = function (userId: number): Promise<void> {
+  const getPort = function (userId: Number): Promise<void> {
     return axios({
-      method: "get",
-      url: `${API_URL}/analytics/${userId}`,
+      method: "post",
+      url: `${API_URL}/analytics`,
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+      },
+      data: {
+        userId: userId,
+      },
     })
       .then((res) => {
         deposit.value = res.data.deposit
@@ -66,12 +72,19 @@ export const useAssetStore = defineStore("asset", () => {
   }
 
   // 유저 로그 내역 조회 ( 차트 그리기용 )
-  const getAccountChartLog = function (userId: number): Promise<void> {
+  const getAccountChartLog = function (userId: Number): Promise<void> {
     return axios({
-      method: "get",
-      url: `${API_URL}/main-account/${userId}/3/log`,
+      method: "post",
+      url: `${API_URL}/main-account/3/log`,
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+      },
+      data: {
+        userId: userId,
+      },
     })
       .then((res) => {
+        /* eslint-disable prefer-const */
         let logsArray: TradeData[] = []
         res.data.forEach((data: TradeData) => {
           if (data.tradeTarget === "WITHDRAWAL") {
@@ -99,8 +112,14 @@ export const useAssetStore = defineStore("asset", () => {
   // 유저 로그 내역 조회
   const getAccountLog = function (userId: number, page: number): Promise<void> {
     return axios({
-      method: "get",
-      url: `${API_URL}/main-account/${userId}/log`,
+      method: "post",
+      url: `${API_URL}/main-account/log`,
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+      },
+      data: {
+        userId: userId,
+      },
       params: {
         page: page - 1,
         size: 10,
@@ -133,12 +152,14 @@ export const useAssetStore = defineStore("asset", () => {
   }
 
   // 출금 요청 생성
-  const createWithdrawal = function (userId: number, price: number): Promise<void> {
+  const createWithdrawal = function (price: number): Promise<void> {
     return axios({
       method: "post",
       url: `${API_URL}/withdrawal/create`,
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+      },
       data: {
-        userId: userId,
         price: price,
       },
     })
@@ -151,10 +172,16 @@ export const useAssetStore = defineStore("asset", () => {
   }
 
   // 출금 요청 조회
-  const getWithdrawalList = function (userId: number): Promise<void> {
+  const getWithdrawalList = function (userId: Number): Promise<void> {
     return axios({
-      method: "get",
-      url: `${API_URL}/withdrawal/log/${userId}`,
+      method: "post",
+      url: `${API_URL}/withdrawal/log`,
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+      },
+      data: {
+        userId: userId,
+      },
     })
       .then((res) => {
         withdrawalList.value = res.data

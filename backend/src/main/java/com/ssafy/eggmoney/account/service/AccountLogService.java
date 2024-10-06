@@ -1,13 +1,11 @@
 package com.ssafy.eggmoney.account.service;
 
-import com.ssafy.eggmoney.account.dto.responseDto.GetAccountLogResponseDto;
-import com.ssafy.eggmoney.account.dto.responseDto.GetAccountResponseDto;
+import com.ssafy.eggmoney.account.dto.response.GetAccountLogResponseDto;
 import com.ssafy.eggmoney.account.entity.Account;
 import com.ssafy.eggmoney.account.entity.AccountLog;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.repository.AccountLogRepository;
 import com.ssafy.eggmoney.account.repository.AccountRepository;
-import com.ssafy.eggmoney.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +24,7 @@ public class AccountLogService {
 
 //    메인계좌 로그 조회
     public Page<GetAccountLogResponseDto> getAccountLogs(Long userId, Pageable pageable){
+
         return accountLogRepository.findLogsByAccountId(userId, pageable)
                 .map( log -> GetAccountLogResponseDto.builder()
                         .accountId(log.getAccount().getId())

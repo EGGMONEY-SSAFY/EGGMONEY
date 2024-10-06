@@ -3,26 +3,44 @@ import { openDB } from "idb"
 import axios from "axios"
 
 // IndexedDB 설정
+// async function saveTokensToIndexedDB(accessToken: string, refreshToken: string) {
+//   const db = await openDB("authDB", 1, {
+//     upgrade(db) {
+//       db.createObjectStore("tokenStore")
+//     },
+//   })
+//   await db.put("tokenStore", { accessToken, refreshToken }, "authTokens")
+//   console.log(accessToken,refreshToken,db)
+// }
+
 async function saveTokensToIndexedDB(accessToken: string, refreshToken: string) {
-  const db = await openDB("authDB", 1, {
+  const db = await openDB("authDB", 2, {
     upgrade(db) {
-      // tokenStore가 존재하지 않으면 새로 생성
+      // 'tokenStore'가 존재하지 않으면 새로 생성
       if (!db.objectStoreNames.contains("tokenStore")) {
         db.createObjectStore("tokenStore")
       }
     },
   })
   await db.put("tokenStore", { accessToken, refreshToken }, "authTokens")
-  console.log(accessToken, refreshToken, db)
+  console.log(accessToken,refreshToken,db);
 }
 
 async function loadTokensFromIndexedDB() {
-  const db = await openDB("authDB", 1)
-  return await db.get("tokenStore", "authTokens")
+  const db = await openDB("authDB", 2, {
+    upgrade(db) {
+      // 'tokenStore'가 존재하지 않으면 새로 생성
+      if (!db.objectStoreNames.contains("tokenStore")) {
+        db.createObjectStore("tokenStore")
+      }
+    },
+  })
+  const tokens = await db.get("tokenStore", "authTokens")
+  return tokens
 }
 
 async function clearTokensFromIndexedDB() {
-  const db = await openDB("authDB", 1)
+  const db = await openDB("authDB", 2)
   if (!db.objectStoreNames.contains("tokenStore")) {
     console.error("tokenStore 객체 저장소가 존재하지 않습니다.")
     return null
@@ -39,10 +57,11 @@ export const useAuthStore = defineStore("auth", {
     async setTokens(accessToken: string, refreshToken: string) {
       this.accessToken = accessToken
       this.refreshToken = refreshToken
-      console.log(accessToken, refreshToken)
+      console.log(accessToken,refreshToken);
       await saveTokensToIndexedDB(accessToken, refreshToken)
     },
     async loadTokens(router: any) {
+      try {
       const tokens = await loadTokensFromIndexedDB()
       const currentRoute = router.currentRoute.value.path
       // if (!tokens) {
@@ -61,6 +80,9 @@ export const useAuthStore = defineStore("auth", {
       if (tokens) {
         this.accessToken = tokens.accessToken
         this.refreshToken = tokens.refreshToken
+      }} catch (error) {
+        console.error("토큰 로드 중 오류:", error);
+        router.push('/login')  // 오류 발생 시 로그인 페이지로 이동
       }
     },
     async clearToken() {
@@ -71,12 +93,14 @@ export const useAuthStore = defineStore("auth", {
     async logout() {
       if (this.accessToken) {
         try {
-          // await axios.post("/api/kakao/logout",{},{
-          //   headers:{
-          //     Authorization:`Bearer ${this.accessToken}`,
-          //   }
-          // })
-          window.location.href = "/api/kakao/logout"
+          const response = await axios.get("/api/kakao/logout", {
+            headers: {
+              Authorization: `Bearer ${this.accessToken}`, // 필요한 경우 액세스 토큰 추가
+            },
+          });
+          if (response.data) {
+            window.location.href = response.data;
+          }
           await this.clearToken()
           console.log("로그아웃 성공")
         } catch (error) {

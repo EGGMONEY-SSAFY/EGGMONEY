@@ -114,7 +114,7 @@ public class KakaoAuthService {
                                     }else if(user.getFamily()==null){
                                         tokens.setRedirectUrl("family");
                                     }else{
-                                        tokens.setRedirectUrl("");
+                                        tokens.setRedirectUrl("asset");
                                     }
 
                                 }

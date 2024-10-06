@@ -1,12 +1,12 @@
-import { createRouter, createWebHistory } from "vue-router"
-import AssetView from "@/views/Asset/AssetView.vue"
+import { createRouter, createWebHistory, useRouter } from "vue-router"
+// import AssetView from "@/views/Asset/AssetView.vue"
 import AllView from "@/views/All/AllView.vue"
 import FinView from "@/views/Fin/FinView.vue"
 import StockView from "@/views/Stock/StockView.vue"
 import StockLogView from "@/views/Stock/StockLogView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
 import WonAuthView from "@/views/All/WonAuthView.vue"
-import StockDetail from "@/views/Stock/StockDetail.vue"
+import StockDetail from "@/views/Stock/StockDetailView.vue"
 import MainView from "@/views/All/MainView.vue"
 import LoginView from "@/views/All/LoginView.vue"
 import FamilyInviteComponent from "@/components/family/FamilyInviteComponent.vue"
@@ -42,10 +42,15 @@ import StockOrderListView from "@/views/Stock/StockOrderListView.vue"
 import AssetWithdrawalView from "@/views/Asset/AssetWithdrawalView.vue"
 import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import StockRateView from "@/views/All/StockRateView.vue"
+import event from "@/views/All/event.vue"
+import { useAuthStore } from "@/stores/auth"
+import { useUserStore } from "@/stores/user"
+import { defineAsyncComponent } from "vue"
 import FinPinPadView from "@/views/Fin/FinPinPadView.vue"
 import FinLoanJudgeView from "@/views/Fin/FinLoanJudgeView.vue"
 import FinSuccessView from "@/views/Fin/FinSuccessView.vue"
 import FinSuccessLoanView from "@/views/Fin/FinSuccessLoanView.vue"
+const AssetView = defineAsyncComponent(() => import('@/views/Asset/AssetView.vue'))
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -112,6 +117,21 @@ const router = createRouter({
           component: AssetWithdrawalView,
         },
       ],
+      // beforeEnter: async (to, from, next) => {
+      //   const authStore = useAuthStore()
+      //   const userStore = useUserStore()
+
+      //   // IndexedDB에서 토큰을 로드
+      //   await authStore.loadTokens(router)
+
+      //   // 토큰이 있는 경우 유저 정보 불러오기
+      //   if (authStore.accessToken) {
+      //     await userStore.getUser()
+      //     next() // 유저 정보를 불러온 후 페이지로 이동
+      //   } else {
+      //     next("/login") // 토큰이 없으면 로그인 페이지로 이동
+      //   }
+      // },
     },
     {
       path: "/asset/deposit/:userId",
@@ -229,6 +249,11 @@ const router = createRouter({
       component: WonAuthView,
     },
     {
+      path: "/event",
+      name: "event",
+      component: event,
+    },
+    {
       path: "/stock/detail/:stock",
       name: "StockDetail",
       component: StockDetail,
@@ -307,5 +332,24 @@ const router = createRouter({
     },
   ],
 })
+// 글로벌 네비게이션 가드 추가
+router.beforeEach(async (to, from, next) => {
+  const authStore = useAuthStore()
+  const router = useRouter()
+  await authStore.loadTokens(router) // IndexedDB에서 토큰 로드
+
+  // 로그인 페이지로 이동할 경우 예외 처리
+  if (to.name === "LoginView" || to.name === "MainView") {
+    next() // 로그인 페이지는 토큰 체크 없이 이동
+  } else {
+    // 로그인 페이지를 제외한 모든 경로에서 토큰 확인
+    if (!authStore.accessToken) {
+      next("/login") // 토큰이 없으면 로그인 페이지로 리다이렉트
+    } else {
+      next() // 토큰이 있으면 정상적으로 페이지 이동
+    }
+  }
+}
+)
 
 export default router
