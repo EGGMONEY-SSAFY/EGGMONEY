@@ -60,6 +60,7 @@ export const useAuthStore = defineStore("auth", {
       await saveTokensToIndexedDB(accessToken, refreshToken)
     },
     async loadTokens(router: any) {
+      try {
       const tokens = await loadTokensFromIndexedDB()
       const currentRoute = router.currentRoute.value.path
       // if (!tokens) {
@@ -78,6 +79,9 @@ export const useAuthStore = defineStore("auth", {
       if (tokens) {
         this.accessToken = tokens.accessToken
         this.refreshToken = tokens.refreshToken
+      }} catch (error) {
+        console.error("토큰 로드 중 오류:", error);
+        router.push('/login')  // 오류 발생 시 로그인 페이지로 이동
       }
     },
     async clearToken() {
