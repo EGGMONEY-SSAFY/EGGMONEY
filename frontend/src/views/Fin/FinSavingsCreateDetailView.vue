@@ -30,7 +30,7 @@ const repayment = computed(() => {
   if (productId !== null) {
     money.value = Number(createInfo.value?.paymentMoney)
     for (let i = 1; i <= savingsDate.value; i++) {
-      interestMoney.value += money.value * (savingsRate.value / 100 * i / 12)
+      interestMoney.value += money.value * (((savingsRate.value / 100) * i) / 12)
     }
     return Math.round(interestMoney.value + money.value * savingsDate.value).toLocaleString()
   }

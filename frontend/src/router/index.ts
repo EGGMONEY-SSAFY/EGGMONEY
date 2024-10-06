@@ -45,6 +45,7 @@ import StockRateView from "@/views/All/StockRateView.vue"
 import FinPinPadView from "@/views/Fin/FinPinPadView.vue"
 import FinLoanJudgeView from "@/views/Fin/FinLoanJudgeView.vue"
 import FinSuccessView from "@/views/Fin/FinSuccessView.vue"
+import FinSuccessLoanView from "@/views/Fin/FinSuccessLoanView.vue"
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -198,8 +199,13 @@ const router = createRouter({
         {
           path: "success",
           name: "FinSuccessView",
-          component : FinSuccessView
-        }
+          component: FinSuccessView,
+        },
+        {
+          path: "successRequest",
+          name: "FinSuccessLoanView",
+          component: FinSuccessLoanView,
+        },
       ],
     },
     {

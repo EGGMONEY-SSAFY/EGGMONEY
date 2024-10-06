@@ -64,10 +64,10 @@ export interface depositCreateInfo {
   depositProductId: number
 }
 
-export interface savingsCreateInfo{
-  userId : number
-  paymentMoney : number
-  savingsProductId : number
+export interface savingsCreateInfo {
+  userId: number
+  paymentMoney: number
+  savingsProductId: number
 }
 
 export interface LoanLog {
@@ -129,7 +129,6 @@ export const useFinStore = defineStore(
     const depositCreateInfo = ref<depositCreateInfo | null>(null)
     const savingsCreateInfo = ref<savingsCreateInfo | null>(null)
 
-
     // 예금상품조회
     const getDepositProduct = function () {
       axios({
@@ -187,11 +186,15 @@ export const useFinStore = defineStore(
     }
 
     // 적금 신청 정보 저장
-    const setSavingsCreateInfo = function (paymentMoney : number, savingsProductId : number, userId: number) {
-      savingsCreateInfo.value ={
+    const setSavingsCreateInfo = function (
+      paymentMoney: number,
+      savingsProductId: number,
+      userId: number
+    ) {
+      savingsCreateInfo.value = {
         paymentMoney,
         savingsProductId,
-        userId
+        userId,
       }
     }
 
@@ -467,7 +470,6 @@ export const useFinStore = defineStore(
       postUserLoan,
       postUserDeposit,
       postUserSavings,
-
     }
   }
   // {

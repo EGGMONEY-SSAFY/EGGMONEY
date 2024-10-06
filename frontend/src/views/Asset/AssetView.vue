@@ -23,7 +23,7 @@ const goWithdrawalTab = () => {
 }
 onMounted(async () => {
   // 유저 조회해서 유저 정보(역할, 자식 목록) 가져오기
-  await userStore.getUser(9)
+  await userStore.getUser(8)
   //  자녀가 로그인한 경우
   if (userStore.user && userStore.user.role === "자녀") {
     userSelect.value = userStore.user
@@ -84,7 +84,10 @@ onMounted(async () => {
       <div class="flex justify-center items-center mt-16 mb-16">
         <img src="@/assets/asset/link.png" alt="link" class="w-32" />
       </div>
-      <button class="mx-10 w-3/4 px-3 py-2 bg-orange-500 text-white font-semibold rounded-full mt-8 hover:bg-orange-600" @click="goFamilyTab">
+      <button
+        class="mx-10 w-3/4 px-3 py-2 bg-orange-500 text-white font-semibold rounded-full mt-8 hover:bg-orange-600"
+        @click="goFamilyTab"
+      >
         등록하러가기
       </button>
     </div>

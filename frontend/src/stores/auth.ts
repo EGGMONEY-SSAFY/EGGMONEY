@@ -13,7 +13,7 @@ async function saveTokensToIndexedDB(accessToken: string, refreshToken: string) 
     },
   })
   await db.put("tokenStore", { accessToken, refreshToken }, "authTokens")
-  console.log(accessToken,refreshToken,db);
+  console.log(accessToken, refreshToken, db)
 }
 
 async function loadTokensFromIndexedDB() {
@@ -39,10 +39,10 @@ export const useAuthStore = defineStore("auth", {
     async setTokens(accessToken: string, refreshToken: string) {
       this.accessToken = accessToken
       this.refreshToken = refreshToken
-      console.log(accessToken,refreshToken);
+      console.log(accessToken, refreshToken)
       await saveTokensToIndexedDB(accessToken, refreshToken)
     },
-    async loadTokens(router:any) {
+    async loadTokens(router: any) {
       const tokens = await loadTokensFromIndexedDB()
       const currentRoute = router.currentRoute.value.path
       // if (!tokens) {
