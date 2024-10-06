@@ -2,40 +2,51 @@
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
 import InputMoney from "@/components/input/InputMoney.vue"
-import { ref } from "vue"
+import { useFinStore } from "@/stores/fin"
+import { useUserStore } from "@/stores/user"
+import { onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
 const route = useRoute()
-// interface Product {
-//   productId: number
-//   productName: string
-//   depositRate: number
-//   depositDate: number
-// }
+const finStore = useFinStore()
+const userStore = useUserStore()
 
-const productId = route.query.productId
-const productName = route.query.productName
-const savingsRate = Number(route.query.savingsRate)
-const savingsDate = Number(route.query.savingsDate)
-const maxPrice = Number(route.query.maxPrice) / savingsDate
+const productId = Number(route.query.productId)
+const productName = ref("")
+const savingsRate = ref(0)
+const savingsDate = ref(0)
+const maxPrice = ref(0)
+
+onMounted(() => {
+  const selectedProduct = finStore.savingsProducts.find((product) => product.id === productId)
+  if (selectedProduct) {
+    productName.value = selectedProduct.productName
+    savingsRate.value = Number(selectedProduct.savingsRate)
+    savingsDate.value = Number(selectedProduct.savingsDate)
+    maxPrice.value = Number(selectedProduct.maxPrice)
+  }
+})
 
 const money = ref(0)
 
 const updateMoney = (value: number) => {
   money.value = value
+
 }
 
 const router = useRouter()
 const handleClick = () => {
+  console.log(userStore.user?.userId)
+  if (userStore.user?.userId) {
+    console.log("setSavings",money.value)
+    finStore.setSavingsCreateInfo(money.value, productId, userStore.user?.userId)
+    console.log(finStore.savingsCreateInfo)
+  }
+
   router.push({
-    name: "FinSavingsCreateDetailView", // 추후 간편 비밀번호로 변경되어야 한다.
+    name: "FinSavingsCreateDetailView",
     query: {
-      money: money.value,
       productId: productId,
-      productName: productName,
-      savingsDate: savingsDate,
-      savingsRate: savingsRate,
-      maxPrice: maxPrice,
     },
   })
 }
@@ -59,7 +70,7 @@ const handleClick = () => {
       </div>
 
       <div class="m-4">
-        달마다 <InputMoney @updateMoney="updateMoney" :max-price="maxPrice"></InputMoney> 알을
+        달마다 <InputMoney @updateMoney="updateMoney" :maxPrice="maxPrice"></InputMoney> 알을
       </div>
       <div class="m-4">적금할 예정이에요</div>
     </div>

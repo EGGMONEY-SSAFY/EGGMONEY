@@ -28,7 +28,7 @@ onMounted(() => {
 const repayment = computed(() => {
   if (productId !== null) {
     const depositMoney = Number(createInfo.value?.depositMoney)
-    
+
     return Math.round(
       depositMoney +
       (((depositMoney * depositRate.value) / 100) * depositDate.value) / 12
@@ -40,7 +40,7 @@ const repayment = computed(() => {
 console.log("repayment", repayment)
 const handleClick = () => {
   router.push({
-    name: "FinPinPadView", // 추후 간편 비밀번호로 변경되어야 한다.
+    name: "FinPinPadView",
   })
 }
 </script>

@@ -7,8 +7,6 @@ const props = defineProps({
     required: true,
   },
 })
-
-console.log(props.product.maxPrice)
 const name = "FinSavingsCreateView"
 </script>
 
@@ -19,11 +17,7 @@ const name = "FinSavingsCreateView"
       :to="{
         name: `${name}`,
         query: {
-          productId: product.productId,
-          productName: product.productName,
-          savingsRate: product.savingsRate,
-          savingsDate: product.savingsDate,
-          maxPrice: product.maxPrice,
+          productId: product.id,
         },
       }"
       class="m-2 flex justify-center w-full items-center"
@@ -31,14 +25,16 @@ const name = "FinSavingsCreateView"
       <!-- fin/savings/create, fin/deposit/create로 변환-->
       <div class="my-4 mx-8 w-full flex flex-col gap-y-2">
         <div class="flex justify-between mb-3">
-          <span class="font-bold text-xl">{{ product.productName }}</span>
+          <span class="font-bold text-xl">{{ props.product.productName }}</span>
         </div>
         <div class="flex justify-between items-end">
-          <div class="text-main-color font-bold">{{ product.savingsDate }}개월</div>
+          <div class="text-main-color font-bold">{{ props.product.savingsDate }}개월</div>
           <div class="text-gray-600 text-sm">간 매달 지정된 금액을 적금합니다</div>
         </div>
         <div class="flex justify-between items-end">
-          <span class="text-main-color font-bold">연 {{ product.savingsRate?.toFixed(1) }}%</span>
+          <span class="text-main-color font-bold"
+            >연 {{ props.product.savingsRate?.toFixed(1) }}%</span
+          >
           <span class="text-gray-600 text-sm">의 이율로 돌려드려요</span>
         </div>
       </div>
