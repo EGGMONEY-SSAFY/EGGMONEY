@@ -28,7 +28,6 @@ interface StockList {
   ratio: number
 }
 
-const AuthStore = useStockStore()
 const myStock = ref()
 const myStockB = ref()
 const myStockI = ref()
@@ -40,7 +39,7 @@ const name = route.params.stockName as string
 onMounted(async () => {
   const fetchedStockPrice = await storeStock.getStockPrice()
   stockList.value = fetchedStockPrice
-  myStock.value = await AuthStore.getMoneyInfo()
+  myStock.value = await storeStock.getMoneyInfo()
   myStockB.value = myStock.value.balance.toLocaleString()
   myStockI.value = myStock.value.investablePrice.toLocaleString()
 })
