@@ -50,7 +50,7 @@ public class SavingsController {
 
     /**
      * 개인적금 조회
-     * @param userId
+     * @param dto
      * return SavingsResponseDto
     * */
     @PostMapping("")
@@ -63,7 +63,7 @@ public class SavingsController {
 
     /**
      * 적금납입
-     * @param userId
+     * @param dto
      * */
     @PostMapping("/send")
     public ResponseEntity<?> sendSavings(@RequestHeader(value = "Authorization") String token,
@@ -79,8 +79,8 @@ public class SavingsController {
      * return List<SavingsLogResponseDto>
      * */
     @GetMapping("/log/{savingsId}")
-    public ResponseEntity<List<SavingsLogResponseDto>> getSavingsLogs(@PathVariable Long savingsId){
-
+    public ResponseEntity<List<SavingsLogResponseDto>> getSavingsLogs(@RequestHeader(value = "Authorization") String token, @PathVariable Long savingsId){
+        User user = kakaoAuthService.verifyKakaoToken(token);
         List<SavingsLogResponseDto> result = savingService.getSavingsLogs(savingsId);
 
 
@@ -95,7 +95,8 @@ public class SavingsController {
      */
 
     @PostMapping("/delete/{savingsId}")
-    public ResponseEntity<SavingsDeleteResponseDto> deleteSavings(@PathVariable Long savingsId){
+    public ResponseEntity<SavingsDeleteResponseDto> deleteSavings(@RequestHeader(value = "Authorization") String token, @PathVariable Long savingsId){
+        User user = kakaoAuthService.verifyKakaoToken(token);
         SavingsDeleteResponseDto result = savingService.deleteSavings(savingsId);
 
         return ResponseEntity.ok().body(result);

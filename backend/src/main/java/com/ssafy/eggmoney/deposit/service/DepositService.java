@@ -9,7 +9,7 @@ import com.ssafy.eggmoney.user.entity.User;
 import java.util.List;
 
 public interface DepositService {
-    void createDeposit(DepositCreateRequestDto requestDto);
+    void createDeposit(DepositCreateRequestDto requestDto, User user);
     DepositResponseDto getDeposits(Long userId);
     List<DepositProductListResponseDto> getDepositProducts();
 
