@@ -35,6 +35,7 @@ onMounted(async () => {
       <NavBar />
     </div>
   </div> -->
+
   <div class="flex justify-center bg-gray-800">
     <div v-if="isLoading">
       <p>Loading...</p>
