@@ -84,6 +84,7 @@ export const useAssetStore = defineStore("asset", () => {
       },
     })
       .then((res) => {
+        /* eslint-disable prefer-const */
         let logsArray: TradeData[] = []
         res.data.forEach((data: TradeData) => {
           if (data.tradeTarget === "WITHDRAWAL") {
