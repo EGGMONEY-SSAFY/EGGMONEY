@@ -13,7 +13,7 @@ const router = useRouter()
 const userStore = useUserStore()
 const isLoading = ref(true)
 
-onMounted( async () => { 
+onMounted(async () => {
   console.log("App.vue Loaded")
   await authStore.loadTokens(router)
   // 유저 조회해서 유저 정보(역할, 자식 목록) 가져오기
@@ -36,13 +36,14 @@ onMounted( async () => {
     </div>
   </div> -->
   <!-- test11kkk1111-->
-  <div class="flex justify-center bg-gray-800" >
+  <div class="flex justify-center bg-gray-800">
     <div v-if="isLoading">
-    <p>Loading...</p>
-  </div>
+      <p>Loading...</p>
+    </div>
     <div
       class="main-container bg-gray-200"
-      :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage } " v-else
+      :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }"
+      v-else
     >
       <!-- /main 또는 /login일 경우 상단바와 하단바 숨김 -->
       <NavBarTop v-if="route.path !== '/main' && route.path !== '/login'" />

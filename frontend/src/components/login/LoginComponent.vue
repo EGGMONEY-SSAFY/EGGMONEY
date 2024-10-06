@@ -25,9 +25,9 @@ import { useAuthStore } from "@/stores/auth"
 import { useRouter } from "vue-router"
 function redirectToLogin() {
   // window.location.href = "/api/kakao/login" // 백엔드 로그인 URL
-  axios 
+  axios
     .get("/api/kakao/login")
-    .then( async (response) => {
+    .then(async (response) => {
       // 성공적으로 로그인 URL을 가져온 경우
       console.log(response.data)
       window.location.href = response.data
