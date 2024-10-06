@@ -29,9 +29,8 @@ public class DepositController {
      * 전체 예금 상품 조회
      * return DepositProductResponseDto
      * */
-    @CrossOrigin("http://localhost:5173")
     @GetMapping("/product")
-    public ResponseEntity<List<DepositProductListResponseDto>> getAllDepositProduct() {
+    public ResponseEntity<List<DepositProductListResponseDto>> getAllDepositProduct(@RequestHeader(value = "Authorization") String token) {
         List<DepositProductListResponseDto> result = depositService.getDepositProducts();
         return ResponseEntity.ok().body(result);
     }
@@ -43,15 +42,17 @@ public class DepositController {
     * return
     * */
     @PostMapping("/create")
-    public ResponseEntity<?> createDeposit(@RequestBody DepositCreateRequestDto requestDto) {
-        depositService.createDeposit(requestDto);
+    public ResponseEntity<?> createDeposit(@RequestHeader(value = "Authorization") String token,
+                                           @RequestBody DepositCreateRequestDto requestDto) {
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        depositService.createDeposit(requestDto, user);
 
         return ResponseEntity.ok().build();
     }
 
     /**
      * 개인 예금 조회
-     * @param userId
+     * @param dto
      * return DepositResponseDto
     * */
     @PostMapping("")

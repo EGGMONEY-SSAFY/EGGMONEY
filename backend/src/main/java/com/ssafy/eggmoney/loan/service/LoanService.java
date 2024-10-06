@@ -12,7 +12,7 @@ import java.util.List;
 public interface LoanService {
     void createLoan(LoanCreateRequestDto requestDto, User user);
 
-    List<LoanPrivateListResponseDto> getPrivateLoans(long userId);
+    List<LoanPrivateListResponseDto> getPrivateLoans(User user);
 
     LoanDetailResponseDto getDetailLoan(long loanId);
 

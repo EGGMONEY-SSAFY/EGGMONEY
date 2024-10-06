@@ -23,10 +23,17 @@ public enum ErrorType {
     NOT_ENOUGH_MONEY("계좌에 돈이 충분하지 않습니다."),
     NOT_PRESENT_USER("가족의 대표만 심사할 수 있습니다."),
     WITH_ALREADY_JUDGED("가족의 대표만 심사할 수 있습니다."),
-    API_NETWORK_ERROR("공동망 API 처리 과정에서 에러가 발생했습니다.");
+    API_NETWORK_ERROR("공동망 API 처리 과정에서 에러가 발생했습니다."),
 //    NOT_PRESENT_USER("가족의 대표만 심사할 수 있습니다.");
 
-
+//-------- 금융 관련 -----------------
+    NOT_CREATED_ROLE("계좌를 생성할 권한이 없습니다."),
+    NOT_CREATED_ACCOUNT("이미 계좌가 존재합니다."),
+    NOT_FOUND_PRODUCT("상품이 존재하지 않습니다."),
+    EXCEED_MAX_PRICE("최대 금액을 초과합니다."),
+    ALREADY_PAY_SAVINGS("이미 적금을 모두 납부하였습니다."),
+    NOT_JUDGE_ROLE("요청을 심사할 권한이 없습니다.")
+    ;
     private String msg;
 
     ErrorType(String msg) {

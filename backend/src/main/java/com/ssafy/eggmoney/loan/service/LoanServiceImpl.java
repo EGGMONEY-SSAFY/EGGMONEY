@@ -2,6 +2,7 @@ package com.ssafy.eggmoney.loan.service;
 
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
+import com.ssafy.eggmoney.common.exception.ErrorType;
 import com.ssafy.eggmoney.loan.entity.Loan;
 import com.ssafy.eggmoney.loan.repository.LoanLogRepository;
 import com.ssafy.eggmoney.loan.repository.LoanRepository;
@@ -19,6 +20,7 @@ import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -45,6 +48,7 @@ public class LoanServiceImpl implements LoanService {
 
         if(!user.getRole().equals("자녀")){
             log.error("대출생성 권한이 없습니다.");
+            throw new AccessDeniedException(ErrorType.NOT_CREATED_ROLE.toString());
         }
 
         Loan loan = Loan.builder()
@@ -67,8 +71,8 @@ public class LoanServiceImpl implements LoanService {
     // 개인 대출 내역 조회하기(부모면 자녀 것 모두, 자녀는 본인 것)
     @Override
     @Transactional(readOnly = true)
-    public List<LoanPrivateListResponseDto> getPrivateLoans(long userId) {
-        User user = userRepository.findById(userId).orElse(null);
+    public List<LoanPrivateListResponseDto> getPrivateLoans(User user) {
+
         List<Long> userIds = new ArrayList<>();
         if(user.getRole().equals("부모")){
             List<User> family = userRepository.findAllByFamilyId(user.getFamily().getId());
@@ -112,7 +116,9 @@ public class LoanServiceImpl implements LoanService {
     @Transactional(readOnly = true)
     public LoanDetailResponseDto getDetailLoan(long loanId) {
 
-        Loan loan = loanRepository.findByIdAndLoanStatus(loanId, LoanStatus.APPROVAL).orElse(null);
+        Loan loan = loanRepository.findByIdAndLoanStatus(loanId, LoanStatus.APPROVAL).orElseThrow(
+                () -> new NoSuchElementException(ErrorType.NOT_FOUND_LOAN.toString())
+        );
 
         LoanDetailResponseDto loanDetail = LoanDetailResponseDto.builder()
                 .loanId(loanId)
@@ -133,10 +139,13 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional
     public void loanEvaluation(long loanId, LoanEvaluationRequestDto requestDto) {
-        Loan loan = loanRepository.findById(loanId).orElse(null);
+        Loan loan = loanRepository.findById(loanId).orElseThrow(
+                () -> new NoSuchElementException(ErrorType.NOT_FOUND_LOAN.toString())
+        );
 
         if(!loan.getUser().getRole().equals("부모")){
             log.error("대출심사 권한이 없습니다.");
+            throw new AccessDeniedException(ErrorType.NOT_JUDGE_ROLE.toString());
         }
 
         Loan updateLoan = loan.toBuilder()
@@ -153,7 +162,9 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional
     public void sendRepayment(long loanId) {
-        Loan loan = loanRepository.findByIdAndLoanStatus(loanId, LoanStatus.APPROVAL).orElse(null);
+        Loan loan = loanRepository.findByIdAndLoanStatus(loanId, LoanStatus.APPROVAL).orElseThrow(
+                () -> new NoSuchElementException(ErrorType.NOT_FOUND_LOAN.toString())
+        );
 
         int interest = (int) (loan.getBalance() * loan.getLoanRate() / 100 * 1 / 12);
         int repayment = (loan.getLoanType() == LoanType.EQUALR) ? loan.getLoanAmount() / loan.getLoanDate() : 0;
@@ -209,7 +220,9 @@ public class LoanServiceImpl implements LoanService {
     @Transactional
     public void expiredRepayment(Long loanId) {
 
-        Loan loan = loanRepository.findByIdAndLoanStatus(loanId, LoanStatus.APPROVAL).orElse(null);
+        Loan loan = loanRepository.findByIdAndLoanStatus(loanId, LoanStatus.APPROVAL).orElseThrow(
+                ()  -> new NoSuchElementException(ErrorType.NOT_FOUND_LOAN.toString())
+        );
 
         int interest = (int) (loan.getBalance() * loan.getLoanRate() / 100 * 1 / 12);
 
