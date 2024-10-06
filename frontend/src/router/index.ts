@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, useRouter } from "vue-router"
-import AssetView from "@/views/Asset/AssetView.vue"
+// import AssetView from "@/views/Asset/AssetView.vue"
 import AllView from "@/views/All/AllView.vue"
 import FinView from "@/views/Fin/FinView.vue"
 import StockView from "@/views/Stock/StockView.vue"
@@ -44,7 +44,8 @@ import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import StockRateView from "@/views/All/StockRateView.vue"
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from "@/stores/user"
-
+import { defineAsyncComponent } from "vue"
+const AssetView = defineAsyncComponent(() => import('@/views/Asset/AssetView.vue'))
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -111,21 +112,21 @@ const router = createRouter({
           component: AssetWithdrawalView,
         },
       ],
-      beforeEnter: async (to, from, next) => {
-        const authStore = useAuthStore()
-        const userStore = useUserStore()
+      // beforeEnter: async (to, from, next) => {
+      //   const authStore = useAuthStore()
+      //   const userStore = useUserStore()
 
-        // IndexedDB에서 토큰을 로드
-        await authStore.loadTokens(router)
+      //   // IndexedDB에서 토큰을 로드
+      //   await authStore.loadTokens(router)
 
-        // 토큰이 있는 경우 유저 정보 불러오기
-        if (authStore.accessToken) {
-          await userStore.getUser()
-          next() // 유저 정보를 불러온 후 페이지로 이동
-        } else {
-          next("/login") // 토큰이 없으면 로그인 페이지로 이동
-        }
-      },
+      //   // 토큰이 있는 경우 유저 정보 불러오기
+      //   if (authStore.accessToken) {
+      //     await userStore.getUser()
+      //     next() // 유저 정보를 불러온 후 페이지로 이동
+      //   } else {
+      //     next("/login") // 토큰이 없으면 로그인 페이지로 이동
+      //   }
+      // },
     },
     {
       path: "/asset/deposit/:userId",
@@ -318,6 +319,7 @@ router.beforeEach(async (to, from, next) => {
       next() // 토큰이 있으면 정상적으로 페이지 이동
     }
   }
-})
+}
+)
 
 export default router
