@@ -87,15 +87,13 @@ public Mono<ResponseEntity<TokenResponse>> kakaoCallback(@RequestParam("code") S
 //}
 
     @GetMapping("/logout")
-    public Mono<ResponseEntity<Void>> kakaoLogout(){
+    public Mono<ResponseEntity<String>> kakaoLogout(){
 
         String logoutUrl = UriComponentsBuilder
                 .fromHttpUrl("https://kauth.kakao.com/oauth/logout")
                 .queryParam("client_id", kakaoClientId)
                 .queryParam("logout_redirect_uri", KAKAO_LOGOUT_URL)
                 .toUriString();
-        return Mono.just(ResponseEntity.status(HttpStatus.FOUND)
-                .location(URI.create(logoutUrl))
-                .build());
+        return Mono.just(ResponseEntity.ok(logoutUrl));
     }
 }
