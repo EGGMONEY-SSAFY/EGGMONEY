@@ -88,12 +88,14 @@ export const useAuthStore = defineStore("auth", {
     async logout() {
       if (this.accessToken) {
         try {
-          // await axios.post("/api/kakao/logout",{},{
-          //   headers:{
-          //     Authorization:`Bearer ${this.accessToken}`,
-          //   }
-          // })
-          window.location.href = "/api/kakao/logout"
+          const response = await axios.get("/api/kakao/logout", {
+            headers: {
+              Authorization: `Bearer ${this.accessToken}`, // 필요한 경우 액세스 토큰 추가
+            },
+          });
+          if (response.data) {
+            window.location.href = response.data;
+          }
           await this.clearToken()
           console.log("로그아웃 성공")
         } catch (error) {
