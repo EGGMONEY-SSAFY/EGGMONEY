@@ -1,32 +1,45 @@
 <script setup lang="ts">
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
+import { useFinStore, type savingsCreateInfo } from "@/stores/fin"
+import { computed, onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
 const router = useRouter()
 const route = useRoute()
+const finStore = useFinStore()
 
 const productId = Number(route.query.productId)
-const productName = route.query.productName
-const savingsRate = Number(route.query.savingsRate)
-const savingsDate = Number(route.query.savingsDate)
-const money = Number(route.query.money)
+const productName = ref("")
+const savingsRate = ref(0)
+const savingsDate = ref(0)
+const money = ref(0)
+const createInfo = ref<savingsCreateInfo | null>(null)
+createInfo.value = finStore.savingsCreateInfo
+const interestMoney = ref(0)
+onMounted(() => {
+  const savingsProduct = finStore.savingsProducts.find((product) => product.id === productId)
+  if (savingsProduct) {
+    productName.value = savingsProduct.productName
+    savingsRate.value = Number(savingsProduct.savingsRate)
+    savingsDate.value = Number(savingsProduct.savingsDate)
+  }
+})
 
-const repayment = (
-  money * savingsDate +
-  (((money * savingsRate) / 100) * savingsDate) / 12
-).toFixed(0)
+const repayment = computed(() => {
+  if (productId !== null) {
+    money.value = Number(createInfo.value?.paymentMoney)
+    for (let i = 1; i <= savingsDate.value; i++) {
+      interestMoney.value += money.value * (((savingsRate.value / 100) * i) / 12)
+    }
+    return Math.round(interestMoney.value + money.value * savingsDate.value).toLocaleString()
+  }
 
+  return "0" // Default repayment value when data is invalid
+})
 const handleClick = () => {
   router.push({
-    name: "FinView", // 추후 간편 비밀번호로 변경되어야 한다.
-    query: {
-      money: money,
-      productId: productId,
-      productName: productName,
-      savingsDate: savingsDate,
-      savingsRate: savingsRate,
-    },
+    name: "FinPinPadView", // 추후 간편 비밀번호로 변경되어야 한다.
   })
 }
 </script>
@@ -50,7 +63,7 @@ const handleClick = () => {
             <span class="font-bold">{{ savingsRate.toFixed(1) }}%</span>로
           </div>
           <div class="m-2 text-sm">
-            <span class="font-bold">{{ money }}</span> 알을 예금해 둘 예정이에요
+            <span class="font-bold">{{ money }}</span> 알씩 적금할 예정이에요
           </div>
         </div>
       </div>

@@ -21,5 +21,6 @@ public class LoanPrivateListResponseDto {
     String refuseReason;
     Double loanRate;
     LocalDateTime expirationDate;
-
+    LocalDateTime createdAt;
+    LocalDateTime updatedAt;
 }

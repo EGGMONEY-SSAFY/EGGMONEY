@@ -16,7 +16,7 @@ onMounted(() => {
   <div class="">
     <BoxSavingsProduct
       v-for="product in finStore.savingsProducts"
-      :key="product.productId"
+      :key="product.id"
       :product="product"
       :savingsDate="product.savingsDate"
       :savingsRate="product.savingsRate"

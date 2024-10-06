@@ -2,29 +2,44 @@
 <script setup lang="ts">
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
+import { useFinStore, type depositCreateInfo } from "@/stores/fin"
+import { computed, onMounted, reactive, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
 const router = useRouter()
 const route = useRoute()
+const finStore = useFinStore()
+const createInfo = ref<depositCreateInfo | null>(null)
+createInfo.value = finStore.depositCreateInfo
+const productId = Number(createInfo.value?.depositProductId)
+const productName = ref("")
+const depositRate = ref(0)
+const depositDate = ref(0)
 
-const productId = Number(route.query.productId)
-const productName = route.query.productName
-const depositRate = Number(route.query.depositRate)
-const depositDate = Number(route.query.depositDate)
-const money = Number(route.query.money)
+onMounted(() => {
+  const depositProduct = finStore.depositProducts.find((product) => product.productId === productId)
+  if (depositProduct) {
+    productName.value = depositProduct.productName
+    depositRate.value = Number(depositProduct.depositRate)
+    depositDate.value = Number(depositProduct.depositDate)
+  }
+})
 
-const repayment = (money + (((money * depositRate) / 100) * depositDate) / 12).toFixed(0)
+const repayment = computed(() => {
+  if (productId !== null) {
+    const depositMoney = Number(createInfo.value?.depositMoney)
 
+    return Math.round(
+      depositMoney + (((depositMoney * depositRate.value) / 100) * depositDate.value) / 12
+    ).toLocaleString()
+  }
+
+  return "0" // Default repayment value when data is invalid
+})
+console.log("repayment", repayment)
 const handleClick = () => {
   router.push({
-    name: "FinView", // 추후 간편 비밀번호로 변경되어야 한다.
-    query: {
-      money: money,
-      productId: productId,
-      productName: productName,
-      depositDate: depositDate,
-      depositRate: depositRate,
-    },
+    name: "FinPinPadView",
   })
 }
 </script>
@@ -49,7 +64,10 @@ const handleClick = () => {
           </div>
 
           <div class="m-2 text-sm">
-            <span class="font-bold">{{ money }}</span> 알을 예금해 둘 예정이에요
+            <span v-if="createInfo?.depositMoney" class="font-bold">{{
+              createInfo.depositMoney.toLocaleString()
+            }}</span>
+            알을 예금해 둘 예정이에요
           </div>
         </div>
       </div>
@@ -70,9 +88,9 @@ const handleClick = () => {
         ※ 예상 만기액은 <span class="font-bold text-red-500">{{ repayment }}원</span> 입니다.
       </div>
 
-      <!-- 다음으로 넘어가는 버튼 : FinView를 간편비밀번호로 넘기고, 해당 값들은 route.query에 들어있다.-->
+      <!-- 다음으로 넘어가는 버튼 -->
       <div class="mt-4 text-center">
-        <NextButton routeName="FinView" @click="handleClick"></NextButton>
+        <NextButton routeName="FinPinPadView" @click="handleClick"></NextButton>
       </div>
     </div>
   </div>

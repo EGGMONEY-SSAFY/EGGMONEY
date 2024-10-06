@@ -97,6 +97,8 @@ public class LoanServiceImpl implements LoanService {
                         .refuseReason(loan.getRefuseReason())
                         .loanRate(loan.getLoanRate())
                         .expirationDate(loan.getExpirationDate())
+                        .createdAt(loan.getCreatedAt())
+                        .updatedAt(loan.getUpdatedAt())
                         .build()
         ).collect(Collectors.toList());
 

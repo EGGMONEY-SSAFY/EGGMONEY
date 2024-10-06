@@ -6,7 +6,7 @@ import StockView from "@/views/Stock/StockView.vue"
 import StockLogView from "@/views/Stock/StockLogView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
 import WonAuthView from "@/views/All/WonAuthView.vue"
-import StockDetailView from "@/views/Stock/StockDetailView.vue"
+import StockDetail from "@/views/Stock/StockDetailView.vue"
 import MainView from "@/views/All/MainView.vue"
 import LoginView from "@/views/All/LoginView.vue"
 import FamilyInviteComponent from "@/components/family/FamilyInviteComponent.vue"
@@ -46,6 +46,10 @@ import event from "@/views/All/event.vue"
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from "@/stores/user"
 import { defineAsyncComponent } from "vue"
+import FinPinPadView from "@/views/Fin/FinPinPadView.vue"
+import FinLoanJudgeView from "@/views/Fin/FinLoanJudgeView.vue"
+import FinSuccessView from "@/views/Fin/FinSuccessView.vue"
+import FinSuccessLoanView from "@/views/Fin/FinSuccessLoanView.vue"
 const AssetView = defineAsyncComponent(() => import('@/views/Asset/AssetView.vue'))
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -201,6 +205,26 @@ const router = createRouter({
           path: "savings/create/detail",
           name: "FinSavingsCreateDetailView",
           component: FinSavingsCreateDetailView,
+        },
+        {
+          path: "pinpad",
+          name: "FinPinPadView",
+          component: FinPinPadView,
+        },
+        {
+          path: "loan/create/judge",
+          name: "FinLoanJudgeView",
+          component: FinLoanJudgeView,
+        },
+        {
+          path: "success",
+          name: "FinSuccessView",
+          component: FinSuccessView,
+        },
+        {
+          path: "successRequest",
+          name: "FinSuccessLoanView",
+          component: FinSuccessLoanView,
         },
       ],
     },

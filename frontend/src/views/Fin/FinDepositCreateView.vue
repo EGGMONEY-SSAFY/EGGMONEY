@@ -7,38 +7,49 @@
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
 import InputMoney from "@/components/input/InputMoney.vue"
-import { ref } from "vue"
+import { useFinStore } from "@/stores/fin"
+import { useUserStore } from "@/stores/user"
+import { computed, onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
 const route = useRoute()
-// interface Product {
-//   productId: number
-//   productName: string
-//   depositRate: number
-//   depositDate: number
-// }
+const userStore = useUserStore()
+const finStore = useFinStore()
 
 const productId = Number(route.query.productId)
-const productName = route.query.productName
-const depositRate = Number(route.query.depositRate)
-const depositDate = Number(route.query.depositDate)
+const productName = ref("")
+const depositRate = ref<number>(0)
+const depositDate = ref<number>(0)
+
 const money = ref(0)
 
 const updateMoney = (value: number) => {
   money.value = value
 }
 
+const formattedMoney = computed(() => {
+  return money.value.toLocaleString()
+})
+
+onMounted(() => {
+  const selectedProduct = finStore.depositProducts.find(
+    (product) => product.productId === productId
+  )
+  if (selectedProduct) {
+    productName.value = selectedProduct.productName
+    depositRate.value = Number(selectedProduct.depositRate)
+    depositDate.value = Number(selectedProduct.depositDate)
+  }
+})
+
 const router = useRouter()
 const handleClick = () => {
+  if (userStore.user?.userId) {
+    finStore.setDepositCreateInfo(money.value, productId, userStore.user?.userId)
+  }
+
   router.push({
     name: "FinDepositCreateDetailView",
-    query: {
-      money: money.value,
-      productId: productId,
-      productName: productName,
-      depositDate: depositDate,
-      depositRate: depositRate,
-    },
   })
 }
 </script>
