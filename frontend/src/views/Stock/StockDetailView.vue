@@ -13,7 +13,6 @@ import { computed, onMounted } from "vue"
 const stockStore = useStockStore()
 const route = useRoute()
 const path = computed(() => route.path)
-onMounted(async () => {})
 
 let price = 0
 let Quantity = 0

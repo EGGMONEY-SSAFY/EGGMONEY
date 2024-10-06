@@ -183,6 +183,7 @@ export const useFinStore = defineStore(
         url: `${USER_SAVINGS_LOG_API_URL}/${savingsId}`,
       })
         .then((res) => {
+          /* eslint-disable prefer-const */
           let logsArray: SavingsLogs[] = []
           res.data.forEach((log: SavingsLogs) => {
             logsArray.push(log)
@@ -217,6 +218,7 @@ export const useFinStore = defineStore(
         url: `${USER_LOAN_API_URL}/${userId}`,
       })
         .then((res) => {
+          /* eslint-disable prefer-const */
           let loanValue: Loan[] = []
           res.data.forEach((data: Loan) => {
             loanValue.push(data)

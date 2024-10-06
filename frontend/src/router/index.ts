@@ -6,7 +6,7 @@ import StockView from "@/views/Stock/StockView.vue"
 import StockLogView from "@/views/Stock/StockLogView.vue"
 import StockNewsView from "@/views/Stock/StockNewsView.vue"
 import WonAuthView from "@/views/All/WonAuthView.vue"
-import StockDetail from "@/views/Stock/StockDetail.vue"
+import StockDetailView from "@/views/Stock/StockDetailView.vue"
 import MainView from "@/views/All/MainView.vue"
 import LoginView from "@/views/All/LoginView.vue"
 import FamilyInviteComponent from "@/components/family/FamilyInviteComponent.vue"
@@ -206,9 +206,9 @@ const router = createRouter({
       component: WonAuthView,
     },
     {
-      path: "/stock/detail/:stock",
-      name: "StockDetail",
-      component: StockDetail,
+      path: "/stock/detail/:stockName",
+      name: "StockDetailView",
+      component: StockDetailView,
     },
     {
       path: "/family",

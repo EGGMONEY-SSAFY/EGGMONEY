@@ -35,7 +35,7 @@ const myStockI = ref()
 const storeStock = useStockStore()
 const stockList = ref<StockList[]>([])
 const route = useRoute()
-const name = route.params.stock as string
+const name = route.params.stockName as string
 
 onMounted(async () => {
   const fetchedStockPrice = await storeStock.getStockPrice()
