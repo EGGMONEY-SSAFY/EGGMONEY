@@ -2,13 +2,23 @@
   <div class="flex items-center justify-center mt-20 bg-gray-200">
     <div class="bg-white p-6 rounded-lg shadow-lg text-center w-full max-w-md mx-auto">
       <div v-if="!showResult">
-        <div class="text-2xl font-bold mb-8 mt-8 text-orange-600 font-bold">
+        <div class="text-2xl font-bold mb-8 mt-8 text-blue-500 font-bold">
           문제 {{ currentQuestionIndex + 1 }}
         </div>
         <div class="text-lg mb-4">{{ currentQuestion.question }}</div>
-        <div class="w-full bg-gray-300 rounded-full h-2 mb-4">
-          <div class="bg-teal-500 h-2 rounded-full" :style="{ width: timerBarWidth }"></div>
+
+        <div>
+          <div>
+            <!-- <p><IconAllalarm class="size-8" /> Time </p> -->
+            <p class="flex items-center"><IconAllalarm class="size-6 mr-2 text-lg" /> Time limit</p>
+          </div>
+          <div>
+            <div class="w-full bg-gray-300 rounded-full h-2 mb-4">
+              <div class="bg-teal-500 h-2 rounded-full" :style="{ width: timerBarWidth }"></div>
+            </div>
+          </div>
         </div>
+
         <div id="options" class="mb-4">
           <button
             v-for="(option, index) in currentQuestion.options"
@@ -30,7 +40,9 @@
       <div v-if="showResult">
         <h1 class="text-2xl font-bold mb-8 text-orange-600"><br />결과 발표</h1>
         <p class="mb-2">{{ resultMessage }}</p>
-        <p class="mb-4">당신의 점수는 {{ score }}점입니다!</p>
+        <p class="mb-4">
+          당신의 점수는 <span class="text-red-500 text-2xl font-bold">{{ score }}</span> 점입니다
+        </p>
         <button
           id="restart-btn"
           @click="restartQuiz"
@@ -46,6 +58,11 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue"
+import IconAllalarm from "@/components/icons/IconAllalarm.vue"
+import { useVariableStore } from "@/stores/variable"
+
+const store = useVariableStore()
+store.setTitle("스피드 퀴즈")
 
 interface Question {
   question: string
@@ -154,7 +171,7 @@ const currentQuestion = computed(() => questions[currentQuestionIndex.value])
 const resultMessage = computed(() => {
   if (score.value <= 3) return "우리 함께 공부해요 😊"
   if (score.value <= 6) return "금융에 대해 배우셨군요 🥰"
-  return "와우 ! 아주 멋져요 😆"
+  return "와우 ! 아주 멋져요 😆❤️"
 })
 
 const clearTimer = () => {
