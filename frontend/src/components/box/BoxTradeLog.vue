@@ -1,35 +1,35 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
-import IconChashed from "../icons/IconChashed.vue"
+import IconChashed from "@/components/icons/IconChashed.vue"
 
 interface Log {
-  stockItem: string
+  stockId: number
   tradeDate: string
   tradeType: string
   price: number
   amount: number
   totalPrice: number
 }
-const nameMap: Record<string, string> = {
-  KOSPI: "코스피",
-  KOSDAQ: "코스닥",
-  AUTOMOTIVE: "자동차",
-  BANKING: "은행",
-  CONSTRUCTION: "건설",
-  ENERGY_CHEMICAL: "에너지화학",
-  HEALTHCARE: "헬스케어",
-  IT: "IT",
-  MEDIA_ENTERTAINMENT: "미디어",
-  SEMICONDUCTOR: "반도체",
-  STEEL: "철강",
-  TRANSPORTATION: "운송",
-  UTILITIES: "유틸리티",
+const nameMap: Record<number, string> = {
+  1: "코스피",
+  2: "코스닥",
+  3: "자동차",
+  4: "반도체",
+  5: "헬스케어",
+  6: "은행",
+  7: "에너지화학",
+  8: "철강",
+  9: "건설",
+  10: "운송",
+  11: "미디어",
+  12: "IT",
+  13: "유틸리티",
 }
 const props = defineProps<{
   log: Log
 }>()
 
-const { stockItem, tradeDate, tradeType, price, amount, totalPrice } = props.log
+const { stockId, tradeDate, tradeType, price, amount, totalPrice } = props.log
 const formattedDate = new Date(tradeDate)
 const isDetail = ref(false)
 const isBuy = ref(false)
@@ -68,7 +68,7 @@ const displayDateDetail = formattedDate.toLocaleString("ko-KR", {
 <template>
   <div class="bg-white m-4 rounded-lg shadow flex flex-col">
     <div class="m-4 flex justify-between">
-      <p class="font-bold">{{ nameMap[stockItem] }}</p>
+      <p class="font-bold">{{ nameMap[stockId] }}</p>
       <div class="flex justify-center items-center gap-2">
         <p class="text-sm text-gray-500">{{ isDetail ? displayDateDetail : displayDate }}</p>
         <IconChashed class="size-5 cursor-pointer" @click="toggleDetail" />
