@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user"
-import { ref, onMounted } from "vue"
+import { onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 import type { User } from "@/stores/user"
 import { useVariableStore } from "@/stores/variable"
+import { useAuthStore } from "@/stores/auth"
 
 const store = useVariableStore()
 store.setTitle("자산")
 
 const userStore = useUserStore()
+const authStore = useAuthStore()
 const router = useRouter()
 
 const userSelect = ref<User | null>(null)
@@ -23,7 +25,9 @@ const goWithdrawalTab = () => {
 }
 onMounted(async () => {
   // 유저 조회해서 유저 정보(역할, 자식 목록) 가져오기
-  await userStore.getUser(8)
+
+  console.log("가져온 familyId:", userStore.familyId)
+
   //  자녀가 로그인한 경우
   if (userStore.user && userStore.user.role === "자녀") {
     userSelect.value = userStore.user
@@ -41,12 +45,11 @@ onMounted(async () => {
       console.log("가족 미구성")
     }
   }
-  console.log(userSelect.value)
 })
 </script>
 
 <template>
-  <div class="grid grid-cols-1 grid-flow-row p-5">
+  <div class="grid grid-cols-1 grid-flow-row p-5" v-if="userSelect">
     <!-- 등록된 가족이 있는 경우 -->
     <div v-if="userStore.familyId">
       <!-- 부모일 경우 아이 Select Box -->
@@ -79,7 +82,7 @@ onMounted(async () => {
     </div>
 
     <!-- 등록된 가족이 없는 경우 -->
-    <div v-else class="pt-28 text-center grid grid-cols-1 grid-flow-row">
+    <div v-else class="pt-20 text-center grid grid-cols-1 grid-flow-row">
       <h1 class="text-lg font-bold text-blue-700">가족을 등록해 주세요.</h1>
       <div class="flex justify-center items-center mt-16 mb-16">
         <img src="@/assets/asset/link.png" alt="link" class="w-32" />

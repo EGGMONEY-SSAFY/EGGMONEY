@@ -1,6 +1,6 @@
 package com.ssafy.eggmoney.stock.service;
 
-import com.ssafy.eggmoney.account.dto.responseDto.GetAnalyticsResponseDto;
+import com.ssafy.eggmoney.account.dto.response.GetAnalyticsResponseDto;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
 import com.ssafy.eggmoney.stock.dto.request.StockBuyRequest;
@@ -24,10 +24,10 @@ import java.util.*;
 @RequiredArgsConstructor
 public class StockUserServiceImpl implements StockUserService {
     private final StockUserRepository stockUserRepository;
-    private final AccountService accountService;
     private final UserRepository userRepository;
-    private final StockLogService stockLogService;
     private final StockRepository stockRepository;
+    private final AccountService accountService;
+    private final StockLogService stockLogService;
     private final StockPendingService stockPendingService;
 
     @Transactional
@@ -128,18 +128,20 @@ public class StockUserServiceImpl implements StockUserService {
     @Transactional
     @Override
     public StockUserResponse sellStock(StockSellRequest stockSellReq, Long userId) {
-        int pendingSellAmount = stockPendingService.findPendingSellTotalAmount(userId);
+        int pendingSellAmount = stockPendingService.findPendingSellAmount(userId, stockSellReq.getStockId());
+
+
 
         StockUser stockUser = stockUserRepository.findJoinStockByUserIdAndStockId(
                 userId, stockSellReq.getStockId()
                 ).map(stockUserExist -> {
+                    if(stockUserExist.getAmount() - pendingSellAmount - stockSellReq.getAmount() < 0) {
+                        throw new IllegalArgumentException("판매하는 주식이 보유 주식에서 지정 매수를 뺀 수량을 초과하실 수 없습니다.");
+                    }
                     stockUserExist.sellStock(stockSellReq.getAmount());
                     return stockUserExist;
                 }).orElseThrow(() -> new IllegalArgumentException("팔 수 있는 주식이 존재하지 않습니다."));
 
-        if(stockUser.getAmount() - pendingSellAmount - stockSellReq.getAmount() < 0) {
-            throw new IllegalArgumentException("판매하는 주식이 보유 주식에서 지정 매수를 뺀 수량을 초과하실 수 없습니다.");
-        }
 
         stockLogService.saveStockLog(
                 stockUser, TradeType.SELL, stockUser.getStock().getCurrentPrice(), stockSellReq.getAmount()

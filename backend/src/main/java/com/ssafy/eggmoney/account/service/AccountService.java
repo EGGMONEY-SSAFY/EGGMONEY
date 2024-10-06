@@ -1,7 +1,7 @@
 package com.ssafy.eggmoney.account.service;
 
-import com.ssafy.eggmoney.account.dto.responseDto.GetAccountResponseDto;
-import com.ssafy.eggmoney.account.dto.responseDto.GetAnalyticsResponseDto;
+import com.ssafy.eggmoney.account.dto.response.GetAccountResponseDto;
+import com.ssafy.eggmoney.account.dto.response.GetAnalyticsResponseDto;
 import com.ssafy.eggmoney.account.entity.Account;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.repository.AccountLogRepository;
@@ -11,7 +11,6 @@ import com.ssafy.eggmoney.deposit.entity.DepositStatus;
 import com.ssafy.eggmoney.deposit.repository.DepositRepository;
 import com.ssafy.eggmoney.loan.entity.Loan;
 import com.ssafy.eggmoney.loan.entity.LoanStatus;
-import com.ssafy.eggmoney.loan.repository.LoanRepository;
 import com.ssafy.eggmoney.savings.entity.Savings;
 import com.ssafy.eggmoney.savings.entity.SavingsStatus;
 import com.ssafy.eggmoney.savings.repository.SavingsRepository;
@@ -37,7 +36,7 @@ public class AccountService {
     private final UserRepository userRepository;
     private final SavingsRepository savingsRepository;
     private final DepositRepository depositRepository;
-    private final LoanRepository loanRepository;
+    private final com.ssafy.eggmoney.loan.repository.LoanRepository loanRepository;
     private final StockUserRepository stockUserRepository;
 
 //    내 메인 계좌 조회
@@ -70,12 +69,17 @@ public class AccountService {
 
 //    메인 계좌 입출금
     public void updateAccount(AccountLogType type, Long userId, int price) {
-//        로그 생성
-        accountLogService.createAccountLog(userId, type, price);
 //        계좌에 입출금 반영
         Account account = accountRepository.findByUserId(userId).get();
+
+        if(account.getBalance() + price < 0) {
+            throw new IllegalArgumentException("[계좌] 계좌의 잔액이 부족합니다.");
+        }
+
         account.setBalance( account.getBalance() + price );
         accountRepository.save(account);
+//        로그 생성
+        accountLogService.createAccountLog(userId, type, price);
     }
 
 //    자산 분석 ( 예적금, 대출, 주식 보유 파악 )
