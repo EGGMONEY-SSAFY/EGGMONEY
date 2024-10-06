@@ -7,6 +7,7 @@ import com.ssafy.eggmoney.family.dto.request.CreateFamilyRequestDto;
 import com.ssafy.eggmoney.family.dto.response.FamilyMemberResponseDto;
 import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
 import com.ssafy.eggmoney.family.service.FamilyServcie;
+import com.ssafy.eggmoney.user.dto.response.DeleteFamilyMemberRequestDto;
 import com.ssafy.eggmoney.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +33,13 @@ public class FamilyController {
 
         return familyServcie.getFamily(familyId);
     }
+    @GetMapping("/searchFamily")
+    public GetFamilyResponseDto getFamily(@RequestHeader(value = "Authorization") String token){
 
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        Long familyId = user.getFamily().getId();
+        return familyServcie.getFamily(familyId);
+    }
 //    가족 생성
 // 가족 생성
 @PostMapping("/create")
@@ -91,24 +99,30 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
 
     // 생성된 가족 삭제
     // 삭제하면서 해당 가족에 소속된 User들 가족 id null값으로 변경
-    @PostMapping("/{family_id}/delete")
-    public ResponseEntity<String> deleteFamily(@PathVariable("familyId") Long familyId){
-
+    @PostMapping("/delete")
+    public ResponseEntity<String> deleteFamily(@RequestHeader(value = "Authorization", required = false) String token){
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        Long familyId = user.getFamily().getId();
         familyServcie.deleteFamily(familyId);
         return ResponseEntity.ok("가족 삭제 완료");
     }
 
     // 소속 멤버 삭제
-    @PostMapping("/delete/member/{memberId}")
-    public ResponseEntity<String> deleteFamilyMember(@PathVariable("memberId") Long memberId){
+    @PostMapping("/delete/member")
+    public ResponseEntity<String> deleteFamilyMember(@RequestHeader(value = "Authorization", required = false) String token, @RequestBody DeleteFamilyMemberRequestDto requestDto){
+        Long memberId = requestDto.getMemberId();
+        if (memberId == null) {
+            return ResponseEntity.badRequest().body("Member ID가 누락되었습니다.");
+        }
         familyServcie.deleteFamilyMember(memberId);
         return ResponseEntity.ok("구성원 삭제 완료");
     }
 
     // 소속 가족 정보 변경
-    @PostMapping("/{family_id}/update")
-    public ResponseEntity<String> updateFamily(@PathVariable("familyId") Long familyId, @RequestBody CreateFamilyRequestDto dto){
-
+    @PostMapping("/update")
+    public ResponseEntity<String> updateFamily(@RequestHeader(value = "Authorization", required = false) String token, @RequestBody CreateFamilyRequestDto dto){
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        Long familyId = user.getFamily().getId();
         familyServcie.updateFamily(familyId,dto);
         return ResponseEntity.ok("가족 정보 업데이트 완료");
 

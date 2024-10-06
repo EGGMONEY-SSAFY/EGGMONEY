@@ -15,11 +15,16 @@ const isLoading = ref(true)
 
 onMounted(async () => {
   console.log("App.vue Loaded")
-  await authStore.loadTokens(router)
-  // 유저 조회해서 유저 정보(역할, 자식 목록) 가져오기
-  await userStore.getUser()
-  console.log("App.vue 작업 완료")
-  isLoading.value = false
+  try {
+    await authStore.loadTokens(router);
+    await userStore.getUser();
+    console.log("App.vue 작업 완료");
+  } catch (error) {
+    console.error("에러 발생:", error);
+    // 에러 처리 로직 추가
+  } finally {
+    isLoading.value = false;
+  }
 })
 </script>
 
@@ -35,6 +40,7 @@ onMounted(async () => {
       <NavBar />
     </div>
   </div> -->
+
   <div class="flex justify-center bg-gray-800">
     <div v-if="isLoading">
       <p>Loading...</p>
