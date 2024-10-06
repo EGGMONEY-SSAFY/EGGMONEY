@@ -17,6 +17,10 @@
         </div>
       </div>
 
+      <!-- 틀린 횟수 표시 -->
+      <div class="text-red-500 text-lg font-bold" v-if="failCount > 0">
+        틀린 횟수: {{ failCount }} / 5
+      </div>
       <!-- 이미지 및 핀 패드 -->
       <div class="bg-white">
         <div
@@ -166,8 +170,8 @@ const encryptAndSendPin = (pin: string) => {
 }
 const sendToBackend = async (encryptedPin: string) => {
   try {
-    // const token = authStore.accessToken
-    const token = "8CHnOwrEfKz3D_d9svUewrgwa0qyWihdAAAAAQoqJZAAAAGSMhZ9aJCBbdpZdq0Z"
+    const token = authStore.accessToken
+    //const token = "8CHnOwrEfKz3D_d9svUewrgwa0qyWihdAAAAAQoqJZAAAAGSMhZ9aJCBbdpZdq0Z"
     const response = await axios.post(
       "/api/pinpad/verify/check",
       {

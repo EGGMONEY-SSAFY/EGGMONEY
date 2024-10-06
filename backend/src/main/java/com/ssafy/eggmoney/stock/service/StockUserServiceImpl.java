@@ -1,6 +1,6 @@
 package com.ssafy.eggmoney.stock.service;
 
-import com.ssafy.eggmoney.account.dto.responseDto.GetAnalyticsResponseDto;
+import com.ssafy.eggmoney.account.dto.response.GetAnalyticsResponseDto;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
 import com.ssafy.eggmoney.stock.dto.request.StockBuyRequest;
@@ -24,10 +24,10 @@ import java.util.*;
 @RequiredArgsConstructor
 public class StockUserServiceImpl implements StockUserService {
     private final StockUserRepository stockUserRepository;
-    private final AccountService accountService;
     private final UserRepository userRepository;
-    private final StockLogService stockLogService;
     private final StockRepository stockRepository;
+    private final AccountService accountService;
+    private final StockLogService stockLogService;
     private final StockPendingService stockPendingService;
 
     @Transactional

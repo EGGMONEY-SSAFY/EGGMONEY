@@ -159,7 +159,8 @@ onMounted(async () => {
   //   ],
   // }
   // const token = authStore.accessToken;
-  const token = "_hY7xGfo9UfUokhsO-xd8eLTYiIxygDrAAAAAQopyWAAAAGSSv-H8ZCBbdpZdq0Z"
+  const token = authStore.accessToken
+  //const token = "_hY7xGfo9UfUokhsO-xd8eLTYiIxygDrAAAAAQopyWAAAAGSSv-H8ZCBbdpZdq0Z"
   try {
     const response = await axios.get("/api/v1/total/money/search", {
       headers: {

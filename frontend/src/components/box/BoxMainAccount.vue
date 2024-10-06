@@ -6,8 +6,8 @@ import { ref, watch } from "vue"
 
 const assetStore = useAssetStore()
 const props = defineProps<{ user: User; balance: Number | null }>()
-async function createWithdrawal(userId: number, price: number) {
-  await assetStore.createWithdrawal(userId, price)
+async function createWithdrawal(price: number) {
+  await assetStore.createWithdrawal(price)
   window.location.reload()
 }
 const userStore = useUserStore()
@@ -40,7 +40,7 @@ watch(withdrawalAmount, (newVal) => {
 function confirmWithdrawal() {
   if (withdrawalAmount.value !== null && withdrawalAmount.value > 0) {
     // 출금 처리 로직
-    assetStore.createWithdrawal(props.user?.userId || 0, withdrawalAmount.value)
+    assetStore.createWithdrawal(withdrawalAmount.value)
     closeModal()
   }
 }

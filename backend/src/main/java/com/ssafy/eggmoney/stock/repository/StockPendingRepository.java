@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface StockPendingRepository extends JpaRepository<StockPending, Long> {
     List<StockPending> findByUserIdAndTradeType(Long userId, TradeType tradeType);
+    List<StockPending> findByUserId(Long userId);
 }

@@ -32,8 +32,8 @@ public class StockUserController {
     }
 
     @PostMapping("/stock/user/buy")
-    public ResponseEntity<Map<String, Object>> buyStock(
-            @RequestBody StockBuyRequest stockBuyReq, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<Map<String, Object>> buyStock(@RequestBody StockBuyRequest stockBuyReq,
+                                                        @RequestHeader("Authorization") String token) {
         StockUserResponse stockBuyRes = stockUserService.buyStock(stockBuyReq, 1L);
         Map<String, Object> response = stockUserService.findInvestablePrice(1L);
         response.put("stockInfo", stockBuyRes);
@@ -50,7 +50,8 @@ public class StockUserController {
     }
 
     @GetMapping("/stock/{stockId}/user/info")
-    public ResponseEntity<StockUserResponse> getStockUser(@PathVariable Long stockId, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<StockUserResponse> getStockUser(@PathVariable Long stockId,
+                                                          @RequestHeader("Authorization") String token) {
         return new ResponseEntity<>(stockUserService.findStockUserInfo(stockId, 1L), HttpStatus.OK);
     }
 

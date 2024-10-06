@@ -2,7 +2,6 @@ package com.ssafy.eggmoney.loan.dto.response;
 
 import com.ssafy.eggmoney.loan.entity.LoanStatus;
 import com.ssafy.eggmoney.loan.entity.LoanType;
-import com.ssafy.eggmoney.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 
