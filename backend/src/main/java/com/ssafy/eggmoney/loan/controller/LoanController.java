@@ -1,7 +1,7 @@
 package com.ssafy.eggmoney.loan.controller;
 
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
-import com.ssafy.eggmoney.loan.dto.request.GetPrivateLoansRequestDto;
+
 import com.ssafy.eggmoney.loan.dto.request.LoanCreateRequestDto;
 import com.ssafy.eggmoney.loan.dto.request.LoanEvaluationRequestDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanDetailResponseDto;
@@ -38,14 +38,12 @@ public class LoanController {
 
     /**
      * 개인 대출 조회
-     * @param userId
      * return List<LoanPrivateListResponseDto>
      * */
     @PostMapping("")
-    public ResponseEntity<List<LoanPrivateListResponseDto>> getPrivateLoans(@RequestHeader(value = "Authorization") String token,
-                                                                            @RequestBody GetPrivateLoansRequestDto dto) {
+    public ResponseEntity<List<LoanPrivateListResponseDto>> getPrivateLoans(@RequestHeader(value = "Authorization") String token) {
         User user = kakaoAuthService.verifyKakaoToken(token);
-        List<LoanPrivateListResponseDto> result = loanService.getPrivateLoans(dto.getUserId());
+        List<LoanPrivateListResponseDto> result = loanService.getPrivateLoans(user);
 
         return ResponseEntity.ok().body(result);
     }
@@ -56,7 +54,8 @@ public class LoanController {
      * return LoanDetailResponseDto
      * */
     @GetMapping("/detail/{loanId}")
-    public ResponseEntity<LoanDetailResponseDto> getDetailLoan(@PathVariable long loanId){
+    public ResponseEntity<LoanDetailResponseDto> getDetailLoan(@RequestHeader(value = "Authorization") String token,
+            @PathVariable long loanId){
         LoanDetailResponseDto result = loanService.getDetailLoan(loanId);
 
         return ResponseEntity.ok().body(result);
@@ -68,7 +67,7 @@ public class LoanController {
      * return
      * */
     @PostMapping("/judge/{loanId}")
-    public ResponseEntity<?> evaluation(@PathVariable long loanId, @RequestBody LoanEvaluationRequestDto requestDto ) {
+    public ResponseEntity<?> evaluation(@RequestHeader(value = "Authorization") String token, @PathVariable long loanId, @RequestBody LoanEvaluationRequestDto requestDto ) {
         loanService.loanEvaluation(loanId, requestDto);
 
         return ResponseEntity.ok().build();
@@ -80,7 +79,7 @@ public class LoanController {
      * return
      * */
     @PostMapping("/send/{loanId}")
-    public ResponseEntity<?> repayment(@PathVariable long loanId) {
+    public ResponseEntity<?> repayment(@RequestHeader(value = "Authorization") String token, @PathVariable long loanId) {
         loanService.sendRepayment(loanId);
 
         return ResponseEntity.ok().build();
@@ -92,7 +91,7 @@ public class LoanController {
      * return List<LoanLogListResponseDto>
      * */
     @GetMapping("/log/{loanId}")
-    public ResponseEntity<List<LoanLogListResponseDto>> getLoanLogs(@PathVariable long loanId) {
+    public ResponseEntity<List<LoanLogListResponseDto>> getLoanLogs(@RequestHeader(value = "Authorization") String token, @PathVariable long loanId) {
         List<LoanLogListResponseDto> result = loanService.getLoanLogs(loanId);
         return ResponseEntity.ok().body(result);
     }

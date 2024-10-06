@@ -18,11 +18,13 @@ public interface SavingsRepository extends JpaRepository<Savings, Long> {
 
     Optional<Savings> findByIdAndSavingsStatus(Long savingsId, SavingsStatus savingsStatus);
 
+    @Query(value = "SELECT s.id FROM Savings s WHERE s.expireDate BETWEEN :start AND :end AND s.savingsStatus = (:savingsStatus)")
     List<Long> findIdByExpireDateBetweenAndSavingsStatus(LocalDateTime start, LocalDateTime end, SavingsStatus savingsStatus);
+
     List<Long> findIdBySavingsStatusAndPaymentDateNot(SavingsStatus savingsStatus, int paymentDate);
 
     @Modifying
     @Transactional
-    @Query(value = "UPDATE savings s SET s.expire_date = DATE_ADD(s.expire_date, INTERVAL 1 MONTH) WHERE s.id IN (:ids)", nativeQuery = true)
+    @Query(value = "UPDATE Savings s SET s.expire_date = DATE_ADD(s.expire_date, INTERVAL 1 MONTH) WHERE s.savings_id IN (:ids)", nativeQuery = true)
     void extendSavingsExpireDateByOneMonth(@Param("ids") List<Long> savingsIds);
 }
