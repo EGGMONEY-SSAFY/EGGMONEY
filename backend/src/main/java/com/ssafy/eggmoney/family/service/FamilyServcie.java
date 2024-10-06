@@ -38,6 +38,7 @@ public class FamilyServcie {
                 .intro(fam.getIntro())
                 .qrcode(fam.getQrCode())
                 .members( userList.stream()
+                        .filter(user -> !user.getId().equals(fam.getPresentId())) // presentId와 다른 사용자만 포함
                         .map( user -> GetUserResponseDto.builder()
                                 .userId(user.getId())
                                 .email(user.getEmail())
