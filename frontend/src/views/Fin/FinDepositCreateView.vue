@@ -18,7 +18,7 @@ const finStore = useFinStore()
 
 const productId = Number(route.query.productId)
 const productName = ref("")
-const depositRate = ref<number>(0) 
+const depositRate = ref<number>(0)
 const depositDate = ref<number>(0)
 
 const money = ref(0)
@@ -32,19 +32,19 @@ const formattedMoney = computed(() => {
 })
 
 onMounted(() => {
-  const selectedProduct = finStore.depositProducts.find(product => product.productId === productId)
-  if(selectedProduct){
+  const selectedProduct = finStore.depositProducts.find(
+    (product) => product.productId === productId
+  )
+  if (selectedProduct) {
     productName.value = selectedProduct.productName
     depositRate.value = Number(selectedProduct.depositRate)
     depositDate.value = Number(selectedProduct.depositDate)
   }
-}
-)
+})
 
 const router = useRouter()
 const handleClick = () => {
-  
-  if (userStore.user?.userId){
+  if (userStore.user?.userId) {
     finStore.setDepositCreateInfo(money.value, productId, userStore.user?.userId)
   }
 
@@ -73,7 +73,7 @@ const handleClick = () => {
         <span class="font-bold">연이율 {{ depositRate.toFixed(1) }}%</span>로
       </div>
 
-      <div class="my-4"><InputMoney @updateMoney="updateMoney" ></InputMoney> 알을</div>
+      <div class="my-4"><InputMoney @updateMoney="updateMoney"></InputMoney> 알을</div>
       <div class="m-2">예금해 둘 예정이에요</div>
     </div>
     <div class="m-4 text-center">

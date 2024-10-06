@@ -61,7 +61,7 @@ const handleClick = () => {
 
 const updateMoney = (value: number) => {
   money.value = value
-  if(money.value && loanDate.value){
+  if (money.value && loanDate.value) {
     maxPrice.value = money.value / loanDate.value
   }
 }
@@ -69,7 +69,7 @@ const updateMoney = (value: number) => {
 const updateSelectedDate = (event: Event) => {
   const target = event.target as HTMLSelectElement
   loanDate.value = Number(target.value)
-  if(money.value && loanDate.value){
+  if (money.value && loanDate.value) {
     maxPrice.value = money.value / loanDate.value
   }
 }

@@ -30,8 +30,7 @@ const repayment = computed(() => {
     const depositMoney = Number(createInfo.value?.depositMoney)
 
     return Math.round(
-      depositMoney +
-      (((depositMoney * depositRate.value) / 100) * depositDate.value) / 12
+      depositMoney + (((depositMoney * depositRate.value) / 100) * depositDate.value) / 12
     ).toLocaleString()
   }
 

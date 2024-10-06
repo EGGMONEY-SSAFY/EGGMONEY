@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from "vue";
+import { watch } from "vue"
 import { isElementAccessExpression } from "typescript"
 import { computed, ref } from "vue"
 
@@ -10,14 +10,17 @@ const props = defineProps({
     default: 100000000,
   },
 })
-const max = ref(Number(props.maxPrice ))
+const max = ref(Number(props.maxPrice))
 
-watch(() => Number(props.maxPrice), (newVal : number) => {
-  if (newVal !== 0) {
-    max.value = newVal
+watch(
+  () => Number(props.maxPrice),
+  (newVal: number) => {
+    if (newVal !== 0) {
+      max.value = newVal
+    }
+    emit("updateMoney", money.value)
   }
-  emit("updateMoney", money.value)
-})
+)
 
 const emit = defineEmits(["updateMoney"])
 if (Number(props.maxPrice) != 0) {
