@@ -53,7 +53,10 @@ import { ref, onMounted, onBeforeUnmount } from "vue"
 import QrScanner from "qr-scanner" // QrScanner 라이브러리 가져오기
 import axios from "axios"
 import { useRouter } from "vue-router"
-// import {useAuthStore}from'@/stores/auth';
+// @ts-ignore
+import CryptoJS from "crypto-js"
+const ASE_KEY = import.meta.env.VITE_AES_KEY
+import { useAuthStore } from "@/stores/auth"
 // 상태 값
 const videoRef = ref<HTMLVideoElement | null>(null)
 const showModal = ref(false) // 모달 표시 여부
@@ -61,7 +64,7 @@ const failshowModal = ref(false)
 const qrData = ref<string | null>(null)
 let qrScanner: QrScanner | null = null
 const router = useRouter()
-
+const authStore = useAuthStore()
 const ab = () => {
   console.log(1)
   router.push("/family/family-connection/success")
@@ -69,6 +72,7 @@ const ab = () => {
 // QR 코드 스캔 후 처리
 const handleScan = (result: QrScanner.ScanResult) => {
   qrData.value = result.data
+  qrData.value = CryptoJS.AES.decrypt(qrData.value, ASE_KEY).toString(CryptoJS.enc.Utf8)
   console.log(qrData.value)
   showModal.value = true // QR 코드 스캔 후 모달 표시
 }
@@ -79,13 +83,14 @@ function closefail() {
 async function confirmConnection() {
   if (qrData.value) {
     // 여기서 실제로 요청을 보낼 수 있습니다.
+
     if (qrData.value.startsWith("http")) {
       try {
-        const response = await axios.post(qrData.value, null, {
+        const response = await axios.post(`/api/v1/family/${qrData.value}/join`, null, {
           headers: {
-            // Authorization:`Bearer${authStore.getAccessToken}`,
+            Authorization: `Bearer${authStore.accessToken}`,
             "Content-Type": "application/json",
-            withCredentials: true,
+            //withCredentials: true,
           },
         })
         if (response.data.status === "success") {

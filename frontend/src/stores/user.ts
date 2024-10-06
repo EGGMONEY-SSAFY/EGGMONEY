@@ -1,6 +1,7 @@
 import { ref } from "vue"
 import { defineStore } from "pinia"
 import axios from "axios"
+import { useAuthStore } from "./auth"
 
 // User 인터페이스
 export interface User {
@@ -29,17 +30,19 @@ export interface UserResponse {
 export const useUserStore = defineStore("user", () => {
   const USER_API_URL = "/api/v1/profile"
 
+  const authStore = useAuthStore()
   const user = ref<User | null>(null)
   const children = ref<User[]>([])
   const familyId = ref<number | null>(null)
 
-  const userData = { 현재잔액: 135000, 투자가능금액: 35000 }
-
   // 유저 조회
-  const getUser = function (userId: number): Promise<void> {
+  const getUser = function (): Promise<void> {
     return axios({
       method: "get",
-      url: `${USER_API_URL}/${userId}`,
+      url: `${USER_API_URL}`,
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+      },
     })
       .then((res) => {
         user.value = {
@@ -51,6 +54,7 @@ export const useUserStore = defineStore("user", () => {
           stockRatio: res.data.stockRatio,
         }
         familyId.value = res.data.family.familyId
+        /* eslint-disable prefer-const */
         let childrenArray = <User[]>[]
         if (familyId.value && user.value.role === "부모") {
           res.data.family.members.forEach((member: User) => {
@@ -66,5 +70,5 @@ export const useUserStore = defineStore("user", () => {
       })
   }
 
-  return { user, children, familyId, getUser, userData }
+  return { user, children, familyId, getUser }
 })

@@ -14,7 +14,7 @@ const isActive = computed(() => {
     <RouterLink to="/stock/home" type="button" :class="isActive('/stock/home')" class="px-4"
       >홈</RouterLink
     >
-    <RouterLink to="/stock/history" type="button" class="px-4" :class="isActive('/stock/history')"
+    <RouterLink to="/stock/log" type="button" class="px-4" :class="isActive('/stock/log')"
       >거래내역</RouterLink
     >
     <RouterLink

@@ -17,6 +17,10 @@
         </div>
       </div>
 
+      <!-- 틀린 횟수 표시 -->
+      <div class="text-red-500 text-lg font-bold" v-if="failCount > 0">
+        틀린 횟수: {{ failCount }} / 5
+      </div>
       <!-- 이미지 및 핀 패드 -->
       <div class="bg-white">
         <div
@@ -73,7 +77,7 @@ const fetchPublicKey = async () => {
   try {
     const token = authStore.accessToken
     console.log(token)
-    const response = await axios.get("http://localhost:8080/api/public-key", {
+    const response = await axios.get("/api/public-key", {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -90,14 +94,13 @@ const fetchPinPadImage = async () => {
   try {
     const token = authStore.accessToken
     console.log(token)
-    const response = await axios.get("http://localhost:8080/api/pinpad", {
+    const response = await axios.get("/api/pinpad", {
       //headers: {
       //Authorization: `Bearer ${token}`,
       //'Content-Type':'application/json',
       //}
     })
     const encryptedImage = response.data.encryptedImage
-    console.log(encryptedImage)
     // const decrypt = new JSEncrypt();
     // decrypt.setPrivateKey(''
     //   // `${env.RSA.key}`
@@ -110,7 +113,6 @@ const fetchPinPadImage = async () => {
     const decryptedBase64Image = encryptedImage
     // decrypted.toString(CryptoJS.enc.Base64);
     pinPadImage.value = `data:image/png;base64,${decryptedBase64Image}`
-    console.log(pinPadImage.value)
   } catch (error) {
     console.error("이미지 불러오기 실패:", error)
   }
@@ -166,10 +168,10 @@ const encryptAndSendPin = (pin: string) => {
 }
 const sendToBackend = async (encryptedPin: string) => {
   try {
-    // const token = authStore.accessToken
-    const token = "8CHnOwrEfKz3D_d9svUewrgwa0qyWihdAAAAAQoqJZAAAAGSMhZ9aJCBbdpZdq0Z"
+    const token = authStore.accessToken
+    //const token = "8CHnOwrEfKz3D_d9svUewrgwa0qyWihdAAAAAQoqJZAAAAGSMhZ9aJCBbdpZdq0Z"
     const response = await axios.post(
-      "http://localhost:8080/api/pinpad/verify/check",
+      "/api/pinpad/verify/check",
       {
         encryptedPin: encryptedPin,
       },

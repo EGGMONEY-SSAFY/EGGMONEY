@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import BoxBasic from "@/components/box/BoxBasic.vue"
+import BoxTradeLog from "@/components/box/BoxTradeLog.vue"
 import NavBarTab from "@/components/navbar/navBarTab/NavBarTab.vue"
+import { useStockStore } from "@/stores/stock"
 import { useVariableStore } from "@/stores/variable"
-import { computed, ref } from "vue"
+import { computed, onMounted, ref } from "vue"
 import { useRoute } from "vue-router"
 
 const route = useRoute()
@@ -11,14 +12,20 @@ const path = computed(() => {
 })
 const store = useVariableStore()
 store.setTitle("거래내역")
+const stockStore = useStockStore()
+const logList = ref()
+onMounted(async () => {
+  logList.value = await stockStore.getMyStockLog()
+})
+
+
 </script>
 
 <template>
   <div>
     <NavBarTab :path="path" />
     <div class="flex flex-col flex-grow justify-between">
-      <BoxBasic />
-      <BoxBasic class="mb-20" />
+      <BoxTradeLog v-for="log in logList" :log="log" :key="log.stockItem" />
     </div>
   </div>
 </template>

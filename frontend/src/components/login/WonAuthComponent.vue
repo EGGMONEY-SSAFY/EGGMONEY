@@ -109,7 +109,7 @@ const sendWonAuth = async () => {
   if (selectaccount.value) {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/won/send",
+        "/api/v1/auth/won/send",
         {
           accountnum: selectaccount.value,
           //'0015279150409321'
@@ -136,10 +136,10 @@ const sendWonAuth = async () => {
 const checkAuthNumber = async () => {
   if (selectaccount.value && checkAuth.value) {
     try {
-      // const token = authStore.accessToken;
-      const token = "HpAwXfMaEpHRVBLX6CvO2-LUlcUMjy1EAAAAAQorDR4AAAGSPfkK3pCBbdpZdq0Z"
+      const token = authStore.accessToken
+      //  const token = "HpAwXfMaEpHRVBLX6CvO2-LUlcUMjy1EAAAAAQorDR4AAAGSPfkK3pCBbdpZdq0Z"
       const response = await axios.post(
-        "http://localhost:8080/api/v1/auth/won/check",
+        "/api/v1/auth/won/check",
 
         {
           accountnum: selectaccount.value,

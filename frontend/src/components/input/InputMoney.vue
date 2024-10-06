@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { watch } from "vue"
 import { isElementAccessExpression } from "typescript"
-import { ref } from "vue"
+import { computed, ref } from "vue"
 
 const money = ref(0)
 const props = defineProps({
@@ -9,12 +10,23 @@ const props = defineProps({
     default: 100000000,
   },
 })
+const max = ref(Number(props.maxPrice))
 
-const max = ref(0)
+watch(
+  () => Number(props.maxPrice),
+  (newVal: number) => {
+    if (newVal !== 0) {
+      max.value = newVal
+    }
+    emit("updateMoney", money.value)
+  }
+)
+
 const emit = defineEmits(["updateMoney"])
 if (Number(props.maxPrice) != 0) {
   max.value = Number(props.maxPrice)
 }
+
 const preventNegativeMoney = (event: Event) => {
   const input = event.target as HTMLInputElement
   if (input.valueAsNumber < 0) {
@@ -23,8 +35,8 @@ const preventNegativeMoney = (event: Event) => {
     money.value = max.value
   } else {
     money.value = input.valueAsNumber
-    emit("updateMoney", money.value)
   }
+  emit("updateMoney", money.value)
 }
 </script>
 
