@@ -41,7 +41,7 @@ export const useUserStore = defineStore("user", () => {
     return axios({
       method: "get",
       url: `${USER_API_URL}`,
-      headers: {        
+      headers: {
         Authorization: `Bearer ${authStore.accessToken}`,
       },
     })
