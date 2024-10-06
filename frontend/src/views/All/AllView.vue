@@ -5,6 +5,7 @@ import BoxAllFinance from "@/components/all/BoxAllFinance.vue"
 import BoxAllSetting from "@/components/all/BoxAllSetting.vue"
 import BoxAllStock from "@/components/all/BoxAllStock.vue"
 import BoxAllLogout from "@/components/all/BoxAllLogout.vue"
+import BoxAllEvent from "@/components/all/BoxAllEvent.vue"
 import { useVariableStore } from "@/stores/variable"
 
 const store = useVariableStore()
@@ -16,6 +17,7 @@ store.setTitle("전체")
     <div className="mt-16">
       <BoxAllSetting />
       <BoxAllFamily />
+      <BoxAllEvent />
       <BoxAllAssets />
       <BoxAllFinance />
       <BoxAllStock />
