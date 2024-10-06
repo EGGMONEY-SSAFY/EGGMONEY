@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isElementAccessExpression } from "typescript"
-import { ref } from "vue"
+import { computed, ref } from "vue"
 
 const money = ref(0)
 const props = defineProps({
@@ -15,6 +15,7 @@ const emit = defineEmits(["updateMoney"])
 if (Number(props.maxPrice) != 0) {
   max.value = Number(props.maxPrice)
 }
+
 const preventNegativeMoney = (event: Event) => {
   const input = event.target as HTMLInputElement
   if (input.valueAsNumber < 0) {
