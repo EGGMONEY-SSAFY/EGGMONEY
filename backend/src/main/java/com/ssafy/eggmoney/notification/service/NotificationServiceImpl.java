@@ -1,6 +1,7 @@
 package com.ssafy.eggmoney.notification.service;
 
 import com.ssafy.eggmoney.notification.dto.request.NotificationRequest;
+import com.ssafy.eggmoney.notification.dto.response.NotificationResponse;
 import com.ssafy.eggmoney.notification.entity.Notification;
 import com.ssafy.eggmoney.notification.repository.NotificationRepository;
 import com.ssafy.eggmoney.user.entity.User;
@@ -9,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly=true)
@@ -44,5 +47,27 @@ public class NotificationServiceImpl implements NotificationService {
         ));
     }
 
+    @Override
+    public List<NotificationResponse> findNotifications(Long userId) {
+        List<Notification> notifications = notificationRepository.findJoinSendUserByUserId(userId);
+
+        if(notifications.isEmpty()) {
+            throw new NoSuchElementException("[알림] 알림들을 찾을 수 없습니다.");
+        }
+
+        return notifications.stream().map(n -> {
+            if(n.getSendUser() != null) {
+                return new NotificationResponse(
+                    n.getSendUser().getId(), n.getSendUser().getName(), n.getNotificationType(),
+                        n.getMessage(), n.getIsRead(), n.getCreatedAt()
+                );
+            } else  {
+                return new NotificationResponse(
+                        null, "에그머니", n.getNotificationType(),
+                        n.getMessage(), n.getIsRead(), n.getCreatedAt()
+                );
+            }
+        }).collect(Collectors.toList());
+    }
 
 }
