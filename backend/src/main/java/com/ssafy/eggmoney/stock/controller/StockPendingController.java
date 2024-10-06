@@ -1,6 +1,7 @@
 package com.ssafy.eggmoney.stock.controller;
 
-import com.ssafy.eggmoney.stock.dto.request.PendingRequest;
+import com.ssafy.eggmoney.stock.dto.request.PendingTradeRequest;
+import com.ssafy.eggmoney.stock.dto.response.StockPendingResponse;
 import com.ssafy.eggmoney.stock.entity.TradeType;
 import com.ssafy.eggmoney.stock.service.StockPendingService;
 import com.ssafy.eggmoney.stock.service.StockUserService;
@@ -8,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +20,7 @@ public class StockPendingController {
     private final StockUserService stockUserService;
 
     @PostMapping("/stock/pending/buy")
-    public ResponseEntity<Integer> buyPending(@RequestBody PendingRequest pendingReq,
+    public ResponseEntity<Integer> buyPending(@RequestBody PendingTradeRequest pendingReq,
                                               @RequestHeader("Authorization") String token) {
         Object investablePriceObj = stockUserService.findInvestablePrice(1L).get("investablePrice");
         Object balanceObj = stockUserService.findInvestablePrice(1L).get("balance");
@@ -40,9 +43,21 @@ public class StockPendingController {
     }
 
     @PostMapping("/stock/pending/sell")
-    public ResponseEntity<Void> sellPending(@RequestBody PendingRequest pendingReq,
+    public ResponseEntity<Void> sellPending(@RequestBody PendingTradeRequest pendingReq,
                                             @RequestHeader("Authorization") String token) {
         stockPendingService.saveStockPending(pendingReq, TradeType.SELL, 1L);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("stock/pending/log")
+    public ResponseEntity<List<StockPendingResponse>> getStockPendingLog(@RequestHeader("Authorization") String token) {
+        return new ResponseEntity<>(stockPendingService.findPendingLog(1L), HttpStatus.OK);
+    }
+
+    @PostMapping("/stock/pending/{stockPendingId}/cancel")
+    public ResponseEntity<Void> cancelStockPending(@PathVariable Long stockPendingId,
+                                                   @RequestHeader("Authorization") String token) {
+        stockPendingService.deleteStockPending(stockPendingId, 1L);
         return ResponseEntity.ok().build();
     }
 }

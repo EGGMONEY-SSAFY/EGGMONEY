@@ -92,7 +92,7 @@ public class DepositServiceImpl implements DepositService {
 
     @Override
     @Transactional(readOnly = true)
-    public DepositResponseDto getDeposits(long userId){
+    public DepositResponseDto getDeposits(Long userId){
         Deposit deposit = depositRepository.findByUserIdAndDepositStatus(userId, DepositStatus.AVAILABLE).orElse(null);
 
         if(deposit == null){

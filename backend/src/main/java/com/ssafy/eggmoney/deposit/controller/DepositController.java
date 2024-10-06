@@ -1,11 +1,14 @@
 package com.ssafy.eggmoney.deposit.controller;
 
 
+import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 import com.ssafy.eggmoney.deposit.dto.request.DepositCreateRequestDto;
+import com.ssafy.eggmoney.deposit.dto.request.DepositRequestDto;
 import com.ssafy.eggmoney.deposit.dto.response.DeleteDepositResponseDto;
 import com.ssafy.eggmoney.deposit.dto.response.DepositProductListResponseDto;
 import com.ssafy.eggmoney.deposit.dto.response.DepositResponseDto;
 import com.ssafy.eggmoney.deposit.service.DepositService;
+import com.ssafy.eggmoney.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,7 @@ import java.util.List;
 public class DepositController {
 
     private final DepositService depositService;
+    private final KakaoAuthService kakaoAuthService;
 
     /**
      * 전체 예금 상품 조회
@@ -50,9 +54,11 @@ public class DepositController {
      * @param userId
      * return DepositResponseDto
     * */
-    @GetMapping("/{userId}")
-    public ResponseEntity<DepositResponseDto> getDeposits(@PathVariable long userId) {
-        DepositResponseDto result = depositService.getDeposits(userId);
+    @PostMapping("")
+    public ResponseEntity<DepositResponseDto> getDeposits(@RequestHeader(value = "Authorization") String token,
+                                                          @RequestBody DepositRequestDto dto) {
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        DepositResponseDto result = depositService.getDeposits(dto.getUserId());
         return ResponseEntity.ok().body(result);
     }
 

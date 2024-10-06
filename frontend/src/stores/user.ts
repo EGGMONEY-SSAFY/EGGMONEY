@@ -1,6 +1,7 @@
 import { ref } from "vue"
 import { defineStore } from "pinia"
 import axios from "axios"
+import { useAuthStore } from "./auth"
 
 // User 인터페이스
 export interface User {
@@ -29,15 +30,19 @@ export interface UserResponse {
 export const useUserStore = defineStore("user", () => {
   const USER_API_URL = "/api/v1/profile"
 
+  const authStore = useAuthStore()
   const user = ref<User | null>(null)
   const children = ref<User[]>([])
   const familyId = ref<number | null>(null)
 
   // 유저 조회
-  const getUser = function (userId: number): Promise<void> {
+  const getUser = function (): Promise<void> {
     return axios({
       method: "get",
-      url: `${USER_API_URL}/${userId}`,
+      url: `${USER_API_URL}`,
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+      },
     })
       .then((res) => {
         user.value = {

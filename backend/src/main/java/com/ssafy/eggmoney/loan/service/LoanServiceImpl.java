@@ -2,12 +2,14 @@ package com.ssafy.eggmoney.loan.service;
 
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
+import com.ssafy.eggmoney.loan.entity.Loan;
+import com.ssafy.eggmoney.loan.repository.LoanLogRepository;
+import com.ssafy.eggmoney.loan.repository.LoanRepository;
 import com.ssafy.eggmoney.loan.dto.request.LoanCreateRequestDto;
 import com.ssafy.eggmoney.loan.dto.request.LoanEvaluationRequestDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanDetailResponseDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanLogListResponseDto;
 import com.ssafy.eggmoney.loan.dto.response.LoanPrivateListResponseDto;
-import com.ssafy.eggmoney.loan.entity.Loan;
 import com.ssafy.eggmoney.loan.entity.LoanLog;
 import com.ssafy.eggmoney.loan.entity.LoanStatus;
 import com.ssafy.eggmoney.loan.entity.LoanType;
@@ -36,13 +38,11 @@ public class LoanServiceImpl implements LoanService {
     private final LoanLogRepository loanLogRepository;
     private final AccountService accountService;
 
-
     // 대출 생성하기
     @Override
     @Transactional
-    public void createLoan(LoanCreateRequestDto requestDto) {
+    public void createLoan(LoanCreateRequestDto requestDto, User user) {
 
-        User user = userRepository.findById(requestDto.getUserId()).orElse(null);
         if(!user.getRole().equals("자녀")){
             log.error("대출생성 권한이 없습니다.");
         }

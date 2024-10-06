@@ -1,17 +1,10 @@
-package com.ssafy.eggmoney.account.dto.responseDto;
+package com.ssafy.eggmoney.account.dto.response;
 
-import com.ssafy.eggmoney.account.entity.Account;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
-import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-
-import static jakarta.persistence.FetchType.LAZY;
-import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
 public class GetAccountLogResponseDto {

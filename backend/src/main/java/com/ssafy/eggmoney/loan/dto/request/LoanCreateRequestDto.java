@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class LoanCreateRequestDto {
-    long userId;
     LoanType loanType;
     int loanAmount;
     int loanDate;
