@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user"
-import { ref } from "vue"
+import { onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 import type { User } from "@/stores/user"
 import { useVariableStore } from "@/stores/variable"
