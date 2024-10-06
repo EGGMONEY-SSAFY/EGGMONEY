@@ -25,7 +25,8 @@ public class WonController {
     {
         User user = kakaoAuthService.verifyKakaoToken(token);
         String accountnum = request.get("accountnum");
-        return wonService.sendmessage(accountnum, user);
+        String bank = request.get("bank");
+        return wonService.sendmessage(accountnum, bank, user);
     }
 
     @PostMapping("/check")
@@ -34,10 +35,10 @@ public class WonController {
         String accountnum = request.get("accountnum");
         String authText = request.get("authText");
         String authnum = request.get("authnum");
-
+        String bank = request.get("bank");
         User user = kakaoAuthService.verifyKakaoToken(token);
 
-        return wonService.checkmessage(accountnum,authText,authnum,user);
+        return wonService.checkmessage(accountnum,authText,bank,authnum,user);
     }
 
 }
