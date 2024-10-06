@@ -42,6 +42,7 @@ import StockOrderListView from "@/views/Stock/StockOrderListView.vue"
 import AssetWithdrawalView from "@/views/Asset/AssetWithdrawalView.vue"
 import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import StockRateView from "@/views/All/StockRateView.vue"
+import event from "@/views/All/event.vue"
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from "@/stores/user"
 
@@ -112,18 +113,18 @@ const router = createRouter({
         },
       ],
       beforeEnter: async (to, from, next) => {
-        const authStore = useAuthStore();
-        const userStore = useUserStore();
-        
+        const authStore = useAuthStore()
+        const userStore = useUserStore()
+
         // IndexedDB에서 토큰을 로드
-        await authStore.loadTokens(router);
+        await authStore.loadTokens(router)
 
         // 토큰이 있는 경우 유저 정보 불러오기
         if (authStore.accessToken) {
-          await userStore.getUser();
-          next(); // 유저 정보를 불러온 후 페이지로 이동
+          await userStore.getUser()
+          next() // 유저 정보를 불러온 후 페이지로 이동
         } else {
-          next('/login'); // 토큰이 없으면 로그인 페이지로 이동
+          next("/login") // 토큰이 없으면 로그인 페이지로 이동
         }
       },
     },
@@ -223,6 +224,11 @@ const router = createRouter({
       component: WonAuthView,
     },
     {
+      path: "/event",
+      name: "event",
+      component: event,
+    },
+    {
       path: "/stock/detail/:stock",
       name: "StockDetail",
       component: StockDetail,
@@ -300,23 +306,22 @@ const router = createRouter({
       props: true,
     },
   ],
-  
 })
 // 글로벌 네비게이션 가드 추가
 router.beforeEach(async (to, from, next) => {
-  const authStore = useAuthStore();
+  const authStore = useAuthStore()
   const router = useRouter()
-  await authStore.loadTokens(router); // IndexedDB에서 토큰 로드
+  await authStore.loadTokens(router) // IndexedDB에서 토큰 로드
 
   // 로그인 페이지로 이동할 경우 예외 처리
-  if (to.name === 'LoginView' || to.name === 'MainView') {
-    next(); // 로그인 페이지는 토큰 체크 없이 이동
+  if (to.name === "LoginView" || to.name === "MainView") {
+    next() // 로그인 페이지는 토큰 체크 없이 이동
   } else {
     // 로그인 페이지를 제외한 모든 경로에서 토큰 확인
     if (!authStore.accessToken) {
-      next('/login'); // 토큰이 없으면 로그인 페이지로 리다이렉트
+      next("/login") // 토큰이 없으면 로그인 페이지로 리다이렉트
     } else {
-      next(); // 토큰이 있으면 정상적으로 페이지 이동
+      next() // 토큰이 있으면 정상적으로 페이지 이동
     }
   }
 })

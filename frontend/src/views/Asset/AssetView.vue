@@ -23,9 +23,9 @@ const goFamilyTab = () => {
 const goWithdrawalTab = () => {
   router.push({ name: "AssetWithdrawalView" })
 }
-onMounted( async () => {
+onMounted(async () => {
   // 유저 조회해서 유저 정보(역할, 자식 목록) 가져오기
-  
+
   console.log("가져온 familyId:", userStore.familyId)
 
   //  자녀가 로그인한 경우

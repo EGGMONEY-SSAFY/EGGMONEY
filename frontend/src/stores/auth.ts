@@ -14,28 +14,28 @@ import axios from "axios"
 // }
 
 async function saveTokensToIndexedDB(accessToken: string, refreshToken: string) {
-  const db = await openDB('authDB', 2, {
+  const db = await openDB("authDB", 2, {
     upgrade(db) {
       // 'tokenStore'가 존재하지 않으면 새로 생성
-      if (!db.objectStoreNames.contains('tokenStore')) {
-        db.createObjectStore('tokenStore');
+      if (!db.objectStoreNames.contains("tokenStore")) {
+        db.createObjectStore("tokenStore")
       }
     },
-  });
-  await db.put('tokenStore', { accessToken, refreshToken }, 'authTokens');
+  })
+  await db.put("tokenStore", { accessToken, refreshToken }, "authTokens")
 }
 
 async function loadTokensFromIndexedDB() {
-  const db = await openDB('authDB', 2, {
+  const db = await openDB("authDB", 2, {
     upgrade(db) {
       // 'tokenStore'가 존재하지 않으면 새로 생성
-      if (!db.objectStoreNames.contains('tokenStore')) {
-        db.createObjectStore('tokenStore');
+      if (!db.objectStoreNames.contains("tokenStore")) {
+        db.createObjectStore("tokenStore")
       }
     },
-  });
-  const tokens = await db.get('tokenStore', 'authTokens');
-  return tokens;
+  })
+  const tokens = await db.get("tokenStore", "authTokens")
+  return tokens
 }
 
 async function clearTokensFromIndexedDB() {
@@ -79,7 +79,6 @@ export const useAuthStore = defineStore("auth", {
         this.accessToken = tokens.accessToken
         this.refreshToken = tokens.refreshToken
       }
-      
     },
     async clearToken() {
       this.accessToken = null
