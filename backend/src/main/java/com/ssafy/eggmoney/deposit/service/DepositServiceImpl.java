@@ -2,6 +2,7 @@ package com.ssafy.eggmoney.deposit.service;
 
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
+import com.ssafy.eggmoney.common.exception.ErrorType;
 import com.ssafy.eggmoney.deposit.dto.request.DepositCreateRequestDto;
 import com.ssafy.eggmoney.deposit.dto.response.DeleteDepositResponseDto;
 import com.ssafy.eggmoney.deposit.dto.response.DepositProductListResponseDto;
@@ -16,6 +17,7 @@ import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -56,9 +59,10 @@ public class DepositServiceImpl implements DepositService {
 
     @Override
     @Transactional
-    public void createDeposit(DepositCreateRequestDto requestDto){
-        User user = userRepository.findById(requestDto.getUserId()).orElse(null);
-        DepositProduct depositProduct = depositProductRepository.findById(requestDto.getDepositProductId()).orElse(null);
+    public void createDeposit(DepositCreateRequestDto requestDto, User user){
+        DepositProduct depositProduct = depositProductRepository.findById(requestDto.getDepositProductId()).orElseThrow(
+                () -> new NoSuchElementException(ErrorType.NOT_FOUND_PRODUCT.toString())
+        );
 
         // 메인 계좌의 돈 깎여야함.
         accountService.updateAccount(AccountLogType.DEPOSIT, requestDto.getUserId(), -1 * requestDto.getDepositMoney());
@@ -66,13 +70,13 @@ public class DepositServiceImpl implements DepositService {
         LocalDateTime expiration = LocalDateTime.now().plusMonths(depositProduct.getDepositDate());
 
         if(!user.getRole().equals("자녀")){
-            // 에러발생
             log.error("예금 가입 권한이 없는 유저입니다.");
+            throw new AccessDeniedException(ErrorType.NOT_CREATED_ROLE.toString());
         }
 
         if(depositRepository.findByUserIdAndDepositStatus(requestDto.getUserId(), DepositStatus.AVAILABLE).isPresent()){
-            // 에러발생
             log.error("이미 사용자가 예금상품을 가지고 있습니다.");
+            throw new AccessDeniedException(ErrorType.NOT_CREATED_ACCOUNT.toString());
         }
 
         Deposit deposit = Deposit.builder()
@@ -90,14 +94,14 @@ public class DepositServiceImpl implements DepositService {
     }
 
 
+    // 예금 조회하기
     @Override
     @Transactional(readOnly = true)
     public DepositResponseDto getDeposits(Long userId){
-        Deposit deposit = depositRepository.findByUserIdAndDepositStatus(userId, DepositStatus.AVAILABLE).orElse(null);
+        Deposit deposit = depositRepository.findByUserIdAndDepositStatus(userId, DepositStatus.AVAILABLE).orElseThrow(
+                () -> new NoSuchElementException(ErrorType.NOT_FOUND_DEPOSIT.toString())
+        );
 
-        if(deposit == null){
-            log.info("가입된 예금 상품이 없습니다.");
-        }
         DepositProduct depositProduct = deposit.getDepositProduct();
         DepositProductDto depositProductDto = DepositProductDto.builder()
                 .productId(depositProduct.getId())
@@ -121,7 +125,9 @@ public class DepositServiceImpl implements DepositService {
     @Transactional
     public DeleteDepositResponseDto deleteDeposit(long depositId) {
 
-        Deposit deposit = depositRepository.findByIdAndDepositStatus(depositId, DepositStatus.AVAILABLE).orElse(null);
+        Deposit deposit = depositRepository.findByIdAndDepositStatus(depositId, DepositStatus.AVAILABLE).orElseThrow(
+                () -> new NoSuchElementException(ErrorType.NOT_FOUND_DEPOSIT.toString())
+        );
         int expiredMoney;
         double interestMoney;
         if(deposit.getExpireDate().toLocalDate().isAfter(LocalDate.now())){
