@@ -69,12 +69,17 @@ public class AccountService {
 
 //    메인 계좌 입출금
     public void updateAccount(AccountLogType type, Long userId, int price) {
-//        로그 생성
-        accountLogService.createAccountLog(userId, type, price);
 //        계좌에 입출금 반영
         Account account = accountRepository.findByUserId(userId).get();
+
+        if(account.getBalance() + price < 0) {
+            throw new IllegalArgumentException("[계좌] 계좌의 잔액이 부족합니다.");
+        }
+
         account.setBalance( account.getBalance() + price );
         accountRepository.save(account);
+//        로그 생성
+        accountLogService.createAccountLog(userId, type, price);
     }
 
 //    자산 분석 ( 예적금, 대출, 주식 보유 파악 )
