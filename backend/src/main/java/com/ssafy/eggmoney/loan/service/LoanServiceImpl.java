@@ -162,6 +162,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional
     public void sendRepayment(long loanId) {
+
         Loan loan = loanRepository.findByIdAndLoanStatus(loanId, LoanStatus.APPROVAL).orElseThrow(
                 () -> new NoSuchElementException(ErrorType.NOT_FOUND_LOAN.toString())
         );

@@ -10,11 +10,13 @@ import com.ssafy.eggmoney.loan.dto.response.LoanPrivateListResponseDto;
 import com.ssafy.eggmoney.loan.service.LoanService;
 import com.ssafy.eggmoney.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RequestMapping("/api/v1/fin/loan")
 @RestController
 @RequiredArgsConstructor
@@ -81,6 +83,7 @@ public class LoanController {
      * */
     @PostMapping("/send/{loanId}")
     public ResponseEntity<?> repayment(@RequestHeader(value = "Authorization") String token, @PathVariable long loanId) {
+        log.info("아아");
         loanService.sendRepayment(loanId);
 
         return ResponseEntity.ok().build();
