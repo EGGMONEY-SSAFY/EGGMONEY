@@ -1,6 +1,23 @@
 <script setup lang="ts">
 import { useStockStore } from "@/stores/stock"
 import { computed, onMounted, ref } from "vue"
+import { useRoute } from "vue-router"
+
+const idMap: Record<string, number> = {
+  KOSPI: 1,
+  KOSDAQ: 2,
+  AUTOMOTIVE: 3,
+  SEMICONDUCTOR: 4,
+  HEALTHCARE: 5,
+  BANKING: 6,
+  ENERGY_CHEMICAL: 7,
+  STEEL: 8,
+  CONSTRUCTION: 9,
+  TRANSPORTATION: 10,
+  MEDIA_ENTERTAINMENT: 11,
+  IT: 12,
+  UTILITIES: 13,
+}
 
 const isModalOpen = ref(false)
 
@@ -28,6 +45,7 @@ interface StockList {
   ratio: number
 }
 
+const route = useRoute()
 const buyQuantity = ref(0)
 const buyPrice = ref(props.price - 1)
 const storeStock = useStockStore()
@@ -78,7 +96,7 @@ const postBuyAmt1 = computed(() => {
     <div class="bg-white m-4 rounded-lg shadow flex flex-col">
       <div class="flex justify-between">
         <div class="m-4">
-          <p>매수 수량</p>
+          <p>매수 수량 {{}}</p>
         </div>
         <div class="m-4 flex justify-center items-center">
           <input
@@ -155,15 +173,10 @@ const postBuyAmt1 = computed(() => {
       v-if="isModalOpen"
       class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     >
-      <div class="bg-white w-1/3 p-6 rounded-lg shadow-lg ">
+      <div class="bg-white w-1/3 p-6 rounded-lg shadow-lg">
         <h2 class="text-2xl font-semibold mb-4 text-center">지정가 매수</h2>
         <p class="mb-4">This is a modal body. You can add your content here.</p>
-        <button
-          @click="closeModal"
-          class="text-gray-500 hover:text-gray-700"
-        >
-          X
-        </button>
+        <button @click="closeModal" class="text-gray-500 hover:text-gray-700">X</button>
       </div>
     </div>
   </div>

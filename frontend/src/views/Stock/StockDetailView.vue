@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import NavBarTab from "@/components/navbar/navBarTab/NavBarTab.vue"
 import BoxUserInfo from "@/components/box/BoxUserInfo2.vue"
 import BoxCurrentBuy from "@/components/box/BoxCurrentBuy.vue"
 import BoxCurrentSell from "@/components/box/BoxCurrentSell.vue"
@@ -54,7 +55,8 @@ const matchingStock = computed(() => {
 
 <template>
   <div v-if="data && matchingStock">
-    <BoxUserInfo :price="price" class="mt-16 sticky top-16" />
+    <NavBarTab />
+    <BoxUserInfo :price="price" class="mt-4 sticky top-16" />
     <!-- 임시 -->
     <HeldStocksChart />
     <h1 class="text-center">주식 정보</h1>
