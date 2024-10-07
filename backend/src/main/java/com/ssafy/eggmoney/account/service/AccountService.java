@@ -16,6 +16,7 @@ import com.ssafy.eggmoney.savings.entity.SavingsStatus;
 import com.ssafy.eggmoney.savings.repository.SavingsRepository;
 import com.ssafy.eggmoney.stock.entity.StockUser;
 import com.ssafy.eggmoney.stock.repository.StockUserRepository;
+import com.ssafy.eggmoney.stock.service.StockPendingService;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class AccountService {
     private final DepositRepository depositRepository;
     private final com.ssafy.eggmoney.loan.repository.LoanRepository loanRepository;
     private final StockUserRepository stockUserRepository;
+    private final StockPendingService stockPendingService;
 
 //    내 메인 계좌 조회
     public GetAccountResponseDto getAccount(Long userId) {
@@ -71,9 +73,12 @@ public class AccountService {
     public void updateAccount(AccountLogType type, Long userId, int price) {
 //        계좌에 입출금 반영
         Account account = accountRepository.findByUserId(userId).get();
+        int totalPendingPrice = stockPendingService.findPendingBuyTotalPrice(userId);
 
         if(account.getBalance() + price < 0) {
-            throw new IllegalArgumentException("[계좌] 계좌의 잔액이 부족합니다.");
+            throw new IllegalArgumentException("[자산] 계좌의 잔액이 부족합니다.");
+        } else if(account.getBalance() + price - totalPendingPrice < 0) {
+            throw new IllegalArgumentException("[자산] 지정 매수가 예약되어 있어 잔액이 부족합니다.");
         }
 
         account.setBalance( account.getBalance() + price );
