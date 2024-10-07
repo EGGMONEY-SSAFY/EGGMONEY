@@ -78,7 +78,7 @@ public class AccountService {
         if(account.getBalance() + price < 0) {
             throw new IllegalArgumentException("[자산] 계좌의 잔액이 부족합니다.");
         } else if(account.getBalance() + price - totalPendingPrice < 0) {
-            throw new IllegalArgumentException("[자산] 지정 매수가 예약되어 있어 잔액이 부족합니다.");
+            throw new IllegalArgumentException("[자산] 지정 매수가 설정되어 있어 계좌의 잔액을 사용하실 수 없습니다.");
         }
 
         account.setBalance( account.getBalance() + price );
