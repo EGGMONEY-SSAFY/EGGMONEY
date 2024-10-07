@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 @Service
 public class DepositServiceImpl implements DepositService {
 
-    private final UserRepository userRepository;
     private final DepositRepository depositRepository;
     private final DepositProductRepository depositProductRepository;
     private final AccountService accountService;
@@ -153,7 +152,7 @@ public class DepositServiceImpl implements DepositService {
 
         depositRepository.save(updatedDeposit);
 
-        log.info("예금 계좌 삭제");
+        log.info("예금 계좌 삭제 {}", depositId);
 
         return deleteResponseDto;
     }
