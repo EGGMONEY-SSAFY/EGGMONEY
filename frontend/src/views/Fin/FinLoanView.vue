@@ -9,7 +9,6 @@ import { onMounted, ref, onUnmounted } from "vue"
 const finStore = useFinStore()
 const userStore = useUserStore()
 
-const role = ref("")
 onMounted(() => {
   finStore.isYellowPage = true
 })
@@ -62,7 +61,7 @@ const handleListClick = () => {
       </div>
     </div>
   </div>
-  <div v-if="userStore.user && userStore.user.role === '부모'">
+  <div v-else-if="userStore.user && userStore.user.role === '부모'">
     <div class="bg-yellow-50">
       <div class="h-[78vh] flex flex-col justify-around">
         <div class="m-4 flex items-center justify-center">

@@ -2,8 +2,7 @@
 import SimplePinPadComponent from "@/components/login/SimplePinPadComponent.vue"
 import { useFinStore } from "@/stores/fin"
 import { onMounted, onUnmounted, ref } from "vue"
-import { useRoute, useRouter, type HistoryState, type RouterHistory } from "vue-router"
-import FinSuccessLoan from "./FinSuccessLoanView.vue"
+import { useRouter } from "vue-router"
 import { useUserStore } from "@/stores/user"
 
 const props = defineProps({
@@ -58,7 +57,7 @@ const handleFail = () => {
     remainingTime.value--
     if (remainingTime.value <= 0) {
       clearInterval(countdownInterval) // 카운트다운 종료
-      router.push({ name: "PasswordResetView" }) // 비밀번호 재설정 페이지로 이동
+      router.push({ name: "WonAuthView" }) // 1원인증 페이지로 넘기기()
     }
   }, 1000)
 }

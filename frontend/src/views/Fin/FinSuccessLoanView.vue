@@ -7,7 +7,6 @@ import { onMounted, ref, onUnmounted } from "vue"
 const finStore = useFinStore()
 const userStore = useUserStore()
 
-const role = ref("")
 const name = ref("AssetLoanListView")
 if (userStore.user?.role === "부모") {
   name.value = "FinLoanJudgeView"

@@ -4,9 +4,9 @@ import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
 import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import { useFinStore, type depositCreateInfo } from "@/stores/fin"
-import { useUserStore } from "@/stores/user"
 import { computed, onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
+import { useUserStore } from "@/stores/user"
 
 const router = useRouter()
 const finStore = useFinStore()

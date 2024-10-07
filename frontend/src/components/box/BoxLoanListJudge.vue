@@ -24,9 +24,9 @@ function openModal() {
 }
 
 // 모달을 닫는 함수
-function closeModal() {
-  isModalOpen.value = false
-}
+// function closeModal() {
+//   isModalOpen.value = false
+// }
 
 async function sendWithJudge(judge: string) {
   isJudge.value = true

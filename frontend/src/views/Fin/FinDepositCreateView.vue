@@ -27,10 +27,6 @@ const updateMoney = (value: number) => {
   money.value = value
 }
 
-const formattedMoney = computed(() => {
-  return money.value.toLocaleString()
-})
-
 onMounted(() => {
   const selectedProduct = finStore.depositProducts.find(
     (product) => product.productId === productId

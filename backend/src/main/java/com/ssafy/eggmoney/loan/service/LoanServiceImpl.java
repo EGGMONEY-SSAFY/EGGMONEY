@@ -235,7 +235,7 @@ public class LoanServiceImpl implements LoanService {
                 .build();
 
         loanRepository.save(updateLoan);
-        log.info("대출 만기 상환 완료");
+        log.info("대출 만기 상환 완료 {}", loanId);
     }
 
     // 만기 도달한 loanId 찾기(scheduler)

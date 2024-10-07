@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
-import NextButton from "@/components/button/NextButton.vue"
-import IconExplanation from "@/components/icons/IconExplanation.vue"
 import router from "@/router"
 import { useFinStore } from "@/stores/fin"
 import { useUserStore } from "@/stores/user"
-import { onMounted, ref, onUnmounted } from "vue"
+import { onMounted, onUnmounted } from "vue"
 const finStore = useFinStore()
 const userStore = useUserStore()
 
-const role = ref("")
+
 onMounted(() => {
   finStore.isYellowPage = true
   finStore.isTab = true

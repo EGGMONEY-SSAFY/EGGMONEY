@@ -2,8 +2,7 @@
 import BoxSavingsProduct from "@/components/box/BoxSavingsProduct.vue"
 
 import { useFinStore } from "@/stores/fin"
-import { useUserStore } from "@/stores/user"
-import { onMounted, ref } from "vue"
+import { onMounted } from "vue"
 
 const finStore = useFinStore()
 onMounted(() => {
