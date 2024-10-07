@@ -1,3 +1,4 @@
+z
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import IconChashed from "@/components/icons/IconChashed.vue"
@@ -76,15 +77,15 @@ const displayDateDetail = formattedDate.toLocaleString("ko-KR", {
     </div>
     <hr />
     <div class="m-4 flex justify-between">
-      <p>{{ type }}가</p>
+      <p>{{ type }} 가</p>
       <p>{{ price }} 알</p>
     </div>
     <div class="m-4 flex justify-between">
-      <p>{{ type }}수량</p>
+      <p>{{ type }} 수량</p>
       <p>{{ amount }} 주</p>
     </div>
     <div class="m-4 flex justify-between">
-      <p>{{ type }}총액</p>
+      <p>{{ type }} 총액</p>
       <p :class="isBuy ? 'text-red-500' : 'text-blue-500'">{{ totalPrice }} 알</p>
     </div>
   </div>
