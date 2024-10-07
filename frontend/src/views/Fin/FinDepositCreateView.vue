@@ -56,7 +56,7 @@ const handleClick = () => {
 
 <template>
   <!-- 바로 밑 justify가 안먹음 -->
-  <div v-if="userStore.user?.role==='자녀'" class="h-[70vh] flex flex-col m-4">
+  <div v-if="userStore.user?.role === '자녀'" class="h-[70vh] flex flex-col m-4">
     <div class="flex justify-center items-center mt-8">
       <div class="flex justify-center m-2">
         <IconExplanation></IconExplanation>
@@ -86,5 +86,4 @@ const handleClick = () => {
   <div v-else>
     <NotFoundComponent></NotFoundComponent>
   </div>
-
 </template>

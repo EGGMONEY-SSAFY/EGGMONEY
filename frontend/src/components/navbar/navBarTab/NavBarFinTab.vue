@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useFinStore } from "@/stores/fin";
+import { useFinStore } from "@/stores/fin"
 import { computed } from "vue"
 import { RouterLink, useRoute } from "vue-router"
 
@@ -15,7 +15,6 @@ const isActive = computed(() => {
     }
   }
 })
-
 </script>
 
 <template>

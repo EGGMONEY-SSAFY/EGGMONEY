@@ -22,7 +22,7 @@
         틀린 횟수: {{ failCount }} / 5
       </div>
       <!-- 이미지 및 핀 패드 -->
-      <div :class="{'bg-yellow-50' : finStore.isYellowPage, 'bg-white' : !finStore.isYellowPage}">
+      <div :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-white': !finStore.isYellowPage }">
         <div
           v-if="pinPadImage"
           class="bg-no-repeat h-[393px] w-[393px]"
@@ -32,7 +32,7 @@
             <button
               v-for="index in numbers"
               :key="index"
-              class="border rounded-md shadow-md size-16 m-4 "
+              class="border rounded-md shadow-md size-16 m-4"
               :class="{ 'bg-white': clickedButton === index || randomButton === index }"
               @click="onButtonClick(index)"
             ></button>

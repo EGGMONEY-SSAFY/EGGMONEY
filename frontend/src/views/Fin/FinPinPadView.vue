@@ -16,8 +16,7 @@ onMounted(() => {
   finStore.isTab = true
   console.log(previousRoute)
 })
-onUnmounted(() =>{
-  
+onUnmounted(() => {
   finStore.isTab = false
 })
 
@@ -67,17 +66,17 @@ const handleFail = () => {
 <template>
   <div class="mt-16">
     <SimplePinPadComponent
-    @pin-success="handleSuccess"
-    @pinFail="handleFail"
+      @pin-success="handleSuccess"
+      @pinFail="handleFail"
     ></SimplePinPadComponent>
   </div>
-    <div
-      v-if="showFailModal"
-      class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75"
-    >
-      <div class="bg-white rounded-lg p-6 max-w-sm text-center">
-        <p class="text-lg font-semibold text-gray-900">비밀번호 인증 실패</p>
-        <p>{{ remainingTime }}초 후 비밀번호 재설정 페이지로 이동합니다.</p>
-      </div>
+  <div
+    v-if="showFailModal"
+    class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75"
+  >
+    <div class="bg-white rounded-lg p-6 max-w-sm text-center">
+      <p class="text-lg font-semibold text-gray-900">비밀번호 인증 실패</p>
+      <p>{{ remainingTime }}초 후 비밀번호 재설정 페이지로 이동합니다.</p>
     </div>
+  </div>
 </template>
