@@ -9,8 +9,8 @@ const logout = () => {
 </script>
 
 <template>
-  <div class="m-4 flex justify-center items-center mt-10 cursor-pointer">
-    <p @click="logout" class="text-lg flex items-center mt-3">
+  <div class="flex items-center justify-center m-4 mt-10 cursor-pointer">
+    <p @click="logout" class="flex items-center mt-3 text-lg">
       <span>로그아웃 &nbsp;</span>
       <IconLogout />
     </p>

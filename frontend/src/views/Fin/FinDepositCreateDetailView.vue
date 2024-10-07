@@ -2,13 +2,15 @@
 <script setup lang="ts">
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
+import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import { useFinStore, type depositCreateInfo } from "@/stores/fin"
 import { computed, onMounted, ref } from "vue"
-import { useRoute, useRouter } from "vue-router"
+import { useRouter } from "vue-router"
+import { useUserStore } from "@/stores/user"
 
 const router = useRouter()
-const route = useRoute()
 const finStore = useFinStore()
+const userStore = useUserStore()
 const createInfo = ref<depositCreateInfo | null>(null)
 createInfo.value = finStore.depositCreateInfo
 const productId = Number(createInfo.value?.depositProductId)
@@ -47,7 +49,7 @@ const handleClick = () => {
 <template>
   <div class="m-4">
     <!--  -->
-    <div class="h-[78vh] flex flex-col m-4 justify-around">
+    <div v-if="userStore.user?.role === '자녀'" class="h-[78vh] flex flex-col m-4 justify-around">
       <div class="flex justify-center items-center">
         <div class="flex justify-center m-2">
           <IconExplanation></IconExplanation>
@@ -92,6 +94,10 @@ const handleClick = () => {
       <div class="mt-4 text-center">
         <NextButton routeName="FinPinPadView" @click="handleClick"></NextButton>
       </div>
+    </div>
+
+    <div v-else>
+      <NotFoundComponent></NotFoundComponent>
     </div>
   </div>
 </template>

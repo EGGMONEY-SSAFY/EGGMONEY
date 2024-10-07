@@ -16,14 +16,14 @@ const isLoading = ref(true)
 onMounted(async () => {
   console.log("App.vue Loaded")
   try {
-    await authStore.loadTokens(router);
-    await userStore.getUser();
-    console.log("App.vue 작업 완료");
+    await authStore.loadTokens(router)
+    await userStore.getUser()
+    console.log("App.vue 작업 완료")
   } catch (error) {
-    console.error("에러 발생:", error);
+    console.error("에러 발생:", error)
     // 에러 처리 로직 추가
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
 })
 </script>
@@ -32,7 +32,7 @@ onMounted(async () => {
   <!-- test224444sssssssssssss4 -->
   <!-- <div class="flex justify-center bg-gray-800">
     <div
-      class="main-container bg-gray-200"
+      class="bg-gray-200 main-container"
       :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }"
     >
       <NavBarTop />
@@ -46,7 +46,7 @@ onMounted(async () => {
       <p>Loading...</p>
     </div>
     <div
-      class="main-container bg-gray-200"
+      class="bg-gray-200 main-container"
       :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }"
       v-else
     >

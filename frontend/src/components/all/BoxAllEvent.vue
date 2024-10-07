@@ -17,31 +17,31 @@ const goToFamily = () => {
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg shadow flex flex-col">
+  <div class="flex flex-col m-4 bg-white rounded-lg shadow">
     <div class="flex justify-between">
       <div class="m-4">
-        <p class="text-lg flex items-center mt-3">
-          <IconFamily class="size-6 ml-4" />&nbsp; 이벤트
+        <p class="flex items-center mt-3 text-lg">
+          <IconFamily class="ml-4 size-6" />&nbsp; 이벤트
         </p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p></p>
       </div>
     </div>
     <div class="flex justify-between cursor-pointer" @click="goToFamily">
-      <div class="my-4 mx-8">
+      <div class="mx-8 my-4">
         <p>스피드 퀴즈</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p><IconRightArrow class="size-6" /></p>
       </div>
     </div>
 
     <!-- <div class="flex justify-between mb-3 cursor-pointer" @click="goToFamilyConnect">
-      <div class="my-4 mx-8">
+      <div class="mx-8 my-4">
         <p>가족 연결</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p><IconRightArrow class="size-6" /></p>
       </div>
     </div> -->

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStockStore } from "@/stores/stock"
-import { computed, onMounted, ref } from "vue"
+import { onMounted, ref } from "vue"
 import { useRoute } from "vue-router"
 
 const idMap: Record<string, number> = {
@@ -29,12 +29,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg shadow flex flex-col" v-if="data">
+  <div class="flex flex-col m-4 bg-white rounded-lg shadow" v-if="data">
     <div class="flex justify-between">
       <div class="m-4">
         <p>매수 평균가</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p>{{ data.buyAverage }} 알</p>
       </div>
     </div>
@@ -43,7 +43,7 @@ onMounted(async () => {
       <div class="m-4">
         <p>보유 수량</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p>{{ data.amount }} 주</p>
       </div>
     </div>
@@ -52,7 +52,7 @@ onMounted(async () => {
       <div class="m-4">
         <p>매수 금액</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p>{{ data.totalInvestment }} 알</p>
       </div>
     </div>
@@ -61,7 +61,7 @@ onMounted(async () => {
       <div class="m-4">
         <p>평가액</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p>{{ data.value }} 알</p>
       </div>
     </div>
@@ -70,7 +70,7 @@ onMounted(async () => {
       <div class="m-4">
         <p>수익률</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p>{{ data.roi }}%</p>
       </div>
     </div>
