@@ -160,7 +160,7 @@ const getRandomIndex = (excludeIndex: number): number => {
 const verifyInput = () => {
   console.log(firstInput.value, secondInput.value)
   if (firstInput.value.join("") === secondInput.value.join("")) {
-    const pinString = firstInput.value.join("")
+    const pinString = firstInput.value.toString()
     encryptAndSendPin(pinString)
   } else {
     instructionMessage.value = "비밀번호가 일치하지 않습니다. 다시 시도해주세요"
@@ -181,8 +181,8 @@ const encryptAndSendPin = (pin: string) => {
   sendToBackend(pin)
 }
 const sendToBackend = async (encryptedPin: string) => {
-  // const token = authStore.accessToken;
-  const token = "4A9qnGHLH5c5SLbbotj4Ig3wE5u9qMtCAAAAAQoqJQ0AAAGSPikHMZCBbdpZdq0Z"
+  const token = authStore.accessToken;
+  
   try {
     await axios.post(
       "/api/pinpad/verify",

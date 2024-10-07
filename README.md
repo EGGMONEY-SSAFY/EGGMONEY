@@ -77,7 +77,6 @@ Docker : 애플리케이션을 컨테이너화하여 배포할 수 있는 플랫
 
 </div>
 </details>
-<br/>
 <details>
 <summary>협업 도구</summary>
 <div markdown="1">
@@ -105,7 +104,6 @@ Slack과 유사한 기능을 제공<br/>
 
 </div>
 </details>
-<br/>
 
 ---
 
@@ -190,6 +188,8 @@ Slack과 유사한 기능을 제공<br/>
 
 ### PWA (Progressive Web Apps)란?
 
+![전체](readme/pwa.png)
+
 PWA는 웹 기술을 사용하여 네이티브 앱처럼 동작하는 웹 애플리케이션입니다. 이는 사용자가 더 나은 경험을 할 수 있도록 다양한 기능을 제공합니다.
 
 #### 주요 특징:
@@ -213,9 +213,206 @@ PWA는 웹 기술을 사용하여 네이티브 앱처럼 동작하는 웹 애플
 </div>
 </details>
 
+<details>
+<summary> 2️⃣ Blue/Green 배포</summary>
+<br/>
+
+![전체](readme/blue.jpg)
+
+Blue/Green 배포는 애플리케이션의 새로운 버전을 배포할 때 서비스 중단을 최소화하는 전략입니다. 두 개의 환경(Blue와 Green)을 사용하여 안전하고 원활한 배포를 진행합니다.
+
+### 주요 특징
+
+- **두 개의 환경**: 
+  - 하나는 현재 운영 중인 환경(Blue), 다른 하나는 새로운 버전이 배포되는 환경(Green)입니다.
+
+- **신속한 전환**: 
+  - 새로운 버전이 준비되면 트래픽을 Blue에서 Green으로 전환하여 신속하게 서비스 전환이 가능합니다.
+
+- **롤백 용이**: 
+  - 새로운 버전이 문제가 발생할 경우, 빠르게 이전 버전으로 롤백할 수 있습니다.
+
+### 장점
+
+- **서비스 중단 최소화**: 
+  - 사용자에게 거의 영향을 미치지 않고 업데이트를 적용할 수 있습니다.
+
+- **비교 테스트 가능**: 
+  - 두 환경에서 성능을 비교하여 문제를 조기에 발견할 수 있습니다.
+
+- **신뢰성**: 
+  - 새로운 기능을 안정적으로 배포할 수 있어 신뢰성을 높입니다.
+
+</details>
+
+
+
+<details>
+<summary> 3️⃣ 하둡, 스파크, SQOOP</summary>
+
+작성 예정
+
+</details>
+
+
+
+<details>
+<summary> 4️⃣ SSAFY 공통 API - 1원인증 구현</summary>
+
+### 1원인증
+
+- **정의**: 
+  - 사용자가 1원의 금액을 인증을 통해 확인하고, 해당 금액을 통해 사용자 신원을 증명하는 방식입니다.
+
+### 구현 방식
+
+1. **사용자 요청**: 
+   - 사용자가 인증 요청을 하여 1원 결제를 시도합니다.
+
+2. **결제 시스템 연동**: 
+   - 결제 시스템과 연동하여 1원 결제를 진행합니다.
+
+3. **인증 완료**: 
+   - 결제가 완료되면 인증이 완료된 것으로 간주하고, 사용자는 서비스를 이용할 수 있습니다.
+
+### 장점
+
+- **높은 신뢰성**: 
+  - 소액 결제를 통해 사용자 신원을 확인함으로써 보안성을 강화합니다.
+
+- **간편한 사용자 경험**: 
+  - 간단한 인증 절차로 사용자 경험을 개선할 수 있습니다.
+
+- **API 통합**: 
+  - 공통 API를 통해 다양한 서비스와의 통합이 용이합니다.
+
+</details>
 
 ---
 ##### ☄️ IV. 트러블 슈팅  
+
+<details>
+<summary> 1️⃣ Git Revert Trouble Shooting </summary>
+<div markdown="1">
+
+#### 문제상황
+
+![전체](readme/trouble1.png)
+
+Merge를 취소하려고, Revert를 여러번 반복해서 back쪽 코드들이 이전으로 돌아가게 되었습니다.
+
+#### 해결방안 
+
+back 폴더를 지운 후, 이전 로그 번호로 되돌리는 방식으로 해결했습니다.
+Front 수정 코드는 로컬에 있기 때문에, 이것만 해결하면 되었습니다.
+
+#### 참고
+`git reset` 명령어로 특정 커밋(`cfc2fb2b`)로 되돌릴 수 있습니다.
+**`-hard` 옵션**: 해당 커밋으로 작업 디렉토리, 인덱스, HEAD를 모두 되돌립니다. 다만, 현재 작업 중인 파일의 변경 사항도 모두 사라지니 주의해야 합니다.
+
+```bash
+
+git reset --hard cfc2fb2b
+
+```
+
+</div>
+</details>
+
+<details>
+<summary> 2️⃣ 젠킨스 authorized_keys 설정 에러</summary>
+<br/>
+
+#### 문제상황
+
+![전체](readme/key1.png)
+![전체](readme/key2.png)
+
+
+```bash
+
+ssh -o StrictHostKeyChecking=no deployuser@j11c204.p.ssafy.io "bash /home/deployuser/deploy_back.sh"
+Shell Script
+5.3 sec
++ ssh -o StrictHostKeyChecking=no deployuser@j11c204.p.ssafy.io bash /home/deployuser/deploy_back.sh
+Warning: Permanently added 'j11c204.p.ssafy.io' (ED25519) to the list of known hosts.
+deployuser@j11c204.p.ssafy.io: Permission denied (publickey).
+script returned exit code 255
+
+```
+#### 해결방안 
+Jenkins 서버에서 deployuser를 사용하여 운영 서버에 SSH로 접근하기 <br/>
+1.deployuser 사용자 추가
+```bash
+sudo adduser deployuser
+```
+![전체](readme/key3.png)
+
+2.deployuser 사용자에 대한 .ssh/authorized_keys 파일 설정<br/>
+(1) deployuser 사용자로 전환
+```bash
+sudo su - deployuser
+```
+(2) .ssh 디렉토리를 생성하고 권한을 설정
+```bash
+mkdir -p ~/.ssh 
+chmod 700 ~/.ssh
+```
+(3) authorized_keys 파일을 생성
+```bash
+touch ~/.ssh/authorized_keys 
+chmod 600 ~/.ssh/authorized_keys
+```
+3.Jenkins 서버에서 공개키 생성<br/>
+(1) SSH 키 생성<br/>
+/root/.ssh 디렉토리에 SSH 키가 없으면 새로 생성해야 함
+```bash
+ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+(2) Jenkins 서버의 SSH 공개 키를 authorized_keys에 추가
+```bash
+ cat ~/.ssh/id_rsa.pub
+```
+4.SSH를 통해 deployuser 계정으로 접근 후 테스트
+```bash
+ssh deployuser@{운영서버 IP} 
+```
+5.서버의 SSH 설정 확인<br/>
+(1) /etc/ssh/sshd_config <br/>
+운영 서버에 접속한 후, SSH 설정 파일 열기
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+(2) SSH 서버가 공개 키 인증을 허용하고 있는지 확인<br/>
+없으면, 맨 아래줄에 추가
+```bash
+PubkeyAuthentication yes
+```
+(3) 설정 변경 후 SSH 서비스를 재시작<br/>
+이 단계들을 수행하면 Jenkins 서버에서 deployuser를 사용하여 운영 서버에 SSH로 접근할 수 있게 된다
+```bash
+sudo systemctl restart ssh
+```
+#### 젠킨스
+
+![전체](readme/key5.png)
+![전체](readme/key6.png)
+![전체](readme/key7.png)
+![전체](readme/key8.png)
+![전체](readme/key4.png)
+
+#### Front 배포 성공
+
+![전체](readme/key9.png)
+
+#### Maria DB 데이터
+
+![전체](readme/key10.png)
+
+#### 백엔드 배포 성공
+
+![전체](readme/key11.png)
+</details>
 
 
 
@@ -225,6 +422,7 @@ PWA는 웹 기술을 사용하여 네이티브 앱처럼 동작하는 웹 애플
 <details>
 <summary> 🗂️ 요구사항 명세 </summary>
 <div markdown="1">
+<br/>
 	
 ![요구사항 명세서1](readme/demand.png)
 </div>
@@ -253,8 +451,12 @@ PWA는 웹 기술을 사용하여 네이티브 앱처럼 동작하는 웹 애플
 
 [📎 Figma Link  ](https://www.figma.com/design/E4YJ6rv2618zTQV5R0jBPp/C204%ED%8C%80?t=e62ogsR1DgnWEkqL-0).
 
-![Figma](readme/Figma.png)
 
+#### 부모님 
+![피그마부모](readme/momfig.png)
+
+#### 자녀
+![피그마자녀](readme/childfig.png)
 
 </div>
 </details>
@@ -262,6 +464,7 @@ PWA는 웹 기술을 사용하여 네이티브 앱처럼 동작하는 웹 애플
 <details>
 <summary>&#128195; ERD  </summary>
 <div markdown="1">
+<br/>
 
 ![ERD 이미지](readme/ERD.png)
 
@@ -273,9 +476,11 @@ PWA는 웹 기술을 사용하여 네이티브 앱처럼 동작하는 웹 애플
 <details>
 <summary> &#128217; Architecture  </summary>
 <div markdown="1">
+<br/>
 
-![Architecture](readme/archi.png)
+![Architecture](readme/archi2.png)
 
+<br/>
 </div>
 </details>
 
