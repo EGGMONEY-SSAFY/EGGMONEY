@@ -27,4 +27,11 @@ public class NotificationController {
     public ResponseEntity<List<NotificationResponse>> getNotifications(@RequestHeader("Authorization") String token) {
         return new ResponseEntity<>(notificationService.findNotifications(1L), HttpStatus.OK);
     }
+
+    @PostMapping("/notification/{notificationId}/read")
+    public ResponseEntity<Void> readNotification(@RequestHeader("Authorization") String token,
+                                                 @PathVariable Long notificationId) {
+        notificationService.readNotification(notificationId);
+        return ResponseEntity.ok().build();
+    }
 }

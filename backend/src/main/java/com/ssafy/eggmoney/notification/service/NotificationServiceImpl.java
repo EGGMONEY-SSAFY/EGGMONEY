@@ -70,4 +70,13 @@ public class NotificationServiceImpl implements NotificationService {
         }).collect(Collectors.toList());
     }
 
+    @Transactional
+    @Override
+    public void readNotification(Long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new NoSuchElementException("[알림] 해당 알림을 찾을 수 없습니다."));
+
+        notification.readNotification();
+    }
+
 }
