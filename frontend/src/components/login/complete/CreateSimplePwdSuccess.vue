@@ -17,7 +17,7 @@ const router = useRouter()
 onMounted(() => {
   finStore.isYellowPage = true
   setTimeout(() => {
-    router.push("/assets")
+    router.push("/asset")
   }, 1500)
 })
 onUnmounted(() => {

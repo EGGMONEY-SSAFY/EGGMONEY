@@ -1,6 +1,7 @@
 package com.ssafy.eggmoney.simplepwd.service;
 
 import com.ssafy.eggmoney.simplepwd.dto.response.PinPadResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -46,11 +47,13 @@ public class PinPadService {
         }
     }
 
-    public PinPadResponse generatePinPadResponse() throws IOException {
+    public PinPadResponse generatePinPadResponse(HttpSession session) throws IOException {
         try{
             List<Integer> pinPad = IntStream.range(0, 10).boxed().collect(Collectors.toList());
             Collections.shuffle(pinPad);
 
+            // 섞인 카드 순서를 세션에 저장
+            session.setAttribute("shuffledPinPad", pinPad);
             StringBuilder pinOrder = new StringBuilder();
             for (int number : pinPad) {
                 pinOrder.append(number);

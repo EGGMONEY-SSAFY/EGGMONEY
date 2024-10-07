@@ -74,9 +74,11 @@ public class UserService {
     }
 
     // 유저 정보 업데이트
+    @Transactional
     public void updateUser(User user, UpdateUserRequestDto dto){
         user.updateUserInfo(dto.getName(), dto.getBank(), dto.getRealAccount(), dto.getSimplePwd(),dto.getRole());
-        userRepository.save(user);
+        User updatedUser = userRepository.save(user);
+
     }
 
     public List<InvestmentRatioResponse> findInvestmentRatio(Long userId){
