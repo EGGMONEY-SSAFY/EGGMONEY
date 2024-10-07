@@ -181,8 +181,8 @@ const encryptAndSendPin = (pin: string) => {
   sendToBackend(pin)
 }
 const sendToBackend = async (encryptedPin: string) => {
-  const token = authStore.accessToken;
-  
+  const token = authStore.accessToken
+
   try {
     await axios.post(
       "/api/pinpad/verify",

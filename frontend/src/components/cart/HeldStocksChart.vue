@@ -5,21 +5,10 @@ import { useStockStore } from "@/stores/stock.js"
 import { onMounted, ref } from "vue"
 
 const stockStore = useStockStore()
-const options = {
-  responsive: true,
-  maintainAspectRatio: false,
-  hoverOffset: 20,
-  borderDashOffset: 10,
-  plugins: {
-    title: {
-      display: true,
-      text: "qwd2qd",
-    },
-  },
-}
 
 const data = ref()
 const data1 = ref()
+const options = ref()
 onMounted(async () => {
   data1.value = await stockStore.getChartData()
   data1.value.prices.shift()
@@ -44,6 +33,18 @@ onMounted(async () => {
         data: data1.value.prices,
       },
     ],
+  }
+  options.value = {
+    responsive: true,
+    maintainAspectRatio: false,
+    hoverOffset: 20,
+    borderDashOffset: 10,
+    plugins: {
+      title: {
+        display: true,
+        text: `a`,
+      },
+    },
   }
 })
 
