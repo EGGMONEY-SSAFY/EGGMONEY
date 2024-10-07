@@ -25,7 +25,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div v-if="userStore.user?.role==='자녀'" class="bg-yellow-50">
+  <div v-if="userStore.user?.role === '자녀'" class="bg-yellow-50">
     <div class="h-[78vh] pt-20 flex flex-col gap-20">
       <div class="text-center text-3xl font-bold">계좌 생성 성공!</div>
       <div class="flex justify-center">

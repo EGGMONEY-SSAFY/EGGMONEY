@@ -48,7 +48,7 @@ const handleClick = () => {
 </script>
 
 <template>
-  <div v-if="userStore.user?.role==='자녀'" class="m-4">
+  <div v-if="userStore.user?.role === '자녀'" class="m-4">
     <!--  -->
     <div class="flex flex-col m-4 justify-between">
       <div class="flex justify-center items-center">

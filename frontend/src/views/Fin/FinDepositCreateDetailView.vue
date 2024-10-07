@@ -49,7 +49,7 @@ const handleClick = () => {
 <template>
   <div class="m-4">
     <!--  -->
-    <div v-if="userStore.user?.role==='자녀'" class="h-[78vh] flex flex-col m-4 justify-around">
+    <div v-if="userStore.user?.role === '자녀'" class="h-[78vh] flex flex-col m-4 justify-around">
       <div class="flex justify-center items-center">
         <div class="flex justify-center m-2">
           <IconExplanation></IconExplanation>
@@ -97,7 +97,7 @@ const handleClick = () => {
     </div>
 
     <div v-else>
-    <NotFoundComponent></NotFoundComponent>
-  </div>
+      <NotFoundComponent></NotFoundComponent>
+    </div>
   </div>
 </template>

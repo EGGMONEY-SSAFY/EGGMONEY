@@ -11,7 +11,7 @@ const props = defineProps({
     required: true,
   },
 })
-const isParent = (userStore.user?.role === "부모") ? true : false
+const isParent = userStore.user?.role === "부모" ? true : false
 const name = "FinDepositCreateView"
 </script>
 
@@ -26,7 +26,7 @@ const name = "FinDepositCreateView"
         },
       }"
       class="m-2 flex justify-center w-full items-center"
-       :class="{ 'pointer-events-none': isParent }"
+      :class="{ 'pointer-events-none': isParent }"
     >
       <div class="flex flex-col w-full mx-8 my-4 gap-y-2">
         <div class="flex justify-between mb-3">

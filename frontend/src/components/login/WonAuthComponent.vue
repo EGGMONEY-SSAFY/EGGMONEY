@@ -94,25 +94,25 @@ store.setTitle("입금계좌 등록")
 const authStore = useAuthStore()
 const bankitems = [kb, nh, sh, wo, toss, ha]
 const bankname = ["KB 국민은행", "농협은행", "신한은행", "우리은행", "토스", "하나은행"]
-const banksend=['국민','농협','신한','우리','토스','하나']
+const banksend = ["국민", "농협", "신한", "우리", "토스", "하나"]
 const bankselectstep = ref(0)
 const selectbank = ref<number | null>(null)
 const selectaccount = ref<string | null>(null)
 const checkAuth = ref<string | null>(null)
-  const token = authStore.accessToken
+const token = authStore.accessToken
 const selectBank = (index: number) => {
   selectbank.value = index
   bankselectstep.value += 1
 }
 
 const sendWonAuth = async () => {
-  if (selectaccount.value&& selectbank.value !== null) {
+  if (selectaccount.value && selectbank.value !== null) {
     try {
       const response = await axios.post(
         "/api/v1/auth/won/send",
         {
           accountnum: selectaccount.value,
-          bank:banksend[selectbank.value]
+          bank: banksend[selectbank.value],
           //'0015279150409321'
           // selectaccount.value
         },
@@ -123,7 +123,7 @@ const sendWonAuth = async () => {
           },
         }
       )
-      console.log(selectaccount.value,banksend[selectbank.value])
+      console.log(selectaccount.value, banksend[selectbank.value])
       console.log(response)
       bankselectstep.value += 1
     } catch (error) {
@@ -136,9 +136,8 @@ const sendWonAuth = async () => {
 }
 
 const checkAuthNumber = async () => {
-  if (selectaccount.value && checkAuth.value&& selectbank.value !== null) {
+  if (selectaccount.value && checkAuth.value && selectbank.value !== null) {
     try {
-      
       console.log(token)
       //  const token = "HpAwXfMaEpHRVBLX6CvO2-LUlcUMjy1EAAAAAQorDR4AAAGSPfkK3pCBbdpZdq0Z"
       const response = await axios.post(
@@ -148,7 +147,7 @@ const checkAuthNumber = async () => {
           accountnum: selectaccount.value,
           authText: "SSAFY_TEST",
           authnum: checkAuth.value,
-          bank:banksend[selectbank.value]
+          bank: banksend[selectbank.value],
         },
         {
           headers: {
@@ -157,7 +156,7 @@ const checkAuthNumber = async () => {
           },
         }
       )
-      console.log(selectaccount.value,banksend[selectbank.value])
+      console.log(selectaccount.value, banksend[selectbank.value])
       console.log(response)
       bankselectstep.value += 1
     } catch (error) {

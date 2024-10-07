@@ -9,7 +9,6 @@ import { useUserStore } from "@/stores/user"
 import { onMounted, reactive, ref } from "vue"
 import { useRouter } from "vue-router"
 
-
 const reason = ref<string | null>(null)
 const money = ref<number | null>(null)
 const loanDate = ref<number>(1)
@@ -93,7 +92,7 @@ const updateSelectedType = (event: Event) => {
 </script>
 
 <template>
-  <div v-if="userStore.user?.role==='자녀'" class="m-4">
+  <div v-if="userStore.user?.role === '자녀'" class="m-4">
     <div class="m-4 flex items-center justify-center">
       <div class="m-2 flex">
         <IconExplanation></IconExplanation>
