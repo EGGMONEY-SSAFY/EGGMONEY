@@ -168,8 +168,6 @@ const encryptAndSendPin = (pin: string) => {
   sendToBackend(encryptedPin)
 }
 const sendToBackend = async (encryptedPin: string) => {
-
-
   try {
     const token = authStore.accessToken
     const response = await axios.post(
