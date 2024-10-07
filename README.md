@@ -77,7 +77,6 @@ Docker : 애플리케이션을 컨테이너화하여 배포할 수 있는 플랫
 
 </div>
 </details>
-<br/>
 <details>
 <summary>협업 도구</summary>
 <div markdown="1">
@@ -105,7 +104,6 @@ Slack과 유사한 기능을 제공<br/>
 
 </div>
 </details>
-<br/>
 
 ---
 
