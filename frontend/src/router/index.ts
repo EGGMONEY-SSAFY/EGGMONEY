@@ -50,7 +50,7 @@ import FinPinPadView from "@/views/Fin/FinPinPadView.vue"
 import FinLoanJudgeView from "@/views/Fin/FinLoanJudgeView.vue"
 import FinSuccessView from "@/views/Fin/FinSuccessView.vue"
 import FinSuccessLoanView from "@/views/Fin/FinSuccessLoanView.vue"
-const AssetView = defineAsyncComponent(() => import('@/views/Asset/AssetView.vue'))
+const AssetView = defineAsyncComponent(() => import("@/views/Asset/AssetView.vue"))
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -254,7 +254,7 @@ const router = createRouter({
       component: event,
     },
     {
-      path: "/stock/detail/:stock",
+      path: "/stock/detail/:stockName",
       name: "StockDetail",
       component: StockDetail,
     },
@@ -349,7 +349,6 @@ router.beforeEach(async (to, from, next) => {
       next() // 토큰이 있으면 정상적으로 페이지 이동
     }
   }
-}
-)
+})
 
 export default router

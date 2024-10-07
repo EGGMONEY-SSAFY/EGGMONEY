@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useStockStore } from "@/stores/stock"
-import { computed, onMounted, ref } from "vue"
-import { useRoute } from "vue-router"
+import { computed, onMounted, onUnmounted, ref, watch } from "vue"
+import { useRoute, useRouter } from "vue-router"
 
 const idMap: Record<string, number> = {
   KOSPI: 1,
@@ -29,6 +29,18 @@ const closeModal = () => {
   isModalOpen.value = false
 }
 
+watch(isModalOpen, (newValue) => {
+  if (newValue) {
+    document.body.classList.add("overflow-hidden")
+  } else {
+    document.body.classList.remove("overflow-hidden")
+  }
+})
+
+onUnmounted(() => {
+  document.body.classList.remove("overflow-hidden")
+})
+
 const props = defineProps({
   price: {
     type: Number,
@@ -45,7 +57,6 @@ interface StockList {
   ratio: number
 }
 
-const route = useRoute()
 const buyQuantity = ref(0)
 const buyPrice = ref(props.price - 1)
 const storeStock = useStockStore()
@@ -53,6 +64,9 @@ const myStock = ref()
 const myStockB = ref()
 const myStockI = ref()
 const stockList = ref<StockList[]>([])
+const router = useRouter()
+const route = useRoute()
+const stockId = idMap[route.params.stockName as string]
 
 onMounted(async () => {
   const fetchedStockPrice = await storeStock.getStockPrice()
@@ -89,6 +103,11 @@ const postBuyAmt = computed(() => {
 const postBuyAmt1 = computed(() => {
   return myStockB.value - totalBuyAmount.value
 })
+
+const handleBuy = async () => {
+  storeStock.postBuyOrder(stockId, buyPrice.value, buyQuantity.value)
+  router.go(0)
+}
 </script>
 
 <template>
@@ -96,7 +115,7 @@ const postBuyAmt1 = computed(() => {
     <div class="flex flex-col m-4 bg-white rounded-lg shadow">
       <div class="flex justify-between">
         <div class="m-4">
-          <p>매수 수량 {{}}</p>
+          <p>매수 수량</p>
         </div>
         <div class="flex items-center justify-center m-4">
           <input
@@ -162,7 +181,7 @@ const postBuyAmt1 = computed(() => {
               ? 'cursor-not-allowed bg-red-200'
               : 'bg-red-500 cursor-pointer hover:bg-red-600'
           "
-          :disabled="postBuyAmt < 0"
+          :disabled="postBuyAmt < 0 || buyQuantity == 0 || postBuyAmt1 < 0"
         >
           매수
         </button>
@@ -175,8 +194,32 @@ const postBuyAmt1 = computed(() => {
     >
       <div class="w-1/3 p-6 bg-white rounded-lg shadow-lg">
         <h2 class="mb-4 text-2xl font-semibold text-center">지정가 매수</h2>
-        <p class="mb-4">This is a modal body. You can add your content here.</p>
-        <button @click="closeModal" class="text-gray-500 hover:text-gray-700">X</button>
+        <div class="flex justify-between">
+          <p class="m-4">매수 가격</p>
+          <p class="m-4">{{ buyPrice.toLocaleString() }} 알</p>
+        </div>
+        <div class="flex justify-between">
+          <p class="m-4">매수 수량</p>
+          <p class="m-4">{{ buyQuantity }} 주</p>
+        </div>
+        <div class="flex justify-between">
+          <p class="m-4">매수 총액</p>
+          <p class="m-4">{{ totalBuyAmount.toLocaleString() }} 알</p>
+        </div>
+        <div class="flex justify-center">
+          <button
+            @click="handleBuy"
+            class="p-1 px-3 m-4 text-white bg-red-500 rounded-lg cursor-pointer hover:bg-red-600"
+          >
+            매수
+          </button>
+          <button
+            @click="closeModal"
+            class="p-1 px-3 m-4 text-white bg-gray-300 rounded-lg cursor-pointer hover:bg-gray-400"
+          >
+            취소
+          </button>
+        </div>
       </div>
     </div>
   </div>

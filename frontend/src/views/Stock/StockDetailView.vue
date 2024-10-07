@@ -36,7 +36,6 @@ interface StockList {
   ratio: number
 }
 const route = useRoute()
-const name = route.params.stockName as string
 const stockStore = useStockStore()
 const stockList = ref<StockList[]>([])
 const stockName = route.params.stockName as string
@@ -44,12 +43,13 @@ const data = ref()
 const price = ref()
 onMounted(async () => {
   const fetchedStockPrice = await stockStore.getStockPrice()
-  stockList.value = fetchedStockPrice
+  const stockName = (await route.params.stockName) as string
+  stockList.value = await fetchedStockPrice
   data.value = await stockStore.getMyStockInfo(idMap[stockName])
 })
 
 const matchingStock = computed(() => {
-  return stockList.value.find((stock) => stock.stockItem === name)
+  return stockList.value.find((stock) => stock.stockItem === stockName)
 })
 </script>
 
@@ -67,8 +67,5 @@ const matchingStock = computed(() => {
     <div class="text-center">지정가 거래</div>
     <BoxLimitBuy :price="matchingStock.price" />
     <BoxLimitSell :price="matchingStock.price" :Quantity="data.amount" />
-    <div class="p-4">
-      <button class="btn btn-primary">Flowbite Button</button>
-    </div>
   </div>
 </template>
