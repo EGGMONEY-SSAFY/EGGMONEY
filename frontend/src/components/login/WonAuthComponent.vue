@@ -99,7 +99,7 @@ const bankselectstep = ref(0)
 const selectbank = ref<number | null>(null)
 const selectaccount = ref<string | null>(null)
 const checkAuth = ref<string | null>(null)
-
+  const token = authStore.accessToken
 const selectBank = (index: number) => {
   selectbank.value = index
   bankselectstep.value += 1
@@ -118,11 +118,12 @@ const sendWonAuth = async () => {
         },
         {
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
         }
       )
-      console.log(selectaccount.value)
+      console.log(selectaccount.value,banksend[selectbank.value])
       console.log(response)
       bankselectstep.value += 1
     } catch (error) {
@@ -137,7 +138,8 @@ const sendWonAuth = async () => {
 const checkAuthNumber = async () => {
   if (selectaccount.value && checkAuth.value&& selectbank.value !== null) {
     try {
-      const token = authStore.accessToken
+      
+      console.log(token)
       //  const token = "HpAwXfMaEpHRVBLX6CvO2-LUlcUMjy1EAAAAAQorDR4AAAGSPfkK3pCBbdpZdq0Z"
       const response = await axios.post(
         "/api/v1/auth/won/check",
@@ -155,6 +157,7 @@ const checkAuthNumber = async () => {
           },
         }
       )
+      console.log(selectaccount.value,banksend[selectbank.value])
       console.log(response)
       bankselectstep.value += 1
     } catch (error) {
