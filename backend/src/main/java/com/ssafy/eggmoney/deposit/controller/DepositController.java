@@ -30,7 +30,7 @@ public class DepositController {
      * return DepositProductResponseDto
      * */
     @GetMapping("/product")
-    public ResponseEntity<List<DepositProductListResponseDto>> getAllDepositProduct(@RequestHeader(value = "Authorization") String token) {
+    public ResponseEntity<List<DepositProductListResponseDto>> getAllDepositProduct() {
         List<DepositProductListResponseDto> result = depositService.getDepositProducts();
         return ResponseEntity.ok().body(result);
     }
@@ -70,7 +70,7 @@ public class DepositController {
      * return DeleteDepositResponseDto
     */
     @PostMapping("/delete/{depositId}")
-    public ResponseEntity<DeleteDepositResponseDto> deleteDeposit(@PathVariable long depositId) {
+    public ResponseEntity<DeleteDepositResponseDto> deleteDeposit(@RequestHeader(value = "Authorization") String token, @PathVariable long depositId) {
         DeleteDepositResponseDto result = depositService.deleteDeposit(depositId);
 
         return ResponseEntity.ok().body(result);
