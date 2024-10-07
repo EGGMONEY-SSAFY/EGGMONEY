@@ -22,9 +22,8 @@ const stockList = ref<StockList[]>([])
 onMounted(async () => {
   const fetchedStockPrice = await storeStock.getStockPrice()
   stockList.value = fetchedStockPrice
+  store.setTitle("증권")
 })
-
-store.setTitle("증권")
 </script>
 
 <template>
