@@ -16,6 +16,6 @@ import { useRouter } from "vue-router"
 const router = useRouter()
 
 const moveToHomePage = () => {
-  router.push("/assets")
+  router.push("/asset")
 }
 </script>

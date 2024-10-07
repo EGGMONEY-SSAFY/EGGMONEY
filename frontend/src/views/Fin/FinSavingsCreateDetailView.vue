@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
+import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import { useFinStore, type savingsCreateInfo } from "@/stores/fin"
+import { useUserStore } from "@/stores/user"
 import { computed, onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
 const router = useRouter()
 const route = useRoute()
 const finStore = useFinStore()
+const userStore = useUserStore()
 
 const productId = Number(route.query.productId)
 const productName = ref("")
@@ -45,7 +48,7 @@ const handleClick = () => {
 </script>
 
 <template>
-  <div class="m-4">
+  <div v-if="userStore.user?.role==='자녀'" class="m-4">
     <!--  -->
     <div class="flex flex-col m-4 justify-between">
       <div class="flex justify-center items-center">
@@ -101,5 +104,8 @@ const handleClick = () => {
     <div class="bottom-2 text-center">
       <NextButton routeName="FinView" @click="handleClick"></NextButton>
     </div>
+  </div>
+  <div v-else>
+    <NotFoundComponent></NotFoundComponent>
   </div>
 </template>

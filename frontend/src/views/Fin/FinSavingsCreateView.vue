@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import NextButton from "@/components/button/NextButton.vue"
+import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
 import InputMoney from "@/components/input/InputMoney.vue"
 import { useFinStore } from "@/stores/fin"
@@ -53,8 +54,8 @@ const handleClick = () => {
 
 <template>
   <!--  -->
-  <div class="flex flex-col m-4 h-[75vh]">
-    <div class="flex justify-center items-center">
+  <div v-if="userStore.user?.role==='자녀'" class="flex flex-col m-4 h-[70vh]">
+    <div class="flex justify-center items-center mt-8">
       <div class="flex justify-center m-2">
         <IconExplanation></IconExplanation>
       </div>
@@ -81,4 +82,8 @@ const handleClick = () => {
       </div>
     </div>
   </div>
+  <div v-else>
+    <NotFoundComponent></NotFoundComponent>
+  </div>
+
 </template>

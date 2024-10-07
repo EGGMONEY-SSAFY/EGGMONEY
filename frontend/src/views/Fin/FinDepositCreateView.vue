@@ -4,6 +4,7 @@
 -->
 
 <script setup lang="ts">
+import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
 import InputMoney from "@/components/input/InputMoney.vue"
@@ -11,7 +12,6 @@ import { useFinStore } from "@/stores/fin"
 import { useUserStore } from "@/stores/user"
 import { computed, onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
-
 const route = useRoute()
 const userStore = useUserStore()
 const finStore = useFinStore()
@@ -56,8 +56,8 @@ const handleClick = () => {
 
 <template>
   <!-- 바로 밑 justify가 안먹음 -->
-  <div class="h-[78vh] flex flex-col m-4 justify-around">
-    <div class="flex justify-center items-center">
+  <div v-if="userStore.user?.role==='자녀'" class="h-[70vh] flex flex-col m-4">
+    <div class="flex justify-center items-center mt-8">
       <div class="flex justify-center m-2">
         <IconExplanation></IconExplanation>
       </div>
@@ -76,8 +76,15 @@ const handleClick = () => {
       <div class="my-4"><InputMoney @updateMoney="updateMoney"></InputMoney> 알을</div>
       <div class="m-2">예금해 둘 예정이에요</div>
     </div>
-    <div class="m-4 text-center">
+
+    <!-- 다음으로 넘어가는 버튼 -->
+    <div class="mt-auto text-center">
       <NextButton routeName="FinDepositCreateDetailView" @click="handleClick"></NextButton>
     </div>
   </div>
+
+  <div v-else>
+    <NotFoundComponent></NotFoundComponent>
+  </div>
+
 </template>
