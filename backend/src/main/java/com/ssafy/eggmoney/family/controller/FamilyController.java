@@ -122,14 +122,16 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
     @PostMapping("/upload-profile")
     public void uploadProfileImage(@RequestParam("file") MultipartFile file){
         try {
-            String fileName = file.getOriginalFilename();
-            String tempFilePath = System.getProperty("java.io.tmpdir") + "/"+fileName;
-            file.transferTo(new File(tempFilePath));
-
-            s3Service.uploadFile(fileName,tempFilePath);
-//            String fileUrl = s3Service.uploadFile(file);
+            String fileUrl = s3Service.uploadFile(file);
+            
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 }
+//            String fileName = file.getOriginalFilename();
+//            String tempFilePath = System.getProperty("java.io.tmpdir") + "/"+fileName;
+//            file.transferTo(new File(tempFilePath));
+//
+//            s3Service.uploadFile(fileName,tempFilePath);
+//            String fileUrl = s3Service.uploadFile(file);
