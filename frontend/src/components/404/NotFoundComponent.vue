@@ -1,9 +1,9 @@
 <template>
-  <div class="mt-52 mb-4 flex flex-col justify-center items-center text-center">
+  <div class="flex flex-col items-center justify-center mb-4 text-center mt-52">
     <img class="w-3/4 mx-4" src="@/assets/all/404.png" alt="" />
 
     <button
-      class="w-3/4 px-3 py-2 bg-orange-500 text-white font-semibold rounded-full mt-20 hover:bg-orange-600"
+      class="w-3/4 px-3 py-2 mt-20 font-semibold text-white bg-orange-500 rounded-full hover:bg-orange-600"
       @click="moveToHomePage"
     >
       홈으로
@@ -16,6 +16,6 @@ import { useRouter } from "vue-router"
 const router = useRouter()
 
 const moveToHomePage = () => {
-  router.push("/assets")
+  router.push("/asset")
 }
 </script>

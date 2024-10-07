@@ -1,3 +1,4 @@
+z
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import IconChashed from "@/components/icons/IconChashed.vue"
@@ -66,25 +67,25 @@ const displayDateDetail = formattedDate.toLocaleString("ko-KR", {
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg shadow flex flex-col">
-    <div class="m-4 flex justify-between">
+  <div class="flex flex-col m-4 bg-white rounded-lg shadow">
+    <div class="flex justify-between m-4">
       <p class="font-bold">{{ nameMap[stockId] }}</p>
-      <div class="flex justify-center items-center gap-2">
+      <div class="flex items-center justify-center gap-2">
         <p class="text-sm text-gray-500">{{ isDetail ? displayDateDetail : displayDate }}</p>
-        <IconChashed class="size-5 cursor-pointer" @click="toggleDetail" />
+        <IconChashed class="cursor-pointer size-5" @click="toggleDetail" />
       </div>
     </div>
     <hr />
-    <div class="m-4 flex justify-between">
+    <div class="flex justify-between m-4">
       <p>{{ type }}가</p>
       <p>{{ price }} 알</p>
     </div>
-    <div class="m-4 flex justify-between">
-      <p>{{ type }}수량</p>
+    <div class="flex justify-between m-4">
+      <p>{{ type }} 수량</p>
       <p>{{ amount }} 주</p>
     </div>
-    <div class="m-4 flex justify-between">
-      <p>{{ type }}총액</p>
+    <div class="flex justify-between m-4">
+      <p>{{ type }} 총액</p>
       <p :class="isBuy ? 'text-red-500' : 'text-blue-500'">{{ totalPrice }} 알</p>
     </div>
   </div>

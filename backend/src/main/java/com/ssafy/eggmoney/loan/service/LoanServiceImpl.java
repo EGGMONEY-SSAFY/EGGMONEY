@@ -138,12 +138,12 @@ public class LoanServiceImpl implements LoanService {
     // 대출 심사하기
     @Override
     @Transactional
-    public void loanEvaluation(long loanId, LoanEvaluationRequestDto requestDto) {
+    public void loanEvaluation(long loanId, LoanEvaluationRequestDto requestDto, User user) {
         Loan loan = loanRepository.findById(loanId).orElseThrow(
                 () -> new NoSuchElementException(ErrorType.NOT_FOUND_LOAN.toString())
         );
-
-        if(!loan.getUser().getRole().equals("부모")){
+        log.info(user.getRole());
+        if(!user.getRole().equals("부모")){
             log.error("대출심사 권한이 없습니다.");
             throw new AccessDeniedException(ErrorType.NOT_JUDGE_ROLE.toString());
         }
@@ -162,6 +162,7 @@ public class LoanServiceImpl implements LoanService {
     @Override
     @Transactional
     public void sendRepayment(long loanId) {
+
         Loan loan = loanRepository.findByIdAndLoanStatus(loanId, LoanStatus.APPROVAL).orElseThrow(
                 () -> new NoSuchElementException(ErrorType.NOT_FOUND_LOAN.toString())
         );

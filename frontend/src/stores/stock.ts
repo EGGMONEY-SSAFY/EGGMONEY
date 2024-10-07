@@ -7,12 +7,114 @@ export const useStockStore = defineStore("stock", () => {
   // const authStore = useAuthStore()
   // authStore.accessToken
 
+  const getOrderLog = async () => {
+    try {
+      const response = await axios({
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        method: "get",
+        url: `${API_URL}/stock/pending/log`,
+      })
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const postBuyOrder = async (stockId: number, pendingPrice: number, pendingAmount: number) => {
+    try {
+      const response = await axios({
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        method: "post",
+        url: `${API_URL}/stock/pending/buy`,
+        data: {
+          stockId,
+          pendingPrice,
+          pendingAmount,
+        },
+      })
+
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const postSellOrder = async (stockId: number, pendingPrice: number, pendingAmount: number) => {
+    try {
+      const response = await axios({
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        method: "post",
+        url: `${API_URL}/stock/pending/sell`,
+        data: {
+          stockId,
+          pendingPrice,
+          pendingAmount,
+        },
+      })
+
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const postSellCurrent = async (stockId: number, amount: number) => {
+    try {
+      const response = await axios({
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        method: "post",
+        url: `${API_URL}/stock/user/sell`,
+        data: {
+          stockId,
+          amount,
+        },
+      })
+
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const postBuyCurrent = async (stockId: number, amount: number) => {
+    try {
+      const response = await axios({
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        method: "post",
+        url: `${API_URL}/stock/user/buy`,
+        data: {
+          stockId,
+          amount,
+        },
+      })
+
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const getMyStockLog = async () => {
     try {
       const response = await axios({
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "applications/json",
+          "Content-Type": "application/json",
         },
         method: "get",
         url: `${API_URL}/stock/user/log`,
@@ -28,7 +130,7 @@ export const useStockStore = defineStore("stock", () => {
       const response = await axios({
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "applications/json",
+          "Content-Type": "application/json",
         },
         method: "get",
         url: `${API_URL}/stock/${stockId}/user/info`,
@@ -44,7 +146,7 @@ export const useStockStore = defineStore("stock", () => {
       const response = await axios({
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "applications/json",
+          "Content-Type": "application/json",
         },
         method: "get",
         url: `${API_URL}/stock/user/portfolio`,
@@ -60,7 +162,7 @@ export const useStockStore = defineStore("stock", () => {
       const response = await axios({
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "applications/json",
+          "Content-Type": "application/json",
         },
         method: "get",
         url: `${API_URL}/stock/user/available-balance`,
@@ -114,5 +216,10 @@ export const useStockStore = defineStore("stock", () => {
     getMyStock,
     getMyStockInfo,
     getMyStockLog,
+    postBuyCurrent,
+    postSellCurrent,
+    postBuyOrder,
+    postSellOrder,
+    getOrderLog,
   }
 })

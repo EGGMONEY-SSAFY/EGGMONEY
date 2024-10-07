@@ -5,11 +5,11 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg shadow flex flex-col">
-    <div class="m-4 text-center text-2xl">
+  <div class="flex flex-col m-4 bg-white rounded-lg shadow">
+    <div class="m-4 text-2xl text-center">
       <span class="font-bold">{{ props.article?.title }}</span>
     </div>
-    <div class="m-4 flex justify-between">
+    <div class="flex justify-between m-4">
       <span>{{ props.article?.press }}</span>
       <span>{{ props.article?.publishDate }}</span>
       <a :href="props.article?.link" target="_blank" rel="noopener noreferrer">원문보기</a>

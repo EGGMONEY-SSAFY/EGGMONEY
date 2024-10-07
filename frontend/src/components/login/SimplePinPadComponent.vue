@@ -18,11 +18,11 @@
       </div>
 
       <!-- 틀린 횟수 표시 -->
-      <div class="text-red-500 text-lg font-bold" v-if="failCount > 0">
+      <div class="text-red-500 text-lg text-center font-bold" v-if="failCount > 0">
         틀린 횟수: {{ failCount }} / 5
       </div>
       <!-- 이미지 및 핀 패드 -->
-      <div class="bg-white">
+      <div :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-white': !finStore.isYellowPage }">
         <div
           v-if="pinPadImage"
           class="bg-no-repeat h-[393px] w-[393px]"
@@ -51,7 +51,8 @@ import JSEncrypt from "jsencrypt"
 //@ts-ignore
 import CryptoJS from "crypto-js"
 import { useVariableStore } from "@/stores/variable"
-
+import { useFinStore } from "@/stores/fin"
+const finStore = useFinStore()
 const store = useVariableStore()
 store.setTitle("간편 비밀번호")
 

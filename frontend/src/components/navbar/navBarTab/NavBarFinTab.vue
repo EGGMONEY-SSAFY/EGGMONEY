@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { useFinStore } from "@/stores/fin"
 import { computed } from "vue"
 import { RouterLink, useRoute } from "vue-router"
 
 const props = defineProps({ path: String })
+const finStore = useFinStore()
 const route = useRoute()
-const isAtive = computed(() => {
+const isActive = computed(() => {
   return (linkPath: string) => {
     if (linkPath !== "/fin") {
       return route.path.startsWith(linkPath) ? "bg-main-color rounded-full text-white" : ""
@@ -16,12 +18,12 @@ const isAtive = computed(() => {
 </script>
 
 <template>
-  <div class="flex justify-center pt-4 pb-2">
-    <RouterLink to="/fin" type="button" :class="isAtive('/fin')" class="px-4">예금</RouterLink>
-    <RouterLink to="/fin/savings" type="button" class="px-4" :class="isAtive('/fin/savings')"
+  <div v-if="!finStore.isTab" class="flex justify-center pt-4 pb-2">
+    <RouterLink to="/fin" type="button" :class="isActive('/fin')" class="px-4">예금</RouterLink>
+    <RouterLink to="/fin/savings" type="button" class="px-4" :class="isActive('/fin/savings')"
       >적금</RouterLink
     >
-    <RouterLink to="/fin/loan" type="button" class="px-4" :class="isAtive('/fin/loan')"
+    <RouterLink to="/fin/loan" type="button" class="px-4" :class="isActive('/fin/loan')"
       >대출</RouterLink
     >
   </div>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
 import IconQuestionMark from "@/components/icons/IconQuestionMark.vue"
@@ -91,7 +92,7 @@ const updateSelectedType = (event: Event) => {
 </script>
 
 <template>
-  <div class="m-4">
+  <div v-if="userStore.user?.role === '자녀'" class="m-4">
     <div class="m-4 flex items-center justify-center">
       <div class="m-2 flex">
         <IconExplanation></IconExplanation>
@@ -189,5 +190,8 @@ const updateSelectedType = (event: Event) => {
         ></NextButton>
       </div>
     </div>
+  </div>
+  <div v-else>
+    <NotFoundComponent></NotFoundComponent>
   </div>
 </template>

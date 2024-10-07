@@ -24,11 +24,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg py-3 mt-8" v-if="props.history && props.history.length > 0">
+  <div class="py-3 m-4 mt-8 bg-white rounded-lg" v-if="props.history && props.history.length > 0">
     <div v-for="(log, idx) in props.history" :key="log.createdAt">
-      <div class="m-4 flex justify-between px-5 py-1">
+      <div class="flex justify-between px-5 py-1 m-4">
         <div class="text-start">
-          <h1 class="font-semibold text-lg">{{ count - idx }} 회차</h1>
+          <h1 class="text-lg font-semibold">{{ count - idx }} 회차</h1>
           <h1>
             {{
               new Date(log.createdAt).toLocaleDateString("en-US", {

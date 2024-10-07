@@ -84,6 +84,15 @@ export interface LoanCreate {
   loanType: string
   userId: number
 }
+
+export interface LoanJudgeInfo {
+  loanId: number
+  loanStatus: string
+  userId: number
+  refuseReason: String
+  loanRate: number
+}
+
 export const useFinStore = defineStore(
   "fin",
   () => {
@@ -130,12 +139,16 @@ export const useFinStore = defineStore(
     const loanLogs = ref<LoanLog[] | null>([])
     const depositCreateInfo = ref<depositCreateInfo | null>(null)
     const savingsCreateInfo = ref<savingsCreateInfo | null>(null)
+    const loanJudgeInfo = ref<LoanJudgeInfo | null>(null)
 
     // 예금상품조회
     const getDepositProduct = function () {
       axios({
         method: "GET",
         url: `${DEPOSIT_PRODUCT_API_URL}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
       })
         .then((res) => {
           depositProducts.push(...res.data)
@@ -151,6 +164,9 @@ export const useFinStore = defineStore(
       axios({
         method: "GET",
         url: `${SAVINGS_PRODUCT_API_URL}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
       })
         .then((res) => {
           savingsProducts.push(...res.data)
@@ -197,6 +213,23 @@ export const useFinStore = defineStore(
       savingsCreateInfo.value = {
         paymentMoney,
         savingsProductId,
+        userId,
+      }
+    }
+
+    // 대출 심사 정보 저장
+    const setLoanJudgeInfo = function (
+      loanId: number,
+      loanStatus: string,
+      userId: number,
+      refuseReason: String,
+      loanRate: number
+    ) {
+      loanJudgeInfo.value = {
+        loanId,
+        loanStatus,
+        loanRate,
+        refuseReason,
         userId,
       }
     }
@@ -408,23 +441,17 @@ export const useFinStore = defineStore(
     }
 
     // User 대출 심사
-    const sendfinLoanJudge = function (
-      loanId: number,
-      judge: string,
-      userId: number,
-      reason: String,
-      rate: number
-    ) {
+    const sendfinLoanJudge = function () {
       return axios({
         method: "post",
-        url: `${USER_LOAN_JUDGE_API_URL}/${loanId}`,
+        url: `${USER_LOAN_JUDGE_API_URL}/${loanJudgeInfo.value?.loanId}`,
         headers: {
           Authorization: `Bearer ${authStore.accessToken}`,
         },
         data: {
-          loanStatus: judge,
-          refuseReason: reason,
-          loanRate: rate,
+          loanStatus: loanJudgeInfo.value?.loanStatus,
+          refuseReason: loanJudgeInfo.value?.refuseReason,
+          loanRate: loanJudgeInfo.value?.loanRate,
         },
       })
         .then((res) => {})
@@ -442,11 +469,11 @@ export const useFinStore = defineStore(
           Authorization: `Bearer ${authStore.accessToken}`,
         },
         data: {
-          userId: loanCreate.value?.userId,
+          // userId: loanCreate.value?.userId,
           loanType: loanCreate.value?.loanType,
           loanAmount: loanCreate.value?.loanAmount,
           loanDate: loanCreate.value?.loanDate,
-          balance: (loanCreate.value?.loanAmount ?? 0) / (loanCreate.value?.loanDate ?? 1),
+          // balance: (loanCreate.value?.loanAmount ?? 0) / (loanCreate.value?.loanDate ?? 1),
           loanReason: loanCreate.value?.loanReason,
         },
       })
@@ -528,6 +555,7 @@ export const useFinStore = defineStore(
       getUserLoan,
       getUserLoanLogs,
       getUserLoanList,
+      setLoanJudgeInfo,
       sendfinLoanJudge,
     }
   }
