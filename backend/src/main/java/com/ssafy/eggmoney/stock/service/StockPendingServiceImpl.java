@@ -65,7 +65,7 @@ public class StockPendingServiceImpl implements StockPendingService {
 
     @Override
     public List<StockPendingResponse> findPendingLog(Long userId) {
-        List<StockPending> stockPendings = stockPendingRepository.findByUserId(userId);
+        List<StockPending> stockPendings = stockPendingRepository.findByUserIdOrderByCreatedAtDesc(userId);
 
         if(stockPendings.isEmpty()) {
             throw new NoSuchElementException("지정 거래 예약을 찾을 수 없습니다.");
