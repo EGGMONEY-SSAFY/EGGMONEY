@@ -68,7 +68,8 @@ public class LoanController {
      * */
     @PostMapping("/judge/{loanId}")
     public ResponseEntity<?> evaluation(@RequestHeader(value = "Authorization") String token, @PathVariable long loanId, @RequestBody LoanEvaluationRequestDto requestDto ) {
-        loanService.loanEvaluation(loanId, requestDto);
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        loanService.loanEvaluation(loanId, requestDto, user);
 
         return ResponseEntity.ok().build();
     }

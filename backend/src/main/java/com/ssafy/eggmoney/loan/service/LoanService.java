@@ -16,7 +16,7 @@ public interface LoanService {
 
     LoanDetailResponseDto getDetailLoan(long loanId);
 
-    void loanEvaluation(long loanId, LoanEvaluationRequestDto requestDto);
+    void loanEvaluation(long loanId, LoanEvaluationRequestDto requestDto, User user);
 
     void sendRepayment(long loanId);
 
