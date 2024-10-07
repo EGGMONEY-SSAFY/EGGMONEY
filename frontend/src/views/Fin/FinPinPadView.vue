@@ -57,7 +57,7 @@ const handleFail = () => {
     remainingTime.value--
     if (remainingTime.value <= 0) {
       clearInterval(countdownInterval) // 카운트다운 종료
-      router.push({ name: "PasswordResetView" }) // 비밀번호 재설정 페이지로 이동
+      router.push({ name: "WonAuthView" }) // 1원인증 페이지로 넘기기()
     }
   }, 1000)
 }
