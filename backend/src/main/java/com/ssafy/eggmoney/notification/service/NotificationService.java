@@ -8,4 +8,5 @@ import java.util.List;
 public interface NotificationService {
     void saveNotification(Long userId, NotificationRequest notificationReq);
     List<NotificationResponse> findNotifications(Long userId);
+    void readNotification(Long notificationId);
 }
