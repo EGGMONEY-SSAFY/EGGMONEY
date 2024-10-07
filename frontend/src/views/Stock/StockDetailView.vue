@@ -4,12 +4,29 @@ import BoxUserInfo from "@/components/box/BoxUserInfo2.vue"
 import BoxCurrentBuy from "@/components/box/BoxCurrentBuy.vue"
 import BoxCurrentSell from "@/components/box/BoxCurrentSell.vue"
 import BoxStockInfo from "@/components/box/BoxStockInfo.vue"
-import HeldStocksChart from "@/components/cart/HeldStocksChart.vue"
 import BoxLimitBuy from "@/components/box/BoxLimitBuy.vue"
 import BoxLimitSell from "@/components/box/BoxLimitSell.vue"
 import { useRoute } from "vue-router"
 import { useStockStore } from "@/stores/stock"
 import { computed, onMounted, ref } from "vue"
+import StockLogChart from "@/components/cart/StockLogChart.vue"
+import { useVariableStore } from "@/stores/variable"
+
+const nameMap: Record<string, string> = {
+  KOSPI: "코스피",
+  KOSDAQ: "코스닥",
+  AUTOMOTIVE: "자동차",
+  SEMICONDUCTOR: "반도체",
+  HEALTHCARE: "헬스케어",
+  BANKING: "은행",
+  ENERGY_CHEMICAL: "에너지화학",
+  STEEL: "철강",
+  CONSTRUCTION: "건설",
+  TRANSPORTATION: "운송",
+  MEDIA_ENTERTAINMENT: "미디어",
+  IT: "IT",
+  UTILITIES: "유틸리티",
+}
 
 const idMap: Record<string, number> = {
   KOSPI: 1,
@@ -37,11 +54,13 @@ interface StockList {
 }
 const route = useRoute()
 const stockStore = useStockStore()
+const store = useVariableStore()
 const stockList = ref<StockList[]>([])
 const stockName = route.params.stockName as string
 const data = ref()
 const price = ref()
 onMounted(async () => {
+  store.setTitle(nameMap[route.params.stockName as string])
   const fetchedStockPrice = await stockStore.getStockPrice()
   const stockName = (await route.params.stockName) as string
   stockList.value = await fetchedStockPrice
@@ -58,7 +77,7 @@ const matchingStock = computed(() => {
     <NavBarTab />
     <BoxUserInfo :price="price" class="sticky mt-4 top-16" />
     <!-- 임시 -->
-    <HeldStocksChart />
+    <StockLogChart :stockId="idMap[stockName]" />
     <h1 class="text-center">주식 정보</h1>
     <BoxStockInfo />
     <h1 class="text-center">현재가 거래</h1>
