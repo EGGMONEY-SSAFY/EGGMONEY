@@ -23,7 +23,7 @@ async function saveTokensToIndexedDB(accessToken: string, refreshToken: string) 
     },
   })
   await db.put("tokenStore", { accessToken, refreshToken }, "authTokens")
-  console.log(accessToken,refreshToken,db);
+  console.log(accessToken, refreshToken, db)
 }
 
 async function loadTokensFromIndexedDB() {
@@ -57,32 +57,33 @@ export const useAuthStore = defineStore("auth", {
     async setTokens(accessToken: string, refreshToken: string) {
       this.accessToken = accessToken
       this.refreshToken = refreshToken
-      console.log(accessToken,refreshToken);
+      console.log(accessToken, refreshToken)
       await saveTokensToIndexedDB(accessToken, refreshToken)
     },
     async loadTokens(router: any) {
       try {
-      const tokens = await loadTokensFromIndexedDB()
-      const currentRoute = router.currentRoute.value.path
-      // if (!tokens) {
-      //   if (currentRoute === '/login' || currentRoute === '/main' ) {
-      //     // /login 페이지에서는 토큰 검사를 하지 않음
-      //     return
-      //   } else {
-      //     // 토큰이 없으면 /login 또는 /main으로 리다이렉트
-      //     router.push("/login") // 로그인 페이지로 이동
-      //   }
-      // } else {
-      //   // 토큰이 있으면 상태에 저장
-      //   this.accessToken = tokens.accessToken
-      //   this.refreshToken = tokens.refreshToken
-      // }
-      if (tokens) {
-        this.accessToken = tokens.accessToken
-        this.refreshToken = tokens.refreshToken
-      }} catch (error) {
-        console.error("토큰 로드 중 오류:", error);
-        router.push('/login')  // 오류 발생 시 로그인 페이지로 이동
+        const tokens = await loadTokensFromIndexedDB()
+        const currentRoute = router.currentRoute.value.path
+        // if (!tokens) {
+        //   if (currentRoute === '/login' || currentRoute === '/main' ) {
+        //     // /login 페이지에서는 토큰 검사를 하지 않음
+        //     return
+        //   } else {
+        //     // 토큰이 없으면 /login 또는 /main으로 리다이렉트
+        //     router.push("/login") // 로그인 페이지로 이동
+        //   }
+        // } else {
+        //   // 토큰이 있으면 상태에 저장
+        //   this.accessToken = tokens.accessToken
+        //   this.refreshToken = tokens.refreshToken
+        // }
+        if (tokens) {
+          this.accessToken = tokens.accessToken
+          this.refreshToken = tokens.refreshToken
+        }
+      } catch (error) {
+        console.error("토큰 로드 중 오류:", error)
+        router.push("/login") // 오류 발생 시 로그인 페이지로 이동
       }
     },
     async clearToken() {
@@ -97,9 +98,9 @@ export const useAuthStore = defineStore("auth", {
             headers: {
               Authorization: `Bearer ${this.accessToken}`, // 필요한 경우 액세스 토큰 추가
             },
-          });
+          })
           if (response.data) {
-            window.location.href = response.data;
+            window.location.href = response.data
           }
           await this.clearToken()
           console.log("로그아웃 성공")
