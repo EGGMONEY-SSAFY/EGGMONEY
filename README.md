@@ -328,8 +328,12 @@ Blue/Green 배포는 애플리케이션의 새로운 버전을 배포할 때 서
 
 [📎 Figma Link  ](https://www.figma.com/design/E4YJ6rv2618zTQV5R0jBPp/C204%ED%8C%80?t=e62ogsR1DgnWEkqL-0).
 
-![Figma](readme/Figma.png)
 
+#### 부모님 
+![피그마부모](readme/momfig.png)
+
+#### 자녀
+![피그마자녀](readme/childfig.png)
 
 </div>
 </details>
