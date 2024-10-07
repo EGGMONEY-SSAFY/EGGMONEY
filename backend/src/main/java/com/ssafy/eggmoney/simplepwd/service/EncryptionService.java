@@ -1,6 +1,7 @@
 package com.ssafy.eggmoney.simplepwd.service;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,11 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EncryptionService {
@@ -60,6 +65,28 @@ public class EncryptionService {
         } catch (Exception e) {
             throw new Exception("이미지 암호화 중 오류가 발생했습니다.", e);
         }
+    }
+    public List<Integer> decryptPin(String encryptedPin, HttpSession session) {
+
+        List<Integer> shuffledPinPad = (List<Integer>) session.getAttribute("shuffledPinPad");
+        if(shuffledPinPad==null){
+            throw new IllegalArgumentException("세션이 만료되었거나 섞인 카드 정보가 없습니다.");
+        }
+
+        List<Integer> pressedIndexes = Arrays.stream(encryptedPin.split(","))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+
+        List<Integer> decryptedNumbers = new ArrayList<>();
+        for(Integer index: pressedIndexes){
+            // 인덱스가 유효한 범위 내에 있는지 확인
+            if (index >= 0 && index < shuffledPinPad.size()) {
+                decryptedNumbers.add(shuffledPinPad.get(index)); // 유효한 인덱스일 때만 처리
+            } else {
+                throw new IndexOutOfBoundsException("인덱스 " + index + "가 배열의 길이를 벗어났습니다.");
+            }
+        }
+        return decryptedNumbers;
     }
 }
 // private final SecretKey secretKey;
