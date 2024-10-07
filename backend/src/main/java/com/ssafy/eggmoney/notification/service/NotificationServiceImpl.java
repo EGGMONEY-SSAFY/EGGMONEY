@@ -50,6 +50,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public List<NotificationResponse> findNotifications(Long userId) {
         List<Notification> notifications = notificationRepository.findJoinSendUserByUserId(userId);
+        System.out.println(notifications);
 
         if(notifications.isEmpty()) {
             throw new NoSuchElementException("[알림] 알림들을 찾을 수 없습니다.");
@@ -58,12 +59,12 @@ public class NotificationServiceImpl implements NotificationService {
         return notifications.stream().map(n -> {
             if(n.getSendUser() != null) {
                 return new NotificationResponse(
-                    n.getSendUser().getId(), n.getSendUser().getName(), n.getNotificationType(),
+                    n.getId(), n.getSendUser().getId(), n.getSendUser().getName(), n.getNotificationType(),
                         n.getMessage(), n.getIsRead(), n.getCreatedAt()
                 );
             } else  {
                 return new NotificationResponse(
-                        null, "에그머니", n.getNotificationType(),
+                        n.getId(), null, "에그머니", n.getNotificationType(),
                         n.getMessage(), n.getIsRead(), n.getCreatedAt()
                 );
             }
