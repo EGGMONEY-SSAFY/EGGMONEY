@@ -32,21 +32,17 @@ public class StockUserController {
     }
 
     @PostMapping("/stock/user/buy")
-    public ResponseEntity<Map<String, Object>> buyStock(@RequestBody StockBuyRequest stockBuyReq,
+    public ResponseEntity<Void> buyStock(@RequestBody StockBuyRequest stockBuyReq,
                                                         @RequestHeader("Authorization") String token) {
-        StockUserResponse stockBuyRes = stockUserService.buyStock(stockBuyReq, 1L);
-        Map<String, Object> response = stockUserService.findInvestablePrice(1L);
-        response.put("stockInfo", stockBuyRes);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        stockUserService.buyStock(stockBuyReq, 1L);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/stock/user/sell")
-    public ResponseEntity<Map<String, Object>> sellStock(@RequestBody StockSellRequest stockSellReq,
+    public ResponseEntity<Void> sellStock(@RequestBody StockSellRequest stockSellReq,
                                                          @RequestHeader("Authorization") String token) {
-        StockUserResponse stockSellRes = stockUserService.sellStock(stockSellReq, 1L);
-        Map<String, Object> response = stockUserService.findInvestablePrice(1L);
-        response.put("stockInfo", stockSellRes);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        stockUserService.sellStock(stockSellReq, 1L);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/stock/{stockId}/user/info")
