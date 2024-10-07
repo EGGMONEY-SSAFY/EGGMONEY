@@ -9,7 +9,8 @@ import java.util.List;
 public interface StockPendingService {
     void saveStockPending(PendingTradeRequest pendingReq, TradeType type, Long userId);
     int findPendingBuyTotalPrice(Long userId);
-    int findPendingSellAmount(Long userId, Long stockId);
+    int findIndividualPendingAmount(Long userId, Long stockId, TradeType tradeType);
+    int findIndividualPendingPrice(Long userId, Long stockId, TradeType tradeType);
     List<StockPendingResponse> findPendingLog(Long userId);
     void deleteStockPending(Long stockPendingId,Long userId);
 }
