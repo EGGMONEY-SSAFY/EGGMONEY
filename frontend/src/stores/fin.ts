@@ -114,6 +114,7 @@ export const useFinStore = defineStore(
     const USER_SAVINGS_CREATE_API_URL = "/api/v1/fin/savings/create"
 
     const isYellowPage = ref<boolean>(false)
+    const isWhitePage = ref<boolean>(false)
     const isTab = ref<boolean>(false)
     const depositProducts = reactive<depositProducts[]>([])
     const savingsProducts = reactive<savingsProducts[]>([])
@@ -544,6 +545,7 @@ export const useFinStore = defineStore(
       loanCreate,
       isYellowPage,
       isTab,
+      isWhitePage,
       sendLoan,
       deleteDeposit,
       deleteSavings,

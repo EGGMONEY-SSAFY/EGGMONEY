@@ -47,7 +47,7 @@ onMounted(async () => {
     </div>
     <div
       class="main-container bg-gray-200"
-      :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }"
+      :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage && !finStore.isWhitePage, 'bg-white': finStore.isWhitePage }"
       v-else
     >
       <!-- /main 또는 /login일 경우 상단바와 하단바 숨김 -->
