@@ -18,7 +18,7 @@
       </div>
 
       <!-- 틀린 횟수 표시 -->
-      <div class="text-red-500 text-lg font-bold" v-if="failCount > 0">
+      <div class="text-red-500 text-lg text-center font-bold" v-if="failCount > 0">
         틀린 횟수: {{ failCount }} / 5
       </div>
       <!-- 이미지 및 핀 패드 -->

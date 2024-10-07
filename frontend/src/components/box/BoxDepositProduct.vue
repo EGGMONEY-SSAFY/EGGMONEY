@@ -4,14 +4,14 @@ import { useUserStore } from "@/stores/user"
 import { RouterLink } from "vue-router"
 
 const finStore = useFinStore()
-
+const userStore = useUserStore()
 const props = defineProps({
   product: {
     type: Object,
     required: true,
   },
 })
-
+const isParent = (userStore.user?.role === "부모") ? true : false
 const name = "FinDepositCreateView"
 </script>
 
@@ -26,6 +26,7 @@ const name = "FinDepositCreateView"
         },
       }"
       class="m-2 flex justify-center w-full items-center"
+       :class="{ 'pointer-events-none': isParent }"
     >
       <div class="my-4 mx-8 w-full flex flex-col gap-y-2">
         <div class="flex justify-between mb-3">
