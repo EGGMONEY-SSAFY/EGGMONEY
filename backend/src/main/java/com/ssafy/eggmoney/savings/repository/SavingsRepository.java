@@ -21,6 +21,7 @@ public interface SavingsRepository extends JpaRepository<Savings, Long> {
     @Query(value = "SELECT s.id FROM Savings s WHERE s.expireDate BETWEEN :start AND :end AND s.savingsStatus = (:savingsStatus)")
     List<Long> findIdByExpireDateBetweenAndSavingsStatus(LocalDateTime start, LocalDateTime end, SavingsStatus savingsStatus);
 
+    @Query(value = "SELECT s.id FROM Savings s WHERE s.savingsStatus = :savingsStatus AND s.paymentDate != (:paymentDate)")
     List<Long> findIdBySavingsStatusAndPaymentDateNot(SavingsStatus savingsStatus, int paymentDate);
 
     @Modifying

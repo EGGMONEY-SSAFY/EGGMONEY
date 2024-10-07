@@ -24,11 +24,14 @@ public class SavingsScheduler {
     public void expired(){
         log.info("{} 적금 만기 확인 스케줄러 시작", LocalDate.now());
         List<Long> savingsIds = savingService.checkExpiredSavings();
-
-        for(Long savingsId : savingsIds){
-            savingService.deleteSavings(savingsId);
+        if(!savingsIds.isEmpty()){
+            for(Long savingsId : savingsIds){
+                savingService.deleteSavings(savingsId);
+            }
+            log.info("적금 만기 확인 스케줄러 종료");
+        }else{
+            log.info("적금 만기인 계좌가 없습니다.");
         }
-        log.info("적금 만기 확인 스케줄러 종료");
     }
 
     // 해당 월 적금 납부 했는지(매월 1일에 전월 납부여부 확인)

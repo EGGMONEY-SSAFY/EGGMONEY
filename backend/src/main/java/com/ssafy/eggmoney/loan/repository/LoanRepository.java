@@ -17,5 +17,6 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
 
     Optional<Loan> findByIdAndLoanStatus(Long id, LoanStatus loanStatus);
 
+//    @Query(value = "SELECT")
     List<Long> findIdByLoanStatusAndExpirationDateBetween(LoanStatus loanStatus, LocalDateTime start, LocalDateTime end);
 }
