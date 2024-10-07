@@ -68,6 +68,7 @@ public class WonService {
                     UpdateUserRequestDto updateDto = new UpdateUserRequestDto();
                     updateDto.setRealAccount(accountnum);
                     updateDto.setBank(bank);
+
                     //updateDto.setAuthStatus(true); // 인증 성공 상태로 업데이트
                     userServcie.updateUser(user, updateDto); // userId로 사용자 정보 업데이트
                 })
