@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useStockStore } from "@/stores/stock"
-import { computed, onMounted, ref } from "vue"
+import { onMounted, ref } from "vue"
 import { useRoute } from "vue-router"
 
 const idMap: Record<string, number> = {
