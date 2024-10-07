@@ -23,7 +23,7 @@ public class WonService {
         this.userServcie = userServcie;
     }
 
-    public Mono<String> sendmessage(String accountnum, User user) {
+    public Mono<String> sendmessage(String accountnum, String bank, User user) {
         String url = "https://finopenapi.ssafy.io/ssafy/api/v1/edu/accountAuth/openAccountAuth";
 
         String requestBody = String.format("{\"Header\": {\"apiName\": \"openAccountAuth\", \"transmissionDate\": \"%s\", \"transmissionTime\": \"%s\", \"institutionCode\": \"00100\", \"fintechAppNo\": \"001\", \"apiServiceCode\": \"openAccountAuth\", \"institutionTransactionUniqueNo\": \"%s\", \"apiKey\": \"063446596d794b47bb3d4977043e3523\", \"userKey\": \"2c07499f-9e20-4800-a1ae-a45a4382d4d8\"}, \"accountNo\": \"%s\", \"authText\": \"SSAFY_TEST\"}",
@@ -45,7 +45,7 @@ public class WonService {
                 });
     }
 
-    public Mono<String> checkmessage(String accountnum, String authText, String authnum, User user) {
+    public Mono<String> checkmessage(String accountnum, String authText, String bank, String authnum, User user) {
         String url = "https://finopenapi.ssafy.io/ssafy/api/v1/edu/accountAuth/checkAuthCode";
         String requestBody = String.format(
                 "{\"Header\": {\"apiName\": \"checkAuthCode\", \"transmissionDate\": \"%s\", \"transmissionTime\": \"%s\", \"institutionCode\": \"00100\", \"fintechAppNo\": \"001\", \"apiServiceCode\": \"checkAuthCode\", \"institutionTransactionUniqueNo\": \"%s\", \"apiKey\": \"063446596d794b47bb3d4977043e3523\", \"userKey\": \"2c07499f-9e20-4800-a1ae-a45a4382d4d8\"}, \"accountNo\": \"%s\", \"authText\": \"%s\", \"authCode\": \"%s\"}",
@@ -67,6 +67,7 @@ public class WonService {
                     // 인증 성공 후 유저 업데이트 로직 호출
                     UpdateUserRequestDto updateDto = new UpdateUserRequestDto();
                     updateDto.setRealAccount(accountnum);
+                    updateDto.setBank(bank);
                     //updateDto.setAuthStatus(true); // 인증 성공 상태로 업데이트
                     userServcie.updateUser(user, updateDto); // userId로 사용자 정보 업데이트
                 })
