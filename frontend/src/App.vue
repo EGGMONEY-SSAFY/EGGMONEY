@@ -32,7 +32,7 @@ onMounted(async () => {
   <!-- test224444sssssssssssss4 -->
   <!-- <div class="flex justify-center bg-gray-800">
     <div
-      class="main-container bg-gray-200"
+      class="bg-gray-200 main-container"
       :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }"
     >
       <NavBarTop />
@@ -46,8 +46,8 @@ onMounted(async () => {
       <p>Loading...</p>
     </div>
     <div
-      class="main-container bg-gray-200"
-      :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage && !finStore.isWhitePage, 'bg-white': finStore.isWhitePage }"
+      class="bg-gray-200 main-container"
+      :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }"
       v-else
     >
       <!-- /main 또는 /login일 경우 상단바와 하단바 숨김 -->

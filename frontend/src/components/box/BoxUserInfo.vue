@@ -14,7 +14,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg shadow flex flex-col">
+  <div class="flex flex-col m-4 bg-white rounded-lg shadow">
     <div class="m-4 mb-2">
       <span>현재 잔액 : </span>
       <span class="font-bold">{{ myStockB }} 알</span>

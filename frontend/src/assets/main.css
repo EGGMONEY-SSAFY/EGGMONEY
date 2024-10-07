@@ -3,6 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 @tailwind variants;
+/* @import "flowbite"; */
 
 * {
   color: #374151;

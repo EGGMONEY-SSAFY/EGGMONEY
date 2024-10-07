@@ -17,14 +17,12 @@ const logList = ref()
 onMounted(async () => {
   logList.value = await stockStore.getMyStockLog()
 })
-
-
 </script>
 
 <template>
   <div>
     <NavBarTab :path="path" />
-    <div class="flex flex-col flex-grow justify-between">
+    <div class="flex flex-col justify-between flex-grow">
       <BoxTradeLog v-for="log in logList" :log="log" :key="log.stockItem" />
     </div>
   </div>
