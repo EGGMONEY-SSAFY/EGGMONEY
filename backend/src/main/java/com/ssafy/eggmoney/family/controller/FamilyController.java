@@ -1,6 +1,7 @@
 package com.ssafy.eggmoney.family.controller;
 
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
+import com.ssafy.eggmoney.common.service.S3Service;
 import com.ssafy.eggmoney.family.dto.request.ChangeFamilyPresentRequestDto;
 import com.ssafy.eggmoney.family.dto.request.ConnectFamilyRequestDto;
 import com.ssafy.eggmoney.family.dto.request.CreateFamilyRequestDto;
@@ -15,7 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +29,10 @@ public class FamilyController {
     private static final Logger logger = LoggerFactory.getLogger(FamilyController.class);
     private final FamilyServcie familyServcie;
     private final KakaoAuthService kakaoAuthService;
+    private final S3Service s3Service;
+
+
+
 
 //    가족 조회
     @GetMapping("/{familyId}")
@@ -127,4 +134,19 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
         return ResponseEntity.ok("가족 정보 업데이트 완료");
 
     }
+    @PostMapping("/upload-profile")
+    public void uploadProfileImage(@RequestParam("file") MultipartFile file){
+        try {
+            String fileUrl = s3Service.uploadFile(file);
+            
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
+//            String fileName = file.getOriginalFilename();
+//            String tempFilePath = System.getProperty("java.io.tmpdir") + "/"+fileName;
+//            file.transferTo(new File(tempFilePath));
+//
+//            s3Service.uploadFile(fileName,tempFilePath);
+//            String fileUrl = s3Service.uploadFile(file);
