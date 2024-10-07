@@ -1,5 +1,45 @@
 <script setup lang="ts">
-import { computed, ref } from "vue"
+import { useStockStore } from "@/stores/stock"
+import { computed, onUnmounted, ref, watch } from "vue"
+import { useRoute, useRouter } from "vue-router"
+
+const idMap: Record<string, number> = {
+  KOSPI: 1,
+  KOSDAQ: 2,
+  AUTOMOTIVE: 3,
+  SEMICONDUCTOR: 4,
+  HEALTHCARE: 5,
+  BANKING: 6,
+  ENERGY_CHEMICAL: 7,
+  STEEL: 8,
+  CONSTRUCTION: 9,
+  TRANSPORTATION: 10,
+  MEDIA_ENTERTAINMENT: 11,
+  IT: 12,
+  UTILITIES: 13,
+}
+
+const isModalOpen = ref(false)
+
+const openModal = () => {
+  isModalOpen.value = true
+}
+
+const closeModal = () => {
+  isModalOpen.value = false
+}
+
+watch(isModalOpen, (newValue) => {
+  if (newValue) {
+    document.body.classList.add("overflow-hidden")
+  } else {
+    document.body.classList.remove("overflow-hidden")
+  }
+})
+
+onUnmounted(() => {
+  document.body.classList.remove("overflow-hidden")
+})
 
 const props = defineProps({
   price: {
@@ -15,6 +55,10 @@ const props = defineProps({
 const Quantity = ref(props.Quantity)
 const sellQuantity = ref(0)
 const sellPrice = ref(props.price + 1)
+const router = useRouter()
+const route = useRoute()
+const stockId = idMap[route.params.stockName as string]
+const storeStock = useStockStore()
 
 const totalSellAmount = computed(() => {
   return sellQuantity.value * sellPrice.value
@@ -34,6 +78,11 @@ const preventNegativePrice = (event: Event) => {
   if (input.valueAsNumber < props.price + 1) {
     sellPrice.value = props.price + 1
   }
+}
+
+const handleSell = async () => {
+  storeStock.postSellOrder(stockId, sellPrice.value, sellQuantity.value)
+  router.go(0)
 }
 </script>
 
@@ -90,10 +139,52 @@ const preventNegativePrice = (event: Event) => {
     </div>
 
     <div class="flex justify-center">
-      <div
-        class="p-1 px-3 m-4 text-white bg-blue-500 rounded-lg cursor-pointer hover:bg-blue-200 hover:text-black"
+      <button
+        @click="openModal"
+        class="p-1 px-3 m-4 text-white rounded-lg"
+        :class="
+          sellQuantity > 0
+            ? 'bg-blue-500 hover:bg-blue-600 cursor-pointer'
+            : 'cursor-not-allowed bg-blue-200'
+        "
+        :disabled="sellQuantity === 0"
       >
         매도
+      </button>
+    </div>
+    <!-- 모달 -->
+    <div
+      v-if="isModalOpen"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+    >
+      <div class="w-1/3 p-6 bg-white rounded-lg shadow-lg">
+        <h2 class="mb-4 text-2xl font-semibold text-center">지정가 매도</h2>
+        <div class="flex justify-between">
+          <p class="m-4">매도 가격</p>
+          <p class="m-4">{{ sellPrice.toLocaleString() }} 알</p>
+        </div>
+        <div class="flex justify-between">
+          <p class="m-4">매도 수량</p>
+          <p class="m-4">{{ sellQuantity }} 주</p>
+        </div>
+        <div class="flex justify-between">
+          <p class="m-4">매도 총액</p>
+          <p class="m-4">{{ totalSellAmount.toLocaleString() }} 알</p>
+        </div>
+        <div class="flex justify-center">
+          <button
+            @click="handleSell"
+            class="p-1 px-3 m-4 text-white bg-blue-500 rounded-lg cursor-pointer hover:bg-blue-600"
+          >
+            매수
+          </button>
+          <button
+            @click="closeModal"
+            class="p-1 px-3 m-4 text-white bg-gray-300 rounded-lg cursor-pointer hover:bg-gray-400"
+          >
+            취소
+          </button>
+        </div>
       </div>
     </div>
   </div>

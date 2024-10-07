@@ -1,15 +1,15 @@
-z
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import IconChashed from "@/components/icons/IconChashed.vue"
 
 interface Log {
   stockId: number
-  tradeDate: string
+  stockPendingId: number
   tradeType: string
-  price: number
-  amount: number
+  pendingPrice: number
+  pendingAmount: number
   totalPrice: number
+  orderDate: string
 }
 const nameMap: Record<number, string> = {
   1: "코스피",
@@ -30,8 +30,9 @@ const props = defineProps<{
   log: Log
 }>()
 
-const { stockId, tradeDate, tradeType, price, amount, totalPrice } = props.log
-const formattedDate = new Date(tradeDate)
+const { stockId, stockPendingId, tradeType, pendingPrice, pendingAmount, totalPrice, orderDate } =
+  props.log
+const formattedDate = new Date(orderDate)
 const isDetail = ref(false)
 const isBuy = ref(false)
 const type = ref("매도")
@@ -78,11 +79,11 @@ const displayDateDetail = formattedDate.toLocaleString("ko-KR", {
     <hr />
     <div class="flex justify-between m-4">
       <p>{{ type }}가</p>
-      <p>{{ price }} 알</p>
+      <p>{{ pendingPrice }} 알</p>
     </div>
     <div class="flex justify-between m-4">
       <p>{{ type }} 수량</p>
-      <p>{{ amount }} 주</p>
+      <p>{{ pendingAmount }} 주</p>
     </div>
     <div class="flex justify-between m-4">
       <p>{{ type }} 총액</p>
