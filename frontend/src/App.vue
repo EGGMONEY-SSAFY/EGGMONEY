@@ -32,7 +32,7 @@ onMounted(async () => {
   <!-- test224444sssssssssssss4 -->
   <!-- <div class="flex justify-center bg-gray-800">
     <div
-      class="main-container bg-gray-200"
+      class="bg-gray-200 main-container"
       :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }"
     >
       <NavBarTop />
@@ -46,7 +46,7 @@ onMounted(async () => {
       <p>Loading...</p>
     </div>
     <div
-      class="main-container bg-gray-200"
+      class="bg-gray-200 main-container"
       :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-gray-200': !finStore.isYellowPage }"
       v-else
     >

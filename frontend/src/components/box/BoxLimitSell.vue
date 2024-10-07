@@ -38,12 +38,12 @@ const preventNegativePrice = (event: Event) => {
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg shadow flex flex-col">
+  <div class="flex flex-col m-4 bg-white rounded-lg shadow">
     <div class="flex justify-between">
       <div class="m-4">
         <p>보유 수량</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p>{{ Quantity }}</p>
       </div>
     </div>
@@ -52,9 +52,9 @@ const preventNegativePrice = (event: Event) => {
       <div class="m-4">
         <p>매도 수량</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <input
-          class="bg-gray-200 mx-1 w-12 text-center rounded"
+          class="w-12 mx-1 text-center bg-gray-200 rounded"
           type="number"
           v-model.number="sellQuantity"
           placeholder="숫자를 입력하세요"
@@ -68,9 +68,9 @@ const preventNegativePrice = (event: Event) => {
       <div class="m-4">
         <p>매도 가격</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <input
-          class="bg-gray-200 mx-1 w-24 text-center rounded"
+          class="w-24 mx-1 text-center bg-gray-200 rounded"
           type="number"
           v-model.number="sellPrice"
           placeholder="숫자를 입력하세요"
@@ -84,14 +84,14 @@ const preventNegativePrice = (event: Event) => {
       <div class="m-4">
         <p>총 매도액</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p>{{ totalSellAmount }}</p>
       </div>
     </div>
 
     <div class="flex justify-center">
       <div
-        class="bg-blue-500 m-4 rounded-lg p-1 px-3 text-white cursor-pointer hover:bg-blue-200 hover:text-black"
+        class="p-1 px-3 m-4 text-white bg-blue-500 rounded-lg cursor-pointer hover:bg-blue-200 hover:text-black"
       >
         매도
       </div>

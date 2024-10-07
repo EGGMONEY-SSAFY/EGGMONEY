@@ -56,7 +56,7 @@ const matchingStock = computed(() => {
 <template>
   <div v-if="data && matchingStock">
     <NavBarTab />
-    <BoxUserInfo :price="price" class="mt-4 sticky top-16" />
+    <BoxUserInfo :price="price" class="sticky mt-4 top-16" />
     <!-- 임시 -->
     <HeldStocksChart />
     <h1 class="text-center">주식 정보</h1>

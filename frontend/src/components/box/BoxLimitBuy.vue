@@ -93,14 +93,14 @@ const postBuyAmt1 = computed(() => {
 
 <template>
   <div>
-    <div class="bg-white m-4 rounded-lg shadow flex flex-col">
+    <div class="flex flex-col m-4 bg-white rounded-lg shadow">
       <div class="flex justify-between">
         <div class="m-4">
           <p>매수 수량 {{}}</p>
         </div>
-        <div class="m-4 flex justify-center items-center">
+        <div class="flex items-center justify-center m-4">
           <input
-            class="bg-gray-200 mx-1 w-12 text-center rounded"
+            class="w-12 mx-1 text-center bg-gray-200 rounded"
             type="number"
             v-model.number="buyQuantity"
             placeholder="숫자를 입력하세요"
@@ -114,9 +114,9 @@ const postBuyAmt1 = computed(() => {
         <div class="m-4">
           <p>매수 가격</p>
         </div>
-        <div class="m-4 flex justify-center items-center">
+        <div class="flex items-center justify-center m-4">
           <input
-            class="bg-gray-200 mx-1 w-24 text-center rounded"
+            class="w-24 mx-1 text-center bg-gray-200 rounded"
             type="number"
             v-model.number="buyPrice"
             placeholder="숫자를 입력하세요"
@@ -130,7 +130,7 @@ const postBuyAmt1 = computed(() => {
         <div class="m-4">
           <p>총 매수액</p>
         </div>
-        <div class="m-4 flex justify-center items-center">
+        <div class="flex items-center justify-center m-4">
           <p>{{ totalBuyAmount }}알</p>
         </div>
       </div>
@@ -139,7 +139,7 @@ const postBuyAmt1 = computed(() => {
         <div class="m-4">
           <p>매수 후 잔액</p>
         </div>
-        <div class="m-4 flex justify-center items-center">
+        <div class="flex items-center justify-center m-4">
           <p :class="postBuyAmt1 < 0 ? 'text-red-500' : ''">{{ postBuyAmt1.toLocaleString() }}</p>
         </div>
       </div>
@@ -148,7 +148,7 @@ const postBuyAmt1 = computed(() => {
         <div class="m-4">
           <p>매수 후 투자 가능 금액</p>
         </div>
-        <div class="m-4 flex justify-center items-center">
+        <div class="flex items-center justify-center m-4">
           <p :class="postBuyAmt < 0 ? 'text-red-500' : ''">{{ postBuyAmt.toLocaleString() }}</p>
         </div>
       </div>
@@ -156,7 +156,7 @@ const postBuyAmt1 = computed(() => {
       <div class="flex justify-center">
         <button
           @click="openModal"
-          class="m-4 rounded-lg p-1 px-3 text-white"
+          class="p-1 px-3 m-4 text-white rounded-lg"
           :class="
             postBuyAmt < 0 || buyQuantity == 0 || postBuyAmt1 < 0
               ? 'cursor-not-allowed bg-red-200'
@@ -171,10 +171,10 @@ const postBuyAmt1 = computed(() => {
     <!-- 모달 -->
     <div
       v-if="isModalOpen"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
     >
-      <div class="bg-white w-1/3 p-6 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-semibold mb-4 text-center">지정가 매수</h2>
+      <div class="w-1/3 p-6 bg-white rounded-lg shadow-lg">
+        <h2 class="mb-4 text-2xl font-semibold text-center">지정가 매수</h2>
         <p class="mb-4">This is a modal body. You can add your content here.</p>
         <button @click="closeModal" class="text-gray-500 hover:text-gray-700">X</button>
       </div>
