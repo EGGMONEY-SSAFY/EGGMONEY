@@ -333,22 +333,23 @@ const router = createRouter({
   ],
 })
 // 글로벌 네비게이션 가드 추가
-router.beforeEach(async (to, from, next) => {
-  const authStore = useAuthStore()
-  const router = useRouter()
-  await authStore.loadTokens(router) // IndexedDB에서 토큰 로드
+// router.beforeEach(async (to, from, next) => {
+//   const authStore = useAuthStore()
+//   const router = useRouter()
+//   await authStore.loadTokens(router) // IndexedDB에서 토큰 로드
 
-  // 로그인 페이지로 이동할 경우 예외 처리
-  if (to.name === "LoginView" || to.name === "MainView") {
-    next() // 로그인 페이지는 토큰 체크 없이 이동
-  } else {
-    // 로그인 페이지를 제외한 모든 경로에서 토큰 확인
-    if (!authStore.accessToken) {
-      next("/login") // 토큰이 없으면 로그인 페이지로 리다이렉트
-    } else {
-      next() // 토큰이 있으면 정상적으로 페이지 이동
-    }
-  }
-})
+//   // 로그인 페이지로 이동할 경우 예외 처리
+//   if (to.name === "LoginView" || to.name === "MainView") {
+//     next() // 로그인 페이지는 토큰 체크 없이 이동
+//   } else {
+//     // 로그인 페이지를 제외한 모든 경로에서 토큰 확인
+//     if (!authStore.accessToken) {
+//       next("/login") // 토큰이 없으면 로그인 페이지로 리다이렉트
+//     } else {
+//       next() // 토큰이 있으면 정상적으로 페이지 이동
+//     }
+//   }
+// }
+// )
 
 export default router
