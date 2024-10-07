@@ -114,7 +114,6 @@ export const useFinStore = defineStore(
     const USER_SAVINGS_CREATE_API_URL = "/api/v1/fin/savings/create"
 
     const isYellowPage = ref<boolean>(false)
-    const isWhitePage = ref<boolean>(false)
     const isTab = ref<boolean>(false)
     const depositProducts = reactive<depositProducts[]>([])
     const savingsProducts = reactive<savingsProducts[]>([])
@@ -196,6 +195,7 @@ export const useFinStore = defineStore(
       }
     }
 
+    // 예금 생성 신청 정보 저장
     const setDepositCreateInfo = function (money: number, productId: number, userId: number) {
       depositCreateInfo.value = {
         depositMoney: money,
@@ -204,7 +204,7 @@ export const useFinStore = defineStore(
       }
     }
 
-    // 적금 신청 정보 저장
+    // 적금 생성 신청 정보 저장
     const setSavingsCreateInfo = function (
       paymentMoney: number,
       savingsProductId: number,
@@ -524,40 +524,39 @@ export const useFinStore = defineStore(
     }
 
     return {
+      isTab,
+      isYellowPage,
+      deposit,
       depositProducts,
-      getDepositProduct,
-      savingsProducts,
-      getSavingsProduct,
-      getUserSavings,
+      depositCreateInfo,
       savings,
       savingsLogs,
-      sendSavings,
-      getUserSavingsLogs,
-      getUserDeposit,
-      deposit,
+      savingsProducts,
+      savingsCreateInfo,
       loan,
-      getUserLoan,
       loanLogs,
+      loanList,
+      loanCreate,
+      deleteDeposit,
+      getUserDeposit,
+      postUserDeposit,
+      getDepositProduct,
+      setDepositCreateInfo,
+      sendSavings,
+      deleteSavings,
+      getUserSavings,
+      postUserSavings,
+      getSavingsProduct,
+      getUserSavingsLogs,
+      setSavingsCreateInfo,
+      sendLoan,
+      postUserLoan,
+      setLoanCreate,
+      getUserLoan,
       getUserLoanLogs,
       getUserLoanList,
-      loanList,
-      setLoanCreate,
-      loanCreate,
-      isYellowPage,
-      isTab,
-      isWhitePage,
-      sendLoan,
-      deleteDeposit,
-      deleteSavings,
-      sendfinLoanJudge,
-      setDepositCreateInfo,
-      setSavingsCreateInfo,
       setLoanJudgeInfo,
-      depositCreateInfo,
-      savingsCreateInfo,
-      postUserLoan,
-      postUserDeposit,
-      postUserSavings,
+      sendfinLoanJudge,
     }
   }
   // {

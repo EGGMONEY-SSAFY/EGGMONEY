@@ -21,9 +21,12 @@ public class LoanScheduler {
     public void loanSchedule() {
         log.info("{} 대출 만기 시 상환 스케줄러 시작", LocalDate.now());
         List<Long> loanIds = loanService.checkingExpired();
-
-        for(Long loanId : loanIds) {
-            loanService.expiredRepayment(loanId);
+        if(!loanIds.isEmpty()){
+            for(Long loanId : loanIds) {
+                loanService.expiredRepayment(loanId);
+            }
+        }else{
+            log.info("대출 만기 계좌가 없습니다.");
         }
 
         log.info("대출 만기 시 상환 스케줄러 종료");

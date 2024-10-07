@@ -6,7 +6,7 @@ import IconQuestionMark from "@/components/icons/IconQuestionMark.vue"
 import InputMoney from "@/components/input/InputMoney.vue"
 import { useFinStore } from "@/stores/fin"
 import { useUserStore } from "@/stores/user"
-import { onMounted, reactive, ref } from "vue"
+import { reactive, ref } from "vue"
 import { useRouter } from "vue-router"
 
 const reason = ref<string | null>(null)

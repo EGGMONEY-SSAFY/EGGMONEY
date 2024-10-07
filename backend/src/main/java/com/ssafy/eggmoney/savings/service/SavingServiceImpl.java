@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -190,6 +191,7 @@ public class SavingServiceImpl implements SavingService {
         Savings savings = savingsRepository.findByIdAndSavingsStatus(savingsId, SavingsStatus.AVAILABLE).orElseThrow(
                 () -> new NoSuchElementException(ErrorType.NOT_FOUND_SAVINGS.toString())
         );
+
         double interest;
         int paymentDate;
         int expiredMoney;
@@ -218,7 +220,7 @@ public class SavingServiceImpl implements SavingService {
                 .build();
 
         savingsRepository.save(updateSavings);
-        log.info("적금 해지 성공");
+        log.info("적금 해지 성공 : {}", savingsId);
 
         SavingsDeleteResponseDto deleteResponseDto = SavingsDeleteResponseDto.builder()
                 .savingsId(savings.getId())
@@ -244,19 +246,26 @@ public class SavingServiceImpl implements SavingService {
     @Override
     public List<Long> checkingPayId(){
         List<Long> savingsIds = savingsRepository.findIdBySavingsStatusAndPaymentDateNot(SavingsStatus.AVAILABLE, 0);
-
-        LocalDateTime start = LocalDate.now().minusMonths(1).withDayOfMonth(1).atStartOfDay();
-        LocalDateTime end = LocalDate.now().minusDays(1).atTime(23, 59, 59);
-        List<Long> sendIds = savingsLogRepository.findSavingsIdByCreatedAtBetween(start, end);
-
-        savingsIds.removeAll(sendIds);
+        if(!savingsIds.isEmpty()){
+            LocalDateTime start = LocalDate.now().minusMonths(1).withDayOfMonth(1).atStartOfDay();
+            LocalDateTime end = LocalDate.now().minusDays(1).atTime(23, 59, 59);
+            List<Long> sendIds = savingsLogRepository.findSavingsIdByCreatedAtBetween(start, end);
+            savingsIds.removeAll(sendIds);
+        }else{
+            log.info("미납 계좌가 없습니다.");
+        }
 
         return savingsIds;
+
     }
 
     // 적금 납부 안한 계좌의 만기일 + 1 하기
     @Override
     public void plusExpired(List<Long> savingsId){
+
+        for(long k : savingsId){
+            System.out.print(k + ", ");
+        }
         savingsRepository.extendSavingsExpireDateByOneMonth(savingsId);
         log.info("적금 미납자 계좌 만기일 연장");
     }
