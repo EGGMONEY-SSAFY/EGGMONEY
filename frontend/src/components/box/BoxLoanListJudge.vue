@@ -33,12 +33,19 @@ async function sendWithJudge(judge: string) {
   loanJudge.value = judge
 }
 
-async function judge(loanId: number, judge: string, userId: number, reason: String, rate: number) {
-  if (judge && userId && loanId) {
-    await finStore.sendfinLoanJudge(loanId, judge, userId, reason, rate)
+async function judge() {
+  if (loanJudge.value && userStore.user) {
+    await finStore.setLoanJudgeInfo(
+      props.loan.loanId,
+      loanJudge.value,
+      userStore.user.userId,
+      loanReason.value,
+      loanRate.value
+    )
+    router.push({ name: "FinPinPadView" })
   }
-  closeModal()
-  window.location.reload()
+  // closeModal()
+  // window.location.reload()
 }
 
 const numberInput = ref<number | null>(null)
@@ -59,6 +66,7 @@ function saveReason() {
   } else {
     loanReason.value = ""
   }
+  console.log(loanReason.value)
 }
 
 const formatExpireDate = (expireDate?: string) => {
@@ -77,15 +85,21 @@ function goLoanDetail(loanId: number) {
 
 <template>
   <div class="bg-white m-4 rounded-lg shadow grid p-2 gap-2 px-4 pb-5">
+    <div v-if="user.role === '부모'" class="text-center my-2 font-bold">{{ loan.userName }}</div>
+    <hr v-if="user.role === '부모'" class="border-black" />
     <div class="mt-3 flex justify-between">
       <h1
-        class="bg-red-500 rounded-lg text-white px-3 py-1 inline-flex"
+        class="border-red-500 border-2 rounded-lg text-red-500 px-3 py-1 inline-flex"
         v-if="props.loan.loanStatus === 'REFUSAL'"
       >
         거절
       </h1>
       <div class="flex justify-between w-full" v-if="props.loan.loanStatus === 'APPROVAL'">
-        <h1 class="bg-green-700 rounded-lg text-white px-3 py-1 inline-flex my-auto">승낙</h1>
+        <h1
+          class="border-green-700 border-2 rounded-lg text-green-700 px-3 py-1 inline-flex my-auto"
+        >
+          승낙
+        </h1>
         <div
           class="border-gray-500 p-1 rounded-lg border-2 grid grid-flow-col"
           role="button"
@@ -98,13 +112,13 @@ function goLoanDetail(loanId: number) {
         </div>
       </div>
       <h1
-        class="bg-main-color rounded-lg text-white px-3 py-1 inline-flex"
+        class="border-2 border-main-color rounded-lg text-main-color px-3 py-1 inline-flex"
         v-if="props.loan.loanStatus === 'PROGRESS'"
       >
         진행중
       </h1>
       <h1
-        class="bg-gray-500 rounded-lg text-white px-3 py-1 inline-flex"
+        class="border-gray-500 border-2 rounded-lg text-gray-500 px-3 py-1 inline-flex"
         v-if="props.loan.loanStatus === 'EXPIRED'"
       >
         완납
@@ -112,7 +126,7 @@ function goLoanDetail(loanId: number) {
 
       <div class="flex justify-between" v-if="loan.loanStatus === 'PROGRESS'">
         <h1
-          class="rounded-lg text-main-color font-bold px-3 py-1 inline-flex border-main-color border-2"
+          class="bg-main-color rounded-lg text-white font-bold px-3 py-1 inline-flex border-main-color border-2"
           role="button"
           tabindex="0"
           v-if="user.role === '부모'"
@@ -145,15 +159,15 @@ function goLoanDetail(loanId: number) {
       <h1 v-if="loan.loanRate" class="text-wrap">{{ loan.loanRate?.toFixed(2) }} %</h1>
       <h1 v-else class="text-gray-300">심사를 해주세요</h1>
     </div>
-    <div v-if="loan.loanStatus !== 'REFUSAL'" class="flex justify-between pe-5 text-end">
+    <div v-if="loan.loanStatus !== 'REFUSAL'" class="flex justify-between pe-5 text-end mt-2">
       <h1>대출 잔액</h1>
       <h1 class="text-wrap">{{ loan.balance.toLocaleString() }}</h1>
     </div>
-    <div class="flex justify-between pe-5 text-end">
+    <div class="flex justify-between pe-5 text-end mt-2">
       <h1>신청 사유</h1>
       <h1 class="text-wrap">{{ loan.loanReason }}</h1>
     </div>
-    <div class="flex justify-between pe-5 text-end" v-if="props.loan.loanStatus === 'REFUSAL'">
+    <div class="flex justify-between pe-5 text-end mt-2" v-if="props.loan.loanStatus === 'REFUSAL'">
       <h1 class="w-28 text-left">거절 사유</h1>
       <h1 class="text-wrap">{{ props.loan.refuseReason }}</h1>
     </div>
@@ -229,9 +243,7 @@ function goLoanDetail(loanId: number) {
         <div v-else>
           <button
             v-if="loanJudge"
-            @click="
-              judge(props.loan.loanId, loanJudge, userStore.user.userId, loanReason, loanRate)
-            "
+            @click="judge()"
             class="bg-main-color text-white px-4 py-2 mt-5 rounded justify-center"
           >
             심사하기

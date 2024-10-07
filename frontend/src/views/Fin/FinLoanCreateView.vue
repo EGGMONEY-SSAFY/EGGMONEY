@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import NextButton from "@/components/button/NextButton.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
 import IconQuestionMark from "@/components/icons/IconQuestionMark.vue"
@@ -7,6 +8,7 @@ import { useFinStore } from "@/stores/fin"
 import { useUserStore } from "@/stores/user"
 import { onMounted, reactive, ref } from "vue"
 import { useRouter } from "vue-router"
+
 
 const reason = ref<string | null>(null)
 const money = ref<number | null>(null)
@@ -91,7 +93,7 @@ const updateSelectedType = (event: Event) => {
 </script>
 
 <template>
-  <div class="m-4">
+  <div v-if="userStore.user?.role==='자녀'" class="m-4">
     <div class="m-4 flex items-center justify-center">
       <div class="m-2 flex">
         <IconExplanation></IconExplanation>
@@ -189,5 +191,8 @@ const updateSelectedType = (event: Event) => {
         ></NextButton>
       </div>
     </div>
+  </div>
+  <div v-else>
+    <NotFoundComponent></NotFoundComponent>
   </div>
 </template>
