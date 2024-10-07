@@ -128,9 +128,7 @@ public class StockUserServiceImpl implements StockUserService {
     @Transactional
     @Override
     public StockUserResponse sellStock(StockSellRequest stockSellReq, Long userId) {
-        int pendingSellAmount = stockPendingService.findPendingSellAmount(userId, stockSellReq.getStockId());
-
-
+        int pendingSellAmount = stockPendingService.findIndividualPendingAmount(userId, stockSellReq.getStockId(), TradeType.SELL);
 
         StockUser stockUser = stockUserRepository.findJoinStockByUserIdAndStockId(
                 userId, stockSellReq.getStockId()
@@ -141,7 +139,6 @@ public class StockUserServiceImpl implements StockUserService {
                     stockUserExist.sellStock(stockSellReq.getAmount());
                     return stockUserExist;
                 }).orElseThrow(() -> new IllegalArgumentException("팔 수 있는 주식이 존재하지 않습니다."));
-
 
         stockLogService.saveStockLog(
                 stockUser, TradeType.SELL, stockUser.getStock().getCurrentPrice(), stockSellReq.getAmount()
@@ -163,10 +160,16 @@ public class StockUserServiceImpl implements StockUserService {
 
     @Override
     public StockUserResponse findStockUserInfo(Long stockId, Long userId) {
+        int pendingBuyAmount = stockPendingService.findIndividualPendingAmount(userId, stockId, TradeType.BUY);
+        int pendingBuyPrice = stockPendingService.findIndividualPendingPrice(userId, stockId, TradeType.BUY);
+        int pendingSellAmount = stockPendingService.findIndividualPendingAmount(userId, stockId, TradeType.SELL);
+        int pendingSellPrice = stockPendingService.findIndividualPendingPrice(userId, stockId, TradeType.SELL);
         return stockUserRepository.findJoinStockByUserIdAndStockId(
                 userId, stockId
                 ).map(stockUser -> new StockUserResponse(
-                        stockUser.getBuyAverage(), stockUser.getAmount(), stockUser.getStock().getCurrentPrice()
+                        stockUser.getBuyAverage(), stockUser.getAmount() - pendingSellAmount,
+                        stockUser.getStock().getCurrentPrice(), pendingBuyAmount,pendingBuyPrice,
+                        pendingSellAmount, pendingSellPrice
                 )).orElseGet(StockUserResponse::new);
     }
 }

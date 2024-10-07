@@ -117,7 +117,7 @@ public class StockServiceImpl implements StockService {
 
     @Override
     public List<StockPriceResponse> findLatestStockPrices() {
-        PageRequest pageReq = PageRequest.of(1, 13, Sort.by(Sort.Direction.DESC, "updatedAt"));
+        PageRequest pageReq = PageRequest.of(1, 13, Sort.by(Sort.Direction.DESC, "createdAt"));
         List<StockPrice> stockPrices = stockPriceRepository.findJoinStock(pageReq);
 
         if(stockPrices.isEmpty()) {
