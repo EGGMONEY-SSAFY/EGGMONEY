@@ -18,7 +18,7 @@ public class DepositScheduler {
 
     @Scheduled(cron ="0 0 12 * * ?")
     public void run(){
-        log.info("{} 스케줄러 시작", LocalDate.now());
+        log.info("{} 예금 스케줄러 시작", LocalDate.now());
         List<Long> depositIds = depositService.checkExpiredDeposit();
 
         for(Long depositId : depositIds){

@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useUserStore } from "@/stores/user"
 import { RouterLink } from "vue-router"
+
+const userStore = useUserStore()
 
 const props = defineProps({
   product: {
@@ -7,6 +10,8 @@ const props = defineProps({
     required: true,
   },
 })
+
+const isParent = userStore.user?.role === "부모" ? true : false
 const name = "FinSavingsCreateView"
 </script>
 
@@ -20,7 +25,8 @@ const name = "FinSavingsCreateView"
           productId: product.id,
         },
       }"
-      class="flex items-center justify-center w-full m-2"
+      class="m-2 flex justify-center w-full items-center"
+      :class="{ 'pointer-events-none': isParent }"
     >
       <!-- fin/savings/create, fin/deposit/create로 변환-->
       <div class="flex flex-col w-full mx-8 my-4 gap-y-2">
