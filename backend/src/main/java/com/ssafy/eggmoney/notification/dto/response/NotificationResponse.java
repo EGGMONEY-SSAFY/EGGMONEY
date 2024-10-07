@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class NotificationResponse {
+    private Long notificationId;
     private Long sendUserId;
     private String SendUsername;
     private NotificationType notificationType;
