@@ -18,13 +18,17 @@ public class DepositScheduler {
 
     @Scheduled(cron ="0 0 12 * * ?")
     public void run(){
-        log.info("{} 예금 스케줄러 시작", LocalDate.now());
+        log.info("{} 예금 만기 스케줄러 시작", LocalDate.now());
         List<Long> depositIds = depositService.checkExpiredDeposit();
-
-        for(Long depositId : depositIds){
-            depositService.deleteDeposit(depositId);
+        if(!depositIds.isEmpty()) {
+            for (Long depositId : depositIds) {
+                depositService.deleteDeposit(depositId);
+            }
+        }else{
+            log.info("예금 만기 계좌가 없습니다.");
         }
-        log.info("스케줄러 종료");
+
+        log.info("예금 만기 스케줄러 종료");
     }
 
 }
