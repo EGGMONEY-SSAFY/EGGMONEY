@@ -341,14 +341,14 @@ script returned exit code 255
 
 ```
 #### 해결방안 
-Jenkins 서버에서 deployuser를 사용하여 운영 서버에 SSH로 접근하기 
+Jenkins 서버에서 deployuser를 사용하여 운영 서버에 SSH로 접근하기 <br/>
 1.deployuser 사용자 추가
 ```bash
 sudo adduser deployuser
 ```
 ![전체](readme/key3.png)
 
-2.deployuser 사용자에 대한 .ssh/authorized_keys 파일 설정
+2.deployuser 사용자에 대한 .ssh/authorized_keys 파일 설정<br/>
 (1) deployuser 사용자로 전환
 ```bash
 sudo su - deployuser
@@ -363,8 +363,8 @@ chmod 700 ~/.ssh
 touch ~/.ssh/authorized_keys 
 chmod 600 ~/.ssh/authorized_keys
 ```
-3.Jenkins 서버에서 공개키 생성
-(1) SSH 키 생성
+3.Jenkins 서버에서 공개키 생성<br/>
+(1) SSH 키 생성<br/>
 /root/.ssh 디렉토리에 SSH 키가 없으면 새로 생성해야 함
 ```bash
  ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
@@ -373,33 +373,44 @@ chmod 600 ~/.ssh/authorized_keys
 ```bash
  cat ~/.ssh/id_rsa.pub
 ```
-4.SSH를 통해 deployuser 계정으로 접근 후 테스트\
+4.SSH를 통해 deployuser 계정으로 접근 후 테스트
 ```bash
 ssh deployuser@{운영서버 IP} 
 ```
-5.서버의 SSH 설정 확인
-(1) /etc/ssh/sshd_config 
+5.서버의 SSH 설정 확인<br/>
+(1) /etc/ssh/sshd_config <br/>
 운영 서버에 접속한 후, SSH 설정 파일 열기
 ```bash
 sudo nano /etc/ssh/sshd_config
 ```
-(2) SSH 서버가 공개 키 인증을 허용하고 있는지 확인
+(2) SSH 서버가 공개 키 인증을 허용하고 있는지 확인<br/>
 없으면, 맨 아래줄에 추가
 ```bash
 PubkeyAuthentication yes
 ```
-(3) 설정 변경 후 SSH 서비스를 재시작
+(3) 설정 변경 후 SSH 서비스를 재시작<br/>
 이 단계들을 수행하면 Jenkins 서버에서 deployuser를 사용하여 운영 서버에 SSH로 접근할 수 있게 된다
 ```bash
 sudo systemctl restart ssh
 ```
+#### 젠킨스
+
 ![전체](readme/key5.png)
 ![전체](readme/key6.png)
 ![전체](readme/key7.png)
 ![전체](readme/key8.png)
 ![전체](readme/key4.png)
+
+#### Front 배포 성공
+
 ![전체](readme/key9.png)
+
+#### Maria DB 데이터
+
 ![전체](readme/key10.png)
+
+#### 백엔드 배포 성공
+
 ![전체](readme/key11.png)
 </details>
 
