@@ -7,7 +7,6 @@ import { onMounted, ref, onUnmounted } from "vue"
 const finStore = useFinStore()
 const userStore = useUserStore()
 
-const role = ref("")
 onMounted(() => {
   finStore.isYellowPage = true
   finStore.isTab = true

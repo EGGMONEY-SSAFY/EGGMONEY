@@ -179,6 +179,7 @@ export const useFinStore = defineStore(
       }
     }
 
+    // 예금 생성 신청 정보 저장
     const setDepositCreateInfo = function (money: number, productId: number, userId: number) {
       depositCreateInfo.value = {
         depositMoney: money,
@@ -187,7 +188,7 @@ export const useFinStore = defineStore(
       }
     }
 
-    // 적금 신청 정보 저장
+    // 적금 생성 신청 정보 저장
     const setSavingsCreateInfo = function (
       paymentMoney: number,
       savingsProductId: number,
@@ -417,6 +418,9 @@ export const useFinStore = defineStore(
       return axios({
         method: "post",
         url: `${USER_LOAN_JUDGE_API_URL}/${loanId}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
         data: {
           loanStatus: judge,
           refuseReason: reason,
@@ -434,6 +438,9 @@ export const useFinStore = defineStore(
       return axios({
         method: "post",
         url: `${USER_LOAN_CREATE_API_URL}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
         data: {
           userId: loanCreate.value?.userId,
           loanType: loanCreate.value?.loanType,
@@ -454,6 +461,9 @@ export const useFinStore = defineStore(
       return axios({
         method: "post",
         url: `${USER_DEPOSIT_CREATE_API_URL}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
         data: {
           userId: depositCreateInfo.value?.userId,
           depositMoney: depositCreateInfo.value?.depositMoney,
@@ -471,6 +481,9 @@ export const useFinStore = defineStore(
       return axios({
         method: "post",
         url: `${USER_SAVINGS_CREATE_API_URL}`,
+        headers: {
+          Authorization: `Bearer ${authStore.accessToken}`,
+        },
         data: {
           userId: savingsCreateInfo.value?.userId,
           savingsMoney: savingsCreateInfo.value?.paymentMoney,
@@ -484,38 +497,38 @@ export const useFinStore = defineStore(
     }
 
     return {
+      isTab,
+      isYellowPage,
+      deposit,
       depositProducts,
-      getDepositProduct,
-      savingsProducts,
-      getSavingsProduct,
-      getUserSavings,
+      depositCreateInfo,
       savings,
       savingsLogs,
-      sendSavings,
-      getUserSavingsLogs,
-      getUserDeposit,
-      deposit,
+      savingsProducts,
+      savingsCreateInfo,
       loan,
-      getUserLoan,
       loanLogs,
+      loanList,
+      loanCreate,
+      deleteDeposit,
+      getUserDeposit,
+      postUserDeposit,
+      getDepositProduct,
+      setDepositCreateInfo,
+      sendSavings,
+      deleteSavings,
+      getUserSavings,
+      postUserSavings,
+      getSavingsProduct,
+      getUserSavingsLogs,
+      setSavingsCreateInfo,
+      sendLoan,
+      postUserLoan,
+      setLoanCreate,
+      getUserLoan,
       getUserLoanLogs,
       getUserLoanList,
-      loanList,
-      setLoanCreate,
-      loanCreate,
-      isYellowPage,
-      isTab,
-      sendLoan,
-      deleteDeposit,
-      deleteSavings,
       sendfinLoanJudge,
-      setDepositCreateInfo,
-      setSavingsCreateInfo,
-      depositCreateInfo,
-      savingsCreateInfo,
-      postUserLoan,
-      postUserDeposit,
-      postUserSavings,
     }
   }
   // {
