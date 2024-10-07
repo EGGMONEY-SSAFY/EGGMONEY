@@ -12,9 +12,9 @@ const props = defineProps<{ article: Article }>()
 <template>
   <RouterLink
     :to="`/stock/news/${props.article.id}`"
-    class="bg-white m-4 rounded-lg shadow flex justify-between"
+    class="flex justify-between m-4 bg-white rounded-lg shadow"
   >
-    <div class="m-6 flex flex-col w-full gap-4">
+    <div class="flex flex-col w-full gap-4 m-6">
       <span class="font-bold">{{ props.article.title }}</span>
       <div class="flex justify-between">
         <span class="text-gray-400">{{ props.article.press }}</span>

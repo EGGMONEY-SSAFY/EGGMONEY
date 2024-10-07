@@ -50,7 +50,7 @@ const matchingStock = computed(() => {
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg shadow flex flex-col gap-2">
+  <div class="flex flex-col gap-2 m-4 bg-white rounded-lg shadow">
     <div class="mx-4 mt-4">
       <span>현재 잔액 : </span>
       <span class="font-bold">{{ myStockB }} 알</span>

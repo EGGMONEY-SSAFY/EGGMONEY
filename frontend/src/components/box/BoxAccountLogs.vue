@@ -6,9 +6,9 @@ const props = defineProps<{ history: TradeData[] }>()
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg py-3 mt-8">
+  <div class="py-3 m-4 mt-8 bg-white rounded-lg">
     <div v-for="log in props.history" :key="log.accountId">
-      <div class="m-4 flex justify-between px-5 py-1">
+      <div class="flex justify-between px-5 py-1 m-4">
         <div>
           <h1 class="font-semibold">{{ log.tradeTarget }}</h1>
           <h1>

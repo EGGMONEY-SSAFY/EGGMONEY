@@ -47,18 +47,18 @@ const formatExpireDate = (expireDate?: string) => {
 </script>
 
 <template>
-  <div class="bg-white m-4 p-2 rounded-lg shadow">
+  <div class="p-2 m-4 bg-white rounded-lg shadow">
     <div class="pb-4">
-      <div class="m-3 flex justify-between text-sm">
+      <div class="flex justify-between m-3 text-sm">
         <h1
-          class="font-semibold text-white bg-main-color rounded-xl text-center p-2 px-3 text-wrap"
+          class="p-2 px-3 font-semibold text-center text-white bg-main-color rounded-xl text-wrap"
           role="button"
           tabindex="0"
         >
           대출
         </h1>
         <button
-          class="text-main-color font-semibold text-base my-auto"
+          class="my-auto text-base font-semibold text-main-color"
           @click="goLoanDetail"
           v-if="props.loan"
         >
@@ -68,24 +68,24 @@ const formatExpireDate = (expireDate?: string) => {
       <div class="text-center">
         <h1 class="mt-8 text-lg underline underline-offset-4">
           적용금리
-          <span class="text-main-color font-semibold">
+          <span class="font-semibold text-main-color">
             연 {{ props.loan?.loanRate?.toFixed(2) }} %
           </span>
         </h1>
         <h1 style="font-size: 25px" class="my-3 font-semibold">
-          잔금 : {{ props.loan?.balance?.toLocaleString() }}<span class="ms-1 font-bold">원</span>
+          잔금 : {{ props.loan?.balance?.toLocaleString() }}<span class="font-bold ms-1">원</span>
         </h1>
         <h1 v-if="props.loan?.expirationDate" class="text-sm">
           만기일 {{ formatExpireDate(props.loan?.expirationDate) }}
         </h1>
       </div>
       <div
-        class="flex text-justify justify-around mt-8 px-5"
+        class="flex justify-around px-5 mt-8 text-justify"
         v-if="userStore.user?.role !== '자녀'"
       >
-        <!-- <button class="bg-red-500 px-5 py-2 rounded-xl text-white font-semibold">해지하기</button> -->
+        <!-- <button class="px-5 py-2 font-semibold text-white bg-red-500 rounded-xl">해지하기</button> -->
         <button
-          class="bg-lime-700 px-5 py-2 rounded-xl text-white font-semibold"
+          class="px-5 py-2 font-semibold text-white bg-lime-700 rounded-xl"
           @click="openModal"
         >
           상환하기
@@ -95,20 +95,20 @@ const formatExpireDate = (expireDate?: string) => {
     <!-- 모달 -->
     <div
       v-if="isModalOpen"
-      class="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50"
     >
-      <div class="bg-white p-6 rounded-lg shadow-lg w-80">
-        <h2 class="text-lg font-bold mb-4">정말 상환하시겠습니까?</h2>
+      <div class="p-6 bg-white rounded-lg shadow-lg w-80">
+        <h2 class="mb-4 text-lg font-bold">정말 상환하시겠습니까?</h2>
         <div class="mb-5">
-          <p class="text-sm text-red-500 mb-1">* 상환 후에는 취소가 불가능합니다.</p>
+          <p class="mb-1 text-sm text-red-500">* 상환 후에는 취소가 불가능합니다.</p>
           <p class="text-sm text-red-500">계속 진행하시겠습니까?</p>
         </div>
         <div class="flex justify-end">
-          <button class="bg-gray-500 text-white px-4 py-2 rounded mr-2" @click="closeModal">
+          <button class="px-4 py-2 mr-2 text-white bg-gray-500 rounded" @click="closeModal">
             취소
           </button>
           <button
-            class="bg-blue-500 text-white px-4 py-2 rounded"
+            class="px-4 py-2 text-white bg-blue-500 rounded"
             @click="sendLoan(props.loan?.loanId)"
             v-if="props.loan?.loanId"
           >
