@@ -22,16 +22,16 @@ const formatExpireDate = (expireDate?: string) => {
 </script>
 
 <template>
-  <div class="bg-white m-4 p-2 rounded-lg shadow">
+  <div class="p-2 m-4 bg-white rounded-lg shadow">
     <div class="pb-4">
-      <div class="m-3 flex justify-between text-sm">
+      <div class="flex justify-between m-3 text-sm">
         <h1
-          class="font-semibold text-white bg-main-color rounded-xl text-center p-2 px-3 text-wrap"
+          class="p-2 px-3 font-semibold text-center text-white bg-main-color rounded-xl text-wrap"
         >
           {{ props.deposit?.depositProduct?.productName }}
         </h1>
         <button
-          class="text-main-color font-semibold text-base my-auto"
+          class="my-auto text-base font-semibold text-main-color"
           @click="goDepositDetail(props.user.userId)"
         >
           통장관리
@@ -40,12 +40,12 @@ const formatExpireDate = (expireDate?: string) => {
       <div class="text-center">
         <h1 class="mt-8 text-lg underline underline-offset-4">
           적용금리
-          <span class="text-main-color font-semibold" v-if="props.deposit?.depositProduct"
+          <span class="font-semibold text-main-color" v-if="props.deposit?.depositProduct"
             >연 {{ props.deposit?.depositProduct?.depositRate.toFixed(2) }} %
           </span>
         </h1>
         <h1 style="font-size: 30px" class="my-3 font-semibold" v-if="props.deposit?.depositMoney">
-          {{ props.deposit?.depositMoney.toLocaleString() }}<span class="ms-1 font-bold">원</span>
+          {{ props.deposit?.depositMoney.toLocaleString() }}<span class="font-bold ms-1">원</span>
         </h1>
 
         <h1 v-if="props.deposit?.expireDate" class="text-sm">

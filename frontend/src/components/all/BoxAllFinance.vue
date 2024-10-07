@@ -16,38 +16,38 @@ function goLoan() {
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg shadow flex flex-col">
+  <div class="flex flex-col m-4 bg-white rounded-lg shadow">
     <div class="flex justify-between">
       <div class="m-4">
-        <p class="text-lg flex items-center mt-3"><IconSetting class="size-6 ml-4" />&nbsp; 금융</p>
+        <p class="flex items-center mt-3 text-lg"><IconSetting class="ml-4 size-6" />&nbsp; 금융</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p></p>
       </div>
     </div>
     <div class="flex justify-between cursor-pointer" @click="goDeposit">
-      <div class="my-4 mx-8">
+      <div class="mx-8 my-4">
         <p>예금 상품 조회</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p><IconRightArrow class="size-6" /></p>
       </div>
     </div>
 
     <div class="flex justify-between cursor-pointer" @click="goSavings">
-      <div class="my-4 mx-8">
+      <div class="mx-8 my-4">
         <p>적금 상품 조회</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p><IconRightArrow class="size-6" /></p>
       </div>
     </div>
 
     <div class="flex justify-between mb-3 cursor-pointer" @click="goLoan">
-      <div class="my-4 mx-8">
+      <div class="mx-8 my-4">
         <p>대출</p>
       </div>
-      <div class="m-4 flex justify-center items-center">
+      <div class="flex items-center justify-center m-4">
         <p><IconRightArrow class="size-6" /></p>
       </div>
     </div>
