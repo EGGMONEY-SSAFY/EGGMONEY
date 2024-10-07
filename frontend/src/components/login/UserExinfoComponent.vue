@@ -15,8 +15,9 @@
             }"
             @click="selectRole('자녀')"
           >
-            <img src="@/assets/common/부모 닭.png" alt="부모" class="w-24 h-24 mb-2" />
-            <span class="text-lg font-bold text-gray-800">부모</span>
+            <img src="@/assets/common/아기 닭.png" alt="자녀" class="w-24 h-24 mb-2" />
+            <span class="text-lg font-bold text-gray-800">자녀</span>
+            
           </div>
           <hr class="my-4" />
           <div
@@ -27,8 +28,8 @@
             }"
             @click="selectRole('부모')"
           >
-            <img src="@/assets/common/아기 닭.png" alt="자녀" class="w-24 h-24 mb-2" />
-            <span class="text-lg font-bold text-gray-800">자녀</span>
+            <img src="@/assets/common/부모 닭.png" alt="부모" class="w-24 h-24 mb-2" />
+            <span class="text-lg font-bold text-gray-800">부모</span>
           </div>
         </div>
       </div>

@@ -7,6 +7,38 @@ export const useStockStore = defineStore("stock", () => {
   // const authStore = useAuthStore()
   // authStore.accessToken
 
+  const getDetailStockData = async (stockId: number) => {
+    try {
+      const response = await axios({
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        method: "get",
+        url: `${API_URL}/stock/${stockId}/price/year`,
+      })
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const getChartData = async () => {
+    try {
+      const response = await axios({
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        method: "get",
+        url: `${API_URL}/stock/user/portfolio`,
+      })
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const getOrderLog = async () => {
     try {
       const response = await axios({
@@ -221,5 +253,7 @@ export const useStockStore = defineStore("stock", () => {
     postBuyOrder,
     postSellOrder,
     getOrderLog,
+    getChartData,
+    getDetailStockData,
   }
 })
