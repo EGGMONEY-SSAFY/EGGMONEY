@@ -21,13 +21,16 @@ public class StockUserResponse {
 
     public StockUserResponse(int buyAverage, int amount, int price, int pendingBuyAmount,
                              int pendingBuyPrice, int pendingSellAmount, int pendingSellPrice) {
-        this.buyAverage = buyAverage;
-        this.amount = amount;
-        this.totalInvestment = buyAverage * amount;
-        this.value = price * amount;
-        this.roi = BigDecimal.valueOf(value - totalInvestment)
-                .divide(BigDecimal.valueOf(totalInvestment), 2, RoundingMode.HALF_UP)
-                .multiply(BigDecimal.valueOf(100)).intValue();
+        if (amount != 0){
+            this.buyAverage = buyAverage;
+            this.amount = amount;
+            this.totalInvestment = buyAverage * amount;
+            this.value = price * amount;
+            this.roi = BigDecimal.valueOf(value - totalInvestment)
+                    .divide(BigDecimal.valueOf(totalInvestment), 2, RoundingMode.HALF_UP)
+                    .multiply(BigDecimal.valueOf(100)).intValue();
+        }
+
         this.pendingBuyAmount = pendingBuyAmount;
         this.pendingBuyPrice = pendingBuyPrice;
         this.pendingSellAmount = pendingSellAmount;
