@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import SimplePinPadComponent from "@/components/login/SimplePinPadComponent.vue"
 import { useFinStore } from "@/stores/fin"
-import { onMounted, ref } from "vue"
-import { useRoute, useRouter, type HistoryState, type RouterHistory } from "vue-router"
-import FinSuccessLoan from "./FinSuccessLoanView.vue"
+import { onMounted } from "vue"
+import { useRouter } from "vue-router"
 
 const props = defineProps({
   check: String,
