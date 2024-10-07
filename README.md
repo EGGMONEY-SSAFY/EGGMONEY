@@ -14,7 +14,7 @@
 
 1. 금융 API를 이용해 가상 계좌로 자금을 이체 <br/>
 2. 실제 주식 시장 데이터를 기반으로 가상 주식 매입/매도 활동 구현 <br/>
-3. 금융 뉴스: GPT를 이용해 뉴스 요약 제공 <br/>
+3. 금융 뉴스: GPT를 이용한 뉴스 요약 제공 <br/>
 
 ---
 #### 목차
@@ -41,21 +41,268 @@
 | **Language** | TypeScript | Java 17 |  |
 | **Framework** | Vue3.js | Spring Boot, Spring Security |  |
 | **Library** | Tailwind, PWA | JWT, JPA |  |
-| **DB** |  | MariaDB, Redis |  |
+| **DB** |  | MariaDB |  |
 | **Server** |  | Node.js | Amazon EC2, Nginx, Docker |
 | **CI/CD** |  |  | Jenkins, Mattermost |
----
-##### 🐱 VI. 팀원 소개
-| 이름 | 역할 |   
-| --- | --- |
-| 나경준 | [Full Stack] 팀장, 발표, 소셜 로그인, 회원 관련 기능 | 
-| 곽재은 | [Full Stack] 주식 기능, 알림, 공통 컴포넌트, PWA & 프런트 셋팅 | 
-| 김신범 | [Full Stack] 주식 기능, 알림, Spring Boot 기본셋팅 | 
-| 정지영 | [Full Stack] 자산, 금융, Spring Boot 기본셋팅, DB 기본셋팅, UCC |
-| 정소영 | [Full Stack] 회원 관련 기능, 인프라 |  
-| 황우성 | [Full Stack] 자산, 금융, Spring Boot 기본셋팅, DB 기본셋팅 |  
 
 <br/>
 
--> 각자 자기부분 추가해주시면 됩니당 ! <br/>
-다른 부분도 자유롭게 수정 가능해요 
+<details>
+<summary>추가 설명</summary>
+<div markdown="1">
+<br/>
+각 기술을 선택한 이유
+<br/><br/>
+[ Front ]<br/>
+Vue 3.js : 사용자 인터페이스를 구축하기 위한 진보적인 JavaScript 프레임워크.
+재사용성과 유지보수성을 높이는 데 중점을 두고 있음 <br/>
+Tailwind CSS :유틸리티 퍼스트 CSS 프레임워크
+디자인을 빠르게 prototyping하고 사용자 정의 CSS를 줄이는 데 유용함 <br/>
+PWA(Progressive Web App) : 웹 기술을 활용해 만든 애플리케이션. 웹사이트의 장점과 네이티브 애플리케이션의 장점을 결합한 형태 <br/><br/>
+
+[ back ]<br/>
+Spring Boot : Java 기반의 프레임워크. 내장 서버와 자동 구성 기능을 제공하여 개발 생산성을 높임<br/>
+Spring Security : 애플리케이션의 보안을 담당하는 프레임워크로, 인증 및 권한 부여 기능을 제공<br/>
+JPA (Java Persistence API) : 자바에서 데이터베이스와의 상호작용을 간편하게 해주는 ORM(Object-Relational Mapping) 기술. 데이터베이스의 엔티티를 객체 형태로 매핑할 수 있음<br/>
+JWT (JSON Web Token) : 인증 정보를 안전하게 전송하기 위한 토큰 형식. 클라이언트와 서버 간의 인증 및 권한 부여를 간편하게 처리할 수 있도록 도와줌
+<br/><br/>
+[ DB ]<br/>
+MariaDB : MySQL의 포크로, 오픈 소스 관계형 데이터베이스 관리 시스템. 뛰어난 성능과 안정성을 제공함<br/>
+
+[ Infra ]<br/>
+Node.js : 서버 측 JavaScript 실행 환경으로, 비동기 I/O 모델을 사용하여 높은 성능과 확장성을 제공함. 웹 서버나 API 서버 구축에 적합.<br/>
+Amazon EC2 : 아마존 웹 서비스(AWS)의 클라우드 컴퓨팅 서비스로, 가상 서버를 손쉽게 생성하고 관리할 수 있음. 유연한 스케일링과 비용 효율성을 제공.<br/>
+Nginx : 고성능 웹 서버 및 리버스 프록시 서버로, 정적 파일 제공, 로드 밸런싱, SSL/TLS 지원 등을 통해 웹 애플리케이션의 성능을 개선함.<br/>
+Docker : 애플리케이션을 컨테이너화하여 배포할 수 있는 플랫폼으로, 개발 환경을 일관되게 유지하고 이식성을 높임. 여러 환경에서 동일한 성능을 보장함.
+
+</div>
+</details>
+<br/>
+<details>
+<summary>협업 도구</summary>
+<div markdown="1">
+1.Git & Github<br/>
+분산형 버전 관리 시스템으로<br/>
+코드의 변경 사항을 추적하고 여러 개발자 간의 협업을 용이하게 함<br/><br/>
+
+![git](readme/git.png)
+
+2.Jira<br/>
+Atlassian에서 개발한 프로젝트 관리 및 이슈 추적 도구<br/>
+주로 소프트웨어 개발 팀에서 사용되며, Agile 방법론(스크럼, 칸반 등)을 지원<br/>
+
+![jira1](readme/jira1.png)
+![jira2](readme/jira2.png)
+![jira3](readme/jira3.png)
+
+<br/>
+3.Mattermost <br/>
+오픈 소스 팀 채팅 및 협업 플랫폼<br/>
+Slack과 유사한 기능을 제공<br/>
+자체 서버에 호스팅할 수 있어 보안 및 프라이버시가 중요할 때 유용<br/>
+
+![matter](readme/matter.png)
+
+</div>
+</details>
+<br/>
+
+---
+
+##### 💁 II. 구현 화면
+
+<details>
+<br/>
+<summary> 1️⃣ 메인페이지 </summary>
+<div markdown="1">
+	
+![메인페이지](readme/main.png)
+<br>
+</div>
+</details>
+<details>
+<br/>
+<summary> 2️⃣ 회원페이지  </summary>
+<div markdown="1">
+	
+![로그인 페이지](readme/user1.png)
+
+![로그인 페이지](readme/user2.png)
+
+![로그인 페이지](readme/user3.png)
+
+![로그인 페이지](readme/user4.png)
+
+<br><br>회원의 기본 정보 관리
+<br>
+</div>
+</details>
+<details>
+<br/>
+<summary> 3️⃣ 자산페이지   </summary>
+<div markdown="1">
+	
+![자산](readme/deposit1.png)
+![자산](readme/deposit2.png)
+
+<br>
+</div>
+</details>
+<details>
+<br/>
+<summary> 4️⃣ 금융페이지  </summary>
+<div markdown="1">
+
+![증권](readme/stock1.png)
+
+</div>
+</details>
+
+<details>
+<br/>
+<summary> 5️⃣ 증권페이지  </summary>
+<div markdown="1">
+	
+![증권](readme/stock1.png)
+![증권](readme/stock2.png)
+
+ <br>
+ </div>
+</details>
+<details>
+<br/>
+<summary> 6️⃣ 전체페이지 </summary>
+<div markdown="1">
+
+![전체](readme/total1.png)
+<br> 
+<br>
+ </div>
+</details>
+
+
+---
+##### 💻 III. 주요 기술 설명
+
+<details>
+<summary> 1️⃣ PWA </summary>
+<div markdown="1">
+
+### PWA (Progressive Web Apps)란?
+
+PWA는 웹 기술을 사용하여 네이티브 앱처럼 동작하는 웹 애플리케이션입니다. 이는 사용자가 더 나은 경험을 할 수 있도록 다양한 기능을 제공합니다.
+
+#### 주요 특징:
+
+1. **오프라인 작동**: 서비스 워커를 사용하여 네트워크 연결이 없는 상태에서도 앱이 작동할 수 있습니다.
+  
+2. **빠른 로딩 속도**: 캐싱 기술을 활용하여 사용자 경험을 향상시키고, 페이지 로딩 속도를 빠르게 합니다.
+
+3. **푸시 알림**: 사용자가 앱을 떠나더라도 알림을 받을 수 있어 사용자 참여를 유도합니다.
+
+4. **반응형 디자인**: 다양한 화면 크기에서 잘 작동하도록 설계되어 있습니다.
+
+5. **설치 가능**: 사용자는 PWA를 홈 화면에 추가하여 네이티브 앱처럼 사용할 수 있습니다.
+
+#### 장점:
+
+- **크로스 플랫폼 지원**: iOS, Android, 데스크탑 등 다양한 플랫폼에서 동일한 경험을 제공합니다.
+- **유지보수 용이**: 하나의 코드베이스로 여러 플랫폼을 지원할 수 있어 유지보수가 간편합니다.
+- **비용 절감**: 네이티브 앱 개발에 비해 개발 및 배포 비용이 낮습니다.
+
+</div>
+</details>
+
+
+---
+##### ☄️ IV. 트러블 슈팅  
+
+
+
+---
+##### 📑 V. 프로젝트 설계
+
+<details>
+<summary> 🗂️ 요구사항 명세 </summary>
+<div markdown="1">
+	
+![요구사항 명세서1](readme/demand.png)
+</div>
+</details>
+<details>
+<summary> 🗂️ 기능 명세  </summary>
+<div markdown="1">
+	
+![기능명세서1](readme/function.png)
+
+</div>
+</details>
+
+<details>
+<summary> 🗂️ API 명세  </summary>
+<div markdown="1">
+	
+![API 명세서](readme/API.png)
+
+</div>
+</details>
+
+<details>
+<summary>🎨 Figma  </summary>
+<div markdown="1">
+
+[📎 Figma Link  ](https://www.figma.com/design/E4YJ6rv2618zTQV5R0jBPp/C204%ED%8C%80?t=e62ogsR1DgnWEkqL-0).
+
+![Figma](readme/Figma.png)
+
+
+</div>
+</details>
+
+<details>
+<summary>&#128195; ERD  </summary>
+<div markdown="1">
+
+![ERD 이미지](readme/ERD.png)
+
+
+
+</div>
+</details>
+
+<details>
+<summary> &#128217; Architecture  </summary>
+<div markdown="1">
+
+![Architecture](readme/archi.png)
+
+</div>
+</details>
+
+
+
+
+---
+##### 🐱 VI. 팀원 소개
+Full Stack 6명
+
+| 이름 | 역할 |   
+| --- | --- |
+| 나경준 | [팀장] 소셜 로그인, 회원 관련 기능, 발표 | 
+| 곽재은 | 주식 기능, 알림, 공통 컴포넌트, PWA & 프런트 셋팅 | 
+| 김신범 | 주식 기능, 알림, Spring Boot 기본셋팅 | 
+| 정지영 | 자산, 금융, Spring Boot 기본셋팅, DB 기본셋팅, UCC |
+| 황우성 | 자산, 금융, Spring Boot 기본셋팅, DB 기본셋팅 |  
+| 정소영 | 인프라 웹 배포, 퀴즈, 회원 관련 페이지 프런트 디자인 |  
+
+---
+##### 🙇 VII. 느낀 점
+
+| 이름 | 느낀점 |   
+| --- | --- |
+| 나경준 | 여기 내용 | 
+| 곽재은 | 여기 내용 | 
+| 김신범 | 여기 내용 | 
+| 정지영 | 여기 내용 | 
+| 황우성 | 여기 내용 | 
+| 정소영 | 이전에는 Dothome이나 CloudType 같은 호스팅 서비스를 사용해서 웹 배포를 진행했습니다. 그런데 이번 기회를 통해서 처음부터 배포 파이프라인을 구성해볼 수 있어서 좋았습니다. Docker 컨테이너를 통해 애플리케이션의 이식성을 높이고, 일관된 개발 및 배포 환경을 제공할 수 있었습니다. 또한, Jenkins를 활용해 빌드, 테스트, 배포 과정을 효율화할 수 있었던 것 같습니다. 추가로 Blue/Green 방법을 사용해 배포 환경을 자동화한 것이 개발의 효율성을 높여주고 빌드 시 발생할 수 있는 실수를 줄이는 좋은 방법이 된다는 것을 깨닫게 되었습니다.<br/> 팀원들과 함께하는 시간들이 즐거웠고, 개발자로서 논리적으로 생각하고 판단하는 법을 배울 수 있었습니다. 팀 내에 서로 배려하는 문화가 있어서 좋았습니다. 뛰어난 팀원들과 함께할 수 있는 있어서 감사합니다. |
