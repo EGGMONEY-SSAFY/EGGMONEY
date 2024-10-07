@@ -3,6 +3,7 @@ package com.ssafy.eggmoney.notification.entity;
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import com.ssafy.eggmoney.user.entity.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,23 +19,37 @@ import static lombok.AccessLevel.PROTECTED;
 public class Notification extends BaseTime {
     @Id
     @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "notification_id")
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "pub_user_id")
-    private User pub;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name ="sub_user_id")
-    private User sub;
+    @JoinColumn(name ="send_user_id")
+    private User sendUser;
 
+    @NotNull
     @Enumerated(value = STRING)
     private NotificationType notificationType;
 
+    @NotNull
     private String message;
-    private Boolean isRead;
-    private Boolean isValid;
 
-    // 리다이렉트 url 인데 알림 하는 사람이 로직 구상해서 필요하면 추가하기.
-    // private String url;
+    @NotNull
+    private Boolean isRead;
+
+    public Notification(User user, User sendUser, NotificationType notificationType, String message) {
+        this.user = user;
+        this.sendUser = sendUser;
+        this.notificationType = notificationType;
+        this.message = message;
+        this.isRead = false;
+    }
+
+    public void readNotification() {
+        this.isRead = true;
+    }
 }
