@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import axios from "axios"
 import { reactive, ref } from "vue"
 import type internal from "stream"
+import { useRouter } from "vue-router"
 import { useAuthStore } from "./auth"
 export interface depositProducts {
   productId: number
@@ -96,6 +97,7 @@ export interface LoanJudgeInfo {
 export const useFinStore = defineStore(
   "fin",
   () => {
+    const router = useRouter()
     const DEPOSIT_PRODUCT_API_URL = "/api/v1/fin/deposit/product"
     const SAVINGS_PRODUCT_API_URL = "/api/v1/fin/savings/product"
     const USER_SAVINGS_API_URL = "/api/v1/fin/savings"
@@ -140,6 +142,7 @@ export const useFinStore = defineStore(
     const depositCreateInfo = ref<depositCreateInfo | null>(null)
     const savingsCreateInfo = ref<savingsCreateInfo | null>(null)
     const loanJudgeInfo = ref<LoanJudgeInfo | null>(null)
+    const errMessage = ref("")
 
     // 예금상품조회
     const getDepositProduct = function () {
@@ -156,6 +159,8 @@ export const useFinStore = defineStore(
         })
         .catch((err) => {
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -174,6 +179,8 @@ export const useFinStore = defineStore(
         })
         .catch((err) => {
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -264,6 +271,8 @@ export const useFinStore = defineStore(
         .catch((err) => {
           savings.value = null
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -286,6 +295,8 @@ export const useFinStore = defineStore(
         })
         .catch((err) => {
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -308,6 +319,8 @@ export const useFinStore = defineStore(
         .catch((err) => {
           deposit.value = null
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -334,6 +347,8 @@ export const useFinStore = defineStore(
         .catch((err) => {
           loanList.value = null
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -352,6 +367,8 @@ export const useFinStore = defineStore(
         .catch((err) => {
           loan.value = null
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -374,6 +391,8 @@ export const useFinStore = defineStore(
         })
         .catch((err) => {
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -392,6 +411,8 @@ export const useFinStore = defineStore(
         .then((res) => {})
         .catch((err) => {
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -407,6 +428,8 @@ export const useFinStore = defineStore(
         .then((res) => {})
         .catch((err) => {
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -422,6 +445,8 @@ export const useFinStore = defineStore(
         .then((res) => {})
         .catch((err) => {
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -437,6 +462,8 @@ export const useFinStore = defineStore(
         .then((res) => {})
         .catch((err) => {
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -454,9 +481,13 @@ export const useFinStore = defineStore(
           loanRate: loanJudgeInfo.value?.loanRate,
         },
       })
-        .then((res) => {})
+        .then((res) => {
+          router.push({ name: "FinSuccessLoanView" })
+        })
         .catch((err) => {
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -477,9 +508,13 @@ export const useFinStore = defineStore(
           loanReason: loanCreate.value?.loanReason,
         },
       })
-        .then((res) => {})
+        .then((res) => {
+          router.push({ name: "FinSuccessLoanView" })
+        })
         .catch((err) => {
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -497,9 +532,14 @@ export const useFinStore = defineStore(
           depositProductId: depositCreateInfo.value?.depositProductId,
         },
       })
-        .then((res) => {})
+        .then((res) => {
+          router.push({ name: "FinSuccessView" })
+
+        })
         .catch((err) => {
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
@@ -513,19 +553,25 @@ export const useFinStore = defineStore(
         },
         data: {
           userId: savingsCreateInfo.value?.userId,
-          savingsMoney: savingsCreateInfo.value?.paymentMoney,
+          paymentMoney: savingsCreateInfo.value?.paymentMoney,
           savingsProductId: savingsCreateInfo.value?.savingsProductId,
         },
       })
-        .then((res) => {})
+        .then((res) => {
+          router.push({ name: "FinSuccessView" })
+
+        })
         .catch((err) => {
           console.error(err)
+          errMessage.value = err.response.data.message
+          router.push({name:"ErrorView"})
         })
     }
 
     return {
       isTab,
       isYellowPage,
+      errMessage,
       deposit,
       depositProducts,
       depositCreateInfo,

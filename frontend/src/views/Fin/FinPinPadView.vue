@@ -28,19 +28,16 @@ const handleSuccess = () => {
   // 비밀번호 검증 성공 시 처리 로직
   if (previousRoute?.toString().includes("deposit")) {
     console.log("예금생성 요청")
-    router.push({ name: "FinSuccessView" })
     finStore.postUserDeposit()
   } else if (previousRoute?.toString().includes("savings")) {
     console.log("적금이 포함된 주소")
-    router.push({ name: "FinSuccessView" })
     finStore.postUserSavings()
   } else if (previousRoute?.toString().includes("loan") && userStore.user?.role === "자녀") {
     console.log("대출 생성 요청")
     finStore.postUserLoan()
-    router.push({ name: "FinSuccessLoanView" })
   } else if (previousRoute?.toString().includes("loan") && userStore.user?.role === "부모") {
     finStore.sendfinLoanJudge()
-    router.push({ name: "FinSuccessLoanView" })
+
   }
   console.log("비밀번호 검증 성공")
 }
