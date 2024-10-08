@@ -1,5 +1,6 @@
 package com.ssafy.eggmoney.simplepwd.controller;
 
+import com.ssafy.eggmoney.account.service.AccountService;
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 import com.ssafy.eggmoney.simplepwd.dto.request.PinVerificationRequest;
 import com.ssafy.eggmoney.simplepwd.dto.response.PinPadResponse;
@@ -28,14 +29,15 @@ public class PinPadController {
     private final EncryptionService encryptionService;
     private final KakaoAuthService kakaoAuthService;
     private final UserService userService;
-
+    private final AccountService accountService;
 
     @Autowired
-    public PinPadController(PinPadService pinPadService, EncryptionService encryptionService, KakaoAuthService kakaoAuthService, UserService userService){
+    public PinPadController(PinPadService pinPadService, EncryptionService encryptionService, KakaoAuthService kakaoAuthService, UserService userService, AccountService accountService){
         this.pinPadService=pinPadService;
         this.encryptionService=encryptionService;
         this.kakaoAuthService = kakaoAuthService;
         this.userService = userService;
+        this.accountService=accountService;
     }
 
     @GetMapping(value = "/api/pinpad", produces = "application/json")
@@ -85,6 +87,9 @@ public class PinPadController {
         userService.updateUser(user, updateUserRequestDto);
         response.put("message","비밀번호 생성 성공");
 //        response.put("Pwd",decryptedPasswordString);
+        if(user.getRole().equals("자녀")){
+            accountService.createAccount(user.getId());
+        }
         return ResponseEntity.ok(response);
     }
     @PostMapping("/api/pinpad/verify/check")
