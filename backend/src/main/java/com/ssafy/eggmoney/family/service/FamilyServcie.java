@@ -37,6 +37,7 @@ public class FamilyServcie {
                 .presentId(fam.getPresentId())
                 .intro(fam.getIntro())
                 .qrcode(fam.getQrCode())
+                .profileImageUrl(fam.getProfileImageUrl())
                 .members( userList.stream()
                         .filter(user -> !user.getId().equals(fam.getPresentId())) // presentId와 다른 사용자만 포함
                         .map( user -> GetUserResponseDto.builder()
@@ -68,7 +69,8 @@ public class FamilyServcie {
                         .intro(dto.getIntro())
                                 .qrCode(dto.getQrCode())
                                         .presentId(user.getId())
-                                                .build();
+                                            .profileImageUrl(dto.getProfileImageUrl())
+                                                    .build();
 //        familyRepository.save(Family.builder()
 //                .intro(dto.getIntro())
 //                .qrCode(dto.getQrCode())
@@ -145,6 +147,7 @@ public class FamilyServcie {
                         .orElseThrow(()->new IllegalArgumentException("Can't Find Family"));
 
         family.setIntro(dto.getIntro());
+        family.setProfileImageUrl(dto.getProfileImageUrl());
         familyRepository.save(family);
 
     }
