@@ -58,11 +58,7 @@ public class QuizService {
         }
 
         Quiz q = quiz.get();
-        Integer answer = 0;
-        if ( q.getAnswer().equals(dto.getAnswer()) ) {
-//            1 : 정답, 0 : 오답
-            answer = 1;
-        }
+        Integer answer = dto.getAnswer();
         quizLogService.createQuizLog(q.getId(), user.getId(), answer);
     }
 
