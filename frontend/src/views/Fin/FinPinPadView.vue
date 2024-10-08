@@ -37,7 +37,6 @@ const handleSuccess = () => {
     finStore.postUserLoan()
   } else if (previousRoute?.toString().includes("loan") && userStore.user?.role === "부모") {
     finStore.sendfinLoanJudge()
-
   }
   console.log("비밀번호 검증 성공")
 }
