@@ -27,15 +27,28 @@ public class S3Service {
         this.bucketName = bucketName;
     }
     public String uploadFile(MultipartFile file) throws IOException{
-        String key = Paths.get("family-profiles", file.getOriginalFilename()).toString();
+        // S3 경로를 명시적으로 설정
+        String key = "family/" + file.getOriginalFilename();
 
+        // 파일의 Content-Type 설정
+        String contentType = file.getContentType();
+        if (contentType == null) {
+            contentType = "application/octet-stream";  // 기본 Content-Type 설정
+        }
+
+        // S3에 파일 업로드 요청
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
+                .contentType(contentType)  // Content-Type 설정
+                .contentDisposition("inline")  // Content-Disposition을 inline으로 설정
                 .build();
+
         s3Client.putObject(putObjectRequest, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
 
-        return key;
+        // S3 파일 URL 반환
+        String fileUrl = "https://" + bucketName + ".s3.amazonaws.com/" + key;
+        return fileUrl;  // 업로드된 파일의 S3 URL 반환
     }
     public InputStream downloadFiles(String key){
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
