@@ -157,7 +157,7 @@ public class SavingServiceImpl implements SavingService {
 
         SavingsLog savingsLog = SavingsLog.builder()
                 .savings(savings)
-                .balance(savings.getPaymentMoney() + savings.getBalance())
+                .balance(updateSavings.getBalance())
                 .build();
 
         savingsLogRepository.save(savingsLog);
