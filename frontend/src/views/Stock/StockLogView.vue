@@ -22,8 +22,9 @@ onMounted(async () => {
 <template>
   <div>
     <NavBarTab :path="path" />
-    <div class="flex flex-col justify-between flex-grow">
+    <div class="flex flex-col justify-between flex-grow" v-if="logList">
       <BoxTradeLog v-for="log in logList" :log="log" :key="log.stockItem" />
     </div>
+    <div v-else>sfasdf</div>
   </div>
 </template>
