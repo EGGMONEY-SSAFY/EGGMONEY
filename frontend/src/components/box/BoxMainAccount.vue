@@ -35,12 +35,10 @@ watch(withdrawalAmount, (newVal) => {
   if (newVal === null || newVal <= 0) {
     errorMessage.value = "출금 금액을 입력해주세요."
     isWithdrawalDisabled.value = true
-  } 
-  else if ( props.balance && Number(props.balance) <= Number(newVal) ) {
+  } else if (props.balance && Number(props.balance) <= Number(newVal)) {
     errorMessage.value = "출금할 금액보다 큽니다 !"
     isWithdrawalDisabled.value = true
-  }
-  else {
+  } else {
     errorMessage.value = ""
     isWithdrawalDisabled.value = false
   }
@@ -101,7 +99,11 @@ function confirmWithdrawal() {
           <button class="px-4 py-2 mr-2 text-white bg-gray-500 rounded" @click="closeModal">
             취소
           </button>
-          <button class="px-4 py-2 text-white bg-blue-500 rounded" @click="confirmWithdrawal"  :disabled="isWithdrawalDisabled">
+          <button
+            class="px-4 py-2 text-white bg-blue-500 rounded"
+            @click="confirmWithdrawal"
+            :disabled="isWithdrawalDisabled"
+          >
             출금
           </button>
         </div>
