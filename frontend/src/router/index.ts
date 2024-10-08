@@ -43,6 +43,7 @@ import AssetWithdrawalView from "@/views/Asset/AssetWithdrawalView.vue"
 import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import StockRateView from "@/views/All/StockRateView.vue"
 import event from "@/views/All/event.vue"
+import game from "@/views/All/game.vue"
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from "@/stores/user"
 import { defineAsyncComponent } from "vue"
@@ -266,6 +267,11 @@ const router = createRouter({
       path: "/event",
       name: "event",
       component: event,
+    },
+    {
+      path: "/game",
+      name: "game",
+      component: game,
     },
     {
       path: "/stock/detail/:stockName",
