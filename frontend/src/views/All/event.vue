@@ -54,27 +54,52 @@
       <div v-if="showResult">
         <h1 class="text-2xl font-bold mb-8 text-orange-600"><br />결과 발표</h1>
         <p class="mb-2">{{ resultMessage }}</p>
-        <p class="mb-4">
+        <p class="mb-8">
           당신의 점수는 <span class="text-red-500 text-2xl font-bold">{{ score }}</span> 점입니다
         </p>
         <button
             id="restart-btn"
             @click="restartQuiz"
-            class="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
+            class="mr-2 px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
           >
-            다시 시작하기
+            다시시작
           </button>
           <button
             id="review-btn"
-            @click="$router.push({ name: 'Review' })"
+            @click="reviewIncorrectAnswers"
             class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
           >
             오답하기
           </button>
 
         <p class="mb-8"></p>
+          <!-- 모달창 -->
+    <div
+      v-if="showModal"
+      class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
+    >
+      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-2xl font-bold mb-4 text-blue-600">오답 보기</h2>
+        <ul>
+          <li
+            v-for="(question, index) in incorrectAnswers"
+            :key="index"
+            class="mb-4"
+          >
+            <p class="font-bold mb-2">Q{{ question.index + 1 }}. {{ question.content }}</p>
+            <p class="text-green-600">{{ question.answer }}</p>
+          </li>
+        </ul>
+        <button
+          class="mt-4 px-4 py-2 text-white bg-green-500 rounded hover:bg-blue-600"
+          @click="showModal = false"
+        >
+          닫기
+        </button>
       </div>
     </div>
+  </div>
+  </div>
   </div>
 </template>
 
@@ -99,6 +124,7 @@ interface Question {
   select3: string;
   select4: string;
   answer: string;
+  index: number;
 }
 
 const questions = ref<Question[]>([]);
@@ -109,10 +135,12 @@ const timer = ref<ReturnType<typeof setInterval> | null>(null);
 const timeLimit = 10;
 const timeLeft = ref(timeLimit);
 const timerBarWidth = computed(() => `${(timeLeft.value / timeLimit) * 100}%`);
-
+const selectedAnswers = ref<string[]>([]); 
 const currentQuestion = computed(() => questions.value[currentQuestionIndex.value]);
 const authStore = useAuthStore();
 const token = authStore.accessToken;
+
+
 
 const resultMessage = computed(() => {
   if (score.value <= 1) return "우리 함께 공부해요 😊";
@@ -140,6 +168,7 @@ const startTimer = () => {
 };
 
 const selectOption = (selectedOption: string) => {
+  selectedAnswers.value[currentQuestionIndex.value] = selectedOption; // 선택한 답 저장
   if (selectedOption === currentQuestion.value.answer) score.value++;
   clearTimer();
   if (currentQuestionIndex.value < questions.value.length - 1) {
@@ -180,18 +209,24 @@ const fetchQuestions = async () => {
 
 const router = useRouter(); // Create a router instance
 
-const reviewIncorrectAnswers = () => {
-  // Logic to gather incorrect answers
-  const incorrectAnswers = questions.value.filter((question, index) => {
-    return question.answer !== currentQuestion.value.answer; // Assuming you have a way to determine correctness
-  });
+const showModal = ref(false); // 모달 열림 상태
+const incorrectAnswers = ref<Question[]>([]); // 오답 저장
 
-  // Navigate to the review page with the incorrect answers
-  router.push({ 
-    name: 'ReviewPage', // Ensure you have a route named 'ReviewPage'
-    query: { incorrectAnswers: JSON.stringify(incorrectAnswers) }
-  });
+// 오답을 필터링하여 모달에 표시
+
+const reviewIncorrectAnswers = () => {
+  incorrectAnswers.value = questions.value
+    .map((question, index) => ({
+      ...question,
+      index, // This adds the index to each question object
+    }))
+    .filter((question, index) => {
+      return question.answer !== selectedAnswers.value[index]; // Filter incorrect answers
+    });
+  showModal.value = true; // Show the modal
 };
+
+
 
 onMounted(() => {
   fetchQuestions(); // Fetch quiz questions on component mount
