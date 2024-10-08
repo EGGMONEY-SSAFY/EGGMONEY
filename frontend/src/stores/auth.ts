@@ -59,6 +59,8 @@ export const useAuthStore = defineStore("auth", {
       this.refreshToken = refreshToken
       console.log(accessToken, refreshToken)
       await saveTokensToIndexedDB(accessToken, refreshToken)
+      // 페이지 새로고침
+      window.location.reload()
     },
     async loadTokens(router: any) {
       try {
