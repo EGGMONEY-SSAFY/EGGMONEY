@@ -10,7 +10,7 @@
         />
       </div>
       <!-- 숨겨진 파일 입력 -->
-      <input ref="fileInput" type="file" accept="image/*" @change="onImageChange" class="hidden" />
+      <input ref="fileInput" type="file" accept="image/*" @change="uploadAndSaveFamilyInfo" class="hidden" />
 
       <div class="flex flex-col justify-center items-center cursor-pointer">
         <div class="flex items-center mb-4" @click="editIntro = true">
@@ -18,8 +18,8 @@
           <input
             v-else
             v-model="editedIntro"
-            @blur="updateFamilyInfo"
-            @keyup.enter="updateFamilyInfo"
+            @blur="uploadAndSaveFamilyInfo"
+            @keyup.enter="uploadAndSaveFamilyInfo"
             class="text-lg font-bold text-blue-700"
           />
           <IconFamilyEdit />
@@ -130,7 +130,7 @@ const fetchFamilyData = async () => {
         Authorization: `Bearer ${token}`,
       },
     })
-    console.log(familyMembers)
+    console.log(familyResponse)
     if (!familyResponse.data) {
       alert("가족 정보가 존재하지 않습니다.")
       router.back() // 이전 페이지로 이동
@@ -184,45 +184,52 @@ const deleteSelectedMember = async () => {
     }
   }
 }
-const onImageChange = async (event: Event) => {
-  const file = (event.target as HTMLInputElement).files?.[0]
-  if (file) {
-    const formData = new FormData()
-    formData.append("file", file)
+const uploadAndSaveFamilyInfo = async(event:Event)=>{
+  const file = (event.target as HTMLInputElement).files?.[0];
+  let imageUrl = familyImageUrl.value;
+  if(familyImageUrl.value==null){
+    imageUrl ='';
+  }
+ 
 
-    try {
-      const response = await axios.post("/api/v1/family/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
+  if(file){
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try{
+      const response  = await axios.post("/api/v1/family/upload-profile", formData,{
+        headers:{
+          "Content-Type":"multipart/form-data",
+          Authorization:`Bearer ${token}`,
         },
-      })
-      familyImageUrl.value = response.data.imageUrl // 업로드된 이미지 URL 저장
-      fetchFamilyData() // 이미지 업데이트 후 가족 정보 업데이트 실행
-    } catch (error) {
+      });
+
+      imageUrl = response.data.imageUrl;
+    }catch(error){
       console.error("이미지 업로드 실패", error)
+      return;
     }
   }
-}
-const updateFamilyInfo = async () => {
-  try {
+  console.log(imageUrl)
+  try{
     await axios.post(
       `/api/v1/family/update`,
       {
         intro: editedIntro.value,
-        // profileImageUrl:familyImageUrl.value,
+        profileImageUrl: imageUrl || null,
       },
       {
-        headers: {
-          Authorization: `Bearer ${token}`,
+        headers:{
+          Authorization:`Bearer ${token}`,
         },
       }
     )
-    familyInfo.value.intro = editedIntro.value
-    editIntro.value = false
-    fetchFamilyData()
-  } catch (error) {
-    console.error("가족 정보 업데이트 실패", error)
+    familyInfo.value.intro = editedIntro.value||"";
+    familyImageUrl.value = imageUrl || "";
+    editIntro.value = false;
+    fetchFamilyData();
+  } catch(error){
+    console.error("가족 정보",error)
   }
 }
 onMounted(() => {
@@ -286,3 +293,44 @@ onMounted(() => {
     role: "자녀",
     profileImageUrl: daughterDefaultImage, // 더미 이미지 URL
   }, -->
+<!-- const onImageChange = async (event: Event) => {
+  const file = (event.target as HTMLInputElement).files?.[0]
+  if (file) {
+    const formData = new FormData()
+    formData.append("file", file)
+
+    try {
+      const response = await axios.post("/api/v1/family/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      familyImageUrl.value = response.data.imageUrl // 업로드된 이미지 URL 저장
+      fetchFamilyData() // 이미지 업데이트 후 가족 정보 업데이트 실행
+    } catch (error) {
+      console.error("이미지 업로드 실패", error)
+    }
+  }
+}
+const updateFamilyInfo = async () => {
+  try {
+    await axios.post(
+      `/api/v1/family/update`,
+      {
+        intro: editedIntro.value,
+        // profileImageUrl:familyImageUrl.value,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    familyInfo.value.intro = editedIntro.value
+    editIntro.value = false
+    fetchFamilyData()
+  } catch (error) {
+    console.error("가족 정보 업데이트 실패", error)
+  }
+} -->

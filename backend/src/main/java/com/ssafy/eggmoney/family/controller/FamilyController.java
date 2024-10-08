@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -135,10 +136,17 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
 
     }
     @PostMapping("/upload-profile")
-    public void uploadProfileImage(@RequestParam("file") MultipartFile file){
+    public ResponseEntity<Map<String, String>> uploadProfileImage(
+            @RequestHeader(value="Authorization") String token,
+            @RequestParam("file") MultipartFile file){
         try {
+            User user = kakaoAuthService.verifyKakaoToken(token);
             String fileUrl = s3Service.uploadFile(file);
-            
+
+            Map<String, String> response = new HashMap<>();
+            response.put("imageUrl", fileUrl);
+            return ResponseEntity.ok(response);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
