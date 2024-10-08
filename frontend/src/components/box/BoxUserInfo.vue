@@ -2,26 +2,30 @@
 import { useStockStore } from "@/stores/stock"
 import { onMounted, ref } from "vue"
 
-const AuthStore = useStockStore()
+const StockStore = useStockStore()
 const myStock = ref()
 const myStockB = ref()
 const myStockI = ref()
 onMounted(async () => {
-  myStock.value = await AuthStore.getMoneyInfo()
+  myStock.value = await StockStore.getMoneyInfo()
   myStockB.value = myStock.value.balance.toLocaleString()
   myStockI.value = myStock.value.investablePrice.toLocaleString()
 })
 </script>
 
 <template>
-  <div class="flex flex-col m-4 bg-white rounded-lg shadow">
-    <div class="m-4 mb-2">
+  <div class="flex flex-col gap-2 m-4 bg-white rounded-lg shadow">
+    <div class="mx-6 mt-4">
       <span>현재 잔액 : </span>
       <span class="font-bold">{{ myStockB }} 알</span>
     </div>
-    <div class="m-4 mt-2">
+    <div class="mx-6">
       <span>투자 가능 금액 : </span>
       <span class="font-bold">{{ myStockI }} 알</span>
+    </div>
+    <div class="mx-6 mb-4">
+      <span>총 주식 금액 : </span>
+      <span class="font-bold">{{ StockStore.totalStockValue.toLocaleString() }} 알</span>
     </div>
   </div>
 </template>

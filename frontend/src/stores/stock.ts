@@ -1,11 +1,32 @@
 import axios from "axios"
 import { defineStore } from "pinia"
+import { ref } from "vue"
 
 export const useStockStore = defineStore("stock", () => {
   const API_URL = "/api/v1"
   const token = "q"
   // const authStore = useAuthStore()
   // authStore.accessToken
+  const totalStockValue = ref()
+  const setTotalStockValue = (total: number) => {
+    totalStockValue.value = total
+  }
+
+  const postPendingCancel = async (stockPendingId: number) => {
+    try {
+      const response = await axios({
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        method: "post",
+        url: `${API_URL}/stock/pending/${stockPendingId}/cancel`,
+      })
+      return response.data
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   const getDetailStockData = async (stockId: number) => {
     try {
@@ -255,5 +276,8 @@ export const useStockStore = defineStore("stock", () => {
     getOrderLog,
     getChartData,
     getDetailStockData,
+    postPendingCancel,
+    totalStockValue,
+    setTotalStockValue,
   }
 })

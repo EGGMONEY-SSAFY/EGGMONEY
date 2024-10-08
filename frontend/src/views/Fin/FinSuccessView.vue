@@ -7,7 +7,6 @@ import { onMounted, onUnmounted } from "vue"
 const finStore = useFinStore()
 const userStore = useUserStore()
 
-
 onMounted(() => {
   finStore.isYellowPage = true
   finStore.isTab = true
