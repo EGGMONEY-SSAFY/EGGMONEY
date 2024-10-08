@@ -49,7 +49,7 @@ build/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
-
+venv
 ### IntelliJ IDEA ###
 .idea
 *.iws
@@ -113,7 +113,7 @@ dev-dist/
 __pycache__/
 *.py[cod]
 *$py.class
-
+__pycache__
 # C extensions
 *.so
 
