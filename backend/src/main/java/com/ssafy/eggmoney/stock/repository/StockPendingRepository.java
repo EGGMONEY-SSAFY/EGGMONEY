@@ -15,4 +15,8 @@ public interface StockPendingRepository extends JpaRepository<StockPending, Long
     @Query("select sp from StockPending sp join fetch sp.stock s " +
             "where sp.tradeType = 'SELL' and s.currentPrice >= sp.pendingPrice")
     List<StockPending> findPendingSell();
+
+    @Query("select sp from StockPending sp join fetch sp.stock s " +
+            "where sp.tradeType = 'BUY' and s.currentPrice <= sp.pendingPrice")
+    List<StockPending> findPendingBuy();
 }

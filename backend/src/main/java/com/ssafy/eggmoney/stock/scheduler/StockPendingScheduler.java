@@ -2,13 +2,17 @@ package com.ssafy.eggmoney.stock.scheduler;
 
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
+import com.ssafy.eggmoney.stock.entity.Stock;
 import com.ssafy.eggmoney.stock.entity.StockPending;
 import com.ssafy.eggmoney.stock.entity.StockUser;
 import com.ssafy.eggmoney.stock.entity.TradeType;
 import com.ssafy.eggmoney.stock.repository.StockPendingRepository;
+import com.ssafy.eggmoney.stock.repository.StockRepository;
 import com.ssafy.eggmoney.stock.repository.StockUserRepository;
 import com.ssafy.eggmoney.stock.service.StockLogService;
 import com.ssafy.eggmoney.stock.service.StockPendingService;
+import com.ssafy.eggmoney.user.entity.User;
+import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -25,39 +30,79 @@ public class StockPendingScheduler {
     private final StockPendingRepository stockPendingRepository;
     private final StockPendingService stockPendingService;
     private final StockUserRepository stockUserRepository;
+    private final UserRepository userRepository;
+    private final StockRepository stockRepository;
     private final StockLogService stockLogService;
     private final AccountService accountService;
 
-    @Scheduled(cron = "0 24 14 * * MON-FRI", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 51 16 * * MON-FRI", zone = "Asia/Seoul")
     @Transactional
     public void executePending() {
         log.info("지정매도 시작: " + LocalDateTime.now());
         List<StockPending> stockPendingSells = stockPendingRepository.findPendingSell();
 
         for (StockPending stockPendingSell : stockPendingSells) {
-            StockUser stockUser = stockUserRepository.findJoinStockByUserIdAndStockId(
+            Optional<StockUser> stockUserOptional = stockUserRepository.findJoinStockByUserIdAndStockId(
                     stockPendingSell.getUser().getId(), stockPendingSell.getStock().getId()
-            ).map(stockUserExist -> {
-                stockUserExist.sellStock(stockPendingSell.getPendingAmount());
-                return stockUserExist;
-            }).orElseThrow(() -> new IllegalArgumentException("팔 수 있는 주식이 존재하지 않습니다."));
-
-            stockLogService.saveStockLog(
-                    stockUser, TradeType.SELL, stockPendingSell.getPendingPrice(),
-                    stockPendingSell.getPendingAmount()
             );
 
-            accountService.updateAccount(
-                    AccountLogType.STOCK, stockPendingSell.getUser().getId(),
-                    stockPendingSell.getPendingPrice() * stockPendingSell.getPendingAmount()
-            );
+            if(stockUserOptional.isPresent()) {
+                StockUser stockUser = stockUserOptional.get();
+                stockUser.sellStock(stockPendingSell.getPendingAmount());
 
-            stockPendingService.deleteStockPending(
-                    stockPendingSell.getId(), stockPendingSell.getUser().getId()
-            );
+                stockLogService.saveStockLog(
+                        stockUser, TradeType.SELL, stockPendingSell.getPendingPrice(),
+                        stockPendingSell.getPendingAmount()
+                );
+
+                accountService.updateAccount(
+                        AccountLogType.STOCK, stockPendingSell.getUser().getId(),
+                        stockPendingSell.getPendingPrice() * stockPendingSell.getPendingAmount()
+                );
+
+                stockPendingService.deleteStockPending(
+                        stockPendingSell.getId(), stockPendingSell.getUser().getId()
+                );
+            } else {
+                log.error("[에러] stockPending" + stockPendingSell.getId() + " 실패");
+            }
         }
 
         log.info("지정매수 시작: " + LocalDateTime.now());
-        
+        List<StockPending> stockPendingBuys = stockPendingRepository.findPendingBuy();
+        for (StockPending stockPendingBuy : stockPendingBuys) {
+            Optional<Stock> stockOptional = stockRepository.findById(stockPendingBuy.getStock().getId());
+            Optional<User> userOptional = userRepository.findById(stockPendingBuy.getUser().getId());
+
+            if (stockOptional.isEmpty() || userOptional.isEmpty()) {
+                log.error("[에러] stockPending" + stockPendingBuy.getId() + " 실패");
+                continue;
+            }
+
+            Stock stock = stockOptional.get();
+            User user = userOptional.get();
+
+            accountService.updateAccount(
+                    AccountLogType.STOCK, user.getId(),
+                    stockPendingBuy.getPendingPrice() * stockPendingBuy.getPendingAmount() * -1
+            );
+
+            StockUser stockUser = stockUserRepository.findByUserIdAndStockId(
+                    user.getId(), stock.getId()
+            ).map(stockUserExist -> {
+                stockUserExist.buyStock(stockPendingBuy.getPendingPrice(), stockPendingBuy.getPendingAmount());
+                return stockUserExist;
+            }).orElseGet(() -> {
+                StockUser newStockUser = new StockUser(user, stock, stockPendingBuy.getPendingPrice(), stockPendingBuy.getPendingAmount());
+                stockUserRepository.save(newStockUser);
+                return newStockUser;
+            });
+
+            stockLogService.saveStockLog(stockUser, TradeType.BUY, stockPendingBuy.getPendingPrice(), stockPendingBuy.getPendingAmount());
+
+            stockPendingService.deleteStockPending(
+                    stockPendingBuy.getId(), stockPendingBuy.getUser().getId()
+            );
+        }
     }
 }
