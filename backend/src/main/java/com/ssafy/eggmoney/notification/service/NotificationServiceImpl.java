@@ -23,12 +23,12 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Transactional
     @Override
-    public void saveNotification(Long userId, NotificationRequest notificationReq) {
+    public void saveNotification(Long sendUserId, NotificationRequest notificationReq) {
         User receiveUser;
         User sendUser = null;
 
-        if(userId != null) {
-            sendUser = userRepository.findJoinFamilyById(userId)
+        if(sendUserId != null) {
+            sendUser = userRepository.findJoinFamilyById(sendUserId)
                     .orElseThrow(() -> new NoSuchElementException("[알림] 해당 유저를 찾을 수 없습니다."));
             if(sendUser.getRole().equals("부모")) {
                 receiveUser = userRepository.findById(notificationReq.getReceiveUser())
