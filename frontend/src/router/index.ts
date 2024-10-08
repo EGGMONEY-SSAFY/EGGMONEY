@@ -50,6 +50,8 @@ import FinPinPadView from "@/views/Fin/FinPinPadView.vue"
 import FinLoanJudgeView from "@/views/Fin/FinLoanJudgeView.vue"
 import FinSuccessView from "@/views/Fin/FinSuccessView.vue"
 import FinSuccessLoanView from "@/views/Fin/FinSuccessLoanView.vue"
+import ErrorView from "@/views/Fin/ErrorView.vue"
+
 const AssetView = defineAsyncComponent(() => import("@/views/Asset/AssetView.vue"))
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -57,6 +59,11 @@ const router = createRouter({
     {
       path: "/",
       redirect: "/asset",
+    },
+    {
+      path:"/error",
+      name:"ErrorView",
+      component: ErrorView,
     },
     {
       path: "/main",
