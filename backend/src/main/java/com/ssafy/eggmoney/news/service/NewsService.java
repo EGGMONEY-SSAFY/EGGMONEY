@@ -13,6 +13,6 @@ public interface NewsService {
     String crawlNewsContent(String newsUrl);
     SummarizedContentResponse summarizeNews(String newsContent);
     void saveAllNews(List<News> newsList);
-    List<NewsTitlesResponse> findNewsTitles();
+    List<NewsTitlesResponse> findNewsTitles(long page);
     NewsReponse findNewsById(Long id);
 }
