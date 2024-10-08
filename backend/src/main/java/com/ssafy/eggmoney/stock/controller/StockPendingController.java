@@ -20,7 +20,7 @@ public class StockPendingController {
     private final StockUserService stockUserService;
 
     @PostMapping("/stock/pending/buy")
-    public ResponseEntity<Integer> buyPending(@RequestBody PendingTradeRequest pendingReq,
+    public ResponseEntity<Void> buyPending(@RequestBody PendingTradeRequest pendingReq,
                                               @RequestHeader("Authorization") String token) {
         Object investablePriceObj = stockUserService.findInvestablePrice(1L).get("investablePrice");
         Object balanceObj = stockUserService.findInvestablePrice(1L).get("balance");
@@ -36,7 +36,7 @@ public class StockPendingController {
 
             stockPendingService.saveStockPending(pendingReq, TradeType.BUY, 1L);
 
-            return new ResponseEntity<>(investablePrice - pendingPrice, HttpStatus.OK);
+            return ResponseEntity.ok().build();
         } else {
             throw new IllegalStateException("투자 가능 금액을 찾을 수 없습니다.");
         }

@@ -30,7 +30,6 @@ onMounted(async () => {
   <div>
     <NavBarTab />
     <BoxUserInfo />
-    <div class="text-center">총 주식 금액 100 알</div>
     <HeldStocksChart />
     <div v-if="stockList">
       <div v-for="stock in stockList" :key="stock.stockItem">

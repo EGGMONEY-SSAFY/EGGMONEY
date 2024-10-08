@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from "chart.js"
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors, Title } from "chart.js"
 import { Doughnut } from "vue-chartjs"
 import { useStockStore } from "@/stores/stock.js"
 import { onMounted, ref } from "vue"
@@ -11,6 +11,7 @@ const data1 = ref()
 const options = ref()
 onMounted(async () => {
   data1.value = await stockStore.getChartData()
+  stockStore.setTotalStockValue(data1.value.totalPrice)
   data1.value.prices.shift()
   data.value = {
     labels: [
@@ -39,12 +40,7 @@ onMounted(async () => {
     maintainAspectRatio: false,
     hoverOffset: 20,
     borderDashOffset: 10,
-    plugins: {
-      title: {
-        display: true,
-        text: `a`,
-      },
-    },
+    plugins: {},
   }
 })
 
