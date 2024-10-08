@@ -98,7 +98,7 @@ public class StockUserServiceImpl implements StockUserService {
 
     @Transactional
     @Override
-    public StockUserResponse buyStock(StockBuyRequest stockBuyReq, Long userId) {
+    public void buyStock(StockBuyRequest stockBuyReq, Long userId) {
         Stock stock = stockRepository.findById(stockBuyReq.getStockId())
                 .orElseThrow(() -> new NoSuchElementException("해당 주식을 찾을 수 없습니다."));
         User user = userRepository.findById(userId)
@@ -121,16 +121,12 @@ public class StockUserServiceImpl implements StockUserService {
                 });
 
         stockLogService.saveStockLog(stockUser, TradeType.BUY, stock.getCurrentPrice(), stockBuyReq.getAmount());
-
-        return new StockUserResponse(stockUser.getBuyAverage(), stockUser.getAmount(), stock.getCurrentPrice());
     }
 
     @Transactional
     @Override
-    public StockUserResponse sellStock(StockSellRequest stockSellReq, Long userId) {
-        int pendingSellAmount = stockPendingService.findPendingSellAmount(userId, stockSellReq.getStockId());
-
-
+    public void sellStock(StockSellRequest stockSellReq, Long userId) {
+        int pendingSellAmount = stockPendingService.findIndividualPendingAmount(userId, stockSellReq.getStockId(), TradeType.SELL);
 
         StockUser stockUser = stockUserRepository.findJoinStockByUserIdAndStockId(
                 userId, stockSellReq.getStockId()
@@ -142,7 +138,6 @@ public class StockUserServiceImpl implements StockUserService {
                     return stockUserExist;
                 }).orElseThrow(() -> new IllegalArgumentException("팔 수 있는 주식이 존재하지 않습니다."));
 
-
         stockLogService.saveStockLog(
                 stockUser, TradeType.SELL, stockUser.getStock().getCurrentPrice(), stockSellReq.getAmount()
         );
@@ -151,22 +146,19 @@ public class StockUserServiceImpl implements StockUserService {
                 AccountLogType.STOCK, userId,
                 stockSellReq.getAmount() * stockUser.getStock().getCurrentPrice()
         );
-
-        if (stockUser.getAmount() == 0) {
-            return new StockUserResponse();
-        } else {
-            return new StockUserResponse(
-                    stockUser.getBuyAverage(), stockUser.getAmount(), stockUser.getStock().getCurrentPrice()
-            );
-        }
     }
 
     @Override
     public StockUserResponse findStockUserInfo(Long stockId, Long userId) {
+        int pendingBuyAmount = stockPendingService.findIndividualPendingAmount(userId, stockId, TradeType.BUY);
+        int pendingBuyPrice = stockPendingService.findIndividualPendingPrice(userId, stockId, TradeType.BUY);
+        int pendingSellAmount = stockPendingService.findIndividualPendingAmount(userId, stockId, TradeType.SELL);
+        int pendingSellPrice = stockPendingService.findIndividualPendingPrice(userId, stockId, TradeType.SELL);
         return stockUserRepository.findJoinStockByUserIdAndStockId(
                 userId, stockId
                 ).map(stockUser -> new StockUserResponse(
-                        stockUser.getBuyAverage(), stockUser.getAmount(), stockUser.getStock().getCurrentPrice()
+                        stockUser.getBuyAverage(), stockUser.getAmount(), stockUser.getStock().getCurrentPrice(),
+                        pendingBuyAmount,pendingBuyPrice, pendingSellAmount, pendingSellPrice
                 )).orElseGet(StockUserResponse::new);
     }
 }

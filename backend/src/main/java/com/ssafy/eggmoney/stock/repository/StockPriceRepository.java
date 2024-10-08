@@ -13,6 +13,6 @@ public interface StockPriceRepository extends JpaRepository<StockPrice, Long> {
     @Query("select sp from StockPrice sp left join fetch sp.stock s")
     List<StockPrice> findJoinStock(Pageable pageable);
 
-    @Query("select sp from StockPrice sp where sp.stock.id = :stockId and sp.createdAt > :date")
+    @Query("select sp from StockPrice sp where sp.stock.id = :stockId and sp.createdAt > :date order by sp.createdAt")
     List<StockPrice> findByStockIdAndDate(@Param("stockId") Long stockId, @Param("date") LocalDateTime date);
 }

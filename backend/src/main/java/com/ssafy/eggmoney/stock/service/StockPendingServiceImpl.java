@@ -52,8 +52,8 @@ public class StockPendingServiceImpl implements StockPendingService {
     }
 
     @Override
-    public int findPendingSellAmount(Long userId, Long stockId) {
-        List<StockPending> stockPendings = stockPendingRepository.findByUserIdAndStockIdAndTradeType(userId, stockId, TradeType.SELL);
+    public int findIndividualPendingAmount(Long userId, Long stockId, TradeType tradeType) {
+        List<StockPending> stockPendings = stockPendingRepository.findByUserIdAndStockIdAndTradeType(userId, stockId, tradeType);
 
         int pendigAmounts = 0;
         for(StockPending stockPending : stockPendings) {
@@ -64,8 +64,20 @@ public class StockPendingServiceImpl implements StockPendingService {
     }
 
     @Override
+    public int findIndividualPendingPrice(Long userId, Long stockId, TradeType tradeType) {
+        List<StockPending> stockPendings = stockPendingRepository.findByUserIdAndStockIdAndTradeType(userId, stockId, tradeType);
+
+        int pendigPrices = 0;
+        for(StockPending stockPending : stockPendings) {
+            pendigPrices += stockPending.getPendingPrice();
+        }
+
+        return pendigPrices;
+    }
+
+    @Override
     public List<StockPendingResponse> findPendingLog(Long userId) {
-        List<StockPending> stockPendings = stockPendingRepository.findByUserId(userId);
+        List<StockPending> stockPendings = stockPendingRepository.findByUserIdOrderByCreatedAtDesc(userId);
 
         if(stockPendings.isEmpty()) {
             throw new NoSuchElementException("지정 거래 예약을 찾을 수 없습니다.");

@@ -51,18 +51,18 @@ const matchingStock = computed(() => {
 
 <template>
   <div class="flex flex-col gap-2 m-4 bg-white rounded-lg shadow">
-    <div class="mx-4 mt-4">
+    <div class="mx-6 mt-4">
       <span>현재 잔액 : </span>
       <span class="font-bold">{{ myStockB }} 알</span>
     </div>
-    <div class="mx-4">
+    <div class="mx-6">
       <span>투자 가능 금액 : </span>
       <span class="font-bold">{{ myStockI }} 알</span>
     </div>
-    <div class="mx-4 mb-4">
+    <div class="mx-6 mb-4">
       <span>{{ nameMap[name] }} 가격 : </span>
       <div v-if="matchingStock" class="inline">
-        <span class="font-bold">{{ matchingStock.price }} 알</span>
+        <span class="font-bold">{{ matchingStock.price.toLocaleString() }} 알</span>
       </div>
     </div>
   </div>
