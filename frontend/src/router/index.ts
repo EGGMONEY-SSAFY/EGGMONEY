@@ -43,6 +43,7 @@ import AssetWithdrawalView from "@/views/Asset/AssetWithdrawalView.vue"
 import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import StockRateView from "@/views/All/StockRateView.vue"
 import event from "@/views/All/event.vue"
+import game from "@/views/All/game.vue"
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from "@/stores/user"
 import { defineAsyncComponent } from "vue"
@@ -52,7 +53,7 @@ import FinSuccessView from "@/views/Fin/FinSuccessView.vue"
 import FinSuccessLoanView from "@/views/Fin/FinSuccessLoanView.vue"
 import ErrorView from "@/views/Fin/ErrorView.vue"
 import NotificiationView from "@/views/Notification/NotificiationView.vue"
-import ReviewPage from '@/views/All/ReviewPage.vue';
+import ReviewPage from "@/views/All/ReviewPage.vue"
 
 const AssetView = defineAsyncComponent(() => import("@/views/Asset/AssetView.vue"))
 const router = createRouter({
@@ -63,13 +64,13 @@ const router = createRouter({
       redirect: "/asset",
     },
     {
-      path:"/error",
-      name:"ErrorView",
+      path: "/error",
+      name: "ErrorView",
       component: ErrorView,
     },
     {
-      path: '/review',
-      name: 'Review',
+      path: "/review",
+      name: "Review",
       component: ReviewPage, // Add a route for ReviewPage
     },
     {
@@ -266,6 +267,11 @@ const router = createRouter({
       path: "/event",
       name: "event",
       component: event,
+    },
+    {
+      path: "/game",
+      name: "game",
+      component: game,
     },
     {
       path: "/stock/detail/:stockName",
