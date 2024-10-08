@@ -31,14 +31,14 @@ public class NotificationServiceImpl implements NotificationService {
             sendUser = userRepository.findJoinFamilyById(sendUserId)
                     .orElseThrow(() -> new NoSuchElementException("[알림] 해당 유저를 찾을 수 없습니다."));
             if(sendUser.getRole().equals("부모")) {
-                receiveUser = userRepository.findById(notificationReq.getReceiveUser())
+                receiveUser = userRepository.findById(notificationReq.getReceiveUserId())
                         .orElseThrow(() -> new NoSuchElementException("[알림] 해당 유저를 찾을 수 없습니다."));
             } else {
                 receiveUser = userRepository.findById(sendUser.getFamily().getPresentId())
                         .orElseThrow(() -> new NoSuchElementException("[알림] 해당 유저를 찾을 수 없습니다."));
             }
         } else {
-            receiveUser = userRepository.findById(notificationReq.getReceiveUser())
+            receiveUser = userRepository.findById(notificationReq.getReceiveUserId())
                     .orElseThrow(() -> new NoSuchElementException("[알림] 해당 유저를 찾을 수 없습니다."));
         }
 
