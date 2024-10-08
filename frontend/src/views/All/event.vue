@@ -8,9 +8,7 @@
         <div class="text-lg mb-4">{{ currentQuestion.content }}</div>
 
         <div>
-          <p class="flex items-center">
-            <IconAllalarm class="size-6 mr-2 text-lg" /> Time limit
-          </p>
+          <p class="flex items-center"><IconAllalarm class="size-6 mr-2 text-lg" /> Time limit</p>
           <div class="w-full bg-gray-300 rounded-full h-2 mb-4">
             <div class="bg-teal-500 h-2 rounded-full" :style="{ width: timerBarWidth }"></div>
           </div>
@@ -58,153 +56,146 @@
           당신의 점수는 <span class="text-red-500 text-2xl font-bold">{{ score }}</span> 점입니다
         </p>
         <button
-            id="restart-btn"
-            @click="restartQuiz"
-            class="mr-2 px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
-          >
-            다시시작
-          </button>
-          <button
-            id="review-btn"
-            @click="reviewIncorrectAnswers"
-            class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-          >
-            오답하기
-          </button>
+          id="review-btn"
+          @click="reviewIncorrectAnswers"
+          class="mr-2 px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600"
+        >
+          공부하기
+        </button>
+
+        <button
+          id="restart-btn"
+          @click="restartQuiz"
+          class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+        >
+          다시시작
+        </button>
 
         <p class="mb-8"></p>
-          <!-- 모달창 -->
-    <div
-      v-if="showModal"
-      class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
-    >
-      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-        <h2 class="text-2xl font-bold mb-4 text-blue-600">오답 보기</h2>
-        <ul>
-          <li
-            v-for="(question, index) in incorrectAnswers"
-            :key="index"
-            class="mb-4"
-          >
-            <p class="font-bold mb-2">Q{{ question.index + 1 }}. {{ question.content }}</p>
-            <p class="text-green-600">{{ question.answer }}</p>
-          </li>
-        </ul>
-        <button
-          class="mt-4 px-4 py-2 text-white bg-green-500 rounded hover:bg-blue-600"
-          @click="showModal = false"
+        <!-- 모달창 -->
+        <div
+          v-if="showModal"
+          class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50"
         >
-          닫기
-        </button>
+          <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+            <h2 class="text-2xl font-bold mb-8 text-green-600">공부하기 🐇❣️</h2>
+            <ul>
+              <li v-for="(question, index) in incorrectAnswers" :key="index" class="mb-4">
+                <p class="font-bold mb-2">Q{{ question.index + 1 }}. {{ question.content }}</p>
+                <p class="text-orange-600">➝ {{ question.answer }}</p>
+              </li>
+            </ul>
+            <button
+              class="mt-4 px-4 py-2 text-white bg-green-500 rounded hover:bg-orange-600"
+              @click="showModal = false"
+            >
+              닫기
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-import { useRouter } from "vue-router"; // Import useRouter for navigation
-import IconAllalarm from "@/components/icons/IconAllalarm.vue";
-import { useVariableStore } from "@/stores/variable";
-import axios from "axios";
-import { useAuthStore } from "@/stores/auth";
-import { useAssetStore } from "@/stores/asset";
+import { ref, computed, onMounted } from "vue"
+import { useRouter } from "vue-router" // Import useRouter for navigation
+import IconAllalarm from "@/components/icons/IconAllalarm.vue"
+import { useVariableStore } from "@/stores/variable"
+import axios from "axios"
+import { useAuthStore } from "@/stores/auth"
+import { useAssetStore } from "@/stores/asset"
 
-const store = useVariableStore();
-store.setTitle("경제용어 퀴즈");
+const store = useVariableStore()
+store.setTitle("경제용어 퀴즈")
 
 interface Question {
-  createdAt: string;
-  updatedAt: string;
-  id: number;
-  content: string;
-  select1: string;
-  select2: string;
-  select3: string;
-  select4: string;
-  answer: string;
-  index: number;
+  createdAt: string
+  updatedAt: string
+  id: number
+  content: string
+  select1: string
+  select2: string
+  select3: string
+  select4: string
+  answer: string
+  index: number
 }
 
-const questions = ref<Question[]>([]);
-const currentQuestionIndex = ref(0);
-const score = ref(0);
-const showResult = ref(false);
-const timer = ref<ReturnType<typeof setInterval> | null>(null);
-const timeLimit = 10;
-const timeLeft = ref(timeLimit);
-const timerBarWidth = computed(() => `${(timeLeft.value / timeLimit) * 100}%`);
-const selectedAnswers = ref<string[]>([]); 
-const currentQuestion = computed(() => questions.value[currentQuestionIndex.value]);
-const authStore = useAuthStore();
-const token = authStore.accessToken;
-
-
+const questions = ref<Question[]>([])
+const currentQuestionIndex = ref(0)
+const score = ref(0)
+const showResult = ref(false)
+const timer = ref<ReturnType<typeof setInterval> | null>(null)
+const timeLimit = 10
+const timeLeft = ref(timeLimit)
+const timerBarWidth = computed(() => `${(timeLeft.value / timeLimit) * 100}%`)
+const selectedAnswers = ref<string[]>([])
+const currentQuestion = computed(() => questions.value[currentQuestionIndex.value])
+const authStore = useAuthStore()
+const token = authStore.accessToken
 
 const resultMessage = computed(() => {
-  if (score.value <= 1) return "우리 함께 공부해요 😊";
-  if (score.value <= 2) return "금융에 대해 배우셨군요 🥰";
-  return "와우 ! 아주 멋져요 😆❤️";
-});
+  if (score.value <= 1) return "우리 함께 공부해요 😊"
+  if (score.value <= 2) return "금융에 대해 배우셨군요 🥰"
+  return "와우 ! 아주 멋져요 😆❤️"
+})
 
 const clearTimer = () => {
   if (timer.value !== null) {
-    clearInterval(timer.value);
-    timer.value = null;
+    clearInterval(timer.value)
+    timer.value = null
   }
-};
+}
 
 const startTimer = () => {
-  timeLeft.value = timeLimit;
-  clearTimer();
+  timeLeft.value = timeLimit
+  clearTimer()
   timer.value = setInterval(() => {
-    timeLeft.value--;
+    timeLeft.value--
     if (timeLeft.value <= 0) {
-      clearTimer();
-      nextQuestion();
+      clearTimer()
+      nextQuestion()
     }
-  }, 1000);
-};
+  }, 1000)
+}
 
 const assetStore = useAssetStore()
 
 const selectOption = (selectedOption: string) => {
-  selectedAnswers.value[currentQuestionIndex.value] = selectedOption; // 선택한 답 저장
+  selectedAnswers.value[currentQuestionIndex.value] = selectedOption // 선택한 답 저장
   if (selectedOption === currentQuestion.value.answer) {
     // 퀴즈 로그 생성 : 정답
     assetStore.sendQuizJudge(currentQuestion.value.id, 1)
-    score.value++;
-  }    
-  else{
+    score.value++
+  } else {
     // 퀴즈 로그 생성 : 오답
     assetStore.sendQuizJudge(currentQuestion.value.id, 0)
   }
-  clearTimer();
+  clearTimer()
   if (currentQuestionIndex.value < questions.value.length - 1) {
-    nextQuestion();
+    nextQuestion()
   } else {
-    showResult.value = true;
+    showResult.value = true
   }
-  
-};
+}
 
 const nextQuestion = () => {
   if (currentQuestionIndex.value < questions.value.length - 1) {
-    currentQuestionIndex.value++;
-    startTimer();
+    currentQuestionIndex.value++
+    startTimer()
   } else {
-    showResult.value = true;
+    showResult.value = true
   }
-};
+}
 
 const restartQuiz = () => {
-  currentQuestionIndex.value = 0;
-  score.value = 0;
-  showResult.value = false;
-  startTimer();
-};
+  currentQuestionIndex.value = 0
+  score.value = 0
+  showResult.value = false
+  startTimer()
+}
 
 const fetchQuestions = async () => {
   try {
@@ -212,17 +203,17 @@ const fetchQuestions = async () => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    });
-    questions.value = response.data;
+    })
+    questions.value = response.data
   } catch (error) {
-    console.error("Error fetching quiz data:", error);
+    console.error("Error fetching quiz data:", error)
   }
-};
+}
 
-const router = useRouter(); // Create a router instance
+const router = useRouter() // Create a router instance
 
-const showModal = ref(false); // 모달 열림 상태
-const incorrectAnswers = ref<Question[]>([]); // 오답 저장
+const showModal = ref(false) // 모달 열림 상태
+const incorrectAnswers = ref<Question[]>([]) // 오답 저장
 
 // 오답을 필터링하여 모달에 표시
 
@@ -233,17 +224,15 @@ const reviewIncorrectAnswers = () => {
       index, // This adds the index to each question object
     }))
     .filter((question, index) => {
-      return question.answer !== selectedAnswers.value[index]; // Filter incorrect answers
-    });
-  showModal.value = true; // Show the modal
-};
-
-
+      return question.answer !== selectedAnswers.value[index] // Filter incorrect answers
+    })
+  showModal.value = true // Show the modal
+}
 
 onMounted(() => {
-  fetchQuestions(); // Fetch quiz questions on component mount
-  startTimer();
-});
+  fetchQuestions() // Fetch quiz questions on component mount
+  startTimer()
+})
 </script>
 
 <style scoped>
