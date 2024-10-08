@@ -70,6 +70,8 @@ interface Question {
   answer: number
 }
 
+// sssss
+
 const questions: Question[] = [
   {
     question: "금리가 오르면 어떤 일이 발생할 가능성이 높은가?",
