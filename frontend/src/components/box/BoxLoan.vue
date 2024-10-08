@@ -51,14 +51,14 @@ const formatExpireDate = (expireDate?: string) => {
     <div class="pb-4">
       <div class="flex justify-between m-3 text-sm">
         <h1
-          class="p-2 px-3 font-semibold text-center text-white bg-main-color rounded-xl text-wrap"
+          class="p-2 px-3 font-semibold text-center text-main-color border-main-color border-2 rounded-xl text-wrap"
           role="button"
           tabindex="0"
         >
           대출
         </h1>
         <button
-          class="my-auto text-base font-semibold text-main-color"
+          class="my-auto text-base font-semibold text-white bg-main-color px-5 py-2 rounded-xl"
           @click="goLoanDetail"
           v-if="props.loan"
         >
@@ -81,7 +81,7 @@ const formatExpireDate = (expireDate?: string) => {
       </div>
       <div
         class="flex justify-around px-5 mt-8 text-justify"
-        v-if="userStore.user?.role !== '자녀'"
+        v-if="userStore.user?.role !== '부모'"
       >
         <!-- <button class="px-5 py-2 font-semibold text-white bg-red-500 rounded-xl">해지하기</button> -->
         <button
