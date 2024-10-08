@@ -14,5 +14,6 @@ public class GetFamilyResponseDto {
     Long presentId;
     String intro;
     String qrcode;
+    String profileImageUrl;
     List<GetUserResponseDto> members;
 }

@@ -109,7 +109,7 @@ const familyDescription = ref("")
 const imageBase64 = ref<string>("")
 const fileInput = ref<HTMLInputElement | null>(null)
 const router = useRouter()
-
+const token = authStore.accessToken
 // 파일 업로드 트리거
 function triggerFileUpload() {
   fileInput.value?.click()
@@ -142,31 +142,50 @@ function closeModal() {
 
 // 가족 생성 처리
 async function createFamily() {
-  // if (!imageBase64.value || !familyDescription.value) {
-  //   alert("이미지와 가족 소개를 입력해주세요.");
-  //   return;
-  // }
+ const file = fileInput.value?.files?.[0];
+ let imageUrl = "";
 
-  const familyData = {
-    intro: familyDescription.value,
-    // familyImage: imageBase64.value,
-  }
-  const token = authStore.accessToken
-  try {
-    console.log(token)
-    await axios.post("http://localhost:8080/api/v1/family/create", familyData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+ if(file){
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try{
+    const response = await axios.post("/api/v1/family//upload-profile", formData,{
+      headers:{
+        "Content-Type":"multipart/form-data",
+        Authorization:`Bearer ${token}`
       },
-    })
-    //alert("가족 생성 완료!");
-    showModal.value = false
-    router.push("/family/create")
-  } catch (error) {
-    console.error("가족 생성 오류:", error)
-    alert("가족 생성에 실패했습니다.")
+    });
+    imageUrl = response.data.imageUrl;
+  }catch(error){
+    console.error("이미지 업로드 실패", error);
+      alert("이미지 업로드 실패");
+      return; 
+    }
   }
+ 
+ const familyData = {
+  intro: familyDescription.value,
+  profileImageUrl: imageUrl || null,
+ }
+ console.log(familyData)
+ try{
+  await axios.post("/api/v1/family/create", familyData,{
+    headers:{
+      Authorization:`Bearer ${token}`,
+      "Content-Type":"application/json"
+    },
+  });
+  alert("가족 생성 완료!");
+  showModal.value = false;
+  router.push("/family/create");
+ } catch(error:any){
+  if (error.response && error.response.status === 400) {
+      alert("이미 가족이 존재합니다.");
+    } else {
+      alert("가족 생성 중 오류가 발생했습니다.");
+    }
+ }
 }
 
 // 페이지 이동 함수들
@@ -186,3 +205,31 @@ onMounted(() => varStore.setTitle("가족 관리"))
 </script>
 
 <style scoped></style>
+<!--  // if (!imageBase64.value || !familyDescription.value) {
+  //   alert("이미지와 가족 소개를 입력해주세요.");
+  //   return;
+  // }
+
+  const familyData = {
+    intro: familyDescription.value,
+    // familyImage: imageBase64.value,
+  }
+  
+  try {
+    console.log(token)
+    await axios.post("/api/v1/family/create", familyData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+    //alert("가족 생성 완료!");
+    showModal.value = false
+    router.push("/family/create")
+  } catch (error:any) {
+    if (error.response && error.response.status === 400) {
+        alert("이미 가족이 존재합니다.");
+    } else {
+        alert("가족 생성 중 오류가 발생했습니다.");
+    }
+  } -->

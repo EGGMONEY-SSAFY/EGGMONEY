@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class CreateFamilyRequestDto {
     String intro;
     String qrCode;
+    String profileImageUrl;
     Long presentId;
 }
