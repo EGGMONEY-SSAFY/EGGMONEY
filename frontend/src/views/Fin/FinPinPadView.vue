@@ -37,7 +37,6 @@ const handleSuccess = () => {
     finStore.postUserLoan()
   } else if (previousRoute?.toString().includes("loan") && userStore.user?.role === "부모") {
     finStore.sendfinLoanJudge()
-
   }
   console.log("비밀번호 검증 성공")
 }
@@ -60,7 +59,7 @@ const handleFail = () => {
 }
 </script>
 <template>
-  <div class="mt-16">
+  <div class="fixed inset-0 z-20">
     <SimplePinPadComponent
       @pin-success="handleSuccess"
       @pinFail="handleFail"
@@ -70,7 +69,7 @@ const handleFail = () => {
     v-if="showFailModal"
     class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75"
   >
-    <div class="bg-white rounded-lg p-6 max-w-sm text-center">
+    <div class="max-w-sm p-6 text-center bg-white rounded-lg">
       <p class="text-lg font-semibold text-gray-900">비밀번호 인증 실패</p>
       <p>{{ remainingTime }}초 후 비밀번호 재설정 페이지로 이동합니다.</p>
     </div>

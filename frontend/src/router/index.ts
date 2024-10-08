@@ -61,8 +61,8 @@ const router = createRouter({
       redirect: "/asset",
     },
     {
-      path:"/error",
-      name:"ErrorView",
+      path: "/error",
+      name: "ErrorView",
       component: ErrorView,
     },
     {

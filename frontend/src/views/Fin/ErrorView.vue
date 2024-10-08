@@ -10,10 +10,9 @@ const remainingTime = ref(10)
 let countInterval: number | null = null
 
 onMounted(() => {
-
-if(countInterval){
-  clearInterval(countInterval)
-}
+  if (countInterval) {
+    clearInterval(countInterval)
+  }
   countInterval = window.setInterval(() => {
     remainingTime.value--
   }, 1000)
@@ -27,10 +26,10 @@ watch(remainingTime, (newValue) => {
 
 onUnmounted(() => {
   if (countInterval) {
-    clearInterval(countInterval);
-    countInterval = null;
+    clearInterval(countInterval)
+    countInterval = null
   }
-});
+})
 </script>
 <template>
   <div class="flex flex-col items-center justify-start mb-4 text-center mt-52">
@@ -38,6 +37,6 @@ onUnmounted(() => {
       {{ remainingTime }}초 후에 홈으로 이동합니다
     </div>
     <img class="w-3/4 mx-4" src="@/assets/fin/No.png" alt="" />
-    <div class="text-xl font-bold text-red-500 mt-4"> ※ {{ finStore.errMessage }} ※ </div>
+    <div class="text-xl font-bold text-red-500 mt-4">※ {{ finStore.errMessage }} ※</div>
   </div>
 </template>
