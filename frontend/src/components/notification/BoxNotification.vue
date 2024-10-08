@@ -9,13 +9,15 @@ import StockPutIcon from "@/assets/notification/주식 매도.png"
 import ModalNotification from "./ModalNotification.vue"
 import { ref } from "vue"
 
-const showNoti=ref(false)
-const Icons =[RemindIcon,RejectIcon,ApproveIcon,MoneyIcon,StockCallIcon,StockPutIcon]
-const dicicons: Record<string,number> = {"전체":0,"대출":1,"예금":2,"적금":3}
-const props= defineProps({noti:{
-  type: Object,
-    required: true
-}})
+const showNoti = ref(false)
+const Icons = [RemindIcon, RejectIcon, ApproveIcon, MoneyIcon, StockCallIcon, StockPutIcon]
+const dicicons: Record<string, number> = { 전체: 0, 대출: 1, 예금: 2, 적금: 3 }
+const props = defineProps({
+  noti: {
+    type: Object,
+    required: true,
+  },
+})
 // interface UserNotificiation{
 //   userid: number;
 //   sendUserid: number;
@@ -23,27 +25,30 @@ const props= defineProps({noti:{
 //   message: string;
 //   isRead?: boolean;
 // }
-const showModal =()=>{
-  showNoti.value=true
+const showModal = () => {
+  showNoti.value = true
 }
 const closeModal = () => {
-  showNoti.value = false;
+  showNoti.value = false
 }
 </script>
 
 <template>
-  <div @click="showModal" class="flex justify-between items-center p-4 bg-white rounded-lg shadow-md mb-4 cursor-pointer">
+  <div
+    @click="showModal"
+    class="flex justify-between items-center p-4 bg-white rounded-lg shadow-md mb-4 cursor-pointer"
+  >
     <div class="flex items-center space-x-4">
       <!-- 알림 타입에 맞는 아이콘 표시 -->
-      <img :src="Icons[dicicons[noti.notificationType]]" alt="" class="w-12 h-12">
+      <img :src="Icons[dicicons[noti.notificationType]]" alt="" class="w-12 h-12" />
       <div>
         <h2 class="text-lg font-bold">{{ noti.notificationType }}</h2>
         <p class="text-gray-600">{{ noti.message }}</p>
       </div>
     </div>
-    <IconRightArrow class="w-6 h-6 text-gray-400"/>
+    <IconRightArrow class="w-6 h-6 text-gray-400" />
   </div>
 
-   <!-- 모달 컴포넌트를 표시 -->
-   <ModalNotification v-if="showNoti" :noti="noti" @close="closeModal" />
+  <!-- 모달 컴포넌트를 표시 -->
+  <ModalNotification v-if="showNoti" :noti="noti" @close="closeModal" />
 </template>

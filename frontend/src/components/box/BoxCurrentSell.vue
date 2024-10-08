@@ -133,7 +133,7 @@ const handleSell = async () => {
       v-if="isModalOpen"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
     >
-      <div class="w-1/3 p-6 bg-white rounded-lg shadow-lg">
+      <div class="p-6 bg-white rounded-lg shadow-lg">
         <h2 class="mb-4 text-2xl font-semibold text-center">현재가 매도</h2>
         <div class="flex justify-between">
           <p class="m-4">매도 수량</p>
