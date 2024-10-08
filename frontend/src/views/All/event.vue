@@ -197,7 +197,6 @@ const nextQuestion = () => {
   } else {
     showResult.value = true;
   }
-  assetStore.sendQuizJudge(currentQuestion.value.id, 0)
 };
 
 const restartQuiz = () => {
