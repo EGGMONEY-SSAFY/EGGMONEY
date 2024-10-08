@@ -74,22 +74,22 @@ public class StockUserServiceImpl implements StockUserService {
     @Override
     public Map<String, Object> findUserStocks(Long userId) {
         Map<String, Object> response = new HashMap<>();
+        List<Long> stockIds = new ArrayList<>();
+        List<Integer> prices = new ArrayList<>();
         int totalPrice = 0;
-        int[] prices = new int[14];
 
         List<StockUser> stockUsers = stockUserRepository.findJoinStockByUserIdOrderByStockId(userId);
-        long stockCount = stockRepository.count();
 
-        for(int i = 1; i <= stockCount; i++) {
-            for(StockUser stockUser : stockUsers) {
-                if(i == stockUser.getStock().getId()) {
-                    int price = stockUser.getStock().getCurrentPrice() * stockUser.getAmount();
-                    prices[i] = price;
-                    totalPrice += price;
-                }
+        for(StockUser stockUser : stockUsers) {
+            if(stockUser.getAmount() != 0) {
+                int price = stockUser.getStock().getCurrentPrice() * stockUser.getAmount();
+                stockIds.add(stockUser.getStock().getId());
+                prices.add(price);
+                totalPrice += price;
             }
         }
 
+        response.put("labels", stockIds);
         response.put("prices", prices);
         response.put("totalPrice", totalPrice);
 
