@@ -1,28 +1,28 @@
 <template>
   <!-- 만들 때 -->
   <div class="flex flex-col items-center justify-center">
-    <div v-if="step != 2">
-      <div class="text-center m-8 text-lg font-bold text-gray-700">
+    <div v-if="step != 2" class="h-screen bg-white">
+      <div class="m-8 text-lg font-bold text-center text-gray-700">
         {{ instructionMessage }}
       </div>
 
       <!-- 비밀번호 입력 표시 -->
-      <div class="flex gap-3 m-8 justify-center items-center">
+      <div class="flex items-center justify-center gap-3 m-8">
         <div
           v-for="(digit, index) in 6"
           :key="index"
-          class="w-10 h-10 border border-gray-300 rounded bg-white flex items-center justify-center text-xl font-bold shadow-md"
+          class="flex items-center justify-center w-10 h-10 text-xl font-bold bg-white border border-gray-300 rounded shadow-md"
         >
           {{ (step === 1 ? firstInput[index] : secondInput[index]) !== undefined ? "*" : "" }}
         </div>
       </div>
 
       <!-- 틀린 횟수 표시 -->
-      <div class="text-red-500 text-lg text-center font-bold" v-if="failCount > 0">
+      <div class="text-lg font-bold text-center text-red-500" v-if="failCount > 0">
         틀린 횟수: {{ failCount }} / 5
       </div>
       <!-- 이미지 및 핀 패드 -->
-      <div :class="{ 'bg-yellow-50': finStore.isYellowPage, 'bg-white': !finStore.isYellowPage }">
+      <div>
         <div
           v-if="pinPadImage"
           class="bg-no-repeat h-[393px] w-[393px]"
@@ -32,7 +32,7 @@
             <button
               v-for="index in numbers"
               :key="index"
-              class="border rounded-md shadow-md size-16 m-4"
+              class="m-4 border rounded-md shadow-md size-16"
               :class="{ 'bg-white': clickedButton === index || randomButton === index }"
               @click="onButtonClick(index)"
             ></button>
@@ -52,7 +52,9 @@ import JSEncrypt from "jsencrypt"
 import CryptoJS from "crypto-js"
 import { useVariableStore } from "@/stores/variable"
 import { useFinStore } from "@/stores/fin"
+import { useRouter } from "vue-router"
 const finStore = useFinStore()
+const router = useRouter()
 const store = useVariableStore()
 store.setTitle("간편 비밀번호")
 
@@ -206,7 +208,8 @@ const sendToBackend = async (encryptedPin: string) => {
     console.error(error)
     instructionMessage.value = "비밀번호 검증 오류입니다. 다시 시도해주세요."
     resetInput()
-    emit("pinFail")
+    router.push("/login")
+    // emit("pinFail")
   }
 }
 
@@ -230,7 +233,7 @@ onMounted(() => {
   <button
     v-for="(number, index) in numbers"
     :key="index"
-    class=" border border-gray-400 rounded-md shadow-md bg-white"
+    class="bg-white border border-gray-400 rounded-md shadow-md "
     :class="{'bg-white': clickedButton === index || randomButton === index }"
     :style="buttonStyle(index)"
     @click="onButtonClick(index)"

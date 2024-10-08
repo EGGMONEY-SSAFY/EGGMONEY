@@ -3,7 +3,7 @@
     <img class="w-3/4 mx-4" src="@/assets/all/404.png" alt="" />
 
     <button
-      class="w-3/4 px-3 py-2 mt-20 font-semibold text-white bg-orange-500 rounded-full hover:bg-orange-600"
+      class="w-3/4 px-3 py-2 font-semibold text-white bg-orange-500 rounded-full hover:bg-orange-600"
       @click="moveToHomePage"
     >
       홈으로

@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import SimplePinPadComponent from "@/components/login/SimplePinPadComponent.vue"
 import { useStockStore } from "@/stores/stock"
+import { useUserStore } from "@/stores/user"
 import { computed, onMounted, onUnmounted, ref, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
@@ -80,6 +82,37 @@ const stockList = ref<StockList[]>([])
 const router = useRouter()
 const route = useRoute()
 const stockId = idMap[route.params.stockName as string]
+const handleBuy = async () => {
+  await storeStock.postBuyCurrent(stockId, buyQuantity.value)
+  router.push("/stock/home")
+}
+const showFailModal = ref(false)
+const isPinpad = ref(false)
+const pinpadOpen = () => {
+  isPinpad.value = true
+}
+const remainingTime = ref(5)
+
+const handleSuccess = () => {
+  handleBuy()
+}
+const handleFail = () => {
+  // 비밀번호 검증 실패 시 처리 로직
+  console.log("비밀번호 검증 실패")
+
+  showFailModal.value = true // 모달을 띄움
+
+  // 5초 후 비밀번호 재설정 페이지로 이동
+  // TODO: 비밀번호 재설정 페이지 name 알아내서 변경하기.
+  const countdownInterval = setInterval(() => {
+    remainingTime.value--
+    if (remainingTime.value <= 0) {
+      clearInterval(countdownInterval) // 카운트다운 종료
+      router.push({ name: "WonAuthView" }) // 1원인증 페이지로 넘기기()
+    }
+  }, 1000)
+}
+
 onMounted(async () => {
   const fetchedStockPrice = await storeStock.getStockPrice()
   stockList.value = fetchedStockPrice
@@ -95,11 +128,6 @@ const postBuyAmt = computed(() => {
 const postBuyAmt1 = computed(() => {
   return myStockB.value - totalBuyAmount.value
 })
-
-const handleBuy = async () => {
-  storeStock.postBuyCurrent(stockId, buyQuantity.value)
-  router.go(0)
-}
 </script>
 
 <template>
@@ -164,7 +192,7 @@ const handleBuy = async () => {
     <!-- 모달 -->
     <div
       v-if="isModalOpen"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50"
     >
       <div class="p-6 bg-white rounded-lg shadow-lg">
         <h2 class="mb-4 text-2xl font-semibold text-center">현재가 매수</h2>
@@ -178,7 +206,7 @@ const handleBuy = async () => {
         </div>
         <div class="flex justify-center">
           <button
-            @click="handleBuy"
+            @click="pinpadOpen"
             class="p-1 px-3 m-4 text-white bg-red-500 rounded-lg cursor-pointer hover:bg-red-600"
           >
             매수
@@ -190,6 +218,26 @@ const handleBuy = async () => {
             취소
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 비밀번호 -->
+  <div v-if="isPinpad">
+    <div class="fixed inset-0 z-20">
+      <SimplePinPadComponent
+        @pin-success="handleSuccess"
+        @pinFail="handleFail"
+      ></SimplePinPadComponent>
+    </div>
+    <!-- 비밀번호 모달 -->
+    <div
+      v-if="showFailModal"
+      class="fixed inset-0 z-30 flex items-center justify-center bg-gray-800 bg-opacity-75"
+    >
+      <div class="max-w-sm p-6 text-center bg-white rounded-lg">
+        <p class="text-lg font-semibold text-gray-900">비밀번호 인증 실패</p>
+        <p>{{ remainingTime }}초 후 비밀번호 재설정 페이지로 이동합니다.</p>
       </div>
     </div>
   </div>
