@@ -121,12 +121,15 @@ const fetchPinPadImage = async () => {
 
 const onButtonClick = (index: number) => {
   clickedButton.value = index
-  randomButton.value = getRandomIndex(index)
+  if(index!=9&&index!=11){
+    randomButton.value = getRandomIndex(index)
+  }
+  
   console.log(clickedButton.value, randomButton.value)
   if (index === 9) {
     if (step.value === 1) firstInput.value.pop()
     else secondInput.value.pop()
-    return
+    // return
   }
   if (index != 9) {
     if (step.value === 1 && firstInput.value.length < 6 && index != 11) {
@@ -144,9 +147,10 @@ const onButtonClick = (index: number) => {
 }
 const getRandomIndex = (excludeIndex: number): number => {
   let randomIndex
+  const excludeList=[9,11,excludeIndex]
   do {
     randomIndex = Math.floor(Math.random() * numbers.value.length)
-  } while (randomIndex === excludeIndex)
+  } while (excludeList.includes(randomIndex))
   return randomIndex
 }
 const verifyInput = () => {
