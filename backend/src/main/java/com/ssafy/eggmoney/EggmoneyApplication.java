@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-// test12ssssssssssssdddddddddddddddddddddd
+// test12ssssssssssssdddddddddddddddddddddddddddddddddd
 @SpringBootApplication
 @EnableJpaAuditing
 @EnableScheduling
