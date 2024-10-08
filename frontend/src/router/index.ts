@@ -52,6 +52,8 @@ import FinSuccessView from "@/views/Fin/FinSuccessView.vue"
 import FinSuccessLoanView from "@/views/Fin/FinSuccessLoanView.vue"
 import ErrorView from "@/views/Fin/ErrorView.vue"
 import NotificiationView from "@/views/Notification/NotificiationView.vue"
+import ReviewPage from '@/views/All/ReviewPage.vue';
+
 const AssetView = defineAsyncComponent(() => import("@/views/Asset/AssetView.vue"))
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,6 +66,11 @@ const router = createRouter({
       path:"/error",
       name:"ErrorView",
       component: ErrorView,
+    },
+    {
+      path: '/review',
+      name: 'Review',
+      component: ReviewPage, // Add a route for ReviewPage
     },
     {
       path: "/main",
