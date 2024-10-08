@@ -1,10 +1,10 @@
 <template>
-    <div>
-        <NavBarNotificiation/>
-    </div>
+  <div>
+    <NavBarNotificiation />
+  </div>
 </template>
 <script setup lang="ts">
-import NavBarNotificiation from "@/components/navbar/NavBarNotificiation.vue";
+import NavBarNotificiation from "@/components/navbar/NavBarNotificiation.vue"
 import { useVariableStore } from "@/stores/variable"
 
 const store = useVariableStore()

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue"
 import IconChashed from "@/components/icons/IconChashed.vue"
+import { useRouter } from "vue-router"
+import { useStockStore } from "@/stores/stock"
 
 interface Log {
   stockId: number
@@ -36,6 +38,8 @@ const formattedDate = new Date(orderDate)
 const isDetail = ref(false)
 const isBuy = ref(false)
 const type = ref("매도")
+const router = useRouter()
+const stockStore = useStockStore()
 
 onMounted(() => {
   if (tradeType === "BUY") {
@@ -65,6 +69,11 @@ const displayDateDetail = formattedDate.toLocaleString("ko-KR", {
   second: "2-digit",
   hour12: false,
 })
+
+const logDelete = (stockPendingId: number) => {
+  stockStore.postPendingCancel(stockPendingId)
+  router.go(0)
+}
 </script>
 
 <template>
@@ -88,6 +97,15 @@ const displayDateDetail = formattedDate.toLocaleString("ko-KR", {
     <div class="flex justify-between m-4">
       <p>{{ type }} 총액</p>
       <p :class="isBuy ? 'text-red-500' : 'text-blue-500'">{{ totalPrice }} 알</p>
+    </div>
+    <div class="flex justify-center m-4">
+      <div
+        @click="logDelete(stockPendingId)"
+        type="button"
+        class="p-1 px-4 text-white bg-red-500 rounded-lg hover:bg-red-600"
+      >
+        삭제
+      </div>
     </div>
   </div>
 </template>
