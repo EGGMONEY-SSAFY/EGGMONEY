@@ -11,6 +11,16 @@ const goToFamily = () => {
   router.push("/event")
 }
 
+const game = () => {
+  router.push("/game")
+}
+const roulette = () => {
+  router.push("/roulette")
+}
+
+const price = () => {
+  router.push("/price")
+}
 // const goToFamilyConnect = () => {
 //   router.push("/family/family-connection")
 // }
@@ -30,20 +40,37 @@ const goToFamily = () => {
     </div>
     <div class="flex justify-between cursor-pointer" @click="goToFamily">
       <div class="mx-8 my-4">
-        <p>스피드 퀴즈</p>
+        <p>경제용어 퀴즈</p>
+      </div>
+      <div class="flex items-center justify-center m-4">
+        <p><IconRightArrow class="size-6" /></p>
+      </div>
+    </div>
+    <div class="flex justify-between cursor-pointer" @click="roulette">
+      <div class="mx-8 my-4">
+        <p>행운의 금융 룰렛</p>
       </div>
       <div class="flex items-center justify-center m-4">
         <p><IconRightArrow class="size-6" /></p>
       </div>
     </div>
 
-    <!-- <div class="flex justify-between mb-3 cursor-pointer" @click="goToFamilyConnect">
+    <div class="flex justify-between cursor-pointer" @click="game">
       <div class="mx-8 my-4">
-        <p>가족 연결</p>
+        <p>돈 먹기 게임</p>
       </div>
       <div class="flex items-center justify-center m-4">
         <p><IconRightArrow class="size-6" /></p>
       </div>
-    </div> -->
+    </div>
+
+    <div class="flex justify-between mb-4 cursor-pointer" @click="price">
+      <div class="mx-8 my-4">
+        <p>물가 맞추기 게임</p>
+      </div>
+      <div class="flex items-center justify-center m-4">
+        <p><IconRightArrow class="size-6" /></p>
+      </div>
+    </div>
   </div>
 </template>

@@ -3,7 +3,7 @@
     <div class="space-y-8">
       <!-- 가족 생성 버튼 -->
       <div
-      v-if="userP && userP.role === '부모'"
+        v-if="userP && userP.role === '부모'"
         @click="goToCreateFamily"
         class="flex items-center space-x-6 cursor-pointer bg-white hover:bg-gray-100 p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
       >
@@ -22,7 +22,7 @@
 
       <!-- 가족 초대 버튼 -->
       <div
-      v-if="userP && userP.role === '부모'"
+        v-if="userP && userP.role === '부모'"
         @click="goToFamilyInvite"
         class="flex items-center space-x-6 cursor-pointer bg-white hover:bg-gray-100 p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
       >
@@ -105,7 +105,7 @@ import { useAuthStore } from "@/stores/auth"
 import { useVariableStore } from "@/stores/variable"
 import { useUserStore } from "@/stores/user"
 
-const userP=useUserStore().user;
+const userP = useUserStore().user
 const authStore = useAuthStore()
 const varStore = useVariableStore()
 const showModal = ref(false)
@@ -146,50 +146,50 @@ function closeModal() {
 
 // 가족 생성 처리
 async function createFamily() {
- const file = fileInput.value?.files?.[0];
- let imageUrl = "";
+  const file = fileInput.value?.files?.[0]
+  let imageUrl = ""
 
- if(file){
-  const formData = new FormData();
-  formData.append('file', file);
+  if (file) {
+    const formData = new FormData()
+    formData.append("file", file)
 
-  try{
-    const response = await axios.post("/api/v1/family//upload-profile", formData,{
-      headers:{
-        "Content-Type":"multipart/form-data",
-        Authorization:`Bearer ${token}`
-      },
-    });
-    imageUrl = response.data.imageUrl;
-  }catch(error){
-    console.error("이미지 업로드 실패", error);
-      alert("이미지 업로드 실패");
-      return; 
+    try {
+      const response = await axios.post("/api/v1/family//upload-profile", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      imageUrl = response.data.imageUrl
+    } catch (error) {
+      console.error("이미지 업로드 실패", error)
+      alert("이미지 업로드 실패")
+      return
     }
   }
- 
- const familyData = {
-  intro: familyDescription.value,
-  profileImageUrl: imageUrl || null,
- }
- console.log(familyData)
- try{
-  await axios.post("/api/v1/family/create", familyData,{
-    headers:{
-      Authorization:`Bearer ${token}`,
-      "Content-Type":"application/json"
-    },
-  });
-  alert("가족 생성 완료!");
-  showModal.value = false;
-  router.push("/family/create");
- } catch(error:any){
-  if (error.response && error.response.status === 400) {
-      alert("이미 가족이 존재합니다.");
+
+  const familyData = {
+    intro: familyDescription.value,
+    profileImageUrl: imageUrl || null,
+  }
+  console.log(familyData)
+  try {
+    await axios.post("/api/v1/family/create", familyData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+    alert("가족 생성 완료!")
+    showModal.value = false
+    router.push("/family/create")
+  } catch (error: any) {
+    if (error.response && error.response.status === 400) {
+      alert("이미 가족이 존재합니다.")
     } else {
-      alert("가족 생성 중 오류가 발생했습니다.");
+      alert("가족 생성 중 오류가 발생했습니다.")
     }
- }
+  }
 }
 
 // 페이지 이동 함수들

@@ -15,4 +15,5 @@ public interface DepositService {
 
     DeleteDepositResponseDto deleteDeposit(long depositId);
     List<Long> checkExpiredDeposit();
+    boolean expiredDepositNotification();
 }

@@ -3,6 +3,9 @@ package com.ssafy.eggmoney.savings.service;
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
 import com.ssafy.eggmoney.common.exception.ErrorType;
+import com.ssafy.eggmoney.notification.dto.request.NotificationRequest;
+import com.ssafy.eggmoney.notification.entity.NotificationType;
+import com.ssafy.eggmoney.notification.service.NotificationService;
 import com.ssafy.eggmoney.savings.dto.request.SavingsCreateRequestDto;
 import com.ssafy.eggmoney.savings.dto.response.SavingsDeleteResponseDto;
 import com.ssafy.eggmoney.savings.dto.response.SavingsLogResponseDto;
@@ -16,17 +19,14 @@ import com.ssafy.eggmoney.savings.repository.SavingsLogRepository;
 import com.ssafy.eggmoney.savings.repository.SavingsProductRepository;
 import com.ssafy.eggmoney.savings.repository.SavingsRepository;
 import com.ssafy.eggmoney.user.entity.User;
-import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -39,6 +39,7 @@ public class SavingServiceImpl implements SavingService {
     private final SavingsProductRepository savingsProductRepository;
     private final SavingsLogRepository savingsLogRepository;
     private final AccountService accountService;
+    private final NotificationService notificationService;
 
 
     // 적금 상품 전체 조회하기
@@ -140,9 +141,14 @@ public class SavingServiceImpl implements SavingService {
         Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElseThrow(
                 () -> new NoSuchElementException(ErrorType.NOT_FOUND_SAVINGS.toString())
         );
+        log.info("Savings userId : {}" , userId);
+        log.info("savings saviongs.getPaymentDate : {}", savings.getPaymentDate());
 
         // 메인계좌에서 돈 빼오기
         accountService.updateAccount(AccountLogType.SAVINGS, userId, -1 * savings.getPaymentMoney());
+
+        // Todo : 메인계좌 로그도 넣어야하나?
+
 
         if(savings.getPaymentDate() <= 0){
             log.error("적금을 모두 납부하셨습니다.");
@@ -196,10 +202,11 @@ public class SavingServiceImpl implements SavingService {
         int paymentDate;
         int expiredMoney;
         double interestMoney = 0;
-
+        String notificationMessage ="적금이 만기에 도달하여 자동해지 되었습니다.";
         if(savings.getExpireDate().toLocalDate().isAfter(LocalDate.now())){
             interest = (savings.getSavingsProduct().getSavingsRate() - 2.0);
             paymentDate = savings.getSavingsProduct().getSavingsDate() - savings.getPaymentDate();
+            notificationMessage = "적금이 해지되었습니다.";
         }else{
             interest= savings.getSavingsProduct().getSavingsRate();
             paymentDate = savings.getSavingsProduct().getSavingsDate();
@@ -228,6 +235,14 @@ public class SavingServiceImpl implements SavingService {
                 .expiredMoney(expiredMoney)
                 .paymentDate(savings.getSavingsProduct().getSavingsDate())
                 .build();
+
+
+        NotificationRequest notificationRequest = NotificationRequest.builder()
+                .notificationType(NotificationType.적금만기)
+                .message(notificationMessage)
+                .receiveUser(updateSavings.getUser().getId())
+                .build();
+        notificationService.saveNotification(null, notificationRequest);
 
         return deleteResponseDto;
     }
@@ -259,13 +274,41 @@ public class SavingServiceImpl implements SavingService {
 
     }
 
+    @Override
+    public boolean sendSavingsNotification(){
+        List<Long> userIds = savingsRepository.findUserIdBySavingsStatusAndPaymentDateNot(SavingsStatus.AVAILABLE, 0);
+        if(!userIds.isEmpty()){
+            LocalDateTime start = LocalDate.now().withDayOfMonth(1).atStartOfDay();
+            LocalDateTime end = LocalDateTime.now();
+            List<Long> sendIds = savingsLogRepository.findUserIdByCreatedAtBetween(start, end);
+            userIds.removeAll(sendIds);
+        }else{
+            log.info("미납 계좌가 없습니다.");
+            return true;
+        }
+        if(!userIds.isEmpty()){
+
+            for(Long userId : userIds){
+                log.info("userId {} : ", userId);
+                NotificationRequest notificationRequest = NotificationRequest.builder()
+                        .receiveUser(userId)
+                        .message("이번 달 적금을 납부하지 않으셨습니다! \n미납시 만기일이 한달 연장됩니다.")
+                        .notificationType(NotificationType.적금납부)
+                        .build();
+                notificationService.saveNotification(null, notificationRequest );
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+
+
     // 적금 납부 안한 계좌의 만기일 + 1 하기
     @Override
     public void plusExpired(List<Long> savingsId){
 
-        for(long k : savingsId){
-            System.out.print(k + ", ");
-        }
         savingsRepository.extendSavingsExpireDateByOneMonth(savingsId);
         log.info("적금 미납자 계좌 만기일 연장");
     }

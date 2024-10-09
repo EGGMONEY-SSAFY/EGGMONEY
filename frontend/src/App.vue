@@ -7,7 +7,7 @@ import { useAuthStore } from "@/stores/auth"
 import { onMounted, ref } from "vue"
 import { useUserStore } from "./stores/user"
 const finStore = useFinStore()
-const route = useRoute() // 현재 경로를 가져옴
+const route = useRoute() // 현재 경로를 가져옴ds
 const authStore = useAuthStore()
 const router = useRouter()
 const userStore = useUserStore()
@@ -29,7 +29,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- test224fss4sdddddssssss -->
+  <!-- test224fss4sssssssㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ -->
   <!-- <div class="flex justify-center bg-gray-800">
     <div
       class="bg-gray-200 main-container"

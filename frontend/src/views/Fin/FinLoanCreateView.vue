@@ -92,7 +92,7 @@ const updateSelectedType = (event: Event) => {
 </script>
 
 <template>
-  <div v-if="userStore.user?.role === '자녀'" class="m-4">
+  <div v-if="userStore.user?.role === '자녀'" class="m-4 mb-16">
     <div class="m-4 flex items-center justify-center">
       <div class="m-2 flex">
         <IconExplanation></IconExplanation>

@@ -10,10 +10,9 @@ const remainingTime = ref(10)
 let countInterval: number | null = null
 
 onMounted(() => {
-
-if(countInterval){
-  clearInterval(countInterval)
-}
+  if (countInterval) {
+    clearInterval(countInterval)
+  }
   countInterval = window.setInterval(() => {
     remainingTime.value--
   }, 1000)
@@ -27,10 +26,10 @@ watch(remainingTime, (newValue) => {
 
 onUnmounted(() => {
   if (countInterval) {
-    clearInterval(countInterval);
-    countInterval = null;
+    clearInterval(countInterval)
+    countInterval = null
   }
-});
+})
 </script>
 <template>
   <div class="flex flex-col items-center justify-start mb-4 text-center mt-40">
