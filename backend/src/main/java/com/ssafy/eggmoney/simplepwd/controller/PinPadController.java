@@ -87,7 +87,7 @@ public class PinPadController {
         userService.updateUser(user, updateUserRequestDto);
         response.put("message","비밀번호 생성 성공");
 //        response.put("Pwd",decryptedPasswordString);
-        if(user.getRole().equals("자녀")){
+        if(user.getRole().equals("자녀") && !user.hasAccount()){
             accountService.createAccount(user.getId());
         }
         return ResponseEntity.ok(response);

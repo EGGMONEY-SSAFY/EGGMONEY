@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center justify-center bg-yellow-50 main-container3">
     <h1 class="text-xl font-bold mb-8">가족 생성 완료!</h1>
-    <p class="text-center text-gray-700">
+    <p class="text-center font-bold text-gray-700">
       가족 생성을 완료했어요. <br />이제 자유롭게 가족을 초대할 수 있어요.
     </p>
     <img class="my-6 w-40" src="@/assets/common/완료 상자.png" alt="선물 이미지" />
@@ -18,8 +18,9 @@ const router = useRouter()
 
 onMounted(() => {
   finStore.isYellowPage = true
-  setTimeout(() => {
-    router.push("/family")
+  setTimeout(async () => {
+    await router.push("/family")
+    window.location.reload()
   }, 1500)
 })
 

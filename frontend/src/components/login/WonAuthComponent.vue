@@ -1,6 +1,6 @@
 <template>
-  <div class="p-5 bg-gray-200 rounded-lg">
-    <div v-if="bankselectstep === 0" class="step">
+  <div class="bg-gray-200 rounded-lg">
+    <div class="p-5" v-if="bankselectstep === 0">
       <p class="text-main-color text-basic font-bold mb-8 mt-4">
         주로 쓰는 은행 계좌를 선택해주세요
       </p>
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div v-else-if="bankselectstep === 1" class="step">
+    <div class="p-5" v-else-if="bankselectstep === 1">
       <p class="text-main-color text-basic font-bold mb-8 mt-4" v-if="selectbank !== null">
         {{ bankname[selectbank] }}계좌번호를 입력해주세요
       </p>
@@ -35,9 +35,9 @@
       </button>
     </div>
 
-    <div v-else-if="bankselectstep === 2" class="step">
+    <div class="p-5" v-else-if="bankselectstep === 2">
       <p class="text-main-color text-lg font-bold mb-4" v-if="selectbank !== null">
-        {{ bankname[selectbank] }} 입금내역을 확인하시고, 에그머니 뒤 4자리 숫자를 알려주세요.
+        {{ bankname[selectbank] }} 입금내역을 확인하시고, <br />에그머니 뒤 4자리 숫자를 알려주세요.
       </p>
       <img
         :src="bankitems[selectbank]"
@@ -61,7 +61,7 @@
       </button>
     </div>
 
-    <div v-else-if="bankselectstep === 3" class="step">
+    <div v-else-if="bankselectstep === 3">
       <CreateAccountSuccess />
     </div>
   </div>

@@ -52,7 +52,7 @@ onMounted(async () => {
     >
       <!-- /main 또는 /login일 경우 상단바와 하단바 숨김 -->
       <NavBarTop v-if="route.path !== '/main' && route.path !== '/login'" />
-      <RouterView class="mt-12 mb-20" />
+      <RouterView :class="{ 'mt-12 mb-20': route.path !== '/main' && route.path !== '/login' }" />
       <NavBar v-if="route.path !== '/main' && route.path !== '/login'" />
     </div>
   </div>
