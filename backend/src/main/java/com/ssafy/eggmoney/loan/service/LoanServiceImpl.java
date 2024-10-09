@@ -154,6 +154,11 @@ public class LoanServiceImpl implements LoanService {
                 .refuseReason(requestDto.getRefuseReason())
                 .build();
 
+        // 대출 승인시 메인 계좌 반영
+        if ( requestDto.getLoanStatus().toString().equals("APPROVAL")) {
+            accountService.updateAccount(AccountLogType.LOAN, loan.getUser().getId(), loan.getLoanAmount());
+        }
+
         loanRepository.save(updateLoan);
         log.info("대출 심사 성공");
     }

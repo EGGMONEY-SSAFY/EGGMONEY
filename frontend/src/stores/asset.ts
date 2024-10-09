@@ -212,6 +212,24 @@ export const useAssetStore = defineStore("asset", () => {
       })
   }
 
+  // 퀴즈 정답 오답 로그
+  const sendQuizJudge = function (quizId: number, answer: Number): Promise<void> {
+    return axios({
+      method: "post",
+      url: `/api/v1/quiz/judge/${quizId}`,
+      data: {
+        answer: answer,
+      },
+      headers: {
+        Authorization: `Bearer ${authStore.accessToken}`,
+      },
+    })
+      .then((res) => {})
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
   return {
     deposit,
     savings,
@@ -227,5 +245,6 @@ export const useAssetStore = defineStore("asset", () => {
     createWithdrawal,
     getWithdrawalList,
     sendWithdrawalJudge,
+    sendQuizJudge,
   }
 })

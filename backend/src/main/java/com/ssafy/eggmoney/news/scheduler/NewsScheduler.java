@@ -19,7 +19,7 @@ import java.util.List;
 public class NewsScheduler {
     private final NewsService newsService;
 
-    @Scheduled(cron = "0 55 16 * * *", zone = "Asia/Seoul")
+//    @Scheduled(cron = "0 55 16 * * *", zone = "Asia/Seoul")
     public void saveSummarizeAndCrawlNews(){
         log.info("뉴스 스케쥴링 시작: " + LocalDateTime.now());
         List<News> newsList = new ArrayList<>();

@@ -132,8 +132,8 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<NewsTitlesResponse> findNewsTitles() {
-        return newsRepository.findNewsTitles();
+    public List<NewsTitlesResponse> findNewsTitles(long page) {
+        return newsRepository.findNewsTitles(page);
     }
 
     @Override

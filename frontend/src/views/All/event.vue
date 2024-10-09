@@ -83,7 +83,7 @@
             <ul>
               <li v-for="(question, index) in incorrectAnswers" :key="index" class="mb-4">
                 <p class="font-bold mb-2">Q{{ question.index + 1 }}. {{ question.content }}</p>
-                <p class="text-orange-600">➝ {{ question.answer }}</p>
+                <p class="text-orange-600">{{ question.answer }}</p>
               </li>
             </ul>
             <button
@@ -106,6 +106,7 @@ import IconAllalarm from "@/components/icons/IconAllalarm.vue"
 import { useVariableStore } from "@/stores/variable"
 import axios from "axios"
 import { useAuthStore } from "@/stores/auth"
+import { useAssetStore } from "@/stores/asset"
 
 const store = useVariableStore()
 store.setTitle("경제용어 퀴즈")
@@ -161,9 +162,18 @@ const startTimer = () => {
   }, 1000)
 }
 
+const assetStore = useAssetStore()
+
 const selectOption = (selectedOption: string) => {
   selectedAnswers.value[currentQuestionIndex.value] = selectedOption // 선택한 답 저장
-  if (selectedOption === currentQuestion.value.answer) score.value++
+  if (selectedOption === currentQuestion.value.answer) {
+    // 퀴즈 로그 생성 : 정답
+    assetStore.sendQuizJudge(currentQuestion.value.id, 1)
+    score.value++
+  } else {
+    // 퀴즈 로그 생성 : 오답
+    assetStore.sendQuizJudge(currentQuestion.value.id, 0)
+  }
   clearTimer()
   if (currentQuestionIndex.value < questions.value.length - 1) {
     nextQuestion()

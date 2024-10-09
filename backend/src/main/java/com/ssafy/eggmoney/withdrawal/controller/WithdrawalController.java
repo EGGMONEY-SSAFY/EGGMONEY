@@ -35,8 +35,10 @@ public class WithdrawalController {
 
 //    출금 요청 생성
     @PostMapping("/create")
-    public void createWithdrawal(@RequestBody CreateWithdrawalRequestDto dto){
-        withdrawalService.createWithdrawal(dto);
+    public void createWithdrawal(@RequestHeader(value = "Authorization") String token,
+                                @RequestBody CreateWithdrawalRequestDto dto) {
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        withdrawalService.createWithdrawal(user.getId(), dto);
     }
 
 }

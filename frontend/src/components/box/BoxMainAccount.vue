@@ -15,6 +15,7 @@ const userStore = useUserStore()
 const isModalOpen = ref<boolean>(false) // 모달 창 상태
 const withdrawalAmount = ref<number | null>(null) // 출금 금액
 const errorMessage = ref<string>("출금 금액을 입력해주세요.") // 에러 메시지 상태
+const isWithdrawalDisabled = ref<boolean>(true) // 출금 버튼 비활성화 상태
 
 // 모달을 여는 함수
 function openModal() {
@@ -25,14 +26,21 @@ function openModal() {
 function closeModal() {
   isModalOpen.value = false
   withdrawalAmount.value = null // 출금 금액 초기화
+  errorMessage.value = "출금 금액을 입력해주세요." // 에러 메시지 초기화
+  isWithdrawalDisabled.value = true // 출금 버튼 비활성화
 }
 
 // 출금 금액을 감시하면서 에러 메시지 업데이트
 watch(withdrawalAmount, (newVal) => {
   if (newVal === null || newVal <= 0) {
     errorMessage.value = "출금 금액을 입력해주세요."
+    isWithdrawalDisabled.value = true
+  } else if (props.balance && Number(props.balance) <= Number(newVal)) {
+    errorMessage.value = "출금할 금액보다 큽니다 !"
+    isWithdrawalDisabled.value = true
   } else {
     errorMessage.value = ""
+    isWithdrawalDisabled.value = false
   }
 })
 
@@ -91,7 +99,11 @@ function confirmWithdrawal() {
           <button class="px-4 py-2 mr-2 text-white bg-gray-500 rounded" @click="closeModal">
             취소
           </button>
-          <button class="px-4 py-2 text-white bg-blue-500 rounded" @click="confirmWithdrawal">
+          <button
+            class="px-4 py-2 text-white bg-blue-500 rounded"
+            @click="confirmWithdrawal"
+            :disabled="isWithdrawalDisabled"
+          >
             출금
           </button>
         </div>

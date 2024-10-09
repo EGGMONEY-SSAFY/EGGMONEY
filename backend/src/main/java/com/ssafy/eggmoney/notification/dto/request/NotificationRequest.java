@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class NotificationRequest {
     private NotificationType notificationType;
     private String message;
-    private Long receiveUser;
+    private Long receiveUserId;
 
     public NotificationRequest(NotificationType notificationType, String message) {
         this.notificationType = notificationType;
