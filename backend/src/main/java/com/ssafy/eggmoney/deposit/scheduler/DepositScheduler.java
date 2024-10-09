@@ -22,6 +22,7 @@ public class DepositScheduler {
         List<Long> depositIds = depositService.checkExpiredDeposit();
         if(!depositIds.isEmpty()) {
             for (Long depositId : depositIds) {
+                log.info("예금 만기 계좌번호 : {}", depositId);
                 depositService.deleteDeposit(depositId);
             }
         }else{
@@ -29,6 +30,18 @@ public class DepositScheduler {
         }
 
         log.info("예금 만기 스케줄러 종료");
+    }
+
+    @Scheduled(cron = "0 0 12 * * ?")
+    public void run2() {
+        log.info("예금 만기알림 스케줄러 시작");
+        if (depositService.expiredDepositNotification()){
+            log.info("예금 만기 알림 전송");
+        }else{
+            log.info("만기 계좌 없습니다.");
+        }
+        log.info("예금 만기알림 스케줄러 종료");
+;
     }
 
 }

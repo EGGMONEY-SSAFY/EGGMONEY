@@ -16,17 +16,14 @@ import com.ssafy.eggmoney.savings.repository.SavingsLogRepository;
 import com.ssafy.eggmoney.savings.repository.SavingsProductRepository;
 import com.ssafy.eggmoney.savings.repository.SavingsRepository;
 import com.ssafy.eggmoney.user.entity.User;
-import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.BadRequestException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -140,7 +137,8 @@ public class SavingServiceImpl implements SavingService {
         Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElseThrow(
                 () -> new NoSuchElementException(ErrorType.NOT_FOUND_SAVINGS.toString())
         );
-
+        log.info("Savings userId : {}" , userId);
+        log.info("savings saviongs.getPaymentDate : {}", savings.getPaymentDate());
         // 메인계좌에서 돈 빼오기
         accountService.updateAccount(AccountLogType.SAVINGS, userId, -1 * savings.getPaymentMoney());
 
