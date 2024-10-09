@@ -3,7 +3,7 @@
     <div class="space-y-8">
       <!-- 가족 생성 버튼 -->
       <div
-        v-if="userP && userP.role === '부모'"
+        v-if="userP && userP.role === '부모' && !FamilyP"
         @click="goToCreateFamily"
         class="flex items-center space-x-6 cursor-pointer bg-white hover:bg-gray-100 p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
       >
@@ -14,6 +14,7 @@
       <!-- 내 가족 버튼 -->
       <div
         @click="goToMyFamily"
+        v-if="FamilyP"
         class="flex items-center space-x-6 cursor-pointer bg-white hover:bg-gray-100 p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
       >
         <img src="@/assets/family/내 가족.png" alt="내 가족 아이콘" class="w-12 h-12" />
@@ -22,7 +23,7 @@
 
       <!-- 가족 초대 버튼 -->
       <div
-        v-if="userP && userP.role === '부모'"
+        v-if="userP && userP.role === '부모' && FamilyP"
         @click="goToFamilyInvite"
         class="flex items-center space-x-6 cursor-pointer bg-white hover:bg-gray-100 p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
       >
@@ -33,6 +34,7 @@
       <!-- 가족 연결 버튼 -->
       <div
         @click="goToFamilyConnection"
+        v-if="!FamilyP"
         class="flex items-center space-x-6 cursor-pointer bg-white hover:bg-gray-100 p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
       >
         <img src="@/assets/family/가족 연결.png" alt="가족 연결 아이콘" class="w-12 h-12" />
@@ -106,6 +108,7 @@ import { useVariableStore } from "@/stores/variable"
 import { useUserStore } from "@/stores/user"
 
 const userP = useUserStore().user
+const FamilyP = useUserStore().familyId
 const authStore = useAuthStore()
 const varStore = useVariableStore()
 const showModal = ref(false)
@@ -166,6 +169,7 @@ async function createFamily() {
       alert("이미지 업로드 실패")
       return
     }
+    window.location.reload()
   }
 
   const familyData = {

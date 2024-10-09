@@ -19,7 +19,10 @@ const router = useRouter()
 const authStore = useAuthStore()
 const familyId = ref<string | null>(null)
 const qrCode = ref<string | null>(null)
-const ASE_KEY = import.meta.env.VITE_ASE_KEY
+const a = import.meta.env.VITE_AES_KEY
+console.log(a)
+const AES_KEY = CryptoJS.enc.Utf8.parse("EGGMONEY12345678") // 16자리 고정된 AES 키
+const IV = CryptoJS.enc.Utf8.parse("abcdefg123456789")
 async function getfamilyId() {
   const token = authStore.accessToken
 
@@ -33,10 +36,32 @@ async function getfamilyId() {
     const family = response.data.family.familyId
     // 가족 ID가 있는 경우 AES 암호화 후 할당
     if (family) {
-      const encryptedFamilyId = CryptoJS.AES.encrypt(family.toString(), ASE_KEY).toString()
+      // AES 암호화
+      const encrypted = CryptoJS.AES.encrypt(family.toString(), AES_KEY, {
+        iv: IV,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7,
+      })
+
+      // IV + 암호화된 데이터
+      const encryptedFamilyId = IV.toString(CryptoJS.enc.Hex) + ":" + encrypted.toString()
+      console.log("암호화된 데이터 (IV 포함):", encryptedFamilyId)
+
+      // 복호화 테스트
+      const parts = encryptedFamilyId.split(":")
+      const ivFromEncrypted = CryptoJS.enc.Hex.parse(parts[0])
+      const encryptedData = parts[1]
+
+      const decrypted = CryptoJS.AES.decrypt(encryptedData, AES_KEY, {
+        iv: ivFromEncrypted,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7,
+      }).toString(CryptoJS.enc.Utf8)
+
+      console.log("복호화된 데이터:", decrypted)
+
       familyId.value = encryptedFamilyId
     } else {
-      // 가족 ID가 없으면 이전 페이지로 이동
       router.back()
     }
   } catch (error) {

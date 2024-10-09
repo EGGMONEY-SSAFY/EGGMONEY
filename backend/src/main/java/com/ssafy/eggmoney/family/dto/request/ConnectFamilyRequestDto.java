@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class ConnectFamilyRequestDto {
 //    연결하려는 userId ( 테스트용, 실제는 Token으로 대체 )
     Long userId;
+    Long familyId;
 }

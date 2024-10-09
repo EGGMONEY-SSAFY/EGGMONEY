@@ -137,11 +137,10 @@ const onButtonClick = (index: number) => {
     } else if (step.value === 1 && firstInput.value.length === 6 && index === 11) {
       instructionMessage.value = "비밀번호를 한 번 더 입력해주세요"
       step.value = 2
-    } else if (step.value === 2 && secondInput.value.length < 6) {
+    } else if (step.value === 2 && secondInput.value.length < 6 && index != 11) {
       secondInput.value.push(numbers.value[index])
     } else if (secondInput.value.length === 6 && index === 11) {
       verifyInput()
-      step.value = 3
     }
   }
 
@@ -162,9 +161,14 @@ const verifyInput = () => {
   if (firstInput.value.join("") === secondInput.value.join("")) {
     const pinString = firstInput.value.toString()
     encryptAndSendPin(pinString)
+    step.value = 3
   } else {
-    instructionMessage.value = "비밀번호가 일치하지 않습니다. 다시 시도해주세요"
-    resetInput()
+    try {
+      instructionMessage.value = "비밀번호가 일치하지 않습니다. 다시 시도해주세요"
+      resetInput()
+      step.value = 1
+    } catch (error) {}
+    console.log(instructionMessage.value)
   }
 }
 
@@ -207,7 +211,7 @@ const resetInput = () => {
   firstInput.value = []
   secondInput.value = []
   step.value = 1
-  instructionMessage.value = "비밀번호를 입력해주세요"
+  // instructionMessage.value = "비밀번호를 입력해주세요"
 }
 onUnmounted(() => {
   pinPadImage.value = null
