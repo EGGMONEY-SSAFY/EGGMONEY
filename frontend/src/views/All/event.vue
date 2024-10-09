@@ -55,6 +55,7 @@
         <p class="mb-8">
           당신의 점수는 <span class="text-red-500 text-2xl font-bold">{{ score }}</span> 점입니다
         </p>
+
         <button
           id="review-btn"
           @click="reviewIncorrectAnswers"
