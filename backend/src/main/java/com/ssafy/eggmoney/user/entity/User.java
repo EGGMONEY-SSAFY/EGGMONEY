@@ -1,5 +1,6 @@
 package com.ssafy.eggmoney.user.entity;
 
+import com.ssafy.eggmoney.account.entity.Account;
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import com.ssafy.eggmoney.family.entity.Family;
 import jakarta.persistence.*;
@@ -8,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.util.List;
 
 import static jakarta.persistence.FetchType.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -28,7 +31,9 @@ public class User extends BaseTime {
     @JoinColumn(name = "family_id")
     private Family family;
 
+    @Column(unique = true)
     private String email;
+
     private String name;
     private String role;
     private String realAccount;
@@ -82,5 +87,13 @@ public class User extends BaseTime {
         } else {
             throw new IllegalArgumentException("주식 비율은 0 ~ 100로 설정 가능합니다.");
         }
+    }
+
+//    메인계좌 존재 여부 확인 메소드
+    @OneToMany(mappedBy ="user", fetch = FetchType.LAZY)
+    private List<Account> accounts;
+
+    public boolean hasAccount(){
+        return accounts != null && !accounts.isEmpty();
     }
 }

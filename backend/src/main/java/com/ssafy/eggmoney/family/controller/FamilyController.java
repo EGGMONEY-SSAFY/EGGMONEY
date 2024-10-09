@@ -87,13 +87,26 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
 
 
     // Token 기반 가족 연결
-    @PostMapping("/{family_id}/join")
-    public void connectFamily(@PathVariable("family_id") Long familyId,
+    @PostMapping("/join/fam")
+    public ResponseEntity<Map<String, Object>> connectFamily(
                               @RequestHeader(value = "Authorization", required = false) String token,
                               @RequestBody ConnectFamilyRequestDto dto) {
 
         User user = kakaoAuthService.verifyKakaoToken(token);
-        familyServcie.connectFamily(familyId, user, dto);
+//        familyServcie.connectFamily(user, dto);
+        boolean isConnected = familyServcie.connectFamily(user, dto);
+
+        Map<String, Object> response = new HashMap<>();
+        if (isConnected) {
+            response.put("status", "success");
+            response.put("message", "Family connected successfully.");
+            response.put("additionalData", "예시 데이터"); // 필요한 추가 데이터
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("status", "fail");
+            response.put("message", "Failed to connect family.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
     }
     // Token 기반 가족 멤버 조회
     @GetMapping("/searchMember")

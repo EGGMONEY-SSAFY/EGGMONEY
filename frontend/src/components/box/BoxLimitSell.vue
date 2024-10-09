@@ -111,8 +111,6 @@ const handleFail = () => {
     }
   }, 1000)
 }
-
-
 </script>
 
 <template>
