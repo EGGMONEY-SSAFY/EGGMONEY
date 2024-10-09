@@ -96,7 +96,7 @@ function spinWheel() {
   wheel.value.style.transform = `rotate(${randomDegree}deg)`
 
   buttonVisible.value = false
-  spinningMessage.value = "우왕... 돌아간다 \n 에그머니에서 함께 \n 금융에 대해 배워봐요"
+  spinningMessage.value = " 에그머니와 함께 \n 금융에 대해 배워봐요"
 
   setTimeout(() => {
     spinningMessage.value = "" // 메시지 초기화
@@ -109,12 +109,12 @@ function displayResult(randomDegree: number) {
   let segment = Math.floor(finalDegree / 60)
 
   const results = [
-    "오늘은 지출을 조심하고 <br>예산을 재점검해보세요.",
-    "작은 투자에 주목하면 <br> 큰 수익을 가져올 수 있습니다.",
-    "재정 계획을 세우는 데 집중하세요 <br> 당신의 미래가 밝아집니다.",
-    "신뢰할 수 있는 사람에게 <br> 조언을 구하세요.",
-    "오늘은 새로운 기회를 찾는 데 <br> 적합한 날입니다.",
-    "긍정적인 마음가짐이 <br> 재정운을 더욱 끌어올립니다!",
+    "불필요한 지출을 조심하고 <br>예산을 점검해보세요 💸❣️<br>시드머니를 만들 시기입니다",
+    "작은 투자에 주목하면 <br> 큰 수익을 가져올 수 있습니다 🐏❣️ <br>예적금을 고려해보세요",
+    "재정 계획을 세우는 데 집중하세요 <br> 당신의 미래가 밝아집니다 🌞❣️ <br>금융일기를 작성해보세요 ",
+    "신뢰할 수 있는 사람에게 <br> 조언을 구하세요 <br>부모님을 찾아갑시다 👪❣️",
+    "새로운 기회를 찾는 데 <br> 적합한 시기입니다 👀❣️ <br> 대출과 레버리지를 고려해보세요",
+    "긍정적인 마음가짐이 <br> 재정운을 더욱 끌어올립니다 <br> 투자일기를 적어보세요 📜❣️",
   ]
 
   result.value = results[segment]
