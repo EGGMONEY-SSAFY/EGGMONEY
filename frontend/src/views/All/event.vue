@@ -103,10 +103,10 @@
 import { ref, computed, onMounted } from "vue"
 import { useRouter } from "vue-router" // Import useRouter for navigation
 import IconAllalarm from "@/components/icons/IconAllalarm.vue"
-import { useVariableStore } from "@/stores/variable"
 import axios from "axios"
 import { useAuthStore } from "@/stores/auth"
 import { useAssetStore } from "@/stores/asset"
+import { useVariableStore } from "@/stores/variable"
 
 const store = useVariableStore()
 store.setTitle("경제용어 퀴즈")
