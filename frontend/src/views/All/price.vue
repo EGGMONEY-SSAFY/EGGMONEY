@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center justify-center mt-20 bg-gray-100">
     <div class="bg-white p-6 rounded-lg shadow-md text-center">
-      <h1 class="text-2xl font-bold mb-4">문제번호 : {{ currentItemIndex + 1 }}</h1>
+      <h1 class="text-2xl font-bold mb-4">문제번호 {{ currentItemIndex + 1 }}</h1>
       <div v-if="currentItem" class="mb-4">
         <a :href="currentItem.coupangUrl" target="_blank">
           <img :src="currentItem.imageUrl" alt="item image" class="mb-4 mx-auto w-48 h-48 object-cover" />
@@ -16,6 +16,7 @@
         type="number"
         placeholder="가격을 입력하세요"
         class="mb-4 p-2 border rounded w-64"
+         step="1000"
       />
       <button
         v-if="currentItem"
@@ -52,7 +53,8 @@
           <div class="bg-white p-6 rounded-lg shadow-md text-center">
             <h2 class="text-lg font-bold mt-4 mx-4">결과 공개 🐹💛 </h2>
             <div v-for="(percentage, index) in errorPercentages" :key="index" class="mt-2">
-              <p>{{ index + 1 }}번 오차율 <span class="text-green-600">{{ percentage.toFixed(2) }}%</span></p>
+              <p>{{ index + 1 }}번 오차율 <span :class="getErrorClass(percentage)">{{ percentage.toFixed(2) }}%</span>
+              </p>
             </div>
             <button @click="closeModal" class="mt-4 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">
               닫기
@@ -105,41 +107,41 @@ function submitGuess() {
     // Store the error percentage
     errorPercentages.value.push(errorPercentage);
 
+    // Determine the class for the error percentage
+    const errorClass = errorPercentage <= 50 ? 'text-green-600' : 'text-red-600';
+
     // Set the result message
     if (priceDifference === 0) {
-      resultMessage.value = '당신은 천재입니까? 😲<br>정답은 <span class="text-red-600">' + currentItem.value.price + '</span>원 입니다. <br>오차율 <span class="text-red-600">' + errorPercentage.toFixed(2) + '%</span>';
+      resultMessage.value = `당신은 천재입니까? 😲<br>정답은 <span class="${errorClass}">${currentItem.value.price}</span>원 입니다. <br>오차율 <span class="${errorClass}">${errorPercentage.toFixed(2)}%</span>`;
     } else if (errorPercentage <= 10) {
-      resultMessage.value = '아주 멋져요 🥰<br>정답은 <span class="text-red-600">' + currentItem.value.price + '</span>원 입니다. <br>오차율 <span class="text-red-600">' + errorPercentage.toFixed(2) + '%</span>';
+      resultMessage.value = `아주 멋져요 🥰<br>정답은 <span class="${errorClass}">${currentItem.value.price}</span>원 입니다. <br>오차율 <span class="${errorClass}">${errorPercentage.toFixed(2)}%</span>`;
     } else if (errorPercentage <= 25) {
-      resultMessage.value = '당신은 물가를 아시는 분 😊❣️<br>정답은 <span class="text-red-600">' + currentItem.value.price + '</span>원 입니다. <br>오차율 <span class="text-red-600">' + errorPercentage.toFixed(2) + '%</span>';
+      resultMessage.value = `당신은 물가를 아시는 분 😊❣️<br>정답은 <span class="${errorClass}">${currentItem.value.price}</span>원 입니다. <br>오차율 <span class="${errorClass}">${errorPercentage.toFixed(2)}%</span>`;
     } else if (errorPercentage <= 45) {
-      resultMessage.value = '조금만 더 힘내요 🤣<br>정답은 <span class="text-red-600">' + currentItem.value.price + '</span>원 입니다. <br>오차율 <span class="text-red-600">' + errorPercentage.toFixed(2) + '%</span>';
+      resultMessage.value = `조금만 더 힘내요 🤣<br>정답은 <span class="${errorClass}">${currentItem.value.price}</span>원 입니다. <br>오차율 <span class="${errorClass}">${errorPercentage.toFixed(2)}%</span>`;
     } else if (errorPercentage <= 60) {
-      resultMessage.value = '같이 쇼핑을 해볼까요? 😅 <br>정답은 <span class="text-red-600">' + currentItem.value.price + '</span>원 입니다. <br>오차율 <span class="text-red-600">' + errorPercentage.toFixed(2) + '%</span>';
+      resultMessage.value = `같이 쇼핑을 해볼까요? 😅 <br>정답은 <span class="${errorClass}">${currentItem.value.price}</span>원 입니다. <br>오차율 <span class="${errorClass}">${errorPercentage.toFixed(2)}%</span>`;
     } else if (errorPercentage <= 70) {
-      resultMessage.value = '공부가 필요해요 😨 <br>정답은 <span class="text-red-600">' + currentItem.value.price + '</span>원 입니다. <br>오차율 <span class="text-red-600">' + errorPercentage.toFixed(2) + '%</span>';
+      resultMessage.value = `공부가 필요해요 😨 <br>정답은 <span class="${errorClass}">${currentItem.value.price}</span>원 입니다. <br>오차율 <span class="${errorClass}">${errorPercentage.toFixed(2)}%</span>`;
     } else {
-      resultMessage.value = '우리 함께 공부해요 😭 <br>정답은 <span class="text-red-600">' + currentItem.value.price + '</span>원 입니다. <br>오차율 <span class="text-red-600">' + errorPercentage.toFixed(2) + '%</span>';
+      resultMessage.value = `우리 함께 공부해요 😭 <br>정답은 <span class="${errorClass}">${currentItem.value.price}</span>원 입니다. <br>오차율 <span class="${errorClass}">${errorPercentage.toFixed(2)}%</span>`;
     }
 
     nextVisible.value = true;
-
-    // Show the modal if it's the last item
-    if (currentItemIndex.value === items.length - 1) {
-      showModal.value = true;
-    }
   }
 }
 
+
 function nextItem() {
-  currentItemIndex.value++;
-  if (currentItemIndex.value < items.length) {
+  if (currentItemIndex.value === items.length - 1) {
+    // 마지막 항목일 때 모달 창 보여주기
+    showModal.value = true;
+  } else {
+    // 다음 항목으로 이동
+    currentItemIndex.value++;
     currentItem.value = items[currentItemIndex.value];
     resultMessage.value = '';
     userGuess.value = null;
-    nextVisible.value = false;
-  } else {
-    currentItem.value = null;
     nextVisible.value = false;
   }
 }
@@ -151,6 +153,11 @@ function closeModal() {
   nextItem(); // Move to the next item or reset the game
   router.push('/all'); 
 }
+
+function getErrorClass(percentage: number): string {
+  return percentage <= 50 ? 'text-green-600' : 'text-red-600';
+}
+
 </script>
 
 <style scoped>
