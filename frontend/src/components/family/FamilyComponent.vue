@@ -3,6 +3,7 @@
     <div class="space-y-8">
       <!-- 가족 생성 버튼 -->
       <div
+        v-if="userP && userP.role === '부모'"
         @click="goToCreateFamily"
         class="flex items-center space-x-6 cursor-pointer bg-white hover:bg-gray-100 p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
       >
@@ -21,6 +22,7 @@
 
       <!-- 가족 초대 버튼 -->
       <div
+        v-if="userP && userP.role === '부모'"
         @click="goToFamilyInvite"
         class="flex items-center space-x-6 cursor-pointer bg-white hover:bg-gray-100 p-8 rounded-lg shadow-md transition-transform transform hover:scale-105"
       >
@@ -101,7 +103,9 @@ import { onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 import { useAuthStore } from "@/stores/auth"
 import { useVariableStore } from "@/stores/variable"
+import { useUserStore } from "@/stores/user"
 
+const userP = useUserStore().user
 const authStore = useAuthStore()
 const varStore = useVariableStore()
 const showModal = ref(false)

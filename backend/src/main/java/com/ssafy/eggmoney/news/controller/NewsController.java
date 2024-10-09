@@ -17,8 +17,8 @@ public class NewsController {
     private final NewsService newsService;
 
     @GetMapping("/news")
-    public ResponseEntity<List<NewsTitlesResponse>> getNewsTitles() {
-        return new ResponseEntity<>(newsService.findNewsTitles(), HttpStatus.OK);
+    public ResponseEntity<List<NewsTitlesResponse>> getNewsTitles(@RequestParam(defaultValue = "1") long page) {
+        return new ResponseEntity<>(newsService.findNewsTitles(page), HttpStatus.OK);
     }
 
     @GetMapping("news/{newsId}")
