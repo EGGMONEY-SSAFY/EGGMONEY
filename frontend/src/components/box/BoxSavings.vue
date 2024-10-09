@@ -19,7 +19,7 @@ function goSavingsDetail() {
 async function sendSavings(userId: Number) {
   await finStore.sendSavings(userId)
   closeModal()
-  window.location.reload()
+  // window.location.reload()
 }
 
 // 모달을 여는 함수

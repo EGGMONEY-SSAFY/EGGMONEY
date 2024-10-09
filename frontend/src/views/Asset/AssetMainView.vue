@@ -7,6 +7,7 @@ import { onMounted, watch, ref } from "vue"
 import type { User } from "@/stores/user"
 import type { Analytics, TradeData } from "@/stores/asset"
 import { useVariableStore } from "@/stores/variable"
+import { useRouter } from "vue-router"
 
 const assetStore = useAssetStore()
 const varStore = useVariableStore()
@@ -23,6 +24,10 @@ const analytics = ref<Analytics | null>({
 })
 
 const accountHistory = ref<TradeData[]>([])
+const router = useRouter()
+function goRecommend() {
+  router.push({ name: "MyRecommendView" })
+}
 
 // 유저가 변경될 때 비동기 작업을 처리하고 analytics 값을 갱신
 watch(
@@ -62,6 +67,19 @@ onMounted(async () => {
 <template>
   <div class="grid">
     <BoxAccount :user="user" :analytics="analytics" />
+    <div
+      class="grid grid-flow-row grid-cols-1 gap-4 p-3 m-4 bg-white rounded-lg shadow"
+      @click="goRecommend"
+    >
+      <div class="grid grid-flow-row grid-cols-1 gap-6 px-3 py-3">
+        <div class="flex" role="button">
+          <img src="@/assets/asset/account.png" alt="main-account" style="width: 51px" />
+          <div class="flex items-center justify-end w-full px-4 pe-2">
+            <h1 class="flex-grow font-bold text-lg text-center">내게 맞는 상품 추천</h1>
+          </div>
+        </div>
+      </div>
+    </div>
     <HeldAssetChart :analytics="analytics" />
     <HeldAssetLogChart :accountHistory="accountHistory" style="min-height: 350px" />
   </div>

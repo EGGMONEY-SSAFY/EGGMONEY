@@ -9,6 +9,10 @@ import com.ssafy.eggmoney.common.exception.ErrorType;
 import com.ssafy.eggmoney.common.webClient.ApiClient;
 import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
 import com.ssafy.eggmoney.family.entity.Family;
+import com.ssafy.eggmoney.notification.dto.request.NotificationRequest;
+import com.ssafy.eggmoney.notification.entity.Notification;
+import com.ssafy.eggmoney.notification.entity.NotificationType;
+import com.ssafy.eggmoney.notification.service.NotificationService;
 import com.ssafy.eggmoney.user.dto.response.GetUserResponseDto;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
@@ -37,6 +41,8 @@ public class WithdrawalService {
     private final AccountService accountService;
     private final AccountRepository accountRepository;
     private final ApiClient apiClient;
+    private final NotificationService notificationService;
+
 
     private BigInteger institutionTransactionUniqueNo = new BigInteger("0");
 
@@ -101,17 +107,13 @@ public class WithdrawalService {
     }
 
 //  출금요청 생성
-    public void createWithdrawal(CreateWithdrawalRequestDto dto){
-        User user = userRepository.findById(dto.getUserId()).get();
-
-        Account account = accountRepository.findByUserId(user.getId()).get();
-
-        System.out.println("Acc Bal : "+account.getBalance()+"/ dto Bal"+dto.getPrice());
+    public void createWithdrawal(Long userId, CreateWithdrawalRequestDto dto){
+        User user = userRepository.findById(userId).get();
+        Account account = accountRepository.findByUserId(userId).get();
 //        예외처리 : 계좌에 출금요청할 돈 있어야 함
-        if ( account.getBalance() - dto.getPrice() < 0 ) {
+        if ( account.getBalance() - dto.getPrice() <= 0 ) {
             throw new IllegalArgumentException(ErrorType.NOT_ENOUGH_MONEY.toString());
         }
-        
         withdrawalRepository.save(
                 Withdrawal.builder()
                     .user(user)
@@ -120,6 +122,11 @@ public class WithdrawalService {
                 .build()
         );
 
+        NotificationRequest notificationRequest = NotificationRequest.builder()
+                .notificationType(NotificationType.출금요청)
+                .message("자녀가 출금을 요청했습니다.")
+                .build();
+        notificationService.saveNotification(userId, notificationRequest);
     }
 
 //    출금 심사
@@ -146,6 +153,11 @@ public class WithdrawalService {
 //      대출 승인
         if (judge.equals("승인")) {
             // UserKey 조회
+            NotificationRequest notificationRequest = NotificationRequest.builder()
+                    .notificationType(NotificationType.출금승인)
+                    .message("부모님이 출금요청을 승인했습니다.")
+                    .receiveUserId(with.getUser().getId())
+                    .build();
             apiClient.findUserKey(user.getEmail())
                     .flatMap( userKeyResponse -> {
                         HashMap<String, Object> responseMap = apiClient.parseResponse(userKeyResponse, new TypeReference<HashMap<String, Object>>() {});
@@ -170,6 +182,11 @@ public class WithdrawalService {
                                     // 잔고가 충분하면 계좌 이체 수행
                                     String childAccount = with.getUser().getRealAccount();
                                     String parentAccount = user.getRealAccount();
+
+                                    // 알림 보내기
+                                    notificationService.saveNotification(user.getId(), notificationRequest);
+
+
                                     return apiClient.transferAccount(userKey, childAccount, parentAccount, transactionUniqueNo, with.getWithdrawalPrice());
                                 });
                     })
@@ -186,7 +203,15 @@ public class WithdrawalService {
 //      거절
         else {
             with.setWithdrawalStatus(WithdrawalStatus.REFUSAL);
+            // 알림 보내기
+            NotificationRequest notificationRequest = NotificationRequest.builder()
+                    .notificationType(NotificationType.출금거절)
+                    .message("부모님이 출금요청을 거절했습니다.")
+                    .receiveUserId(with.getUser().getId())
+                    .build();
+            notificationService.saveNotification(user.getId(), notificationRequest);
         }
+
     }
 
 }

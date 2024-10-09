@@ -4,6 +4,9 @@ import com.ssafy.eggmoney.account.service.AccountService;
 import com.ssafy.eggmoney.family.entity.Family;
 import com.ssafy.eggmoney.family.repository.FamilyRepository;
 import com.ssafy.eggmoney.family.service.FamilyServcie;
+import com.ssafy.eggmoney.notification.dto.request.NotificationRequest;
+import com.ssafy.eggmoney.notification.entity.NotificationType;
+import com.ssafy.eggmoney.notification.service.NotificationService;
 import com.ssafy.eggmoney.user.dto.reqeust.CreateUserReqeusetDto;
 import com.ssafy.eggmoney.user.dto.reqeust.InvestmentRatioRequest;
 import com.ssafy.eggmoney.user.dto.reqeust.UpdateUserRequestDto;
@@ -28,6 +31,7 @@ public class UserService {
     private final AccountService accountService;
     private final FamilyRepository familyRepository;
     private final FamilyServcie familyServcie;
+    private final NotificationService notificationService;
 
 //    유저 조회
     public GetUserResponseDto getUser(User user) {
@@ -83,14 +87,14 @@ public class UserService {
 
     public List<InvestmentRatioResponse> findInvestmentRatio(Long userId){
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("[회원] 해당 유저를 찾을 수 없습니다."));
         List<InvestmentRatioResponse> investmentRatios = new ArrayList<>();
 
         if(user.getRole().equals("부모")) {
             List<User> family = userRepository.findAllByFamilyId(user.getFamily().getId());
 
             if(family.isEmpty()) {
-                throw new NoSuchElementException("해당 가족을 찾을 수 없습니다.");
+                throw new NoSuchElementException("[회원] 해당 가족을 찾을 수 없습니다.");
             }
 
             for(User u : family) {
@@ -106,15 +110,21 @@ public class UserService {
     }
 
     @Transactional
-    public int updateInvestmentRatio(Long userId, InvestmentRatioRequest investmentRatioReq){
+    public int updateInvestmentRatio(Long presentId, InvestmentRatioRequest investmentRatioReq){
         User child = userRepository.findJoinFamilyById(investmentRatioReq.getChildId())
-                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("[회원] 해당 유저를 찾을 수 없습니다."));
 
-        if(!userId.equals(child.getFamily().getPresentId())) {
-            throw new AccessDeniedException("투자 비율 설정은 대표 부모만 가능합니다.");
+        if(!presentId.equals(child.getFamily().getPresentId())) {
+            throw new AccessDeniedException("[회원] 투자 비율 설정은 대표 부모만 가능합니다.");
         }
 
         child.changeStockRatio(investmentRatioReq.getRatio());
-        return investmentRatioReq.getRatio();
+
+        // 알림 생성
+        String message = "투자 비율이 " + child.getStockRatio() + "%로 변경되었습니다.";
+        NotificationRequest notificationReq = new NotificationRequest(NotificationType.투자비율변경, message, child.getId());
+        notificationService.saveNotification(presentId, notificationReq);
+
+        return child.getStockRatio();
     }
 }

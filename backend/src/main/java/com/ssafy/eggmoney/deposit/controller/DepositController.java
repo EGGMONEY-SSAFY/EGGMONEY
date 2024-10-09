@@ -2,6 +2,7 @@ package com.ssafy.eggmoney.deposit.controller;
 
 
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
+import com.ssafy.eggmoney.deposit.dto.DepositProductDto;
 import com.ssafy.eggmoney.deposit.dto.request.DepositCreateRequestDto;
 import com.ssafy.eggmoney.deposit.dto.request.DepositRequestDto;
 import com.ssafy.eggmoney.deposit.dto.response.DeleteDepositResponseDto;
@@ -35,6 +36,14 @@ public class DepositController {
         return ResponseEntity.ok().body(result);
     }
 
+    /**
+     * 단일 예금 상품 조회
+     * return DepositProductResponseDto
+     * */
+    @GetMapping("/product/{depositId}")
+    public DepositProductDto getDepositProduct(@PathVariable("depositId") Long depositId) {
+        return depositService.getDepositProduct(depositId);
+    }
 
     /**
     * 예금생성

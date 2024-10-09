@@ -19,12 +19,14 @@ public class NewsCostomRepositoryImpl implements NewsCostomRepository {
         this.queryFactory = new JPAQueryFactory(em);
     }
 
-    public List<NewsTitlesResponse> findNewsTitles() {
+    public List<NewsTitlesResponse> findNewsTitles(long page) {
         List<NewsTitlesResponse> newsTitles = queryFactory
                 .select(Projections.constructor(NewsTitlesResponse.class,
                         news.id, news.title, news.press, news.createdAt))
                 .from(news)
                 .orderBy(news.createdAt.desc())
+                .offset((page - 1) * 10)
+                .limit(10)
                 .fetch();
 
         if(newsTitles.isEmpty()) {

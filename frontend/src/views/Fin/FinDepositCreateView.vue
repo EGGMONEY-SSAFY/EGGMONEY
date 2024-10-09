@@ -74,7 +74,7 @@ const handleClick = () => {
     </div>
 
     <!-- 다음으로 넘어가는 버튼 -->
-    <div class="mt-auto text-center">
+    <div class="mt-16 text-center">
       <NextButton routeName="FinDepositCreateDetailView" @click="handleClick"></NextButton>
     </div>
   </div>

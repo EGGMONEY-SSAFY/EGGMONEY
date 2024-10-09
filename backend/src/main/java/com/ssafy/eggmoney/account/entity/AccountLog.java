@@ -24,8 +24,11 @@ public class AccountLog extends BaseTime {
     @JoinColumn(name = "account_id")
     private Account account;
 
+//    현재 보유 금액
     private int currentBalance;
+//    거래 가격
     private int tradePrice;
+//    거래 대상
     private AccountLogType tradeTarget;
 
     @Builder
