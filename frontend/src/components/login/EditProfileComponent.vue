@@ -20,13 +20,13 @@
       class="w-full px-4 py-3 bg-main-color text-white font-semibold rounded-lg mt-6"
       @click="sumbitchanges"
     >
-      수정 완료
+      수정하기
     </button>
     <!-- 수정완료 모달 -->
     <div v-if="showModal" class="modal p-12">
       <img src="@/assets/common/완료 폭죽.png" class="w-40 h-auto" />
       <div class="mt-4">
-        <span class="text-blue-700 font-bold mt-4">용돈 정보 수정 완료</span>
+        <span class="text-blue-700 font-bold mt-4">수정 완료</span>
       </div>
     </div>
   </div>
