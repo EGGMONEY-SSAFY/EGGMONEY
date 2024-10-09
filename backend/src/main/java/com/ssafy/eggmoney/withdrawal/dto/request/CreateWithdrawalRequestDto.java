@@ -4,6 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class CreateWithdrawalRequestDto {
-    Long userId;
     int price;
 }
