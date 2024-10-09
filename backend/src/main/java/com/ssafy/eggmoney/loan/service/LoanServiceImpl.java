@@ -16,6 +16,9 @@ import com.ssafy.eggmoney.loan.entity.LoanStatus;
 import com.ssafy.eggmoney.loan.entity.LoanType;
 import com.ssafy.eggmoney.loan.repository.LoanLogRepository;
 import com.ssafy.eggmoney.loan.repository.LoanRepository;
+import com.ssafy.eggmoney.notification.dto.request.NotificationRequest;
+import com.ssafy.eggmoney.notification.entity.NotificationType;
+import com.ssafy.eggmoney.notification.service.NotificationService;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +43,7 @@ public class LoanServiceImpl implements LoanService {
     private final LoanRepository loanRepository;
     private final LoanLogRepository loanLogRepository;
     private final AccountService accountService;
+    private final NotificationService notificationService;
 
     // 대출 생성하기
     @Override
@@ -65,6 +69,13 @@ public class LoanServiceImpl implements LoanService {
         loanRepository.save(loan);
 
         log.info("대출이 생성되었습니다.");
+
+        NotificationRequest notificationRequest = NotificationRequest.builder()
+                .notificationType(NotificationType.대출요청)
+                .message("자녀가 대출을 요청했습니다.")
+                .build();
+
+        notificationService.saveNotification(user.getId(), notificationRequest);
 
     }
 
@@ -161,6 +172,21 @@ public class LoanServiceImpl implements LoanService {
 
         loanRepository.save(updateLoan);
         log.info("대출 심사 성공");
+
+        NotificationType type = NotificationType.대출거절;
+        String notificationMessage = "부모님이 대출을 거절하셨습니다.";
+        if(requestDto.getLoanStatus() == LoanStatus.APPROVAL){
+            notificationMessage = "부모님이 대출을 승인하셨습니다.";
+            type = NotificationType.대출승인;
+        }
+
+        NotificationRequest notificationRequest = NotificationRequest.builder()
+                .notificationType(type)
+                .message(notificationMessage)
+                .receiveUser(updateLoan.getUser().getId())
+                .build();
+
+        notificationService.saveNotification(user.getId(), notificationRequest);
     }
 
     // 대출금 상환하기
@@ -231,7 +257,6 @@ public class LoanServiceImpl implements LoanService {
         );
 
         int interest = (int) (loan.getBalance() * loan.getLoanRate() / 100 * 1 / 12);
-
         accountService.updateAccount(AccountLogType.LOAN, loan.getUser().getId(), -1 * (loan.getBalance() + interest));
 
         Loan updateLoan = loan.toBuilder()
@@ -241,6 +266,13 @@ public class LoanServiceImpl implements LoanService {
 
         loanRepository.save(updateLoan);
         log.info("대출 만기 상환 완료 {}", loanId);
+
+        NotificationRequest notificationRequest = NotificationRequest.builder()
+                .receiveUser(updateLoan.getUser().getId())
+                .message("대출이 만기에 도달하여 상환하였습니다.")
+                .notificationType(NotificationType.대출상환)
+                .build();
+        notificationService.saveNotification(null, notificationRequest);
     }
 
     // 만기 도달한 loanId 찾기(scheduler)

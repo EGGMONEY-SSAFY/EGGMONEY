@@ -14,9 +14,11 @@ import java.util.Optional;
 public interface DepositRepository extends JpaRepository<Deposit, Long> {
     Optional<Deposit> findByUserIdAndDepositStatus(Long userId, DepositStatus status);
 
-    @Query(value = "SELECT d.id FROM Deposit d WHERE d.expireDate BETWEEN :start AND :end")
-    List<Long> findIdByExpireDateBetween(LocalDateTime start, LocalDateTime end);
+    @Query(value = "SELECT d.id FROM Deposit d WHERE d.expireDate BETWEEN :start AND :end AND d.depositStatus = :depositStatus")
+    List<Long> findIdByExpireDateBetweenAndDepositStatus(LocalDateTime start, LocalDateTime end, DepositStatus depositStatus);
 
     Optional<Deposit> findByIdAndDepositStatus(long depositId, DepositStatus depositStatus);
+
+    List<Deposit> findAllByExpireDateBetweenAndDepositStatus(LocalDateTime start,LocalDateTime end, DepositStatus depositStatus);
 }
 

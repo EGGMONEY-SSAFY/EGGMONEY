@@ -34,6 +34,18 @@ public class SavingsScheduler {
         }
     }
 
+
+    @Scheduled(cron ="0 0 8 LW * ?")
+    @Transactional
+    public void sendCheckingNotification(){
+        log.info("{} 적금 미납 알림 스케줄러 시작", LocalDate.now());
+        if(savingService.sendSavingsNotification()){
+            log.info("적금 미납자 알림 스케줄러 종료");
+        }else{
+            log.info("적금 미납자 알림 스케줄러가 비정상적으로 종료되었습니다.");
+        }
+    }
+
     // 해당 월 적금 납부 했는지(매월 1일에 전월 납부여부 확인)
     @Scheduled(cron ="0 0 12 1 * ?")
     public void checkingPay(){
