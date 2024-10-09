@@ -160,7 +160,7 @@ export const useFinStore = defineStore(
         .catch((err) => {
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -180,7 +180,7 @@ export const useFinStore = defineStore(
         .catch((err) => {
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -272,7 +272,7 @@ export const useFinStore = defineStore(
           savings.value = null
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -296,7 +296,7 @@ export const useFinStore = defineStore(
         .catch((err) => {
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -320,7 +320,7 @@ export const useFinStore = defineStore(
           deposit.value = null
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -348,7 +348,7 @@ export const useFinStore = defineStore(
           loanList.value = null
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -368,7 +368,7 @@ export const useFinStore = defineStore(
           loan.value = null
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -392,7 +392,7 @@ export const useFinStore = defineStore(
         .catch((err) => {
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -414,7 +414,7 @@ export const useFinStore = defineStore(
         .catch((err) => {
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -431,7 +431,7 @@ export const useFinStore = defineStore(
         .catch((err) => {
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -448,7 +448,7 @@ export const useFinStore = defineStore(
         .catch((err) => {
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -465,7 +465,7 @@ export const useFinStore = defineStore(
         .catch((err) => {
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -489,7 +489,7 @@ export const useFinStore = defineStore(
         .catch((err) => {
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -516,7 +516,7 @@ export const useFinStore = defineStore(
         .catch((err) => {
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -536,12 +536,11 @@ export const useFinStore = defineStore(
       })
         .then((res) => {
           router.push({ name: "FinSuccessView" })
-
         })
         .catch((err) => {
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 
@@ -561,12 +560,11 @@ export const useFinStore = defineStore(
       })
         .then((res) => {
           router.push({ name: "FinSuccessView" })
-
         })
         .catch((err) => {
           console.error(err)
           errMessage.value = err.response.data.message
-          router.push({name:"ErrorView"})
+          router.push({ name: "ErrorView" })
         })
     }
 

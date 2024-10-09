@@ -1,8 +1,24 @@
 <script setup lang="ts">
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors, Title } from "chart.js"
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from "chart.js"
 import { Doughnut } from "vue-chartjs"
 import { useStockStore } from "@/stores/stock.js"
 import { onMounted, ref } from "vue"
+
+const nameMap: Record<number, string> = {
+  1: "코스피",
+  2: "코스닥",
+  3: "자동차",
+  4: "반도체",
+  5: "헬스케어",
+  6: "은행",
+  7: "에너지화학",
+  8: "철강",
+  9: "건설",
+  10: "운송",
+  11: "미디어",
+  12: "IT",
+  13: "유틸리티",
+}
 
 const stockStore = useStockStore()
 
@@ -12,23 +28,8 @@ const options = ref()
 onMounted(async () => {
   data1.value = await stockStore.getChartData()
   stockStore.setTotalStockValue(data1.value.totalPrice)
-  data1.value.prices.shift()
   data.value = {
-    labels: [
-      "코스피",
-      "코스닥",
-      "자동차",
-      "반도체",
-      "헬스케어",
-      "은행",
-      "에너지화학",
-      "철강",
-      "건설",
-      "운송",
-      "미디어",
-      "IT",
-      "유틸리티",
-    ],
+    labels: data1.value.labels.map((num: number) => nameMap[num]),
     datasets: [
       {
         data: data1.value.prices,
@@ -40,7 +41,16 @@ onMounted(async () => {
     maintainAspectRatio: false,
     hoverOffset: 20,
     borderDashOffset: 10,
-    plugins: {},
+    plugins: {
+      title: {
+        display: true,
+        text: "주식 분석",
+        font: {
+          size: 20,
+        },
+        color: "#2F4F4F",
+      },
+    },
   }
 })
 
@@ -49,7 +59,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, Colors)
 
 <template>
   <div>
-    <div class="p-4 m-4 bg-white rounded-lg shadow" v-if="data">
+    <div class="p-4 m-4 bg-white rounded-lg shadow" v-if="options">
       <Doughnut :data="data" :options="options" />
     </div>
   </div>

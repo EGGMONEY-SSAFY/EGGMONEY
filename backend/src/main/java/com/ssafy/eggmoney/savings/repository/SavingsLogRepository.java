@@ -1,5 +1,6 @@
 package com.ssafy.eggmoney.savings.repository;
 
+import com.ssafy.eggmoney.savings.entity.Savings;
 import com.ssafy.eggmoney.savings.entity.SavingsLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,4 +13,7 @@ public interface SavingsLogRepository extends JpaRepository<SavingsLog, Long> {
 
     @Query(value = "SELECT DISTINCT log.savings.id FROM SavingsLog log WHERE log.createdAt BETWEEN :start AND :end")
     List<Long> findSavingsIdByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+
+    @Query(value = "SELECT DISTINCT log.savings.user.id FROM SavingsLog log WHERE log.createdAt BETWEEN :start AND :end")
+    List<Long> findUserIdByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 }

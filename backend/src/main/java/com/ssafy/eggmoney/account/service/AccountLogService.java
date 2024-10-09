@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,7 +60,7 @@ public class AccountLogService {
     public void createAccountLog(Long userId, AccountLogType logType, int price) {
         Account account = accountRepository.findByUserId(userId).get();
 
-        accountLogRepository.save(
+        AccountLog savedLog = accountLogRepository.save(
                 AccountLog.builder()
                         .account(account)
                         .currentBalance(account.getBalance() + price)
@@ -69,6 +70,4 @@ public class AccountLogService {
         );
     }
 
-//
-//    public void
 }

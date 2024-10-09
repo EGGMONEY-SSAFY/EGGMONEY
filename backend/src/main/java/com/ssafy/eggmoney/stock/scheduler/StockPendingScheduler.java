@@ -2,6 +2,9 @@ package com.ssafy.eggmoney.stock.scheduler;
 
 import com.ssafy.eggmoney.account.entity.AccountLogType;
 import com.ssafy.eggmoney.account.service.AccountService;
+import com.ssafy.eggmoney.notification.dto.request.NotificationRequest;
+import com.ssafy.eggmoney.notification.entity.NotificationType;
+import com.ssafy.eggmoney.notification.service.NotificationService;
 import com.ssafy.eggmoney.stock.entity.Stock;
 import com.ssafy.eggmoney.stock.entity.StockPending;
 import com.ssafy.eggmoney.stock.entity.StockUser;
@@ -34,8 +37,12 @@ public class StockPendingScheduler {
     private final StockRepository stockRepository;
     private final StockLogService stockLogService;
     private final AccountService accountService;
+    private final NotificationService notificationService;
 
-    @Scheduled(cron = "0 51 16 * * MON-FRI", zone = "Asia/Seoul")
+    String[] stockItems = {"???", "코스피", "코스닥", "자동차", "반도체", "헬스케어", "은행",
+            "에너지화학", "철강", "건설", "운송", "미디어", "IT", "유틸리티"};
+
+    @Scheduled(cron = "0 51 17 * * MON-FRI", zone = "Asia/Seoul")
     @Transactional
     public void executePending() {
         log.info("지정매도 시작: " + LocalDateTime.now());
@@ -63,6 +70,15 @@ public class StockPendingScheduler {
                 stockPendingService.deleteStockPending(
                         stockPendingSell.getId(), stockPendingSell.getUser().getId()
                 );
+
+                // 알림 생성
+                String Message = stockItems[stockUser.getStock().getId().intValue()] + " "
+                        + stockPendingSell.getPendingAmount() + "개를 개당 "
+                        + stockPendingSell.getPendingPrice() + "에 매도하였습니다.";
+                NotificationRequest notificationReq = new NotificationRequest(
+                        NotificationType.지정가매도체결, Message, stockPendingSell.getUser().getId()
+                );
+                notificationService.saveNotification(null, notificationReq);
             } else {
                 log.error("[에러] stockPending" + stockPendingSell.getId() + " 실패");
             }
@@ -103,6 +119,15 @@ public class StockPendingScheduler {
             stockPendingService.deleteStockPending(
                     stockPendingBuy.getId(), stockPendingBuy.getUser().getId()
             );
+
+            // 알림 생성
+            String Message = stockItems[stock.getId().intValue()] + " "
+                    + stockPendingBuy.getPendingAmount() + "개를 개당 "
+                    + stockPendingBuy.getPendingPrice() + "에 매수하였습니다.";
+            NotificationRequest notificationReq = new NotificationRequest(
+                    NotificationType.지정가매수체결, Message, stockPendingBuy.getUser().getId()
+            );
+            notificationService.saveNotification(null, notificationReq);
         }
     }
 }
