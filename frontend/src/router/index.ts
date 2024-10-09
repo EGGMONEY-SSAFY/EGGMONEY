@@ -56,7 +56,7 @@ import FinSuccessLoanView from "@/views/Fin/FinSuccessLoanView.vue"
 import ErrorView from "@/views/Fin/ErrorView.vue"
 import NotificiationView from "@/views/Notification/NotificiationView.vue"
 import ReviewPage from '@/views/All/ReviewPage.vue';
-import DataCenterView from "@/views/All/DataCenterView.vue"
+import MyRecommendView from "@/views/All/MyRecommendView.vue"
 
 const AssetView = defineAsyncComponent(() => import("@/views/Asset/AssetView.vue"))
 const router = createRouter({
@@ -133,6 +133,11 @@ const router = createRouter({
           path: "withdrawal/judge",
           name: "AssetWithdrawalView",
           component: AssetWithdrawalView,
+        },        
+        {
+          path: "/recommend",
+          name: "MyRecommendView",
+          component: MyRecommendView,
         },
       ],
       // beforeEnter: async (to, from, next) => {
@@ -360,11 +365,6 @@ const router = createRouter({
       path: "/Notification",
       name: "NotificiationView",
       component: NotificiationView,
-    },
-    {
-      path: "/dataCenter",
-      name: "DataCenterView",
-      component: DataCenterView,
     },
     // 최하단 배치 필요
     {

@@ -34,6 +34,15 @@ public class SavingsController {
     }
 
     /**
+     * 적금상품 단일 조회
+     * return SavingsProductListResponseDto
+     * */
+    @GetMapping("/product/{savingsId}")
+    public SavingsProductListResponseDto getSavingsProduct(@PathVariable("savingsId") Long savingsId){
+        return savingService.getSavingProduct(savingsId);
+    }
+
+    /**
      * 적금상품 가입하기
      * return
     * */

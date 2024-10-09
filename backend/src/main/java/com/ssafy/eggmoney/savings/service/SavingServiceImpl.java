@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -60,6 +61,29 @@ public class SavingServiceImpl implements SavingService {
 
         log.info("적금 상품 리스트 조회");
         return productListDto;
+    }
+
+    // 적금 상품 단일 조회하기
+    @Override
+    @Transactional(readOnly = true)
+    public SavingsProductListResponseDto getSavingProduct(Long savingsId) {
+
+        Optional<SavingsProduct> os = savingsProductRepository.findById(savingsId);
+        SavingsProduct sp;
+        if ( os.isPresent() ) {
+            sp = os.get();
+        }
+        else {
+            throw new NoSuchElementException("조회하려는 상품이 없습니다.");
+        }
+        SavingsProductListResponseDto dto = SavingsProductListResponseDto.builder()
+                .id(savingsId)
+                .savingsRate(sp.getSavingsRate())
+                .savingsDate(sp.getSavingsDate())
+                .productName(sp.getProductName())
+                .maxPrice(sp.getMaxPrice())
+                .build();
+        return dto;
     }
 
     // 적금 생성하기
