@@ -80,6 +80,7 @@ onMounted(async () => {
         <RouterView :user="userSelect" />
       </div>
     </div>
+
   </div>
   <!-- 등록된 가족이 없는 경우 -->
   <div v-else class="pt-20 text-center grid grid-cols-1 grid-flow-row">

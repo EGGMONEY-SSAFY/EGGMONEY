@@ -15,6 +15,7 @@ const loanJudge = ref<null | string>(null)
 const loanRate = ref(0)
 const loanReason = ref("")
 
+
 // 여기에 LoanJudgeView.vue에서 user정보를 불러와서,
 // (token에 있는것을) 대출리스트를 다시 받아와야한다.
 
@@ -84,7 +85,7 @@ function goLoanDetail(loanId: number) {
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg shadow grid p-2 gap-2 px-4 pb-5">
+  <div class="bg-white m-4 rounded-lg shadow grid py-2 gap-2 px-4 pb-5">
     <div v-if="user.role === '부모'" class="text-center my-2 font-bold">{{ loan.userName }}</div>
     <hr v-if="user.role === '부모'" class="border-black" />
     <div class="mt-3 flex justify-between">
