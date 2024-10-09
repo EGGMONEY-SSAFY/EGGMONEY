@@ -17,6 +17,10 @@ const game = () => {
 const roulette = () => {
   router.push("/roulette")
 }
+
+const price = () => {
+  router.push("/price")
+}
 // const goToFamilyConnect = () => {
 //   router.push("/family/family-connection")
 // }
@@ -42,6 +46,14 @@ const roulette = () => {
         <p><IconRightArrow class="size-6" /></p>
       </div>
     </div>
+    <div class="flex justify-between cursor-pointer" @click="roulette">
+      <div class="mx-8 my-4">
+        <p>행운의 금융 룰렛</p>
+      </div>
+      <div class="flex items-center justify-center m-4">
+        <p><IconRightArrow class="size-6" /></p>
+      </div>
+    </div>
 
     <div class="flex justify-between cursor-pointer" @click="game">
       <div class="mx-8 my-4">
@@ -52,9 +64,9 @@ const roulette = () => {
       </div>
     </div>
 
-    <div class="flex justify-between mb-4 cursor-pointer" @click="roulette">
+    <div class="flex justify-between mb-4 cursor-pointer" @click="price">
       <div class="mx-8 my-4">
-        <p>행운의 금융 룰렛</p>
+        <p>물가 맞추기 게임</p>
       </div>
       <div class="flex items-center justify-center m-4">
         <p><IconRightArrow class="size-6" /></p>
