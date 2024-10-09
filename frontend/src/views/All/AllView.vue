@@ -17,10 +17,10 @@ store.setTitle("전체")
     <div className="mt-16">
       <BoxAllSetting />
       <BoxAllFamily />
-      <BoxAllEvent />
       <BoxAllAssets />
       <BoxAllFinance />
       <BoxAllStock />
+      <BoxAllEvent />
       <BoxAllLogout />
     </div>
   </div>
