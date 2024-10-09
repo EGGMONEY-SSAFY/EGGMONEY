@@ -240,7 +240,7 @@ public class SavingServiceImpl implements SavingService {
         NotificationRequest notificationRequest = NotificationRequest.builder()
                 .notificationType(NotificationType.적금만기)
                 .message(notificationMessage)
-                .receiveUser(updateSavings.getUser().getId())
+                .receiveUserId(updateSavings.getUser().getId())
                 .build();
         notificationService.saveNotification(null, notificationRequest);
 
@@ -291,7 +291,7 @@ public class SavingServiceImpl implements SavingService {
             for(Long userId : userIds){
                 log.info("userId {} : ", userId);
                 NotificationRequest notificationRequest = NotificationRequest.builder()
-                        .receiveUser(userId)
+                        .receiveUserId(userId)
                         .message("이번 달 적금을 납부하지 않으셨습니다! \n미납시 만기일이 한달 연장됩니다.")
                         .notificationType(NotificationType.적금납부)
                         .build();

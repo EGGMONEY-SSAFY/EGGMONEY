@@ -1,7 +1,6 @@
 package com.ssafy.eggmoney.notification.dto.request;
 
 import com.ssafy.eggmoney.notification.entity.NotificationType;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,10 +14,10 @@ public class NotificationRequest {
 
 
     @Builder
-    public NotificationRequest(NotificationType notificationType, String message, Long receiveUser) {
+    public NotificationRequest(NotificationType notificationType, String message, Long receiveUserId) {
         this.notificationType = notificationType;
         this.message = message;
-        this.receiveUser = receiveUser;
+        this.receiveUserId = receiveUserId;
     }
 
 
