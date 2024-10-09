@@ -160,7 +160,7 @@ public class DepositServiceImpl implements DepositService {
         NotificationRequest notificationRequest = NotificationRequest.builder()
                 .notificationType(NotificationType.예금만기)
                 .message("예금이 만기에 도달하여 자동해지되었습니다.")
-                .receiveUser(updatedDeposit.getUser().getId())
+                .receiveUserId(updatedDeposit.getUser().getId())
                 .build();
         notificationService.saveNotification(null, notificationRequest);
 

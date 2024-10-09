@@ -126,7 +126,7 @@ public class WithdrawalService {
                 .notificationType(NotificationType.출금요청)
                 .message("자녀가 출금을 요청했습니다.")
                 .build();
-        notificationService.saveNotification(dto.getUserId(), notificationRequest);
+        notificationService.saveNotification(userId, notificationRequest);
     }
 
 //    출금 심사
@@ -156,7 +156,7 @@ public class WithdrawalService {
             NotificationRequest notificationRequest = NotificationRequest.builder()
                     .notificationType(NotificationType.출금승인)
                     .message("부모님이 출금요청을 승인했습니다.")
-                    .receiveUser(with.getUser().getId())
+                    .receiveUserId(with.getUser().getId())
                     .build();
             apiClient.findUserKey(user.getEmail())
                     .flatMap( userKeyResponse -> {
@@ -207,7 +207,7 @@ public class WithdrawalService {
             NotificationRequest notificationRequest = NotificationRequest.builder()
                     .notificationType(NotificationType.출금거절)
                     .message("부모님이 출금요청을 거절했습니다.")
-                    .receiveUser(with.getUser().getId())
+                    .receiveUserId(with.getUser().getId())
                     .build();
             notificationService.saveNotification(user.getId(), notificationRequest);
         }

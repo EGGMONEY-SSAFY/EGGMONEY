@@ -183,7 +183,7 @@ public class LoanServiceImpl implements LoanService {
         NotificationRequest notificationRequest = NotificationRequest.builder()
                 .notificationType(type)
                 .message(notificationMessage)
-                .receiveUser(updateLoan.getUser().getId())
+                .receiveUserId(updateLoan.getUser().getId())
                 .build();
 
         notificationService.saveNotification(user.getId(), notificationRequest);
@@ -268,7 +268,7 @@ public class LoanServiceImpl implements LoanService {
         log.info("대출 만기 상환 완료 {}", loanId);
 
         NotificationRequest notificationRequest = NotificationRequest.builder()
-                .receiveUser(updateLoan.getUser().getId())
+                .receiveUserId(updateLoan.getUser().getId())
                 .message("대출이 만기에 도달하여 상환하였습니다.")
                 .notificationType(NotificationType.대출상환)
                 .build();
