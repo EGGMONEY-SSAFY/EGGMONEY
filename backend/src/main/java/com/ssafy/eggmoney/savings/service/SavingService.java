@@ -19,4 +19,5 @@ public interface SavingService {
     List<Long> checkExpiredSavings();
     List<Long> checkingPayId();
     void plusExpired(List<Long> savingsId);
+    boolean sendSavingsNotification();
 }
