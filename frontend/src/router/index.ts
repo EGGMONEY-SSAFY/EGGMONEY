@@ -55,7 +55,7 @@ import FinSuccessView from "@/views/Fin/FinSuccessView.vue"
 import FinSuccessLoanView from "@/views/Fin/FinSuccessLoanView.vue"
 import ErrorView from "@/views/Fin/ErrorView.vue"
 import NotificiationView from "@/views/Notification/NotificiationView.vue"
-import ReviewPage from '@/views/All/ReviewPage.vue';
+import ReviewPage from "@/views/All/ReviewPage.vue"
 import MyRecommendView from "@/views/All/MyRecommendView.vue"
 
 const AssetView = defineAsyncComponent(() => import("@/views/Asset/AssetView.vue"))
@@ -133,7 +133,7 @@ const router = createRouter({
           path: "withdrawal/judge",
           name: "AssetWithdrawalView",
           component: AssetWithdrawalView,
-        },        
+        },
         {
           path: "/recommend",
           name: "MyRecommendView",

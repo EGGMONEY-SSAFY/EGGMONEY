@@ -10,7 +10,6 @@ function goAsset() {
 function goWithdrawalRequest() {
   router.push("/asset/main-account")
 }
-
 </script>
 
 <template>
