@@ -47,13 +47,15 @@ public class UserController {
 
     @GetMapping("/investment-ratio")
     public ResponseEntity<List<InvestmentRatioResponse>> getInvestmentRatio(@RequestHeader("Authorization") String token) {
-        return new ResponseEntity<>(userService.findInvestmentRatio(2L), HttpStatus.OK);
+        Long userId = kakaoAuthService.verifyKakaoToken(token).getId();
+        return new ResponseEntity<>(userService.findInvestmentRatio(userId), HttpStatus.OK);
     }
 
     @PostMapping("/investment-ratio/update")
     public ResponseEntity<Integer> updateInvestmentRatio(@RequestBody InvestmentRatioRequest investmentRatioReq,
                                                          @RequestHeader("Authorization") String token){
-        return new ResponseEntity<>(userService.updateInvestmentRatio(2L, investmentRatioReq), HttpStatus.OK);
+        Long presentId = kakaoAuthService.verifyKakaoToken(token).getId();
+        return new ResponseEntity<>(userService.updateInvestmentRatio(presentId, investmentRatioReq), HttpStatus.OK);
     }
 
     // Token 기반 컨트롤러

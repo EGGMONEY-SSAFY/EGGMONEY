@@ -5,13 +5,13 @@ import { useRouter } from "vue-router"
 
 const router = useRouter()
 function goDeposit() {
-  router.push({ name: "FinDepositView" })
+  router.push("/fin")
 }
 function goSavings() {
-  router.push({ name: "FinSavingsView" })
+  router.push("/fin/savings")
 }
 function goLoan() {
-  router.push({ name: "FinLoanView" })
+  router.push("/fin/loan")
 }
 </script>
 

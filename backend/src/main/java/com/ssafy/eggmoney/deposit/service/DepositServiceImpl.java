@@ -13,6 +13,9 @@ import com.ssafy.eggmoney.deposit.entity.DepositProduct;
 import com.ssafy.eggmoney.deposit.entity.DepositStatus;
 import com.ssafy.eggmoney.deposit.repository.DepositProductRepository;
 import com.ssafy.eggmoney.deposit.repository.DepositRepository;
+import com.ssafy.eggmoney.notification.dto.request.NotificationRequest;
+import com.ssafy.eggmoney.notification.entity.NotificationType;
+import com.ssafy.eggmoney.notification.service.NotificationService;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -36,6 +40,7 @@ public class DepositServiceImpl implements DepositService {
     private final DepositRepository depositRepository;
     private final DepositProductRepository depositProductRepository;
     private final AccountService accountService;
+    private final NotificationService notificationService;
 
     @Override
     @Transactional(readOnly = true)
@@ -54,6 +59,24 @@ public class DepositServiceImpl implements DepositService {
         log.info("예금 상품 리스트 조회");
 
         return productListDto;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DepositProductDto getDepositProduct(Long depositId) {
+        Optional<DepositProduct> op = depositProductRepository.findById(depositId);
+        DepositProduct product;
+        if ( op.isPresent() ){
+            product = op.get();
+        }
+        else {
+            throw new NoSuchElementException("조회하려는 상품이 없습니다.");
+        }
+        return DepositProductDto.builder()
+                .productId(depositId)
+                .productName(product.getProductName())
+                .depositRate(product.getDepositRate())
+                .build();
     }
 
     @Override
@@ -152,6 +175,14 @@ public class DepositServiceImpl implements DepositService {
 
         depositRepository.save(updatedDeposit);
 
+        // 만기 시 알림 보내기
+        NotificationRequest notificationRequest = NotificationRequest.builder()
+                .notificationType(NotificationType.예금만기)
+                .message("예금이 만기에 도달하여 자동해지되었습니다.")
+                .receiveUserId(updatedDeposit.getUser().getId())
+                .build();
+        notificationService.saveNotification(null, notificationRequest);
+
         log.info("예금 계좌 삭제 {}", depositId);
 
         return deleteResponseDto;
@@ -159,11 +190,34 @@ public class DepositServiceImpl implements DepositService {
 
     // 만료 체크하기(scheduler)
     @Override
+    @Transactional(readOnly = true)
     public List<Long> checkExpiredDeposit(){
         LocalDateTime start = LocalDate.now().atStartOfDay();
         LocalDateTime end = LocalDate.now().atTime(23, 59, 59);
-        List<Long> depositIds = depositRepository.findIdByExpireDateBetween(start, end);
+        List<Long> depositIds = depositRepository.findIdByExpireDateBetweenAndDepositStatus(start, end, DepositStatus.AVAILABLE);
 
         return depositIds;
+    }
+
+
+    // 만기일 3일 전, 알림 전송
+    @Override
+    public boolean expiredDepositNotification(){
+        LocalDateTime start = LocalDate.now().plusDays(3).atStartOfDay();
+        LocalDateTime end = LocalDate.now().plusDays(3).atTime(23, 59, 59);
+        List<Deposit> deposits = depositRepository.findAllByExpireDateBetweenAndDepositStatus(start, end, DepositStatus.AVAILABLE);
+
+        if(!deposits.isEmpty()){
+
+            for(Deposit deposit : deposits){
+
+                    log.info("depositId notification : {}", deposit.getId());
+                }
+        }else{
+            return false;
+        }
+
+        return true;
+
     }
 }

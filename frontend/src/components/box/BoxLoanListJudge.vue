@@ -84,7 +84,7 @@ function goLoanDetail(loanId: number) {
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg shadow grid p-2 gap-2 px-4 pb-5">
+  <div class="bg-white m-4 rounded-lg shadow grid py-2 gap-2 px-4 pb-5">
     <div v-if="user.role === '부모'" class="text-center my-2 font-bold">{{ loan.userName }}</div>
     <hr v-if="user.role === '부모'" class="border-black" />
     <div class="mt-3 flex justify-between">
@@ -160,15 +160,15 @@ function goLoanDetail(loanId: number) {
       <h1 v-else class="text-gray-300">심사를 해주세요</h1>
     </div>
     <div v-if="loan.loanStatus !== 'REFUSAL'" class="flex justify-between pe-5 text-end mt-2">
-      <h1>대출 잔액</h1>
+      <h1 class="font-bold">대출 잔액</h1>
       <h1 class="text-wrap">{{ loan.balance.toLocaleString() }}</h1>
     </div>
     <div class="flex justify-between pe-5 text-end mt-2">
-      <h1>신청 사유</h1>
+      <h1 class="font-bold">신청 사유</h1>
       <h1 class="text-wrap">{{ loan.loanReason }}</h1>
     </div>
     <div class="flex justify-between pe-5 text-end mt-2" v-if="props.loan.loanStatus === 'REFUSAL'">
-      <h1 class="w-28 text-left">거절 사유</h1>
+      <h1 class="w-28 text-left font-bold">거절 사유</h1>
       <h1 class="text-wrap">{{ props.loan.refuseReason }}</h1>
     </div>
   </div>
@@ -185,8 +185,6 @@ function goLoanDetail(loanId: number) {
         <div>
           요청 금액 : <span class="">{{ loan.loanAmount?.toLocaleString() }}</span
           >알
-
-          <p class="mb-1 text-sm text-red-500 text-wrap">* 실물 계좌에서 돈이 빠져나갑니다</p>
         </div>
         <div class="mb-4 text-wrap">
           요청 이유 : <span class="text-sm text-wrap"> {{ loan.loanReason }}</span>

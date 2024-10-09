@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface SavingService {
     List<SavingsProductListResponseDto> getSavingProducts();
+    SavingsProductListResponseDto getSavingProduct(Long savingsId);
     void createSaving(SavingsCreateRequestDto savingsCreateRequestDto, User user);
     SavingsResponseDto getSavings(Long userId);
     void sendSavings(Long userId);
@@ -19,4 +20,5 @@ public interface SavingService {
     List<Long> checkExpiredSavings();
     List<Long> checkingPayId();
     void plusExpired(List<Long> savingsId);
+    boolean sendSavingsNotification();
 }

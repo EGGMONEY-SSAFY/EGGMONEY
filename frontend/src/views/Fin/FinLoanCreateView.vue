@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import NextButton from "@/components/button/NextButton.vue"
+import IconDiamond from "@/components/icons/IconDiamond.vue"
 import IconExplanation from "@/components/icons/IconExplanation.vue"
 import IconQuestionMark from "@/components/icons/IconQuestionMark.vue"
 import InputMoney from "@/components/input/InputMoney.vue"
@@ -8,7 +9,6 @@ import { useFinStore } from "@/stores/fin"
 import { useUserStore } from "@/stores/user"
 import { reactive, ref } from "vue"
 import { useRouter } from "vue-router"
-
 const reason = ref<string | null>(null)
 const money = ref<number | null>(null)
 const loanDate = ref<number>(1)
@@ -92,7 +92,7 @@ const updateSelectedType = (event: Event) => {
 </script>
 
 <template>
-  <div v-if="userStore.user?.role === '자녀'" class="m-4">
+  <div v-if="userStore.user?.role === '자녀'" class="m-4 mb-16">
     <div class="m-4 flex items-center justify-center">
       <div class="m-2 flex">
         <IconExplanation></IconExplanation>
@@ -100,11 +100,11 @@ const updateSelectedType = (event: Event) => {
       <div class="text-gray-600 font-bold text-sm">대출 신청서를 작성해보아요</div>
     </div>
 
-    <div class="h-[70vh] flex flex-col justify-between">
+    <div class="h-[36rem] flex flex-col justify-between">
       <div class="flex flex-col gap-6">
         <div class="flex flex-col gap-3">
           <div class="mx-2 flex items-center">
-            <IconQuestionMark></IconQuestionMark>
+            <IconDiamond></IconDiamond>
             <div class="mx-2">신청 사유가 무엇인가요?</div>
           </div>
           <textarea
@@ -119,7 +119,7 @@ const updateSelectedType = (event: Event) => {
 
         <div>
           <div class="m-2 flex items-center">
-            <IconQuestionMark></IconQuestionMark>
+            <IconDiamond></IconDiamond>
             <div class="mx-2">원하는 대출 금액을 입력해주세요</div>
           </div>
           <div class="mx-8"><InputMoney @updateMoney="updateMoney"></InputMoney>알</div>
@@ -127,7 +127,7 @@ const updateSelectedType = (event: Event) => {
 
         <div>
           <div class="m-2 flex items-center">
-            <IconQuestionMark></IconQuestionMark>
+            <IconDiamond></IconDiamond>
             <div class="mx-2">대출 기간을 설정해주세요</div>
           </div>
           <select
@@ -173,7 +173,7 @@ const updateSelectedType = (event: Event) => {
         <div v-if="loanType == `원리금균등상환`">
           <div class="ml-8">
             매월
-            <span class="bg-white rounded-lg p-1 w-40 px-12 font-bold"
+            <span class="bg-white rounded-lg p-1 w-40 px-8 font-bold"
               >{{ maxPrice.toFixed(0) }}
             </span>
             알을 상환 할 예정이에요
@@ -181,7 +181,7 @@ const updateSelectedType = (event: Event) => {
         </div>
       </div>
 
-      <div class="mt-8">
+      <div class="mt-8 m-4">
         <NextButton
           routeName="FinLoanJudgeView"
           content="부모님에게 신청하기"

@@ -43,6 +43,9 @@ import AssetWithdrawalView from "@/views/Asset/AssetWithdrawalView.vue"
 import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import StockRateView from "@/views/All/StockRateView.vue"
 import event from "@/views/All/event.vue"
+import game from "@/views/All/game.vue"
+import price from "@/views/All/price.vue"
+import roulette from "@/views/All/roulette.vue"
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from "@/stores/user"
 import { defineAsyncComponent } from "vue"
@@ -52,6 +55,9 @@ import FinSuccessView from "@/views/Fin/FinSuccessView.vue"
 import FinSuccessLoanView from "@/views/Fin/FinSuccessLoanView.vue"
 import ErrorView from "@/views/Fin/ErrorView.vue"
 import NotificiationView from "@/views/Notification/NotificiationView.vue"
+import ReviewPage from "@/views/All/ReviewPage.vue"
+import MyRecommendView from "@/views/All/MyRecommendView.vue"
+
 const AssetView = defineAsyncComponent(() => import("@/views/Asset/AssetView.vue"))
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,6 +70,11 @@ const router = createRouter({
       path: "/error",
       name: "ErrorView",
       component: ErrorView,
+    },
+    {
+      path: "/review",
+      name: "Review",
+      component: ReviewPage, // Add a route for ReviewPage
     },
     {
       path: "/main",
@@ -122,6 +133,11 @@ const router = createRouter({
           path: "withdrawal/judge",
           name: "AssetWithdrawalView",
           component: AssetWithdrawalView,
+        },
+        {
+          path: "/recommend",
+          name: "MyRecommendView",
+          component: MyRecommendView,
         },
       ],
       // beforeEnter: async (to, from, next) => {
@@ -259,6 +275,21 @@ const router = createRouter({
       path: "/event",
       name: "event",
       component: event,
+    },
+    {
+      path: "/game",
+      name: "game",
+      component: game,
+    },
+    {
+      path: "/price",
+      name: "price",
+      component: price,
+    },
+    {
+      path: "/roulette",
+      name: "roulette",
+      component: roulette,
     },
     {
       path: "/stock/detail/:stockName",
