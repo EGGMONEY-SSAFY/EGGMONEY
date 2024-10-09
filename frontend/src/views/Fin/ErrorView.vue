@@ -37,6 +37,8 @@ onUnmounted(() => {
       {{ remainingTime }}초 후에 홈으로 이동합니다
     </div>
     <img class="w-3/4 mx-4" src="@/assets/fin/No.png" alt="" />
-    <div v-if="finStore.errMessage" class="text-xl font-bold text-red-500 mt-4"> ※ {{ finStore.errMessage }} ※ </div>
+    <div v-if="finStore.errMessage" class="text-xl font-bold text-red-500 mt-4">
+      ※ {{ finStore.errMessage }} ※
+    </div>
   </div>
 </template>

@@ -408,7 +408,7 @@ export const useFinStore = defineStore(
           userId: userId,
         },
       })
-        .then((res) => {  
+        .then((res) => {
           window.location.reload()
         })
         .catch((err) => {

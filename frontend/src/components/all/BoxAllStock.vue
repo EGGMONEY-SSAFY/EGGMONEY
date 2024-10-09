@@ -13,7 +13,6 @@ function list() {
 function news() {
   router.push("/stock/news")
 }
-
 </script>
 
 <template>
