@@ -65,6 +65,7 @@ public class LoanServiceImpl implements LoanService {
         loanRepository.save(loan);
 
         log.info("대출이 생성되었습니다.");
+        // Todo : 부모에게 자녀가 대출을 요청했다고 알림 보내기
 
     }
 
@@ -156,6 +157,7 @@ public class LoanServiceImpl implements LoanService {
 
         loanRepository.save(updateLoan);
         log.info("대출 심사 성공");
+        // Todo: 자녀에게 대출 심사 되었다고 알려주기
     }
 
     // 대출금 상환하기

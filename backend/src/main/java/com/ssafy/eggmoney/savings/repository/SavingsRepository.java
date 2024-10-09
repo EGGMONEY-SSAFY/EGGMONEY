@@ -24,6 +24,9 @@ public interface SavingsRepository extends JpaRepository<Savings, Long> {
     @Query(value = "SELECT s.id FROM Savings s WHERE s.savingsStatus = :savingsStatus AND s.paymentDate != (:paymentDate)")
     List<Long> findIdBySavingsStatusAndPaymentDateNot(SavingsStatus savingsStatus, int paymentDate);
 
+    @Query(value = "SELECT s.user.id FROM Savings s WHERE s.savingsStatus = :savingsStatus AND s.paymentDate != (:paymentDate)")
+    List<Long> findUserIdBySavingsStatusAndPaymentDateNot(SavingsStatus savingsStatus, int paymentDate);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE Savings s SET s.expire_date = DATE_ADD(s.expire_date, INTERVAL 1 MONTH) WHERE s.savings_id IN (:ids)", nativeQuery = true)

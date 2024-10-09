@@ -119,7 +119,7 @@ public class WithdrawalService {
                     .withdrawalPrice(dto.getPrice())
                 .build()
         );
-
+        // Todo: 부모에게 자녀가 출금을 요청했다고 알림 보내기
     }
 
 //    출금 심사
@@ -187,6 +187,8 @@ public class WithdrawalService {
         else {
             with.setWithdrawalStatus(WithdrawalStatus.REFUSAL);
         }
+
+        // Todo: 자녀에게 출금 요청에 대한 답변 알림으로 보내기
     }
 
 }
