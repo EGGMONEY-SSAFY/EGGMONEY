@@ -39,7 +39,7 @@ class KMeansService:
             ).join(
                 savings_df.groupBy("user_id").agg(F.sum("balance").alias("total_savings")), "user_id", "outer"
             ).join(
-                stock_df.groupBy("user_id").agg(F.sum("amount").alias("total_stock")), "user_id", "outer"
+                stock_df.groupBy("user_id").agg(F.sum(F.col("amount") * F.col("buy_average")).alias("total_stock")), "user_id", "outer"
             ).na.fill(0)
 
             # 자산 비율 계산
