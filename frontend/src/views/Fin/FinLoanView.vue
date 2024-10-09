@@ -74,7 +74,7 @@ const handleListClick = () => {
           <img src="@/assets/fin/loanParent.png" alt="로딩중" />
         </div>
         <div class="flex justify-center items-center">
-          <div class="grid gap-3 text-center">
+          <div class="grid gap-1 text-center">
             <div>자녀가 신청한 대출을 확인해주세요</div>
             <div>이유, 기간, 금액을 보시고 심사해주세요.</div>
             <div>자녀는 빌린 돈을</div>

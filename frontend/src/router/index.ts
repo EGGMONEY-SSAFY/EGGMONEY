@@ -44,6 +44,7 @@ import NotFoundComponent from "@/components/404/NotFoundComponent.vue"
 import StockRateView from "@/views/All/StockRateView.vue"
 import event from "@/views/All/event.vue"
 import game from "@/views/All/game.vue"
+import price from "@/views/All/price.vue"
 import roulette from "@/views/All/roulette.vue"
 import { useAuthStore } from "@/stores/auth"
 import { useUserStore } from "@/stores/user"
@@ -274,6 +275,11 @@ const router = createRouter({
       path: "/game",
       name: "game",
       component: game,
+    },
+    {
+      path: "/price",
+      name: "price",
+      component: price,
     },
     {
       path: "/roulette",
