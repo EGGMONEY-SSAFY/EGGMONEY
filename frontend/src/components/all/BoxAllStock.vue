@@ -1,6 +1,19 @@
 <script setup lang="ts">
 import IconRightArrow from "../icons/IconRightArrow.vue"
 import IconSetting from "../icons/IconAllStock.vue"
+import { useRouter } from "vue-router"
+
+const router = useRouter()
+function log() {
+  router.push("/stock/log")
+}
+function list() {
+  router.push("/stock/order-list")
+}
+function news() {
+  router.push("/stock/news")
+}
+
 </script>
 
 <template>
@@ -13,16 +26,7 @@ import IconSetting from "../icons/IconAllStock.vue"
         <p></p>
       </div>
     </div>
-    <div class="flex justify-between cursor-pointer">
-      <div class="mx-8 my-4">
-        <p>주식 현재가</p>
-      </div>
-      <div class="flex items-center justify-center m-4">
-        <p><IconRightArrow class="size-6" /></p>
-      </div>
-    </div>
-
-    <div class="flex justify-between cursor-pointer">
+    <div class="flex justify-between cursor-pointer" @click="log">
       <div class="mx-8 my-4">
         <p>거래내역</p>
       </div>
@@ -31,7 +35,16 @@ import IconSetting from "../icons/IconAllStock.vue"
       </div>
     </div>
 
-    <div class="flex justify-between mb-3 cursor-pointer">
+    <div class="flex justify-between cursor-pointer" @click="list">
+      <div class="mx-8 my-4">
+        <p>주문현황</p>
+      </div>
+      <div class="flex items-center justify-center m-4">
+        <p><IconRightArrow class="size-6" /></p>
+      </div>
+    </div>
+
+    <div class="flex justify-between mb-3 cursor-pointer" @click="news">
       <div class="mx-8 my-4">
         <p>뉴스</p>
       </div>
