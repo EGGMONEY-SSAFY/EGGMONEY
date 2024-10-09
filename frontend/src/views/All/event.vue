@@ -82,7 +82,7 @@
             <ul>
               <li v-for="(question, index) in incorrectAnswers" :key="index" class="mb-4">
                 <p class="font-bold mb-2">Q{{ question.index + 1 }}. {{ question.content }}</p>
-                <p class="text-orange-600">➝ {{ question.answer }}</p>
+                <p class="text-orange-600">{{ question.answer }}</p>
               </li>
             </ul>
             <button
