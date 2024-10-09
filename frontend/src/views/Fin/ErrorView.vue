@@ -32,11 +32,11 @@ onUnmounted(() => {
 })
 </script>
 <template>
-  <div class="flex flex-col items-center justify-start mb-4 text-center mt-52">
+  <div class="flex flex-col items-center justify-start mb-4 text-center mt-40">
     <div class="text-center font-bold m-4 text-red-500">
       {{ remainingTime }}초 후에 홈으로 이동합니다
     </div>
     <img class="w-3/4 mx-4" src="@/assets/fin/No.png" alt="" />
-    <div class="text-xl font-bold text-red-500 mt-4">※ {{ finStore.errMessage }} ※</div>
+    <div v-if="finStore.errMessage" class="text-xl font-bold text-red-500 mt-4"> ※ {{ finStore.errMessage }} ※ </div>
   </div>
 </template>
