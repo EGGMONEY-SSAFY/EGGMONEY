@@ -6,7 +6,7 @@ import com.ssafy.eggmoney.notification.dto.response.NotificationResponse;
 import java.util.List;
 
 public interface NotificationService {
-    void saveNotification(Long userId, NotificationRequest notificationReq);
+    void saveNotification(Long sendUserId, NotificationRequest notificationReq);
     List<NotificationResponse> findNotifications(Long userId);
     void readNotification(Long notificationId);
 }

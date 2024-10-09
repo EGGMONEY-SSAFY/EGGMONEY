@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class QuizJudgeRequestDto {
-    String answer;
+    Integer answer;
 }

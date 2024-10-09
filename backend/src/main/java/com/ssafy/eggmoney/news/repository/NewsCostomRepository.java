@@ -5,5 +5,5 @@ import com.ssafy.eggmoney.news.dto.response.NewsTitlesResponse;
 import java.util.List;
 
 public interface NewsCostomRepository {
-    List<NewsTitlesResponse> findNewsTitles();
+    List<NewsTitlesResponse> findNewsTitles(long page);
 }

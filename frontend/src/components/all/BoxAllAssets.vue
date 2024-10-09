@@ -5,11 +5,12 @@ import { useRouter } from "vue-router"
 
 const router = useRouter()
 function goAsset() {
-  router.push({ name: "AssetMainView" })
+  router.push("/asset")
 }
 function goWithdrawalRequest() {
-  router.push({ name: "AssetWithdrawalView" })
+  router.push("/asset/main-account")
 }
+
 </script>
 
 <template>
