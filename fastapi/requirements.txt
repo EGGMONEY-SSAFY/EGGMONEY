@@ -3,3 +3,4 @@ uvicorn
 pydantic
 pyspark
 pandas
+numpy
