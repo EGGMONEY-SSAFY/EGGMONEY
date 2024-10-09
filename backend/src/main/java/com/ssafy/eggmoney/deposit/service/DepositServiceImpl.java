@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -58,6 +59,24 @@ public class DepositServiceImpl implements DepositService {
         log.info("예금 상품 리스트 조회");
 
         return productListDto;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DepositProductDto getDepositProduct(Long depositId) {
+        Optional<DepositProduct> op = depositProductRepository.findById(depositId);
+        DepositProduct product;
+        if ( op.isPresent() ){
+            product = op.get();
+        }
+        else {
+            throw new NoSuchElementException("조회하려는 상품이 없습니다.");
+        }
+        return DepositProductDto.builder()
+                .productId(depositId)
+                .productName(product.getProductName())
+                .depositRate(product.getDepositRate())
+                .build();
     }
 
     @Override
