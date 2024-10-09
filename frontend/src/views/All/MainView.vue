@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center justify-center text-center bg-[#fef6e4] h-screen m-0">
-    <img src="@/assets/all/EGGMONEY로고.png" alt="Chicken logo" class="w-[1000px]" />
+    <img src="@/assets/all/계란EGGMONEY.png" alt="Chicken logo" class="w-[1000px]" />
     <h1 class="text-2xl font-bold my-4">나의 첫 경제생활 도우미</h1>
     <p class="my-4">
       복잡한 송금, 가계부 관리, 어려운 주식 공부까지<br />

@@ -83,12 +83,16 @@ public class FamilyServcie {
     }
 
 //    가족 연결
-    public void connectFamily(Long familyId,User user, ConnectFamilyRequestDto dto){
+    public boolean connectFamily(User user, ConnectFamilyRequestDto dto){
 //        User user = userRepository.findById(dto.getUserId()).get();
-        Family fam = familyRepository.findById(familyId).get();
+//        Family fam = familyRepository.findById(user.getId()).get();
+        Family fam = familyRepository.findById(dto.getFamilyId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 가족을 찾을 수 없습니다."));
+
         user.setFamily(fam);
         familyRepository.save(fam);
         userRepository.save(user);
+        return true;
     }
 
 //    가족 대표 변경
