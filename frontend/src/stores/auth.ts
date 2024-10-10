@@ -66,19 +66,19 @@ export const useAuthStore = defineStore("auth", {
       try {
         const tokens = await loadTokensFromIndexedDB()
         const currentRoute = router.currentRoute.value.path
-        // if (!tokens) {
-        //   if (currentRoute === '/login' || currentRoute === '/main' ) {
-        //     // /login 페이지에서는 토큰 검사를 하지 않음
-        //     return
-        //   } else {
-        //     // 토큰이 없으면 /login 또는 /main으로 리다이렉트
-        //     router.push("/login") // 로그인 페이지로 이동
-        //   }
-        // } else {
-        //   // 토큰이 있으면 상태에 저장
-        //   this.accessToken = tokens.accessToken
-        //   this.refreshToken = tokens.refreshToken
-        // }
+        if (!tokens) {
+          if (currentRoute === '/login' || currentRoute === '/main' ) {
+            // /login 페이지에서는 토큰 검사를 하지 않음
+            return
+          } else {
+            // 토큰이 없으면 /login 또는 /main으로 리다이렉트
+            router.push("/login") // 로그인 페이지로 이동
+          }
+        } else {
+          // 토큰이 있으면 상태에 저장
+          this.accessToken = tokens.accessToken
+          this.refreshToken = tokens.refreshToken
+        }
         if (tokens) {
           this.accessToken = tokens.accessToken
           this.refreshToken = tokens.refreshToken
@@ -104,8 +104,10 @@ export const useAuthStore = defineStore("auth", {
           if (response.data) {
             window.location.href = response.data
           }
-          await this.clearToken()
-          console.log("로그아웃 성공")
+          
+
+          // await this.clearToken()
+          // console.log("로그아웃 성공")
         } catch (error) {
           console.error("로그아웃 실패:", error)
         }
