@@ -2,12 +2,11 @@
 import { useRouter } from "vue-router"
 import IconRightArrow from "../icons/IconRightArrow.vue"
 import IconSetting from "../icons/IconSetting.vue"
-import { useUserStore } from "@/stores/user";
+import { useUserStore } from "@/stores/user"
 
 // Vue Router 사용
 const router = useRouter()
 const userStore = useUserStore()
-
 
 // 내 가족 클릭 이벤트 핸들러
 const pinpad = () => {
@@ -46,7 +45,7 @@ const won = () => {
       </div>
     </div>
 
-    <div  class="flex justify-between cursor-pointer" @click="editProfile">
+    <div class="flex justify-between cursor-pointer" @click="editProfile">
       <div class="mx-8 my-4">
         <p>회원정보 수정</p>
       </div>
@@ -55,7 +54,11 @@ const won = () => {
       </div>
     </div>
 
-    <div v-if="userStore.user && userStore.user.role === '부모'" class="flex justify-between cursor-pointer" @click="pocketmoney">
+    <div
+      v-if="userStore.user && userStore.user.role === '부모'"
+      class="flex justify-between cursor-pointer"
+      @click="pocketmoney"
+    >
       <div class="mx-8 my-4">
         <p>용돈 수정</p>
       </div>
