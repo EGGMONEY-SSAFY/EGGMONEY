@@ -26,7 +26,7 @@ public class WonService {
     public Mono<String> sendmessage(String accountnum, String bank, User user) {
         String url = "https://finopenapi.ssafy.io/ssafy/api/v1/edu/accountAuth/openAccountAuth";
 
-        String requestBody = String.format("{\"Header\": {\"apiName\": \"openAccountAuth\", \"transmissionDate\": \"%s\", \"transmissionTime\": \"%s\", \"institutionCode\": \"00100\", \"fintechAppNo\": \"001\", \"apiServiceCode\": \"openAccountAuth\", \"institutionTransactionUniqueNo\": \"%s\", \"apiKey\": \"063446596d794b47bb3d4977043e3523\", \"userKey\": \"2c07499f-9e20-4800-a1ae-a45a4382d4d8\"}, \"accountNo\": \"%s\", \"authText\": \"SSAFY_TEST\"}",
+        String requestBody = String.format("{\"Header\": {\"apiName\": \"openAccountAuth\", \"transmissionDate\": \"%s\", \"transmissionTime\": \"%s\", \"institutionCode\": \"00100\", \"fintechAppNo\": \"001\", \"apiServiceCode\": \"openAccountAuth\", \"institutionTransactionUniqueNo\": \"%s\", \"apiKey\": \"063446596d794b47bb3d4977043e3523\", \"userKey\": \"b67bc1d7-dc2e-4ffc-afd5-100f18336a6e\"}, \"accountNo\": \"%s\", \"authText\": \"SSAFY_TEST\"}",
                 getCurrentDate(), getCurrentTime(), generateUniqueTransactionNo(), accountnum);
 
         return webClient.post()
@@ -48,7 +48,7 @@ public class WonService {
     public Mono<String> checkmessage(String accountnum, String authText, String bank, String authnum, User user) {
         String url = "https://finopenapi.ssafy.io/ssafy/api/v1/edu/accountAuth/checkAuthCode";
         String requestBody = String.format(
-                "{\"Header\": {\"apiName\": \"checkAuthCode\", \"transmissionDate\": \"%s\", \"transmissionTime\": \"%s\", \"institutionCode\": \"00100\", \"fintechAppNo\": \"001\", \"apiServiceCode\": \"checkAuthCode\", \"institutionTransactionUniqueNo\": \"%s\", \"apiKey\": \"063446596d794b47bb3d4977043e3523\", \"userKey\": \"2c07499f-9e20-4800-a1ae-a45a4382d4d8\"}, \"accountNo\": \"%s\", \"authText\": \"%s\", \"authCode\": \"%s\"}",
+                "{\"Header\": {\"apiName\": \"checkAuthCode\", \"transmissionDate\": \"%s\", \"transmissionTime\": \"%s\", \"institutionCode\": \"00100\", \"fintechAppNo\": \"001\", \"apiServiceCode\": \"checkAuthCode\", \"institutionTransactionUniqueNo\": \"%s\", \"apiKey\": \"063446596d794b47bb3d4977043e3523\", \"userKey\": \"b67bc1d7-dc2e-4ffc-afd5-100f18336a6e\"}, \"accountNo\": \"%s\", \"authText\": \"%s\", \"authCode\": \"%s\"}",
                 getCurrentDate(), getCurrentTime(),generateUniqueTransactionNo(), accountnum, authText, authnum
         );
 //        요청을 확인하고, 유저 데이터를 해당 아래 컨트롤러를 활용해서 업데이트하는 로직 피룡
