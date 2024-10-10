@@ -94,35 +94,35 @@ const items: Item[] = [
   {
     name: "지파워 25W 초고속충전기 PD 3.0 PPS 아이폰 아이패드 C TO 8 케이블 포함",
     price: 16500,
-    imageUrl: "../../../public/img/icons/price1.jpg",
+    imageUrl: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FtuzBt%2FbtsJY9FUlWb%2F9bgKLbAGodJcbxOu7hTBLK%2Fimg.jpg",
     coupangUrl:
       "https://www.coupang.com/vp/products/7761753188?itemId=20932583329&vendorItemId=87356663129&src=1042503&spec=10304025&addtag=400&ctag=7761753188&lptag=10304025I20932583329V87356663129&itime=20241009142947&pageType=PRODUCT&pageValue=7761753188&wPcid=28190612492210251486059&wRef=&wTime=20241009142947&redirect=landing&gclid=Cj0KCQjwsJO4BhDoARIsADDv4vCzd15GbRB_ayWEAZHL-DMGXftOUK0Gwvzs3ZolkzcIqSAbUhNiBYEaAsPQEALw_wcB&mcid=6cc2fbe09d8947d6812f4964a7724dbd&campaignid=21519412236&adgroupid=",
   },
   {
     name: "skater 바나나 케이스, 1개",
     price: 5660,
-    imageUrl: "../../../public/img/icons/price2.jpg",
+    imageUrl: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbTG8yV%2FbtsJZnRi14J%2Fkw8VnwyBajuwQKQnPnaFtk%2Fimg.jpg",
     coupangUrl:
       "https://www.coupang.com/vp/products/3768357?itemId=18580909&vendorItemId=3027261591&q=skater+%EB%B0%94%EB%82%98%EB%82%98+%EC%BC%80%EC%9D%B4%EC%8A%A4%2C+1%EA%B0%9C&itemsCount=31&searchId=e56bb7ae1c4f4369b48f04ccd7935bdf&rank=1&isAddedCart=",
   },
   {
     name: "재원전자 버디쿡 에어프라이어 3.9L BD8002S",
     price: 43460,
-    imageUrl: "../../../public/img/icons/price3.jpg",
+    imageUrl: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fl2OU3%2FbtsJ0fdXUvb%2F1642e6WEcdKZq8ICAlruK1%2Fimg.jpg",
     coupangUrl:
       "https://www.coupang.com/vp/products/1387602348?itemId=2423157476&vendorItemId=70417265843&pickType=COU_PICK&q=%EC%9E%AC%EC%9B%90%EC%A0%84%EC%9E%90+%EB%B2%84%EB%94%94%EC%BF%A1+%EC%97%90%EC%96%B4%ED%94%84%EB%9D%BC%EC%9D%B4%EC%96%B4+%EB%8C%80%EC%9A%A9%EB%9F%89+3.9L&itemsCount=36&searchId=9bf5620dde2b4d9181c56bf8052df614&rank=0&isAddedCart=",
   },
   {
     name: "프레시 채소믹스, 500g, 1개",
     price: 5790,
-    imageUrl: "../../../public/img/icons/price4.jpg",
+    imageUrl: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FU1cBA%2FbtsJ0QLGKmW%2FulNngKkGf896Q6sYHHI71k%2Fimg.jpg",
     coupangUrl:
       "https://www.coupang.com/vp/products/4917479866?itemId=6437111906&vendorItemId=73731638746&pickType=COU_PICK&q=%ED%94%84%EB%A0%88%EC%8B%9C+%EC%B1%84%EC%86%8C%EB%AF%B9%EC%8A%A4%2C+500g%2C+1%EA%B0%9C&itemsCount=36&searchId=ae7d19f440134cdb8f80d2bd757375b6&rank=1&isAddedCart=",
   },
   {
     name: "농심 신라면, 5개",
     price: 3900,
-    imageUrl: "../../../public/img/icons/price5.jpg",
+    imageUrl: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FkAXvE%2FbtsJYBCUW2S%2FGmaPCujPaSHsOyEl00VSy1%2Fimg.jpg",
     coupangUrl:
       "https://www.coupang.com/vp/products/7958974?itemId=93553&vendorItemId=3000207618&q=%EB%86%8D%EC%8B%AC+%EC%8B%A0%EB%9D%BC%EB%A9%B4%2C+5%EA%B0%9C&itemsCount=36&searchId=92b2b14a3fe7495d8c283b3b34f2bbd3&rank=1&isAddedCart=",
   },

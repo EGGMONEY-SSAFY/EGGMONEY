@@ -8,16 +8,16 @@ from pyspark.sql.window import Window
 class KMeansService:
     def __init__(self):
         # SparkSession을 수동으로 생성하여 SparkContext 초기화
-        self.spark = SparkSession.builder \
-            .appName("KMeansService") \
-            .getOrCreate()
+        self.spark = None  # 초기에는 Spark 세션을 만들지 않음
         self.model_path = "./kmeans_model"
         self.assembler = VectorAssembler(inputCols=["deposit_ratio", "savings_ratio", "stock_ratio"], outputCol="features")
 
-    # Spark 세션 생성
+    # Spark 세션 생성 (중지된 세션 복구)
     def get_spark_session(self):
         if not self.spark or self.spark._jsc is None:
-            self.spark = SparkSession.builder.appName("KMeansService").getOrCreate()
+            self.spark = SparkSession.builder \
+                .appName("FastAPI") \
+                .getOrCreate()
         return self.spark
 
 
