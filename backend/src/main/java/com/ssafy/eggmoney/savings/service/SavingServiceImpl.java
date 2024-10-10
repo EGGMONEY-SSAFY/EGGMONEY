@@ -47,7 +47,7 @@ public class SavingServiceImpl implements SavingService {
     @Override
     @Transactional(readOnly = true)
     public List<SavingsProductListResponseDto> getSavingProducts() {
-        List<SavingsProduct> productList =  savingsProductRepository.findAll();
+        List<SavingsProduct> productList =  savingsProductRepository.findAllByOrderBySavingsDate();
 
         List<SavingsProductListResponseDto> productListDto = productList.stream().map(
                 (product) -> SavingsProductListResponseDto.builder()

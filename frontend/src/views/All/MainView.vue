@@ -8,7 +8,7 @@
     </p>
     <button
       @click="start"
-      class="my-20 bg-[#ff7f50] text-white border-none py-2 cursor-pointer hover:bg-[#ff6347]"
+      class="my-10 bg-[#ff7f50] text-white border-none py-2 cursor-pointer hover:bg-[#ff6347]"
       style="border-radius: 8rem; padding-left: 8rem; padding-right: 8rem"
     >
       시작하기

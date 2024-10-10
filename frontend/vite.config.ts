@@ -63,12 +63,12 @@ export default defineConfig(({ mode }) => {
           secure: false,
           rewrite: (path) => path.replace(new RegExp(`^${env.VITE_BASE_URL}`), ""),
         },
-        '/dpi': {
-          target: 'https://oracle1.mypjt.xyz/api',
-          changeOrigin: true,
-          secure: true,
-          rewrite: (path) => path.replace(/^\/dpi/, ""),
-        }
+        // '/dpi': {
+        //   target: 'https://oracle1.mypjt.xyz/api',
+        //   changeOrigin: true,
+        //   secure: true,
+        //   rewrite: (path) => path.replace(/^\/dpi/, ""),
+        // }
       },      
     },
   }
