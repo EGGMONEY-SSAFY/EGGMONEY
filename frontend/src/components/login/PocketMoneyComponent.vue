@@ -125,6 +125,7 @@ import { ref, onMounted } from "vue"
 import axios from "axios"
 import { useVariableStore } from "@/stores/variable"
 import { useAuthStore } from "@/stores/auth"
+import { useUserStore } from "@/stores/user";
 
 const authStore = useAuthStore()
 
@@ -138,7 +139,7 @@ interface Child {
   allowancePeriod: string
   allowanceDay: number
 }
-const parent = ref({ name: "김엄마" }) // 로그인 유저의 정보 user.name;
+const parent = ref({ name: useUserStore().user?.name }) // 로그인 유저의 정보 user.name;
 
 const children = ref<Child[]>([])
 const selectedChild = ref<Child | null>(null)

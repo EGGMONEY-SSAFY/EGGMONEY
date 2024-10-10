@@ -34,6 +34,16 @@ public class AllowanceService {
         }
         throw new IllegalArgumentException("user is not your child");
     }
+    public void deleteAllowance(User user){
+        Allowance allowance = allowanceRepository.findByChildId(user.getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 용돈 정보가 존재하지 않습니다."));
+
+        // 삭제 권한 체크: 자녀의 용돈인지 확인
+        if (!allowance.getChild().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("해당 용돈을 삭제할 권한이 없습니다.");
+        }
+        allowanceRepository.delete(allowance);
+    }
 
     public AllowanceUpdateResponseDto updateAllowance(Long allowanceId, AllowanceUpdateResponseDto updateDto){
           Allowance allowance = allowanceRepository.findById(allowanceId)
