@@ -24,6 +24,9 @@ const pocketmoney = () => {
 const won = () => {
   router.push("/won")
 }
+const stockRatio = () => {
+  router.push("/StockRate")
+}
 </script>
 
 <template>
@@ -61,6 +64,19 @@ const won = () => {
     >
       <div class="mx-8 my-4">
         <p>용돈 수정</p>
+      </div>
+      <div class="flex items-center justify-center m-4">
+        <p><IconRightArrow class="size-6" /></p>
+      </div>
+    </div>
+
+    <div
+      v-if="userStore.user && userStore.user.role === '부모'"
+      class="flex justify-between cursor-pointer"
+      @click="stockRatio"
+    >
+      <div class="mx-8 my-4">
+        <p>투자 비율 변경</p>
       </div>
       <div class="flex items-center justify-center m-4">
         <p><IconRightArrow class="size-6" /></p>

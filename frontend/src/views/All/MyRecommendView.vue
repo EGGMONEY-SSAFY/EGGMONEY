@@ -201,7 +201,7 @@ onMounted(async () => {
   </div>
   <div v-else class="pt-5 flex-grow justify-center gap-3 p-10 text-center items-center">
     <div class="grid justify-center bg-white rounded-xl pt-3">
-      <img src="@/assets/asset/loading.gif" alt="" style="width: 250px; height: 250px;">
+      <img src="@/assets/asset/loading.gif" alt="" style="width: 250px; height: 250px" />
       <h1 class="text-xl font-bold pt-3 pb-4 text-black">사용자 분석중 !</h1>
     </div>
   </div>
