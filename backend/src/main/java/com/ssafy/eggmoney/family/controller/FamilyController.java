@@ -1,5 +1,7 @@
 package com.ssafy.eggmoney.family.controller;
 
+import com.ssafy.eggmoney.allowance.dto.response.AllowanceCreateResponseDto;
+import com.ssafy.eggmoney.allowance.service.AllowanceService;
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 import com.ssafy.eggmoney.common.service.S3Service;
 import com.ssafy.eggmoney.family.dto.request.ChangeFamilyPresentRequestDto;
@@ -31,7 +33,7 @@ public class FamilyController {
     private final FamilyServcie familyServcie;
     private final KakaoAuthService kakaoAuthService;
     private final S3Service s3Service;
-
+    private final AllowanceService allowanceService;
 
 
 
@@ -101,6 +103,7 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
             response.put("status", "success");
             response.put("message", "Family connected successfully.");
             response.put("additionalData", "예시 데이터"); // 필요한 추가 데이터
+            allowanceService.createAllowance(user);
             return ResponseEntity.ok(response);
         } else {
             response.put("status", "fail");

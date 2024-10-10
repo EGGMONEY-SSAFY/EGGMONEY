@@ -28,7 +28,7 @@ onMounted(async () => {
       <span class="font-bold">{{ myStockI.toLocaleString() }} 알</span>
     </div>
     <div class="mx-6 mb-4">
-      <span>총 주식 금액 : {{}}</span>
+      <span>총 주식 금액 : </span>
       <span class="font-bold" v-if="StockStore.totalStockValue"
         >{{ StockStore.totalStockValue.toLocaleString() }} 알</span
       >

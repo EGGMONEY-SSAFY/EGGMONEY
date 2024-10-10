@@ -7,7 +7,7 @@ export const useStockStore = defineStore("stock", () => {
   const API_URL = "/api/v1"
   const authStore = useAuthStore()
   const token = authStore.accessToken
-  const totalStockValue = ref()
+  const totalStockValue = ref(0)
   const setTotalStockValue = (total: number) => {
     totalStockValue.value = total
   }

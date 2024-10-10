@@ -85,7 +85,7 @@
       </div>
     </div>
 
-    <!-- <hr class="my-6" dddddddddddddddddddd/> -->
+    <!-- <hr class="my-6" dddddddddddddddddddddddd/> -->
 
     <!-- 용돈 설정 -->
     <div class="bg-white rounded-lg shadow-md p-4 mb-4">
@@ -125,6 +125,7 @@ import { ref, onMounted } from "vue"
 import axios from "axios"
 import { useVariableStore } from "@/stores/variable"
 import { useAuthStore } from "@/stores/auth"
+import { useUserStore } from "@/stores/user";
 
 const authStore = useAuthStore()
 
@@ -138,7 +139,7 @@ interface Child {
   allowancePeriod: string
   allowanceDay: number
 }
-const parent = ref({ name: "김엄마" }) // 로그인 유저의 정보 user.name;
+const parent = ref({ name: useUserStore().user?.name }) // 로그인 유저의 정보 user.name;
 
 const children = ref<Child[]>([])
 const selectedChild = ref<Child | null>(null)
