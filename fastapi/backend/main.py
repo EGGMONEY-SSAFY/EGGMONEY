@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from utils import create_spark_session, get_avg_loan_data
+from utils import get_avg_loan_data
 from pydantic import BaseModel
 from KMeansService import KMeansService
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,16 +7,12 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 kmeans_service = KMeansService()
 origins = [
-    "http://j11c204.p.ssafy.io",
-    "https://j11c204.p.ssafy.io",
-    "http://localhost:5173",
-    "http://localhost:8082",
+    "*"
 ]
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -30,18 +26,12 @@ class NewUserModel(BaseModel):
 # 대출 평균 Response
 @app.get("/api/v1/avg_loan")
 async def get_avg_loan():
-    # Spark 세션 생성
-    spark = create_spark_session()
     try:
         # 대출 이율 평균을 계산하는 함수 호출
-        data = get_avg_loan_data(spark)
+        data = get_avg_loan_data(kmeans_service.get_spark_session())
         return data
     except Exception as e:
         return {"error": str(e)}
-    finally:
-        # Spark 세션을 항상 종료
-        if spark:
-            spark.stop()
 
 # K-Means 학습
 @app.post("/api/v1/kmeans/train")
