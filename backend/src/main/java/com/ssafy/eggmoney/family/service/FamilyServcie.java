@@ -1,5 +1,6 @@
 package com.ssafy.eggmoney.family.service;
 
+import com.ssafy.eggmoney.allowance.service.AllowanceService;
 import com.ssafy.eggmoney.common.exception.ErrorType;
 import com.ssafy.eggmoney.family.dto.request.ChangeFamilyPresentRequestDto;
 import com.ssafy.eggmoney.family.dto.request.ConnectFamilyRequestDto;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 public class FamilyServcie {
     private final FamilyRepository familyRepository;
     private final UserRepository userRepository;
-
+    private final AllowanceService allowanceService;
 //    가족 조회
     public GetFamilyResponseDto getFamily(Long familyId){
         Family fam = familyRepository.findById(familyId).get();
@@ -135,6 +136,7 @@ public class FamilyServcie {
         for(User member: familyMembers){
             member.setFamily(null);
             userRepository.save(member);
+            allowanceService.deleteAllowance(member);
         }
         familyRepository.delete(family);
     }
