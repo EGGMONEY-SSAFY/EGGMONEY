@@ -17,7 +17,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue"
+import { useAuthStore } from "@/stores/auth"
+import { onMounted, ref } from "vue"
 import { useRouter } from "vue-router"
 
 const router = useRouter()
@@ -25,4 +26,16 @@ const router = useRouter()
 const start = () => {
   router.push({ name: "LoginView" })
 }
+onMounted(() => {
+  // const queryParams = new URLSearchParams(window.location.search);
+  // const logoutStatus = queryParams.get('logout');
+
+  // 로그아웃 성공 시 클라이언트의 토큰을 삭제
+  // if (logoutStatus === 'success') {
+  useAuthStore().clearToken()
+  //   console.log("로그아웃이 성공적으로 처리되었습니다.");
+  // } else {
+  //   console.log("로그아웃 상태를 확인할 수 없습니다.");
+  // }
+})
 </script>

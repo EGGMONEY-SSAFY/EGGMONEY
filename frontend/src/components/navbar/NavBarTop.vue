@@ -12,6 +12,9 @@ const router = useRouter()
 const goBack = () => {
   router.back()
 }
+const goNoti = () => {
+  router.push("/Notification")
+}
 </script>
 
 <template>
@@ -22,7 +25,7 @@ const goBack = () => {
     <div class="col-span-8 flex justify-center self-center text-main-color font-bold text-lg">
       {{ title }}
     </div>
-    <div class="col-span-2 flex justify-center self-center cursor-pointer">
+    <div class="col-span-2 flex justify-center self-center cursor-pointer" @click="goNoti">
       <IconNotify />
     </div>
   </div>
