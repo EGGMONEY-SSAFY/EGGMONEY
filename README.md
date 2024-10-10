@@ -38,11 +38,13 @@
 ---
 ##### 📊 I. 기술 스택
 
+![skill2](readme/skill2.png)
+
 |  | Front | Back | Infra |
 | --- | --- | --- |  --- |
 | **Language** | TypeScript | Java 17 |  |
 | **Framework** | Vue3.js | Spring Boot, Spring Security |  |
-| **Library** | Tailwind, PWA | JWT, JPA |  |
+| **Library** | Tailwind, PWA | JWT, JPA, QueryDSL |  |
 | **DB** |  | MariaDB |  |
 | **Server** |  | Node.js | Amazon EC2, Nginx, Docker, S3 |
 | **CI/CD** |  |  | Jenkins, Mattermost |
