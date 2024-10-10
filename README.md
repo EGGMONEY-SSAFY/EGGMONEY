@@ -187,10 +187,9 @@ Slack과 유사한 기능을 제공<br/>
 </details>
 <br/>
 
-▶ 에그머니 소개 영상<br/>
-<video width="320" height="240" controls>
-  <source src="exec/eggmoney.mp4" type="video/mp4">
-</video>
+[▶ 에그머니 소개 영상](exec/eggmoney.mp4)
+
+[![전체](readme/ucc.jpg)](exec/eggmoney.mp4)
 
 ---
 ##### 💻 III. 주요 기술 설명
