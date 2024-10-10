@@ -98,7 +98,7 @@ public class AccountService {
                 .mainAccountBalance(account != null ? account.getBalance() : null)
                 .savings(savings != null ? savings.getBalance() : null)
                 .deposit(deposit != null ? deposit.getDepositMoney() : null)
-                .stock(findUserTotalStockPrice(userId))
+                .stock(findUserTotalStockPrice(userId) != 0 ? findUserTotalStockPrice(userId) : null )
                 .loan(loan != null ? loan.getBalance() : null)
                 .build();
         return dto;
@@ -108,7 +108,7 @@ public class AccountService {
         List<StockUser> stockUsers = stockUserRepository.findJoinStockByUserIdOrderByStockId(userId);
 
         if(stockUsers == null || stockUsers.isEmpty()) {
-            return null;
+            return 0;
         }
 
         int totalStockPrice = 0;
