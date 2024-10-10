@@ -33,7 +33,7 @@ const avgLoanData = ref<LoanData[]>([])
 const getAvgLoanData = function (): Promise<void> {
   return axios({
     method: "get",
-    url: `/dpi/v1/avg_loan`,
+    url: `https://oracle1.mypjt.xyz/api/v1/avg_loan`,
   })
     .then((res) => {
       avgLoanData.value = res.data
