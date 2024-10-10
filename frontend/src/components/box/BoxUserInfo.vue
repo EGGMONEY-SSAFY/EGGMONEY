@@ -7,13 +7,14 @@ const StockStore = useStockStore()
 const userStore = useUserStore()
 const role = userStore.user?.role
 const myStock = ref()
-const myStockB = ref()
-const myStockI = ref()
-
+const myStockB = ref(0)
+const myStockI = ref(0)
+const myStockV = ref(0)
 onMounted(async () => {
   myStock.value = await StockStore.getMoneyInfo()
   myStockB.value = await myStock.value.balance
   myStockI.value = await myStock.value.investablePrice
+  myStockV.value = await myStock.value.totalStockPrice
 })
 </script>
 
@@ -29,8 +30,8 @@ onMounted(async () => {
     </div>
     <div class="mx-6 mb-4">
       <span>총 주식 금액 : </span>
-      <span class="font-bold" v-if="StockStore.totalStockValue"
-        >{{ StockStore.totalStockValue.toLocaleString() }} 알</span
+      <span class="font-bold" v-if="myStockV"
+        >{{ myStockV.toLocaleString() }} 알</span
       >
     </div>
   </div>

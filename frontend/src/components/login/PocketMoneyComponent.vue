@@ -125,7 +125,7 @@ import { ref, onMounted } from "vue"
 import axios from "axios"
 import { useVariableStore } from "@/stores/variable"
 import { useAuthStore } from "@/stores/auth"
-import { useUserStore } from "@/stores/user";
+import { useUserStore } from "@/stores/user"
 
 const authStore = useAuthStore()
 
