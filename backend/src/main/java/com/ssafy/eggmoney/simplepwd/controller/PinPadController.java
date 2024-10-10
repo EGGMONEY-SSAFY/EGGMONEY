@@ -1,5 +1,6 @@
 package com.ssafy.eggmoney.simplepwd.controller;
 
+import com.ssafy.eggmoney.account.repository.AccountRepository;
 import com.ssafy.eggmoney.account.service.AccountService;
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 import com.ssafy.eggmoney.simplepwd.dto.request.PinVerificationRequest;
@@ -30,14 +31,16 @@ public class PinPadController {
     private final KakaoAuthService kakaoAuthService;
     private final UserService userService;
     private final AccountService accountService;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    public PinPadController(PinPadService pinPadService, EncryptionService encryptionService, KakaoAuthService kakaoAuthService, UserService userService, AccountService accountService){
+    public PinPadController(PinPadService pinPadService, EncryptionService encryptionService, KakaoAuthService kakaoAuthService, UserService userService, AccountService accountService, AccountRepository accountRepository){
         this.pinPadService=pinPadService;
         this.encryptionService=encryptionService;
         this.kakaoAuthService = kakaoAuthService;
         this.userService = userService;
         this.accountService=accountService;
+        this.accountRepository= accountRepository;
     }
 
     @GetMapping(value = "/api/pinpad", produces = "application/json")
@@ -87,7 +90,7 @@ public class PinPadController {
         userService.updateUser(user, updateUserRequestDto);
         response.put("message","비밀번호 생성 성공");
 //        response.put("Pwd",decryptedPasswordString);
-        if(user.getRole().equals("자녀") && !user.hasAccount()){
+        if(user.getRole().equals("자녀") && accountRepository.findByUserId(user.getId()).isEmpty()){
             accountService.createAccount(user.getId());
         }
         return ResponseEntity.ok(response);
