@@ -42,7 +42,7 @@ public class StockPendingScheduler {
     String[] stockItems = {"???", "코스피", "코스닥", "자동차", "반도체", "헬스케어", "은행",
             "에너지화학", "철강", "건설", "운송", "미디어", "IT", "유틸리티"};
 
-    @Scheduled(cron = "0 31 17 * * MON-FRI", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 51 16 * * MON-FRI", zone = "Asia/Seoul")
     @Transactional
     public void executePending() {
         log.info("지정매도 시작: " + LocalDateTime.now());
