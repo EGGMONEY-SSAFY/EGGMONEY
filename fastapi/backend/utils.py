@@ -2,13 +2,6 @@ from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 import time
 
-# SparkSession 생성
-def create_spark_session():
-    spark = SparkSession.builder \
-        .appName("FastAPI") \
-        .getOrCreate()
-    return spark
-
 # loan Data 평균
 def get_avg_loan_data(spark):
 
