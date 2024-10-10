@@ -35,7 +35,6 @@ public class UserController {
 //    유저 생성
     @PostMapping("/create")
     public void createuser(@RequestBody CreateUserReqeusetDto dto) {
-//        System.out.println(dto.getBank());
         userService.createUser(dto);
     }
 

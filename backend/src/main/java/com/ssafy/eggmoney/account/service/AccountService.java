@@ -93,7 +93,6 @@ public class AccountService {
         Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElse(null);
         List<Loan> loans = loanRepository.findAllByUserIdAndLoanStatus(userId, LoanStatus.APPROVAL);
         int totalLoan = 0;
-        System.out.println(loans.toString());
         if ( !loans.isEmpty() ) {
             for ( Loan loan : loans ) {
                 totalLoan += loan.getBalance();

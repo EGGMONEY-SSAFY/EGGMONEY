@@ -22,7 +22,6 @@ public class AccountLogService {
     private final AccountLogRepository accountLogRepository;
     private final AccountRepository accountRepository;
 
-
 //    메인계좌 로그 조회
     public Page<GetAccountLogResponseDto> getAccountLogs(Long userId, Pageable pageable){
 

@@ -20,7 +20,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.authService = authService;
     }
 
-
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken(request);

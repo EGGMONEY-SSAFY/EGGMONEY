@@ -19,7 +19,6 @@ import com.ssafy.eggmoney.notification.service.NotificationService;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +31,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class DepositServiceImpl implements DepositService {
@@ -55,8 +53,6 @@ public class DepositServiceImpl implements DepositService {
                         .depositRate(product.getDepositRate())
                         .build())
                 .collect(Collectors.toList());
-
-        log.info("예금 상품 리스트 조회");
 
         return productListDto;
     }
@@ -93,12 +89,10 @@ public class DepositServiceImpl implements DepositService {
         LocalDateTime expiration = LocalDateTime.now().plusMonths(depositProduct.getDepositDate());
 
         if(!user.getRole().equals("자녀")){
-            log.error("예금 가입 권한이 없는 유저입니다.");
             throw new AccessDeniedException(ErrorType.NOT_CREATED_ROLE.toString());
         }
 
         if(depositRepository.findByUserIdAndDepositStatus(requestDto.getUserId(), DepositStatus.AVAILABLE).isPresent()){
-            log.error("이미 사용자가 예금상품을 가지고 있습니다.");
             throw new AccessDeniedException(ErrorType.NOT_CREATED_ACCOUNT.toString());
         }
 
@@ -111,9 +105,7 @@ public class DepositServiceImpl implements DepositService {
                 .build();
 
         Deposit savedDeposit = depositRepository.save(deposit);
-        log.info("예금 생성 완료");
         // return 저장된 예금 정보?
-
     }
 
 
@@ -132,7 +124,6 @@ public class DepositServiceImpl implements DepositService {
                 .depositRate(depositProduct.getDepositRate())
                 .depositDate(depositProduct.getDepositDate()).build();
 
-        log.info("예금 조회");
         return DepositResponseDto.builder()
                 .depositId(deposit.getId())
                 .depositProduct(depositProductDto)
@@ -141,7 +132,6 @@ public class DepositServiceImpl implements DepositService {
                 .createdAt(deposit.getCreatedAt())
                 .build();
     }
-
 
     // 예금 해지(만기일 이전 해지시 이율, 만기일 이후 해지시 이율 고려)
     @Override
@@ -160,7 +150,6 @@ public class DepositServiceImpl implements DepositService {
             interestMoney = deposit.getDepositMoney() * deposit.getDepositProduct().getDepositRate() / 100 * deposit.getDepositProduct().getDepositDate() / 12;
             expiredMoney = deposit.getDepositMoney() + (int) interestMoney;
         }
-        log.info("interestMoney: {}, expiredMoney: {}", interestMoney, expiredMoney);
         accountService.updateAccount(AccountLogType.DEPOSIT, deposit.getUser().getId(), expiredMoney);
 
         DeleteDepositResponseDto deleteResponseDto = DeleteDepositResponseDto.builder()
@@ -184,8 +173,6 @@ public class DepositServiceImpl implements DepositService {
                 .build();
         notificationService.saveNotification(null, notificationRequest);
 
-        log.info("예금 계좌 삭제 {}", depositId);
-
         return deleteResponseDto;
     }
 
@@ -208,17 +195,10 @@ public class DepositServiceImpl implements DepositService {
         LocalDateTime end = LocalDate.now().plusDays(3).atTime(23, 59, 59);
         List<Deposit> deposits = depositRepository.findAllByExpireDateBetweenAndDepositStatus(start, end, DepositStatus.AVAILABLE);
 
-        if(!deposits.isEmpty()){
-
-            for(Deposit deposit : deposits){
-
-                    log.info("depositId notification : {}", deposit.getId());
-                }
-        }else{
+        if(deposits.isEmpty()){
             return false;
         }
 
         return true;
-
     }
 }

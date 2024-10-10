@@ -29,13 +29,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/family")
 public class FamilyController {
-    private static final Logger logger = LoggerFactory.getLogger(FamilyController.class);
     private final FamilyServcie familyServcie;
     private final KakaoAuthService kakaoAuthService;
     private final S3Service s3Service;
     private final AllowanceService allowanceService;
-
-
 
 //    가족 조회
     @GetMapping("/{familyId}")
@@ -50,22 +47,19 @@ public class FamilyController {
         Long familyId = user.getFamily().getId();
         return familyServcie.getFamily(familyId);
     }
-//    가족 생성
+
 // 가족 생성
 @PostMapping("/create")
 public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization", required = false) String token,
                                            @RequestBody CreateFamilyRequestDto dto) {
-
 
     User user = kakaoAuthService.verifyKakaoToken(token);
 
     // 가족 생성 서비스 호출
     try {
         familyServcie.createFamily(dto, user);
-        logger.info("가족 생성 성공");
         return ResponseEntity.ok("가족 생성 완료");
     } catch (Exception e) {
-        logger.error("가족 생성 중 오류 발생", e);
         return ResponseEntity.status(500).body("가족 생성 중 오류 발생");
     }
 }
@@ -76,7 +70,6 @@ public ResponseEntity<String> createFamily(@RequestHeader(value = "Authorization
 //    가족 연결
 //    @PostMapping("/{family_id}/join")
 //    public void connectFamily(@PathVariable("family_id") Long familyId, @RequestBody ConnectFamilyRequestDto dto) {
-//        System.out.println("family 연결 Controller");
 //        familyServcie.connectFamily(familyId, dto);
 //    }
 

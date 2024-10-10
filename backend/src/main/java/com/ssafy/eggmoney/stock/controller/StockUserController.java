@@ -37,14 +37,12 @@ public class StockUserController {
 //
 //        return new ResponseEntity<>(stockUserService.findInvestablePrice(childId), HttpStatus.OK);
 //    }
-@GetMapping("/stock/user/available-balance")
-public ResponseEntity<Map<String, Object>> getInvestablePrice(@RequestHeader("Authorization") String token) {
-    Long userId = kakaoAuthService.verifyKakaoToken(token).getId();
-    return new ResponseEntity<>(stockUserService.findInvestablePrice(userId), HttpStatus.OK);
-}
 
-
-
+    @GetMapping("/stock/user/available-balance")
+    public ResponseEntity<Map<String, Object>> getInvestablePrice(@RequestHeader("Authorization") String token) {
+        Long userId = kakaoAuthService.verifyKakaoToken(token).getId();
+        return new ResponseEntity<>(stockUserService.findInvestablePrice(userId), HttpStatus.OK);
+    }
 
 //    @GetMapping("/stock/user/{childId}/portfolio")
 //    public ResponseEntity<Map<String, Object>> getUserStocks(@PathVariable Long childId,
@@ -57,14 +55,12 @@ public ResponseEntity<Map<String, Object>> getInvestablePrice(@RequestHeader("Au
 //
 //        return new ResponseEntity<>(stockUserService.findUserStocks(childId), HttpStatus.OK);
 //    }
-@GetMapping("/stock/user/portfolio")
-public ResponseEntity<Map<String, Object>> getUserStocks(@RequestHeader("Authorization") String token) {
-    Long userId = kakaoAuthService.verifyKakaoToken(token).getId();
-    return new ResponseEntity<>(stockUserService.findUserStocks(userId), HttpStatus.OK);
-}
 
-
-
+    @GetMapping("/stock/user/portfolio")
+    public ResponseEntity<Map<String, Object>> getUserStocks(@RequestHeader("Authorization") String token) {
+        Long userId = kakaoAuthService.verifyKakaoToken(token).getId();
+        return new ResponseEntity<>(stockUserService.findUserStocks(userId), HttpStatus.OK);
+    }
 
     @PostMapping("/stock/user/buy")
     public ResponseEntity<Void> buyStock(@RequestBody StockBuyRequest stockBuyReq,

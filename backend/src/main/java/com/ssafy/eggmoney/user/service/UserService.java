@@ -70,11 +70,9 @@ public class UserService {
         if ( dto.getRole().equals("자녀") )
             user.setStockRatio(50);
         userRepository.saveAndFlush(user);
-        System.out.println("유저 생성 완료");
 
 //        메인 계좌 생성
         accountService.createAccount(user.getId());
-        System.out.println("계좌 생성 완료");
     }
 
     // 유저 정보 업데이트

@@ -9,5 +9,4 @@ import java.util.Optional;
 public interface AllowanceRepository extends JpaRepository<Allowance, Long> {
     Optional<Allowance> findByChildId(Long childId);
     List<Allowance> findAllByChildFamilyId(Long familyId);
-//  userId,  parentId
 }

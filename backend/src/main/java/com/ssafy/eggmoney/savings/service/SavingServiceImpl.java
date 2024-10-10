@@ -20,7 +20,6 @@ import com.ssafy.eggmoney.savings.repository.SavingsProductRepository;
 import com.ssafy.eggmoney.savings.repository.SavingsRepository;
 import com.ssafy.eggmoney.user.entity.User;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +31,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SavingServiceImpl implements SavingService {
@@ -41,7 +39,6 @@ public class SavingServiceImpl implements SavingService {
     private final SavingsLogRepository savingsLogRepository;
     private final AccountService accountService;
     private final NotificationService notificationService;
-
 
     // 적금 상품 전체 조회하기
     @Override
@@ -59,7 +56,6 @@ public class SavingServiceImpl implements SavingService {
                         .build()
                 ).collect(Collectors.toList());
 
-        log.info("적금 상품 리스트 조회");
         return productListDto;
     }
 
@@ -96,17 +92,14 @@ public class SavingServiceImpl implements SavingService {
         );
 
         if(!user.getRole().equals("자녀")){
-            log.error("적금 가입 권한이 없는 유저입니다.");
             throw new AccessDeniedException(ErrorType.NOT_CREATED_ROLE.toString());
         }
 
         if(savingsRepository.findByUserIdAndSavingsStatus(user.getId(), SavingsStatus.AVAILABLE).isPresent()){
-            log.error("이미 사용자가 적금상품을 가지고 있습니다.");
             throw new AccessDeniedException(ErrorType.NOT_CREATED_ACCOUNT.toString());
         }
 
         if(savingsProduct.getMaxPrice() < requestDto.getPaymentMoney() * savingsProduct.getSavingsDate()){
-            log.error("적금 최대 납입 금액을 넘는 값입니다.");
             throw new IllegalArgumentException(ErrorType.EXCEED_MAX_PRICE.toString());
         }
 
@@ -124,16 +117,12 @@ public class SavingServiceImpl implements SavingService {
 
         accountService.updateAccount(AccountLogType.SAVINGS, user.getId(), -1 * requestDto.getPaymentMoney());
 
-        log.info("적금 생성");
-
         SavingsLog savingsLog = SavingsLog.builder()
                 .savings(savings)
                 .balance(savings.getBalance())
                 .build();
 
         savingsLogRepository.save(savingsLog);
-
-        log.info("적금 로그 저장");
     }
 
     // 개인 적금 조회하기
@@ -144,7 +133,6 @@ public class SavingServiceImpl implements SavingService {
                 () -> new NoSuchElementException(ErrorType.NOT_FOUND_SAVINGS.toString())
         );
 
-        log.info("개인 적금 조회 성공");
         return SavingsResponseDto.builder()
                 .savingsId(savings.getId())
                 .savingsRate(savings.getSavingsProduct().getSavingsRate())
@@ -165,17 +153,11 @@ public class SavingServiceImpl implements SavingService {
         Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElseThrow(
                 () -> new NoSuchElementException(ErrorType.NOT_FOUND_SAVINGS.toString())
         );
-        log.info("Savings userId : {}" , userId);
-        log.info("savings saviongs.getPaymentDate : {}", savings.getPaymentDate());
 
         // 메인계좌에서 돈 빼오기
         accountService.updateAccount(AccountLogType.SAVINGS, userId, -1 * savings.getPaymentMoney());
 
-        // Todo : 메인계좌 로그도 넣어야하나?
-
-
         if(savings.getPaymentDate() <= 0){
-            log.error("적금을 모두 납부하셨습니다.");
             throw new IllegalArgumentException(ErrorType.ALREADY_PAY_SAVINGS.toString());
         }
         Savings updateSavings = savings.toBuilder()
@@ -191,7 +173,6 @@ public class SavingServiceImpl implements SavingService {
                 .build();
 
         savingsLogRepository.save(savingsLog);
-        log.info("적금 납부하기 성공");
     }
 
     // 적금 로그 조회
@@ -209,7 +190,6 @@ public class SavingServiceImpl implements SavingService {
                         .build()
         ).collect(Collectors.toList());
 
-        log.info("적금로그 조회 성공");
         return logDto;
     }
 
@@ -238,11 +218,9 @@ public class SavingServiceImpl implements SavingService {
 
         for(int i = 1; i <= paymentDate; i++){
             interestMoney += Math.round(savings.getPaymentMoney() * (interest / 100 * i / 12));
-            log.info("interestMoney : {}", interestMoney);
         }
 
         expiredMoney = savings.getBalance() + (int) interestMoney;
-        log.info("interestMoney: {}, expiredMoney: {}", interestMoney, expiredMoney);
 
         accountService.updateAccount(AccountLogType.SAVINGS, savings.getUser().getId(), expiredMoney);
 
@@ -251,7 +229,6 @@ public class SavingServiceImpl implements SavingService {
                 .build();
 
         savingsRepository.save(updateSavings);
-        log.info("적금 해지 성공 : {}", savingsId);
 
         SavingsDeleteResponseDto deleteResponseDto = SavingsDeleteResponseDto.builder()
                 .savingsId(savings.getId())
@@ -259,7 +236,6 @@ public class SavingServiceImpl implements SavingService {
                 .expiredMoney(expiredMoney)
                 .paymentDate(savings.getSavingsProduct().getSavingsDate())
                 .build();
-
 
         NotificationRequest notificationRequest = NotificationRequest.builder()
                 .notificationType(NotificationType.적금만기)
@@ -290,12 +266,9 @@ public class SavingServiceImpl implements SavingService {
             LocalDateTime end = LocalDate.now().minusDays(1).atTime(23, 59, 59);
             List<Long> sendIds = savingsLogRepository.findSavingsIdByCreatedAtBetween(start, end);
             savingsIds.removeAll(sendIds);
-        }else{
-            log.info("미납 계좌가 없습니다.");
         }
 
         return savingsIds;
-
     }
 
     @Override
@@ -307,13 +280,11 @@ public class SavingServiceImpl implements SavingService {
             List<Long> sendIds = savingsLogRepository.findUserIdByCreatedAtBetween(start, end);
             userIds.removeAll(sendIds);
         }else{
-            log.info("미납 계좌가 없습니다.");
             return true;
         }
         if(!userIds.isEmpty()){
 
             for(Long userId : userIds){
-                log.info("userId {} : ", userId);
                 NotificationRequest notificationRequest = NotificationRequest.builder()
                         .receiveUserId(userId)
                         .message("이번 달 적금을 납부하지 않으셨습니다! \n미납시 만기일이 한달 연장됩니다.")
@@ -327,13 +298,9 @@ public class SavingServiceImpl implements SavingService {
         return false;
     }
 
-
-
     // 적금 납부 안한 계좌의 만기일 + 1 하기
     @Override
     public void plusExpired(List<Long> savingsId){
-
         savingsRepository.extendSavingsExpireDateByOneMonth(savingsId);
-        log.info("적금 미납자 계좌 만기일 연장");
     }
 }

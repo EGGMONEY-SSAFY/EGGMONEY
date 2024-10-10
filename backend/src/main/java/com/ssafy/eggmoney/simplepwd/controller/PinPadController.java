@@ -65,7 +65,6 @@ public class PinPadController {
 //        byte[] decryptedPassword = cipher.doFinal(decodedPassword);
 //
 //        String decryptedPasswordString = new String(decryptedPassword, StandardCharsets.UTF_8);
-//        System.out.println("복호화된 비밀번호:" + decryptedPasswordString);
 //
         // 세션에서 섞인 카드 순서를 가져옴
         List<Integer> shuffledPinPad = (List<Integer>) session.getAttribute("shuffledPinPad");
@@ -77,7 +76,6 @@ public class PinPadController {
         String encryptedPin = requestBody.get("encryptedPin");
         // 암호화된 핀패드 처리
         List<Integer> decryptedPin = encryptionService.decryptPin(encryptedPin,session);
-        System.out.println(decryptedPin);
         // 복호화된 숫자 리스트를 문자열로 변환
         StringBuilder simplePwdBuilder = new StringBuilder();
         for (Integer num : decryptedPin) {
@@ -103,7 +101,6 @@ public class PinPadController {
 
         // 저장된 비밀번호 확인
         String userStoredPwd = userService.getUser(user).getPwd();
-        System.out.println(encryptedPassword);
         // 암호화된 핀패드 복호화
         List<Integer> decryptedPin = encryptionService.decryptPin(encryptedPassword, session);
         // 복호화된 숫자 리스트를 문자열로 변환
@@ -115,9 +112,6 @@ public class PinPadController {
         // 사용자가 입력한 비밀번호의 문자열 (복호화 후 하나로 합친 것)
         String decryptedPinString = decryptedPinBuilder.toString();
 
-        System.out.println("복호화된 비밀번호: " + decryptedPinString);
-        System.out.println("저장된 비밀번호: " + userStoredPwd);
-
         Map<String, String> response = new HashMap<>();
 //        if(decryptedPassword.equals(userStoredPwd)){
         if(decryptedPinString.equals(userStoredPwd)){
@@ -125,7 +119,6 @@ public class PinPadController {
         }else{
             response.put("status","fail");
         }
-        System.out.println(response);
         return ResponseEntity.ok(response);
     }
 }

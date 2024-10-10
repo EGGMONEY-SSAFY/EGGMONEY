@@ -43,7 +43,6 @@ public class WithdrawalService {
     private final ApiClient apiClient;
     private final NotificationService notificationService;
 
-
     private BigInteger institutionTransactionUniqueNo = new BigInteger("0");
 
 //  출금요청 로그 조회
@@ -185,7 +184,6 @@ public class WithdrawalService {
 
                                     // 알림 보내기
                                     notificationService.saveNotification(user.getId(), notificationRequest);
-
 
                                     return apiClient.transferAccount(userKey, childAccount, parentAccount, transactionUniqueNo, with.getWithdrawalPrice());
                                 });

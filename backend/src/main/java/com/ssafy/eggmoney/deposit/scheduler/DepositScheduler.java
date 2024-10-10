@@ -22,7 +22,6 @@ public class DepositScheduler {
         List<Long> depositIds = depositService.checkExpiredDeposit();
         if(!depositIds.isEmpty()) {
             for (Long depositId : depositIds) {
-                log.info("예금 만기 계좌번호 : {}", depositId);
                 depositService.deleteDeposit(depositId);
             }
         }else{

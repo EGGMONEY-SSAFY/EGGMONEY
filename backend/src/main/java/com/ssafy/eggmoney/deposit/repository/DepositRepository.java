@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-
 public interface DepositRepository extends JpaRepository<Deposit, Long> {
     Optional<Deposit> findByUserIdAndDepositStatus(Long userId, DepositStatus status);
 

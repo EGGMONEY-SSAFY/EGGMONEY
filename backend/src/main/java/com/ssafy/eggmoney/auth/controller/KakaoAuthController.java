@@ -3,8 +3,6 @@ package com.ssafy.eggmoney.auth.controller;
 import com.ssafy.eggmoney.auth.dto.response.TokenResponse;
 import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -18,13 +16,9 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-
-
 @RestController
 @RequestMapping("/api/kakao")
 public class KakaoAuthController {
-
-    private static final Logger logger = LoggerFactory.getLogger(KakaoAuthController.class);
 
     @Value("${kakao.client.id}")
     private String kakaoClientId;
@@ -45,15 +39,13 @@ public class KakaoAuthController {
 //        ResponseEntity<Void> response = ResponseEntity.status(HttpStatus.FOUND)
 //                .location(URI.create(kakaoAuthUrl))  // 리다이렉트 URL 설정
 //                .build();
-//        logger.info("Kakao login request received");  // 로그 추가
 //        return kakaoService.getKakaoAuthUrl()
 //                .map(kakaoAuthUrl -> ResponseEntity.status(HttpStatus.FOUND)
 //                        .location(URI.create(kakaoAuthUrl))
 //                        .build());
-        logger.info("Kakao login URL request received");
+
         return kakaoService.getKakaoAuthUrl()
                 .map(kakaoAuthUrl -> {
-                    logger.info("Returning Kakao login URL: " + kakaoAuthUrl);
                     return ResponseEntity.ok(kakaoAuthUrl);  // URL을 문자열로 반환
                 });
     }
@@ -65,7 +57,6 @@ public class KakaoAuthController {
 //    })
 @GetMapping("/callback")
 public Mono<ResponseEntity<TokenResponse>> kakaoCallback(@RequestParam("code") String code) {
-//    System.out.println("callback with :" + code);
 //
 //    return kakaoService.handleUserLogin(code)
 //            .map(result -> {

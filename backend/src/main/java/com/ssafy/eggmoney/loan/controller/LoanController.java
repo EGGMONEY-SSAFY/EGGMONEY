@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
 @RequestMapping("/api/v1/fin/loan")
 @RestController
 @RequiredArgsConstructor
@@ -83,7 +82,6 @@ public class LoanController {
      * */
     @PostMapping("/send/{loanId}")
     public ResponseEntity<?> repayment(@RequestHeader(value = "Authorization") String token, @PathVariable long loanId) {
-        log.info("아아");
         loanService.sendRepayment(loanId);
 
         return ResponseEntity.ok().build();
@@ -99,6 +97,5 @@ public class LoanController {
         List<LoanLogListResponseDto> result = loanService.getLoanLogs(loanId);
         return ResponseEntity.ok().body(result);
     }
-
 
 }
