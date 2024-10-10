@@ -92,17 +92,17 @@ const updateSelectedType = (event: Event) => {
 </script>
 
 <template>
-  <div v-if="userStore.user?.role === '자녀'" class="m-4 mb-16">
-    <div class="m-4 flex items-center justify-center">
+  <div v-if="userStore.user?.role === '자녀'" class="m-6 mb-16">
+    <div class=" flex items-center ml-18">
       <div class="m-2 flex">
         <IconExplanation></IconExplanation>
       </div>
       <div class="text-gray-600 font-bold text-sm">대출 신청서를 작성해보아요</div>
     </div>
 
-    <div class="h-[36rem] flex flex-col justify-between">
-      <div class="flex flex-col gap-6">
-        <div class="flex flex-col gap-3">
+    <div class="h-[32rem] flex flex-col justify-between">
+      <div class="flex flex-col gap-3 mt-3">
+        <div class="flex flex-col gap-2">
           <div class="mx-2 flex items-center">
             <IconDiamond></IconDiamond>
             <div class="mx-2">신청 사유가 무엇인가요?</div>
