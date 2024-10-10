@@ -31,6 +31,9 @@ function openModal() {
 async function sendWithJudge(judge: string) {
   isJudge.value = true
   loanJudge.value = judge
+  try{
+    
+  }
 }
 
 async function judge() {

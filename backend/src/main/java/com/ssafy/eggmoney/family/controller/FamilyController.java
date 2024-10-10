@@ -10,6 +10,9 @@ import com.ssafy.eggmoney.family.dto.request.CreateFamilyRequestDto;
 import com.ssafy.eggmoney.family.dto.response.FamilyMemberResponseDto;
 import com.ssafy.eggmoney.family.dto.response.GetFamilyResponseDto;
 import com.ssafy.eggmoney.family.service.FamilyServcie;
+import com.ssafy.eggmoney.notification.dto.request.NotificationRequest;
+import com.ssafy.eggmoney.notification.entity.NotificationType;
+import com.ssafy.eggmoney.notification.service.NotificationService;
 import com.ssafy.eggmoney.user.dto.response.DeleteFamilyMemberRequestDto;
 import com.ssafy.eggmoney.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +38,7 @@ public class FamilyController {
     private final KakaoAuthService kakaoAuthService;
     private final S3Service s3Service;
     private final AllowanceService allowanceService;
+    private final NotificationService notificationService;
 
 
 
@@ -50,6 +55,41 @@ public class FamilyController {
         Long familyId = user.getFamily().getId();
         return familyServcie.getFamily(familyId);
     }
+    @GetMapping("/checkFamilyLeader")
+    public Map<String,String>getFamilyleader(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String, Long> famId){
+        User user = kakaoAuthService.verifyKakaoToken(token);
+        Long familyId = user.getFamily().getPresentId();
+        if(familyId.equals(famId.get("famId"))){
+            return Collections.singletonMap("status", "success");
+        } else {
+            // 리더가 일치하지 않는 경우 실패 상태 반환
+            return Collections.singletonMap("status", "fail");
+        }
+    }
+    @PostMapping("/approvenoti")
+    public ResponseEntity<Void> sendApproveNotification(@RequestHeader("Authorization") String token, @RequestBody Map<String, Long> body) {
+        // Kakao 토큰 검증 후, 요청 보낸 사용자의 ID 확인
+        Long sendUserId = kakaoAuthService.verifyKakaoToken(token).getId();
+
+        Long userId = body.get("userId");
+        NotificationRequest notificationRequest = NotificationRequest.builder()
+                .receiveUserId(userId)  // 알림을 받을 사용자 ID
+                .notificationType(NotificationType.승인대기)  // 알림 유형 설정
+                .message("승인대기 중 입니다.")  // 알림 메시지 설정
+                .build();
+        // 알림 서비스 호출하여 알림 저장
+        notificationService.saveNotification(sendUserId, notificationRequest);
+
+        // 성공적으로 처리된 경우 OK 상태 반환
+        return ResponseEntity.ok().build();
+    }
+    // 승인 대기 알람@PostMapping("/notification/send")
+    //    public ResponseEntity<Void> sendNotification(@RequestHeader("Authorization") String token,
+    //                                                 @RequestBody NotificationRequest notificationReq) {
+    //        Long sendUserId = kakaoAuthService.verifyKakaoToken(token).getId();
+    //        notificationService.saveNotification(sendUserId, notificationReq);
+    //        return ResponseEntity.ok().build();
+    //    }
 //    가족 생성
 // 가족 생성
 @PostMapping("/create")
