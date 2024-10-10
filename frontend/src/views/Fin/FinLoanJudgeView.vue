@@ -63,8 +63,8 @@ onMounted(async () => {
           </h1>
         </div>
         <div
-          v-for="data in avgLoanData"
-          :key="data.avg_loan_amount"
+        v-for="(data, index) in avgLoanData"
+          :key="index"
           class="mt-3 rounded-lg grid px-3"
         >
           <div class="flex justify-between px-2 pe-4">
