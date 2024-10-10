@@ -15,8 +15,11 @@
 1. 금융 API를 이용해 가상 계좌로 자금을 이체 <br/>
 2. 실제 주식 시장 데이터를 기반으로 가상 주식 매입/매도 활동 구현 <br/>
 3. 예금 적금 상품 조회 및 가입 기능, 대출신청 및 심사 기능 제공<br/>
-4. QR 코드를 활용한 가족 연결<br/>
-5. 금융 뉴스: GPT를 이용한 뉴스 요약 <br/>
+4. QR 코드를 활용한 가족 연결<br/><br/>
+5. GPT를 이용한 뉴스 요약 <br/>
+6. K-means 알고리즘을 활용한 금융상품 추천 서비스 <br/>
+7. 재미를 위한 이벤트 요소<br/>
+경제용어 퀴즈, 행운의 금융 룰렛, 돈 먹기 게임, 물가 맞추기 게임<br/>
 
 ---
 #### 목차
@@ -38,16 +41,17 @@
 ---
 ##### 📊 I. 기술 스택
 
-![skill2](readme/skill2.png)
+![jira1](readme/skill2.png)
 
 |  | Front | Back | Infra |
 | --- | --- | --- |  --- |
 | **Language** | TypeScript | Java 17 |  |
-| **Framework** | Vue3.js | Spring Boot, Spring Security |  |
+| **Framework** | Vue3.js, Pinia | Spring Boot, JPA, QueryDSL, FastAPI |  |
 | **Library** | Tailwind, PWA | JWT, JPA, QueryDSL |  |
 | **DB** |  | MariaDB |  |
-| **Server** |  | Node.js | Amazon EC2, Nginx, Docker, S3 |
-| **CI/CD** |  |  | Jenkins, Mattermost |
+| **Server** |  | Node.js | Amazon EC2, Nginx, Docker, Dockerhub, Oracle Cloud, S3 |
+| **CI/CD** |  |  | Jenkins |
+| **ETC** | |Spark, Hadoop ||
 
 <br/>
 
@@ -188,7 +192,7 @@ Slack과 유사한 기능을 제공<br/>
 ##### 💻 III. 주요 기술 설명
 
 <details>
-<summary> 1️⃣ PWA </summary>
+<summary> 1️⃣ 모바일 웹 : PWA (Progressive Web Apps) </summary>
 <div markdown="1">
 
 ### PWA (Progressive Web Apps)란?
@@ -219,7 +223,7 @@ PWA는 웹 기술을 사용하여 네이티브 앱처럼 동작하는 웹 애플
 </details>
 
 <details>
-<summary> 2️⃣ Blue/Green 배포</summary>
+<summary> 2️⃣ CI/CD 구축 : Blue/Green 배포</summary>
 <br/>
 
 ![전체](readme/blue.jpg)
@@ -249,7 +253,7 @@ Blue/Green 배포는 애플리케이션의 새로운 버전을 배포할 때 서
 
 
 <details>
-<summary>3️⃣ 추천 알고리즘: 하둡, 스파크, FastAPI</summary>
+<summary>3️⃣ 금융상품 추천 알고리즘: 하둡, 스파크, FastAPI</summary>
 
 ### 1. 추천 로직 개요
 
@@ -324,7 +328,7 @@ Blue/Green 배포는 애플리케이션의 새로운 버전을 배포할 때 서
 
 
 <details>
-<summary> 4️⃣ SSAFY 공통 API - 1원인증 구현</summary>
+<summary> 4️⃣ 금융 API 활용 : 1원인증 구현</summary>
 
   ![Spark Graph](readme/bank.png)
 
