@@ -23,14 +23,14 @@
       </div>
       <hr class="my-2" />
       <div class="text-gray-500">
-        <span class="bg-orange-100 text-orange-500 px-2 py-1 rounded-full">{{
-          getTranslatedPeriod(selectedChild?.allowancePeriod)
-        }} </span>
+        <span class="bg-orange-100 text-orange-500 px-2 py-1 rounded-full"
+          >{{ getTranslatedPeriod(selectedChild?.allowancePeriod) }}
+        </span>
         <span>마다 </span>
         <span class="font-semibold">
           {{ selectedAllowanceDay }}
         </span>
-        
+
         <span>일에 </span>
         <span class="font-semibold">{{ selectedChild?.price.toLocaleString() }}</span> 알을 주고
         있습니다
@@ -130,7 +130,7 @@ import { ref, onMounted } from "vue"
 import axios from "axios"
 import { useVariableStore } from "@/stores/variable"
 import { useAuthStore } from "@/stores/auth"
-import { useUserStore } from "@/stores/user";
+import { useUserStore } from "@/stores/user"
 
 const authStore = useAuthStore()
 
@@ -213,7 +213,7 @@ const updateSelectedChild = () => {
   }
 }
 const sumbitchanges = async () => {
-  const token = authStore.accessToken;
+  const token = authStore.accessToken
   if (selectedChild.value) {
     try {
       const periodForServer = translatePeriodForServer(selectedPeriodUnit.value)

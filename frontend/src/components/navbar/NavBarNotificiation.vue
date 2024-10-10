@@ -5,20 +5,20 @@ import { onMounted, ref } from "vue"
 
 import BoxNotification from "../notification/BoxNotification.vue"
 type CustomNotificationType =
-  | '출금요청'
-  | '출금승인'
-  | '출금거절'
-  | '대출요청'
-  | '대출승인'
-  | '대출거절'
-  | '대출상환'
-  | '적금납부'
-  | '적금만기'
-  | '예금만기'
-  | '지정가매수체결'
-  | '지정가매도체결'
-  | '투자비율변경'
-  | '용돈변경'
+  | "출금요청"
+  | "출금승인"
+  | "출금거절"
+  | "대출요청"
+  | "대출승인"
+  | "대출거절"
+  | "대출상환"
+  | "적금납부"
+  | "적금만기"
+  | "예금만기"
+  | "지정가매수체결"
+  | "지정가매도체결"
+  | "투자비율변경"
+  | "용돈변경"
 interface UserNotificiation {
   userid: number
   sendUserid: number
@@ -34,20 +34,20 @@ const notifications = ref<UserNotificiation[]>([])
 const showNoti = ref<UserNotificiation[]>([])
 const selectedType = ref<string>("전체")
 const typeMapping: Record<CustomNotificationType, string> = {
-'출금요청': '자산',
-'출금승인': '자산',
-'출금거절': '자산',
-'대출요청': '금융',
-'대출승인': '금융',
-'대출거절': '금융',
-'대출상환': '금융',
-'적금납부': '금융',
-'적금만기': '금융',
-'예금만기': '금융',
-'지정가매수체결': '증권',
-'지정가매도체결': '증권',
-'투자비율변경': '기타',
-'용돈변경': '기타',
+  출금요청: "자산",
+  출금승인: "자산",
+  출금거절: "자산",
+  대출요청: "금융",
+  대출승인: "금융",
+  대출거절: "금융",
+  대출상환: "금융",
+  적금납부: "금융",
+  적금만기: "금융",
+  예금만기: "금융",
+  지정가매수체결: "증권",
+  지정가매도체결: "증권",
+  투자비율변경: "기타",
+  용돈변경: "기타",
 }
 const fetchNotifications = async () => {
   try {
@@ -166,14 +166,16 @@ const isActive = (type: string) => {
   </div>
   <div v-if="showNoti.length > 0">
     <div v-for="(noti, index) in showNoti" :key="index">
-      <BoxNotification :noti="{
-      userid: noti.userid,
-        sendUserid: noti.sendUserid,
-        notificationType: noti.notificationType,
-        message: noti.message,
-        read: noti.read,
-        notificationId: noti.notificationId
-    }" />
+      <BoxNotification
+        :noti="{
+          userid: noti.userid,
+          sendUserid: noti.sendUserid,
+          notificationType: noti.notificationType,
+          message: noti.message,
+          read: noti.read,
+          notificationId: noti.notificationId,
+        }"
+      />
     </div>
   </div>
 </template>
