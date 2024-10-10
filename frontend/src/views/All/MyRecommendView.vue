@@ -201,7 +201,8 @@ onMounted(async () => {
   </div>
   <div v-else class="pt-20 grid grid-cols-1 grid-flow-row justify-center gap-3 p-3">
     <div>
-      <h1>Loading...</h1>
+      <img src="@/assets/asset/loading.gif" alt="">
+      <h1></h1>
     </div>
   </div>
 </template>

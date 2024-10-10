@@ -54,7 +54,7 @@ onMounted(async () => {
 <template>
   <div v-if="userStore.user?.role === '부모'">
     <!-- 평균 대출 이율 추천 박스 -->
-    <div v-if="avgLoanData" class="grid grid-cols-1 grid-flow-row px-4 mt-2">
+    <div v-if="avgLoanData.length > 0" class="grid grid-cols-1 grid-flow-row px-4 mt-2">
       <div class="bg-yellow-50 rounded-xl py-3">
         <div class="flex my-auto ps-3">
           <IconExplanation></IconExplanation>
