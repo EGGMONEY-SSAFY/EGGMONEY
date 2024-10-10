@@ -19,20 +19,21 @@ const showNoti = ref<UserNotificiation[]>([])
 const selectedType = ref<string>("전체")
 const fetchNotifications = async () => {
   try {
-    const response = 
-    // {
-    //   data: [
-    //     { userid: 1, sendUserid: 2, notificationType: "대출", message: "갚아라" },
-    //     { userid: 1, sendUserid: 2, notificationType: "적금", message: "적금만기해지" },
-    //     { userid: 1, sendUserid: 2, notificationType: "전체", message: "주식 1주 매수 성공" },
-    //     { userid: 1, sendUserid: 2, notificationType: "적금", message: "적금 중도 해지" },
-    //   ],
-    // }
-    await axios.get('/notification/list',{
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },})
+    const response =
+      // {
+      //   data: [
+      //     { userid: 1, sendUserid: 2, notificationType: "대출", message: "갚아라" },
+      //     { userid: 1, sendUserid: 2, notificationType: "적금", message: "적금만기해지" },
+      //     { userid: 1, sendUserid: 2, notificationType: "전체", message: "주식 1주 매수 성공" },
+      //     { userid: 1, sendUserid: 2, notificationType: "적금", message: "적금 중도 해지" },
+      //   ],
+      // }
+      await axios.get("/notification/list", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
     notifications.value = response.data
     showNoti.value = notifications.value
     console.log(response)

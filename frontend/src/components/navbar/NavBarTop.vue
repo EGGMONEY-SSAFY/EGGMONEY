@@ -12,7 +12,7 @@ const router = useRouter()
 const goBack = () => {
   router.back()
 }
-const goNoti=()=>{
+const goNoti = () => {
   router.push("/Notification")
 }
 </script>

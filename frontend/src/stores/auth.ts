@@ -67,7 +67,7 @@ export const useAuthStore = defineStore("auth", {
         const tokens = await loadTokensFromIndexedDB()
         const currentRoute = router.currentRoute.value.path
         if (!tokens) {
-          if (currentRoute === '/login' || currentRoute === '/main' ) {
+          if (currentRoute === "/login" || currentRoute === "/main") {
             // /login 페이지에서는 토큰 검사를 하지 않음
             return
           } else {
@@ -104,7 +104,6 @@ export const useAuthStore = defineStore("auth", {
           if (response.data) {
             window.location.href = response.data
           }
-          
 
           // await this.clearToken()
           // console.log("로그아웃 성공")

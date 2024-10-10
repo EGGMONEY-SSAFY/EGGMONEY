@@ -160,7 +160,7 @@ onMounted(async () => {
   // }
 
   const token = authStore.accessToken
-  
+
   try {
     const response = await axios.get("/api/v1/total/money/search", {
       headers: {
