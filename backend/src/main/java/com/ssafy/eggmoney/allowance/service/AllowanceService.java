@@ -27,7 +27,7 @@ public class AllowanceService {
 
     public AllowanceCreateResponseDto createAllowance(User user){
         if("자녀".equals(user.getRole())){
-            Allowance allowance = Allowance.createAllowance(user,0,null,0);
+            Allowance allowance = Allowance.createAllowance(user,0,AllowancePeriod.MONTH,0);
             allowanceRepository.save(allowance);
 
             return new AllowanceCreateResponseDto(allowance);
