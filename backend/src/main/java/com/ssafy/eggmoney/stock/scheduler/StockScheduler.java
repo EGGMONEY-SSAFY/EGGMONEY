@@ -24,7 +24,7 @@ public class StockScheduler {
     String[] stockCodes = {"0001", "1001", "4002", "4003", "4004", "4005", "4007",
             "4008", "4011", "4016", "4063", "4064", "4065"};
 
-    @Scheduled(cron = "0 56 16 * * MON-FRI", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 30 17 * * MON-FRI", zone = "Asia/Seoul")
     @Transactional
     public void saveDailyStockPrice() {
         log.info("주식 스케쥴링 시작: " + LocalDateTime.now());
