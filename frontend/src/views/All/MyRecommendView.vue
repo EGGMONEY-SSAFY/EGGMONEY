@@ -121,7 +121,7 @@ onMounted(async () => {
     await getRecommend(depositRate.value, savingsRate.value, stockRate.value)
   } else {
     bestRate.value = 0
-    await getRecommend(0, 0, 1)    
+    await getRecommend(0, 0, 1)
   }
 })
 </script>
@@ -201,7 +201,8 @@ onMounted(async () => {
   </div>
   <div v-else class="pt-20 grid grid-cols-1 grid-flow-row justify-center gap-3 p-3">
     <div>
-      <h1>Loading...</h1>
+      <img src="@/assets/asset/loading.gif" alt="">
+      <h1></h1>
     </div>
   </div>
 </template>
