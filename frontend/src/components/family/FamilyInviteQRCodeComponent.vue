@@ -19,10 +19,8 @@ const router = useRouter()
 const authStore = useAuthStore()
 const familyId = ref<string | null>(null)
 const qrCode = ref<string | null>(null)
-const a = import.meta.env.VITE_AES_KEY
-console.log(a)
-const AES_KEY = CryptoJS.enc.Utf8.parse("EGGMONEY12345678") // 16자리 고정된 AES 키
-const IV = CryptoJS.enc.Utf8.parse("abcdefg123456789")
+const AES_KEY = CryptoJS.enc.Utf8.parse(import.meta.env.VITE_ASE_KEY) // 16자리 고정된 AES 키
+const IV = CryptoJS.enc.Utf8.parse(import.meta.env.VITE_IV)
 async function getfamilyId() {
   const token = authStore.accessToken
 
