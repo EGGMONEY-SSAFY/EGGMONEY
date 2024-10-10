@@ -17,7 +17,7 @@
       </div>
       <div>
         <!-- 자녀 정보 -->
-        <span class="font-semibold">{{ parent.name }}님은 현재</span>
+        <span class="font-semibold">{{ parent.name }}님은 현재 </span>
         <span class="font-bold text-orange-600">{{ selectedChild?.name }}</span
         >에게
       </div>
@@ -25,8 +25,13 @@
       <div class="text-gray-500">
         <span class="bg-orange-100 text-orange-500 px-2 py-1 rounded-full">{{
           getTranslatedPeriod(selectedChild?.allowancePeriod)
-        }}</span>
-        <span>마다</span>
+        }} </span>
+        <span>마다 </span>
+        <span class="font-semibold">
+          {{ selectedAllowanceDay }}
+        </span>
+        
+        <span>일에 </span>
         <span class="font-semibold">{{ selectedChild?.price.toLocaleString() }}</span> 알을 주고
         있습니다
       </div>
@@ -169,11 +174,13 @@ onMounted(async () => {
         "Content-Type": "application/json",
       },
     })
-    console.log(response)
     children.value = response.data
-    selectedChild.value = children.value[0]
-    selectedPeriodUnit.value = selectedChild.value?.allowancePeriod ?? ""
-    allowanceAmount.value = selectedChild.value?.price ?? 0
+    console.log(response)
+    if (children.value.length > 0) {
+      selectedChild.value = children.value[0]
+      selectedChildId.value = children.value[0].id
+      updateSelectedChild() // 기본 자녀 선택 시 정보 업데이트
+    }
     isLoading.value = false
   } catch (error) {
     console.error("자녀 정보를 불러오는 중 오류", error)
@@ -206,7 +213,7 @@ const updateSelectedChild = () => {
   }
 }
 const sumbitchanges = async () => {
-  const token = "_hY7xGfo9UfUokhsO-xd8eLTYiIxygDrAAAAAQopyWAAAAGSSv-H8ZCBbdpZdq0Z"
+  const token = authStore.accessToken;
   if (selectedChild.value) {
     try {
       const periodForServer = translatePeriodForServer(selectedPeriodUnit.value)
