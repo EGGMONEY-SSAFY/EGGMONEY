@@ -28,16 +28,18 @@ const fetchNotifications = async () => {
       //     { userid: 1, sendUserid: 2, notificationType: "적금", message: "적금 중도 해지" },
       //   ],
       // }
-      await axios.get("/notification/list", {
+      await axios.get("api/v1/notification/list", {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+          // "Content-Type": "application/json",
         },
       })
-    notifications.value = response.data
-    showNoti.value = notifications.value
+    // notifications.value = response.data
+    // showNoti.value = notifications.value
     console.log(response)
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 }
 onMounted(() => {
   fetchNotifications()

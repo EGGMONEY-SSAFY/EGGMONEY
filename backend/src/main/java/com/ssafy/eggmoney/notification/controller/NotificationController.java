@@ -5,12 +5,15 @@ import com.ssafy.eggmoney.notification.dto.request.NotificationRequest;
 import com.ssafy.eggmoney.notification.dto.response.NotificationResponse;
 import com.ssafy.eggmoney.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
+@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
@@ -29,6 +32,7 @@ public class NotificationController {
     @GetMapping("/notification/list")
     public ResponseEntity<List<NotificationResponse>> getNotifications(@RequestHeader("Authorization") String token) {
         Long userId = kakaoAuthService.verifyKakaoToken(token).getId();
+        log.info("Controller userID = {}",userId);
         return new ResponseEntity<>(notificationService.findNotifications(userId), HttpStatus.OK);
     }
 
