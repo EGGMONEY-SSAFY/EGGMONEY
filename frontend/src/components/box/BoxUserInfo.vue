@@ -12,23 +12,23 @@ const myStockI = ref()
 
 onMounted(async () => {
   myStock.value = await StockStore.getMoneyInfo()
-  myStockB.value = myStock.value.balance.toLocaleString()
-  myStockI.value = myStock.value.investablePrice.toLocaleString()
+  myStockB.value = await myStock.value.balance
+  myStockI.value = await myStock.value.investablePrice
 })
 </script>
 
 <template>
   <div class="flex flex-col gap-2 m-4 bg-white rounded-lg shadow" v-if="role === '자녀'">
-    <div class="mx-6 mt-4">
+    <div class="mx-6 mt-4" v-if="myStockB">
       <span>현재 잔액 : </span>
-      <span class="font-bold">{{ myStockB }} 알</span>
+      <span class="font-bold">{{ myStockB.toLocaleString() }} 알</span>
     </div>
-    <div class="mx-6">
+    <div class="mx-6" v-if="myStockI">
       <span>투자 가능 금액 : </span>
-      <span class="font-bold">{{ myStockI }} 알</span>
+      <span class="font-bold">{{ myStockI.toLocaleString() }} 알</span>
     </div>
     <div class="mx-6 mb-4">
-      <span>총 주식 금액 : </span>
+      <span>총 주식 금액 : {{}}</span>
       <span class="font-bold" v-if="StockStore.totalStockValue"
         >{{ StockStore.totalStockValue.toLocaleString() }} 알</span
       >

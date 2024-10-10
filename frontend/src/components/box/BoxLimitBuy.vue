@@ -107,7 +107,7 @@ const postBuyAmt1 = computed(() => {
 
 const handleBuy = async () => {
   await storeStock.postBuyOrder(stockId, buyPrice.value, buyQuantity.value)
-  router.push("/stock/home")
+  await router.push("/stock/home")
 }
 
 const showFailModal = ref(false)
