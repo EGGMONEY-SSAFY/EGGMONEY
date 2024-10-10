@@ -7,6 +7,9 @@ import com.ssafy.eggmoney.allowance.dto.response.AllowanceUpdateResponseDto;
 import com.ssafy.eggmoney.allowance.entity.Allowance;
 import com.ssafy.eggmoney.allowance.entity.AllowancePeriod;
 import com.ssafy.eggmoney.allowance.repository.AllowanceRepository;
+import com.ssafy.eggmoney.notification.dto.request.NotificationRequest;
+import com.ssafy.eggmoney.notification.entity.NotificationType;
+import com.ssafy.eggmoney.notification.service.NotificationService;
 import com.ssafy.eggmoney.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,8 @@ import java.util.stream.Collectors;
 public class AllowanceService {
 
     private final AllowanceRepository allowanceRepository;
+    private final NotificationService notificationService;
+
 
     public AllowanceCreateResponseDto createAllowance(User user){
         if("자녀".equals(user.getRole())){
@@ -39,6 +44,15 @@ public class AllowanceService {
         allowance.setAllowanceDay(updateDto.getAllowanceDay());
         allowance.setAllowancePeriod(AllowancePeriod.valueOf(updateDto.getAllowancePeriod()));
         allowanceRepository.save(allowance);
+
+        NotificationRequest notificationRequest = NotificationRequest.builder()
+                .notificationType(NotificationType.용돈변경)
+                .message("용돈이 변경되었습니다.")
+                .build();
+
+//        allowanceId에서 해당하는 userId를 찾는다
+        Long userId = allowance.getChild().getId();
+        notificationService.saveNotification(userId, notificationRequest);
 
         return new AllowanceUpdateResponseDto(allowance);
     }
