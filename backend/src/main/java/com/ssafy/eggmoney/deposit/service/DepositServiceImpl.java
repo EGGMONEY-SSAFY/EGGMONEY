@@ -45,7 +45,7 @@ public class DepositServiceImpl implements DepositService {
     @Override
     @Transactional(readOnly = true)
     public List<DepositProductListResponseDto> getDepositProducts() {
-        List<DepositProduct> productList = depositProductRepository.findAll();
+        List<DepositProduct> productList = depositProductRepository.findAllByOrderByDepositDate();
 
         List<DepositProductListResponseDto> productListDto = productList.stream().map(
                 (product) -> DepositProductListResponseDto.builder()
