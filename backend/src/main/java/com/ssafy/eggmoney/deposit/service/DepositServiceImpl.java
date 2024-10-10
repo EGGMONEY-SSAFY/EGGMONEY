@@ -76,6 +76,7 @@ public class DepositServiceImpl implements DepositService {
                 .productId(depositId)
                 .productName(product.getProductName())
                 .depositRate(product.getDepositRate())
+                .depositDate(product.getDepositDate())
                 .build();
     }
 

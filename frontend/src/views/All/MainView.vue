@@ -1,14 +1,14 @@
 <template>
-  <div class="flex flex-col items-center justify-center text-center bg-[#fef6e4] h-screen m-0">
+  <div class="flex flex-col items-center justify-center text-center bg-[#fef6e4] h-screen m-0 pt-20">
     <img src="@/assets/all/계란EGGMONEY.png" alt="Chicken logo" class="w-[200px] h-[250px]" />
     <h1 class="text-2xl font-bold my-4">나의 첫 경제생활 도우미</h1>
     <p class="my-4">
-      복잡한 송금, 가계부 관리, 어려운 주식 공부까지<br />
+      복잡한 송금, 가계부 관리, 어려운 주식 공부까지<br/>
       <strong class="text-[#ff7f50]">에그머니</strong>에서 쉽고 재미있게 시작해 보세요!
     </p>
     <button
       @click="start"
-      class="my-20 bg-[#ff7f50] text-white border-none py-2 cursor-pointer hover:bg-[#ff6347]"
+      class="my-10 bg-[#ff7f50] text-white border-none py-2 cursor-pointer hover:bg-[#ff6347]"
       style="border-radius: 8rem; padding-left: 8rem; padding-right: 8rem"
     >
       시작하기
