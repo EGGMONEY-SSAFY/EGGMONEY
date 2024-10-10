@@ -1,7 +1,7 @@
 <template>
   <!-- 만들 때 -->
   <div class="flex flex-col items-center justify-center">
-    <div v-if="step != 2" class="h-screen bg-white">
+    <div v-if="step != 2" class="mt-2 bg-gray-200">
       <div class="m-8 text-lg font-bold text-center text-gray-700">
         {{ instructionMessage }}
       </div>
@@ -22,6 +22,7 @@
         틀린 횟수: {{ failCount }} / 5
       </div>
       <!-- 이미지 및 핀 패드 -->
+      <div class="bg-white">
       <div>
         <div
           v-if="pinPadImage"
@@ -39,6 +40,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </template>

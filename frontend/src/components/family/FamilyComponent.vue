@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6 min-h-screen bg-gray-200">
+  <div class="p-6 bg-gray-200">
     <div class="space-y-8">
       <!-- 가족 생성 버튼 -->
       <div
