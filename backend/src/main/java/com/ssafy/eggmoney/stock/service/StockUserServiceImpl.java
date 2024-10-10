@@ -35,11 +35,12 @@ public class StockUserServiceImpl implements StockUserService {
     public Map<String, Object> findInvestablePrice(Long userId) {
         Map<String, Object> response = new HashMap<>();
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다.")
+                .orElseThrow(() -> new NoSuchElementException("[증권] 해당 유저를 찾을 수 없습니다.")
                 );
 
         GetAnalyticsResponseDto analytics = accountService.getAnalytics(userId);
         int assets = 0;
+        int totalStockPrice = 0;
         if(analytics.getMainAccountBalance() != null) {
             assets += analytics.getMainAccountBalance();
         }
@@ -54,6 +55,7 @@ public class StockUserServiceImpl implements StockUserService {
         }
         if(analytics.getStock() != null) {
             assets += analytics.getStock();
+            totalStockPrice = analytics.getStock();
         }
 
         int investablePrice = BigDecimal.valueOf(user.getStockRatio())
@@ -64,10 +66,11 @@ public class StockUserServiceImpl implements StockUserService {
 
         int totalPendingPrice = stockPendingService.findPendingBuyTotalPrice(user.getId());
 
-        investablePrice -= accountService.findUserTotalStockPrice(userId) + totalPendingPrice;
+        investablePrice -= totalStockPrice + totalPendingPrice;
 
         response.put("investablePrice", investablePrice);
         response.put("balance", analytics.getMainAccountBalance());
+        response.put("totalStockPrice", totalStockPrice);
         return response;
     }
 
@@ -76,7 +79,6 @@ public class StockUserServiceImpl implements StockUserService {
         Map<String, Object> response = new HashMap<>();
         List<Long> stockIds = new ArrayList<>();
         List<Integer> prices = new ArrayList<>();
-        int totalPrice = 0;
 
         List<StockUser> stockUsers = stockUserRepository.findJoinStockByUserIdOrderByStockId(userId);
 
@@ -85,13 +87,11 @@ public class StockUserServiceImpl implements StockUserService {
                 int price = stockUser.getStock().getCurrentPrice() * stockUser.getAmount();
                 stockIds.add(stockUser.getStock().getId());
                 prices.add(price);
-                totalPrice += price;
             }
         }
 
         response.put("labels", stockIds);
         response.put("prices", prices);
-        response.put("totalPrice", totalPrice);
 
         return response;
     }
