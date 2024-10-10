@@ -4,6 +4,9 @@ import { ref } from "vue"
 import { useRouter } from "vue-router"
 import { useFinStore, type Loan } from "@/stores/fin"
 import IconRightArrow from "@/components/icons/IconRightArrow.vue"
+import { useAuthStore } from "@/stores/auth"
+import axios from "axios"
+import SCANQrComponent from "../family/SCANQrComponent.vue"
 
 const props = defineProps<{ user: User; loan: Loan }>()
 const router = useRouter()
@@ -14,7 +17,7 @@ const isJudge = ref(false)
 const loanJudge = ref<null | string>(null)
 const loanRate = ref(0)
 const loanReason = ref("")
-
+const isSCAN=ref(false);
 // 여기에 LoanJudgeView.vue에서 user정보를 불러와서,
 // (token에 있는것을) 대출리스트를 다시 받아와야한다.
 
@@ -27,13 +30,37 @@ function openModal() {
 // function closeModal() {
 //   isModalOpen.value = false
 // }
+function handleSuccess() {
+  console.log("승인이 성공적으로 처리되었습니다.")
+  isSCAN.value = false;
+  judge()
+}
 
+function handleFail() {
+  isSCAN.value = false;
+  console.log("승인에 실패하였습니다.")
+}
 async function sendWithJudge(judge: string) {
   isJudge.value = true
-  loanJudge.value = judge
+  loanJudge.value = judge  
+}
+
+async function sendqr(){
+  isSCAN.value = true;
   try{
-    
-  }
+    const response = await axios.post(
+        "/api/v1/family/approvenoti",
+        {
+          headers: {
+            Authorization: `Bearer ${useAuthStore().accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
+  }catch (error) {
+      console.error("알림 전송 중 오류 발생:", error);
+
+    }
 }
 
 async function judge() {
@@ -87,7 +114,7 @@ function goLoanDetail(loanId: number) {
 </script>
 
 <template>
-  <div class="bg-white m-4 rounded-lg shadow grid py-2 gap-2 px-4 pb-5">
+  <div class="bg-white m-4 rounded-lg shadow grid py-2 gap-2 px-4 pb-5" v-if="!isSCAN">
     <div v-if="user.role === '부모'" class="text-center my-2 font-bold">{{ loan.userName }}</div>
     <hr v-if="user.role === '부모'" class="border-black" />
     <div class="mt-3 flex justify-between">
@@ -240,11 +267,14 @@ function goLoanDetail(loanId: number) {
           </button>
         </div>
 
+        
+
+
         <!-- v-else -->
         <div v-else>
           <button
             v-if="loanJudge"
-            @click="judge()"
+            @click="sendqr()"
             class="bg-main-color text-white px-4 py-2 mt-5 rounded justify-center"
           >
             심사하기
@@ -253,4 +283,5 @@ function goLoanDetail(loanId: number) {
       </div>
     </div>
   </div>
+  <SCANQrComponent @approveSuccess="handleSuccess" @approveFail="handleFail" v-if="isSCAN"/>
 </template>

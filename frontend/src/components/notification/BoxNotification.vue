@@ -25,6 +25,7 @@ type CustomNotificationType =
   | "지정가매도체결"
   | "투자비율변경"
   | "용돈변경"
+  | "승인대기"
 
 const selectedNoti = ref<UserNotificiation | null>(null)
 const showNoti = ref(false)
@@ -43,6 +44,7 @@ const Icons = {
   지정가매도체결: StockPutIcon,
   투자비율변경: RemindIcon,
   용돈변경: RemindIcon,
+  승인대기: RemindIcon
 }
 interface UserNotificiation {
   userid: number

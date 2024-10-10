@@ -19,6 +19,7 @@ type CustomNotificationType =
   | "지정가매도체결"
   | "투자비율변경"
   | "용돈변경"
+  | "승인대기"
 interface UserNotificiation {
   userid: number
   sendUserid: number
@@ -48,6 +49,7 @@ const typeMapping: Record<CustomNotificationType, string> = {
   지정가매도체결: "증권",
   투자비율변경: "기타",
   용돈변경: "기타",
+  승인대기:"기타",
 }
 const fetchNotifications = async () => {
   try {

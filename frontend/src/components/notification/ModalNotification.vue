@@ -47,6 +47,7 @@ const goToCategory = () => {
     지정가매도체결: "/stock/home",
     투자비율변경: "/all",
     용돈변경: "/all",
+    승인대기:"/aprove"
   }
 
   const route = categoryRoutes[props.noti.notificationType]

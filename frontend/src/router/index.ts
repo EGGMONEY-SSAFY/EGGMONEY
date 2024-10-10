@@ -57,6 +57,7 @@ import ErrorView from "@/views/Fin/ErrorView.vue"
 import NotificiationView from "@/views/Notification/NotificiationView.vue"
 import ReviewPage from "@/views/All/ReviewPage.vue"
 import MyRecommendView from "@/views/All/MyRecommendView.vue"
+import SCANQrComponent from "@/components/family/SCANQrComponent.vue"
 
 const AssetView = defineAsyncComponent(() => import("@/views/Asset/AssetView.vue"))
 const router = createRouter({
@@ -365,6 +366,11 @@ const router = createRouter({
       path: "/Notification",
       name: "NotificiationView",
       component: NotificiationView,
+    },
+    {
+      path: "/aprove",
+      name: "aproveView",
+      component: SCANQrComponent,
     },
     // 최하단 배치 필요
     {
