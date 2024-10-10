@@ -18,7 +18,7 @@ const router = useRouter()
 onMounted(() => {
   finStore.isYellowPage = true
   setTimeout(() => {
-    // router.push("/pinpad")
+    router.push("/pinpad")
   }, 1500)
 })
 onUnmounted(() => {
