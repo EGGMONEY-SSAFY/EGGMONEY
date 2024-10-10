@@ -83,7 +83,7 @@ const preventNegativePrice = (event: Event) => {
 
 const handleSell = async () => {
   await storeStock.postSellOrder(stockId, sellPrice.value, sellQuantity.value)
-  router.push("/stock/home")
+  await router.push("/stock/home")
 }
 const showFailModal = ref(false)
 const isPinpad = ref(false)

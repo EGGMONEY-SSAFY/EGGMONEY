@@ -1,12 +1,12 @@
 import axios from "axios"
 import { defineStore } from "pinia"
 import { ref } from "vue"
+import { useAuthStore } from "./auth"
 
 export const useStockStore = defineStore("stock", () => {
   const API_URL = "/api/v1"
-  const token = "q"
-  // const authStore = useAuthStore()
-  // authStore.accessToken
+  const authStore = useAuthStore()
+  const token = authStore.accessToken
   const totalStockValue = ref()
   const setTotalStockValue = (total: number) => {
     totalStockValue.value = total
