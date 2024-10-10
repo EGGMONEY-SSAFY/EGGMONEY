@@ -51,10 +51,8 @@ import axios from "axios"
 import { useRouter } from "vue-router"
 // @ts-ignore
 import CryptoJS from "crypto-js"
-const a = import.meta.env.VITE_AES_KEY
-console.log(a)
-const AES_KEY = CryptoJS.enc.Utf8.parse("EGGMONEY12345678") // 16자리 고정된 AES 키
-const IV = CryptoJS.enc.Utf8.parse("abcdefg123456789")
+const AES_KEY = CryptoJS.enc.Utf8.parse(import.meta.env.VITE_ASE_KEY) // 16자리 고정된 AES 키
+const IV = CryptoJS.enc.Utf8.parse(import.meta.env.VITE_IV)
 import { useAuthStore } from "@/stores/auth"
 
 // 상태 값
@@ -72,7 +70,6 @@ const ab = () => {
 // QR 코드 스캔 후 처리
 const handleScanSuccess = (decodedText: string, decodedResult: any) => {
   console.log("스캔된 데이터:", decodedText) // QR 코드에서 읽어온 데이터를 출력
-  // qrData.value = decodedText.trim();
 
   try {
     const parts = decodedText.split(":")
@@ -90,8 +87,6 @@ const handleScanSuccess = (decodedText: string, decodedResult: any) => {
   } catch (error) {
     console.error("QR 코드 데이터 복호화 중 에러 발생:", error)
   }
-  // U2FsdGVkX18BRP3vhbtpV4/whF8GP4GM1d0aVMo/ZQI=
-  // FamilyInviteQRCodeComponent.vue:38 11
   showModal.value = true // QR 코드 스캔 후 모달 표시
 }
 
