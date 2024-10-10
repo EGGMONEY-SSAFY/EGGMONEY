@@ -5,6 +5,7 @@ import { useVariableStore } from "@/stores/variable"
 import { computed, onMounted, reactive } from "vue"
 import { useRoute } from "vue-router"
 import { useStockStore } from "@/stores/stock"
+import IconExplanation from "@/components/icons/IconExplanation.vue"
 
 interface Article {
   id: number
@@ -30,6 +31,13 @@ store.setTitle("뉴스")
 <template>
   <div>
     <NavBarTab :path="path" />
+    <div class="my-auto">
+      <div class="flex items-center ml-12 mt-2">
+        <IconExplanation></IconExplanation>
+        <h1 class="ps-3">AI가 뉴스를 요약해주었어요 🤖⚡</h1>
+      </div>
+    </div>
+    <!-- <div>와우</div> -->
     <div v-if="news.length">
       <BoxNews v-for="article in news" :key="article.id" :article="article" />
     </div>
