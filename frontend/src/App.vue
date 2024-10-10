@@ -7,7 +7,7 @@ import { useAuthStore } from "@/stores/auth"
 import { onMounted, ref } from "vue"
 import { useUserStore } from "./stores/user"
 const finStore = useFinStore()
-const route = useRoute() // 현재 경로를 가져옴12322222222222
+const route = useRoute() // 현재 경로를 가져옴12322sssssssssssssssss222222222dddddddddddddddddddddddddddddd
 const authStore = useAuthStore()
 const router = useRouter()
 const userStore = useUserStore()
