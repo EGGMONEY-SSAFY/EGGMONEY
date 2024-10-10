@@ -220,8 +220,8 @@ export const useStockStore = defineStore("stock", () => {
         method: "get",
         url: `${API_URL}/stock/user/available-balance`,
       })
-      console.log(response.data);
-      
+      console.log(response.data)
+
       return response.data
     } catch (error) {
       console.error(error)
