@@ -7,6 +7,7 @@ import com.ssafy.eggmoney.notification.repository.NotificationRepository;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional(readOnly=true)
 @RequiredArgsConstructor
@@ -50,7 +52,8 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public List<NotificationResponse> findNotifications(Long userId) {
         List<Notification> notifications = notificationRepository.findJoinSendUserByUserId(userId);
-        System.out.println(notifications);
+
+        log.info("user Id : {}", userId);
 
         if(notifications.isEmpty()) {
             throw new NoSuchElementException("[알림] 알림들을 찾을 수 없습니다.");

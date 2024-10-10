@@ -4,10 +4,12 @@ import com.ssafy.eggmoney.account.entity.Account;
 import com.ssafy.eggmoney.common.entity.BaseTime;
 import com.ssafy.eggmoney.family.entity.Family;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
@@ -93,7 +95,7 @@ public class User extends BaseTime {
     @OneToMany(mappedBy ="user", fetch = FetchType.LAZY)
     private List<Account> accounts;
 
-    public boolean hasAccount(){
-        return accounts != null && !accounts.isEmpty();
-    }
+//    public boolean hasAccount() {
+//        return accountRepository.findByUserId(this.id).isPresent();
+//    }
 }
