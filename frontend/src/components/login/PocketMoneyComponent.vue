@@ -85,7 +85,7 @@
       </div>
     </div>
 
-    <!-- <hr class="my-6" /> -->
+    <!-- <hr class="my-6" dd/> -->
 
     <!-- 용돈 설정 -->
     <div class="bg-white rounded-lg shadow-md p-4 mb-4">
