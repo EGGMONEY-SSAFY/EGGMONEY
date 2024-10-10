@@ -16,7 +16,6 @@ onMounted(async () => {
   myStockB.value = await myStock.value.balance
   myStockI.value = await myStock.value.investablePrice
   myStockV.value = await myStock.value.totalStockPrice
-  
 })
 </script>
 
