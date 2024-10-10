@@ -106,7 +106,7 @@ const isActive = (type: string) => {
           //선택되었을때
         )
       "
-      :class="{ 'bg-main-color text-white': selectedType === '전체', 'px-4': true }"
+      :class="{ 'bg-main-color rounded-full text-white': selectedType === '전체', 'px-4': true }"
       class="px-4"
     >
       전체
@@ -114,7 +114,7 @@ const isActive = (type: string) => {
     <button
       type="button"
       class="px-4"
-      :class="{ 'bg-main-color text-white': selectedType === '자산', 'px-4': true }"
+      :class="{ 'bg-main-color rounded-full text-white': selectedType === '자산', 'px-4': true }"
       @click="
         isActive(
           '자산'
@@ -126,7 +126,7 @@ const isActive = (type: string) => {
     </button>
     <button
       type="button"
-      :class="{ 'bg-main-color text-white': selectedType === '금융', 'px-4': true }"
+      :class="{ 'bg-main-color rounded-full text-white': selectedType === '금융', 'px-4': true }"
       class="px-4"
       @click="
         isActive(
@@ -137,22 +137,19 @@ const isActive = (type: string) => {
     >
       금융
     </button>
+
+    <button
+    type="button"
+    :class="{ 'bg-main-color rounded-full text-white': selectedType === '증권', 'px-4': true }"
+          class="px-4"
+    @click="isActive('증권')"
+  >
+    증권
+  </button>
+
     <button
       type="button"
-      :class="{ 'bg-main-color text-white': selectedType === '증권', 'px-4': true }"
-      class="px-4"
-      @click="
-        isActive(
-          '증권'
-          //선택되었을때
-        )
-      "
-    >
-      증권
-    </button>
-    <button
-      type="button"
-      :class="{ 'bg-main-color text-white': selectedType === '기타', 'px-4': true }"
+      :class="{ 'bg-main-color rounded-full text-white': selectedType === '기타', 'px-4': true }"
       class="px-4"
       @click="
         isActive(
