@@ -68,14 +68,15 @@ onMounted(async () => {
   <div class="grid">
     <BoxAccount :user="user" :analytics="analytics" />
     <div
-      class="grid grid-flow-row grid-cols-1 gap-4 p-3 m-4 bg-white rounded-lg shadow"
+      class="grid grid-flow-row grid-cols-1 gap-4 p-3 m-4 bg-white rounded-lg shadow border-8 border-green-300"
       @click="goRecommend"
+      role="button"
     >
       <div class="grid grid-flow-row grid-cols-1 gap-6 px-3 py-3">
-        <div class="flex" role="button">
-          <img src="@/assets/asset/account.png" alt="main-account" style="width: 51px" />
+        <div class="flex">
+          <img src="@/assets/asset/recommend.png" alt="main-account" style="width: 51px" />
           <div class="flex items-center justify-end w-full px-4 pe-2">
-            <h1 class="flex-grow font-bold text-lg text-center">내게 맞는 상품 추천</h1>
+            <h1 class="flex-grow font-bold text-lg text-center">내게 맞는 상품 추천 &nbsp🏆</h1>
           </div>
         </div>
       </div>
@@ -84,3 +85,4 @@ onMounted(async () => {
     <HeldAssetLogChart :accountHistory="accountHistory" style="min-height: 350px" />
   </div>
 </template>
+<style scoped></style>
