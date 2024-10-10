@@ -33,7 +33,7 @@ const getRecommend = function (
 ): Promise<void> {
   return axios({
     method: "post",
-    url: `/dpi/v1/recommend`,
+    url: `https://oracle1.mypjt.xyz/api/v1/recommend`,
     data: {
       deposit_ratio: deposit_ratio,
       savings_ratio: savings_ratio,
@@ -57,6 +57,7 @@ const getDepsoitProduct = function (id: number): Promise<void> {
   })
     .then((res) => {
       recommendDeposit.value = res.data
+      console.log(res.data)
     })
     .catch((err) => {
       console.error(err)
@@ -120,13 +121,8 @@ onMounted(async () => {
     await getRecommend(depositRate.value, savingsRate.value, stockRate.value)
   } else {
     bestRate.value = 0
-    await getRecommend(0, 0, 0)
+    await getRecommend(0, 0, 1)    
   }
-  await getRecommend(
-    Number((deposit_money.value / total_money.value).toFixed(2)),
-    Number((savings_money.value / total_money.value).toFixed(2)),
-    Number((stock_money.value / total_money.value).toFixed(2))
-  )
 })
 </script>
 
