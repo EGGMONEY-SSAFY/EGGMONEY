@@ -26,7 +26,6 @@ public class Allowance extends BaseTime {
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User child;
-    // 부모는 자식의 가족id에서 조인해서 가져오기
 
     private int price;
 

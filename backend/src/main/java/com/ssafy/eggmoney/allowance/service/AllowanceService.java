@@ -25,7 +25,6 @@ public class AllowanceService {
     private final AllowanceRepository allowanceRepository;
     private final NotificationService notificationService;
 
-
     public AllowanceCreateResponseDto createAllowance(User user){
         if("자녀".equals(user.getRole())){
             Allowance allowance = Allowance.createAllowance(user,0,AllowancePeriod.MONTH,0);
@@ -55,7 +54,6 @@ public class AllowanceService {
         allowance.setAllowanceDay(updateDto.getAllowanceDay());
         allowance.setAllowancePeriod(AllowancePeriod.valueOf(updateDto.getAllowancePeriod()));
         allowanceRepository.save(allowance);
-
 
         Long userId = allowance.getChild().getId();
         NotificationRequest notificationRequest = NotificationRequest.builder()

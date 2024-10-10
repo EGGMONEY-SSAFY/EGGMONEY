@@ -49,8 +49,6 @@ public class SavingsController {
     @PostMapping("/create")
     public ResponseEntity<?> createSaving(@RequestBody SavingsCreateRequestDto savingsCreateRequestDto,
                                           @RequestHeader(value = "Authorization") String token){
-        System.out.println(savingsCreateRequestDto.getSavingsProductId());
-        System.out.println(savingsCreateRequestDto.getPaymentMoney());
         User user = kakaoAuthService.verifyKakaoToken(token);
         savingService.createSaving(savingsCreateRequestDto, user);
 
@@ -92,10 +90,8 @@ public class SavingsController {
         User user = kakaoAuthService.verifyKakaoToken(token);
         List<SavingsLogResponseDto> result = savingService.getSavingsLogs(savingsId);
 
-
         return ResponseEntity.ok().body(result);
     }
-
 
     /**
      * 적금삭제

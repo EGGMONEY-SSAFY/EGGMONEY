@@ -30,9 +30,9 @@ public class StockPendingServiceImpl implements StockPendingService {
     @Override
     public void saveStockPending(PendingTradeRequest pendingTradeReq, TradeType tradeType, Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("해당 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("[증권] 해당 유저를 찾을 수 없습니다."));
         Stock stock = stockRepository.findById(pendingTradeReq.getStockId())
-                .orElseThrow(() -> new NoSuchElementException("해당 주식을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("[증권] 해당 주식을 찾을 수 없습니다."));
 
         stockPendingRepository.save(new StockPending(
                 user, stock, tradeType, pendingTradeReq.getPendingPrice(), pendingTradeReq.getPendingAmount())
@@ -80,7 +80,7 @@ public class StockPendingServiceImpl implements StockPendingService {
         List<StockPending> stockPendings = stockPendingRepository.findByUserIdOrderByCreatedAtDesc(userId);
 
         if(stockPendings.isEmpty()) {
-            throw new NoSuchElementException("지정 거래 예약을 찾을 수 없습니다.");
+            throw new NoSuchElementException("[증권] 지정 거래 예약을 찾을 수 없습니다.");
         }
 
         return stockPendings.stream().map(stockPending ->
@@ -94,10 +94,10 @@ public class StockPendingServiceImpl implements StockPendingService {
     @Override
     public void deleteStockPending(Long stockPendingId,Long userId) {
         StockPending stockPending = stockPendingRepository.findById(stockPendingId)
-                .orElseThrow(() -> new NoSuchElementException("해당 지정거래를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("[증권] 해당 지정거래를 찾을 수 없습니다."));
 
         if(!stockPending.getUser().getId().equals(userId)) {
-            throw new AccessDeniedException("본인의 지정 거래만 취소하실 수 있습니다.");
+            throw new AccessDeniedException("[증권] 본인의 지정 거래만 취소하실 수 있습니다.");
         }
 
         stockPendingRepository.deleteById(stockPendingId);

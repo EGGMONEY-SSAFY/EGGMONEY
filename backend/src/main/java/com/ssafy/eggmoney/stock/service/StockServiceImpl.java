@@ -121,7 +121,7 @@ public class StockServiceImpl implements StockService {
         List<StockPrice> stockPrices = stockPriceRepository.findJoinStock(pageReq);
 
         if(stockPrices.isEmpty()) {
-            throw new NoSuchElementException("지수 가격들을 찾을 수 없습니다.");
+            throw new NoSuchElementException("[증권] 지수 가격들을 찾을 수 없습니다.");
         }
 
         List<StockPriceResponse> stockPriceResponses = stockPrices.stream().map(stockPrice -> new StockPriceResponse(
@@ -140,7 +140,7 @@ public class StockServiceImpl implements StockService {
         List<StockPrice> stockPrices = stockPriceRepository.findByStockIdAndDate(stockId, yearAgo);
 
         if(stockPrices.isEmpty()) {
-            throw new NoSuchElementException("1년 치 지수 정보를 찾을 수 없습니다.");
+            throw new NoSuchElementException("[증권] 1년 치 지수 정보를 찾을 수 없습니다.");
         }
 
         return stockPrices.stream().map(stockPrice -> new StockPriceForYearResponse(

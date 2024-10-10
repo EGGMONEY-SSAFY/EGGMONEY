@@ -4,13 +4,10 @@ import com.ssafy.eggmoney.auth.service.KakaoAuthService;
 import com.ssafy.eggmoney.auth.service.WonService;
 import com.ssafy.eggmoney.user.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
-// test
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequiredArgsConstructor

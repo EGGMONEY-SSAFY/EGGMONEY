@@ -28,7 +28,7 @@ public class StockLogServiceImpl implements StockLogService {
         List<StockLog> stockLogs = stockLogRepository.findByUserId(userId);
 
         if (stockLogs.isEmpty()) {
-            throw new NoSuchElementException("주식 거래 내역을 찾을 수 없습니다.");
+            throw new NoSuchElementException("[증권] 주식 거래 내역을 찾을 수 없습니다.");
         }
 
         return stockLogs.stream()

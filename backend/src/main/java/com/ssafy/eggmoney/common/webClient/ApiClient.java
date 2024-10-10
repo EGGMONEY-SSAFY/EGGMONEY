@@ -30,7 +30,6 @@ public class ApiClient {
                 .retrieve()
                 .bodyToMono(String.class)
                 .doOnError(error -> {
-                    // 에러 발생 시 로그 출력
                     if (error instanceof WebClientResponseException) {
                         WebClientResponseException ex = (WebClientResponseException) error;
                         String errorResponseBody = ex.getResponseBodyAsString();
@@ -38,10 +37,8 @@ public class ApiClient {
                             HashMap<String, Object> errorResponseMap = objectMapper.readValue(errorResponseBody, new TypeReference<HashMap<String, Object>>() {});
                             handleErrorResponse(errorResponseMap);
                         } catch (JsonProcessingException e) {
-                            e.printStackTrace();
+
                         }
-                    } else {
-                        System.out.println("Unexpected error: " + error.getMessage());
                     }
                 });
     }
@@ -120,7 +117,6 @@ public class ApiClient {
 //    예외처리 로직
     public void handleErrorResponse(HashMap<String, Object> errorResponseMap) {
         String responseCode = String.valueOf(errorResponseMap.get("responseCode"));
-        System.out.println(responseCode);
         switch (responseCode) {
             case "H1007":
                 System.out.println("기관거래고유번호 중복");

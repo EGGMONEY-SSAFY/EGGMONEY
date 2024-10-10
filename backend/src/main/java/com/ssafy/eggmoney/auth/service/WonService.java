@@ -38,9 +38,6 @@ public class WonService {
                 .doOnError(error -> {
                     if (error instanceof WebClientResponseException) {
                         WebClientResponseException webClientResponseException = (WebClientResponseException) error;
-                        System.err.println("Error response: " + webClientResponseException.getResponseBodyAsString());
-                    } else {
-                        System.err.println("1원 검증 전송 실패: " + error.getMessage());
                     }
                 });
     }
@@ -75,9 +72,6 @@ public class WonService {
                 .doOnError(error -> {
                     if (error instanceof WebClientResponseException) {
                         WebClientResponseException webClientResponseException = (WebClientResponseException) error;
-                        System.err.println("Error response: " + webClientResponseException.getResponseBodyAsString());
-                    } else {
-                        System.err.println("Failed to check message: " + error.getMessage());
                     }
                 });
 

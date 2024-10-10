@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LoanServiceImpl implements LoanService {
@@ -51,7 +50,6 @@ public class LoanServiceImpl implements LoanService {
     public void createLoan(LoanCreateRequestDto requestDto, User user) {
 
         if(!user.getRole().equals("자녀")){
-            log.error("대출생성 권한이 없습니다.");
             throw new AccessDeniedException(ErrorType.NOT_CREATED_ROLE.toString());
         }
 
@@ -68,15 +66,12 @@ public class LoanServiceImpl implements LoanService {
 
         loanRepository.save(loan);
 
-        log.info("대출이 생성되었습니다.");
-
         NotificationRequest notificationRequest = NotificationRequest.builder()
                 .notificationType(NotificationType.대출요청)
                 .message("자녀가 대출을 요청했습니다.")
                 .build();
 
         notificationService.saveNotification(user.getId(), notificationRequest);
-
     }
 
     // 개인 대출 내역 조회하기(부모면 자녀 것 모두, 자녀는 본인 것)
@@ -117,8 +112,6 @@ public class LoanServiceImpl implements LoanService {
                         .build()
         ).collect(Collectors.toList());
 
-        log.info("개인 대출 리스트를 성공적으로 조회했습니다.");
-
         return loanList;
     }
 
@@ -142,7 +135,6 @@ public class LoanServiceImpl implements LoanService {
                 .loanType(loan.getLoanType())
                 .build();
 
-        log.info("대출 상세 조회 성공");
         return loanDetail;
     }
 
@@ -153,9 +145,7 @@ public class LoanServiceImpl implements LoanService {
         Loan loan = loanRepository.findById(loanId).orElseThrow(
                 () -> new NoSuchElementException(ErrorType.NOT_FOUND_LOAN.toString())
         );
-        log.info(user.getRole());
         if(!user.getRole().equals("부모")){
-            log.error("대출심사 권한이 없습니다.");
             throw new AccessDeniedException(ErrorType.NOT_JUDGE_ROLE.toString());
         }
 
@@ -171,7 +161,6 @@ public class LoanServiceImpl implements LoanService {
         }
 
         loanRepository.save(updateLoan);
-        log.info("대출 심사 성공");
 
         NotificationType type = NotificationType.대출거절;
         String notificationMessage = "부모님이 대출을 거절하셨습니다.";
@@ -209,8 +198,6 @@ public class LoanServiceImpl implements LoanService {
 
         accountService.updateAccount(AccountLogType.LOAN, loan.getUser().getId(), -1 * (interest) + repayment);
 
-        log.info("이자: {interest}, 원리금: {repayment}", interest, repayment);
-
         Loan updateLoan = loan.toBuilder()
                 .balance(loan.getBalance() - repayment) // 상환한 금액 차감
                 .build();
@@ -224,8 +211,6 @@ public class LoanServiceImpl implements LoanService {
                 .build();
 
         loanLogRepository.save(loanLog);
-
-        log.info("대출 상환");
     }
 
     // 대출 로그 조회하기
@@ -243,7 +228,6 @@ public class LoanServiceImpl implements LoanService {
                         .build()
                 ).collect(Collectors.toList());
 
-        log.info("대출 로그 조회");
         return logList;
     }
 
@@ -265,7 +249,6 @@ public class LoanServiceImpl implements LoanService {
                 .build();
 
         loanRepository.save(updateLoan);
-        log.info("대출 만기 상환 완료 {}", loanId);
 
         NotificationRequest notificationRequest = NotificationRequest.builder()
                 .receiveUserId(updateLoan.getUser().getId())
@@ -286,7 +269,5 @@ public class LoanServiceImpl implements LoanService {
 
         return loanIds;
     }
-
-
 
 }

@@ -139,7 +139,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public NewsReponse findNewsById(Long id) {
         News news = newsRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("해당 뉴스가 존재하지않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("[뉴스] 해당 뉴스가 존재하지않습니다."));
         return new NewsReponse(news.getId(), news.getTitle(), news.getLink(),
                 news.getPress(), news.getContent(), news.getCreatedAt());
     }

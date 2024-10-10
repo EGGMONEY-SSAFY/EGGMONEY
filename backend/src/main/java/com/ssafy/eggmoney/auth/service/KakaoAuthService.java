@@ -6,7 +6,6 @@ import com.ssafy.eggmoney.auth.dto.response.KakaoUserResponse;
 import com.ssafy.eggmoney.auth.dto.response.TokenResponse;
 import com.ssafy.eggmoney.user.entity.User;
 import com.ssafy.eggmoney.user.repository.UserRepository;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.stereotype.Service;
@@ -17,27 +16,18 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-//import java.util.logging.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-//@Slf4j // 로그 사용을 위한 어노테이션
 @Service
 public class KakaoAuthService {
-
-    private static final Logger log = LoggerFactory.getLogger(KakaoAuthService.class);
 
     @Value("${kakao.client.id}")
     private String clientId;
 
     @Value("${kakao.redirect.uri}")
     private String redirectUri;
-
-
 
     private static final String KAKAO_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
     private static final String KAKAO_USER_INFO_URL = "https://kapi.kakao.com/v2/user/me";
@@ -51,12 +41,10 @@ public class KakaoAuthService {
     }
 
     public Mono<String> getKakaoAuthUrl() {
-        log.info("Generating Kakao Auth URL");  // 로그 추가
         String url = "https://kauth.kakao.com/oauth/authorize" +
                 "?client_id=" + clientId +
                 "&redirect_uri=" + redirectUri +
                 "&response_type=code";
-        log.info("Kakao Auth URL generated: " + url);  // 로그 추가
         return Mono.just(url);
     }
 
@@ -91,7 +79,6 @@ public class KakaoAuthService {
                 .retrieve()
                 .bodyToMono(KakaoUserResponse.class);
     }
-
 
     public Mono<TokenResponse> handleUserLogin(String code){
         return getAccessTokens(code)
@@ -141,19 +128,16 @@ public class KakaoAuthService {
         } else {
             accessToken = token;
         }
-        log.info("카카오 토큰 검증 시작 - 토큰 값: {}", accessToken);  // 토큰 로그
 
         return webClient.get()
                 .uri(url)
                 .headers(headers -> headers.setBearerAuth(accessToken))
                 .retrieve()
                 .bodyToMono(KakaoUserResponse.class)
-                .doOnNext(kakaoUserResponse -> log.info("카카오 API 응답: {}", kakaoUserResponse)) // 카카오 API 응답 로그
                 .flatMap(kakaoUserResponse -> {
                     String email = kakaoUserResponse.getKakaoAccount().getEmail();
                     return Mono.justOrEmpty(userRepository.findByEmail(email))  // Optional<User>를 Mono<User>로 변환
                             .map(existingUser -> {
-                                log.info("기존 사용자 이메일: {}", email);
                                 return existingUser;
                             })
                             .switchIfEmpty(Mono.defer(() -> {
@@ -161,17 +145,15 @@ public class KakaoAuthService {
                                         .email(email)
                                         .name(kakaoUserResponse.getKakaoAccount().getProfile().getNickname())
                                         .build();
-                                log.info("새 사용자 생성 - 이메일: {}, 이름: {}", email, kakaoUserResponse.getKakaoAccount().getProfile().getNickname());
                                 return Mono.just(userRepository.save(newUser));
                             }));
                 })
-                .doOnNext(user -> log.info("최종 반환된 사용자: {}", user))  // 반환되는 사용자 로그
                 .onErrorMap(e -> {
-                    log.error("카카오 토큰 검증 오류 발생", e);
                     return new IllegalArgumentException("카카오 토큰 검증 실패");
                 })  // 예외 변환 및 로깅
                 .block();  // 동기식 처리
     }
+
     public Mono<Void> logout(String token){
         String KAKAO_LOGOUT_URL = "https://kapi.kakao.com/v1/user/logout";
         final String accessToken;
@@ -180,7 +162,6 @@ public class KakaoAuthService {
         } else {
             accessToken = token;
         }
-        log.info("카카오 토큰 검증 시작 - 토큰 값: {}", accessToken);  // 토큰 로그
         return webClient.post()
                 .uri(KAKAO_LOGOUT_URL)
                 .headers(headers -> headers.setBearerAuth(accessToken))
@@ -188,11 +169,9 @@ public class KakaoAuthService {
                 .bodyToMono(Void.class)
                 .doOnSuccess(unused -> {
                     // 로그아웃 성공 처리 로직
-                    System.out.println("카카오 로그아웃 성공");
                 })
                 .doOnError(error -> {
                     // 에러 처리 로직
-                    System.out.println("카카오 로그아웃 실패: " + error.getMessage());
                 });
     }
 

@@ -25,7 +25,6 @@ public class PinPadService {
     private final BufferedImage checkImage;
     private final EncryptionService encryptionService;
 
-
     public PinPadService(EncryptionService encryptionService) throws IOException {
         this.encryptionService = encryptionService;
         numberImages = IntStream.range(0, 10)
@@ -69,7 +68,6 @@ public class PinPadService {
         }catch (Exception e) {
             throw new RuntimeException("Failed to generate PinPadResponse", e);
         }
-
 
 //        return new PinPadResponse(pinPad, imageBytes);
     }
