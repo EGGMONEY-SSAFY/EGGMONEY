@@ -16,6 +16,7 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
     List<Loan> findAllByUserIdOrderByCreatedAtDesc(@Param("ids") List<Long> userIds);
 
     Optional<Loan> findByIdAndLoanStatus(Long id, LoanStatus loanStatus);
+    List<Loan> findAllByUserIdAndLoanStatus(Long id, LoanStatus loanStatus);
 
     @Query(value = "SELECT l.id FROM Loan l WHERE l.loanStatus = :loanStatus AND l.expirationDate BETWEEN :start AND :end")
     List<Long> findIdByLoanStatusAndExpirationDateBetween(LoanStatus loanStatus, LocalDateTime start, LocalDateTime end);

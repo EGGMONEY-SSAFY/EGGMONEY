@@ -91,7 +91,15 @@ public class AccountService {
     public GetAnalyticsResponseDto getAnalytics(Long userId) {
         Account account = accountRepository.findByUserId(userId).orElse(null);
         Savings savings = savingsRepository.findByUserIdAndSavingsStatus(userId, SavingsStatus.AVAILABLE).orElse(null);
-        Loan loan = loanRepository.findByIdAndLoanStatus(userId, LoanStatus.APPROVAL).orElse(null);
+        List<Loan> loans = loanRepository.findAllByUserIdAndLoanStatus(userId, LoanStatus.APPROVAL);
+        int totalLoan = 0;
+        System.out.println(loans.toString());
+        if ( !loans.isEmpty() ) {
+            for ( Loan loan : loans ) {
+                totalLoan += loan.getBalance();
+            }
+        }
+
         Deposit deposit = depositRepository.findByUserIdAndDepositStatus(userId, DepositStatus.AVAILABLE).orElse(null);
 
         GetAnalyticsResponseDto dto = GetAnalyticsResponseDto.builder()
@@ -99,7 +107,7 @@ public class AccountService {
                 .savings(savings != null ? savings.getBalance() : null)
                 .deposit(deposit != null ? deposit.getDepositMoney() : null)
                 .stock(findUserTotalStockPrice(userId) != 0 ? findUserTotalStockPrice(userId) : null )
-                .loan(loan != null ? loan.getBalance() : null)
+                .loan(totalLoan != 0 ? totalLoan : null)
                 .build();
         return dto;
     }
