@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-col items-center justify-center text-center bg-[#fef6e4] h-screen m-0 pt-20">
-    <img src="@/assets/all/계란EGGMONEY.png" alt="Chicken logo" class="w-[200px] h-[250px]" />
-    <h1 class="text-2xl font-bold my-4">나의 첫 경제생활 도우미</h1>
+  <div class="flex flex-col items-center justify-center text-center bg-[#fef6e4] h-screen m-0">
+    <img src="@/assets/all/eggmoney_son.gif" alt="Chicken logo" class="w-[200px] h-[250px]" />
+    <h1 class="text-2xl font-bold my-4">미리 경험해보는 금융활동</h1>
     <p class="my-4">
-      복잡한 송금, 가계부 관리, 어려운 주식 공부까지<br/>
+      예금, 적금, 대출, 주식 매매 등 복잡한 금융활동을<br />
       <strong class="text-[#ff7f50]">에그머니</strong>에서 쉽고 재미있게 시작해 보세요!
     </p>
     <button

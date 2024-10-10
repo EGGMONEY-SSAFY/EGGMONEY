@@ -58,25 +58,21 @@ onMounted(async () => {
       <div class="bg-yellow-50 rounded-xl py-3">
         <div class="flex my-auto ps-3">
           <IconExplanation></IconExplanation>
-          <h1 class="ps-2 text-sm">
+          <h1 class="text-sm ps-2">
             이용자들의 <span class="underline underline-offset-2">평균 이율</span>은 아래와 같아요!
           </h1>
         </div>
-        <div
-        v-for="(data, index) in avgLoanData"
-          :key="index"
-          class="mt-3 rounded-lg grid px-3"
-        >
+        <div v-for="(data, index) in avgLoanData" :key="index" class="grid px-3 mt-3 rounded-lg">
           <div class="flex justify-between px-2 pe-4">
             <h1
-              class="text-white text-sm bg-blue-500 rounded-xl p-1 px-2"
+              class="p-1 px-2 text-sm text-white bg-blue-500 rounded-xl"
               v-if="data.loan_type === 'LUMPSUM'"
             >
               원리금균등상환
             </h1>
-            <h1 class="text-white text-sm bg-green-700 rounded-xl p-1 px-2" v-else>만기일시상환</h1>
+            <h1 class="p-1 px-2 text-sm text-white bg-green-700 rounded-xl" v-else>만기일시상환</h1>
             <h1
-              class="text-black text-base font-bold underline underline-offset-2"
+              class="text-base font-bold text-black underline underline-offset-2"
               v-if="data.avg_loan_rate"
             >
               {{ data.avg_loan_rate.toFixed(2) }} %
@@ -97,7 +93,7 @@ onMounted(async () => {
       <div class="grid justify-center mt-20">
         <img class="w-full" src="@/assets/asset/notFound.png" alt="notFound" />
       </div>
-      <h1 class="text-xl text-center pt-10 font-bold pb-5">대출 신청 내역이 없습니다.</h1>
+      <h1 class="pt-10 pb-5 text-xl font-bold text-center">대출 신청 내역이 없습니다.</h1>
     </div>
   </div>
   <div v-else>
