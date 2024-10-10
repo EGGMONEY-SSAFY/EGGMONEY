@@ -122,11 +122,6 @@ onMounted(async () => {
     bestRate.value = 0
     await getRecommend(0, 0, 0)
   }
-  await getRecommend(
-    Number((deposit_money.value / total_money.value).toFixed(2)),
-    Number((savings_money.value / total_money.value).toFixed(2)),
-    Number((stock_money.value / total_money.value).toFixed(2))
-  )
 })
 </script>
 
