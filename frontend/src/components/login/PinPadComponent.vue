@@ -116,8 +116,11 @@ const fetchPinPadImage = async () => {
 
 const onButtonClick = (index: number) => {
   clickedButton.value = index
-  randomButton.value = getRandomIndex(index)
+
   console.log(clickedButton.value, randomButton.value)
+  if (index != 9 && index != 11) {
+    randomButton.value = getRandomIndex(index)
+  }
   // if (numbers.value[index] === 10) {
   //   if (step.value === 1) {
   //     firstInput.value.pop()
