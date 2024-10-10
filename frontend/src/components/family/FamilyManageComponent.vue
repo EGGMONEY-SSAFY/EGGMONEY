@@ -33,6 +33,7 @@
         </div>
         <div class="w-full flex justify-end ml-4 pr-2">
           <button
+          v-if="userStore.user && userStore.user.role === '부모'"
             @click="deleteFamily"
             class="px-2 py-2 bg-orange-500 text-white rounded-lg text-sm"
           >
@@ -69,6 +70,7 @@
           <span class="text-blue-700 font-bold">{{ member.role }}</span>
         </p>
         <button
+        v-if="userStore.user && userStore.user.role === '부모'"
           @click="openDeleteModal(member.userId)"
           class="px-4 py-1 bg-red-500 text-white rounded-lg text-sm mt-12 ml-28"
         >
@@ -93,7 +95,8 @@ import DeleteFamilyComponent from "./DeleteFamilyComponent.vue"
 import IconFamilyEdit from "../icons/IconFamilyEdit.vue"
 import { useAuthStore } from "@/stores/auth"
 import { useRouter } from "vue-router"
-
+import { useUserStore } from "@/stores/user"
+const userStore=useUserStore()
 interface FamilyInfo {
   intro: string
   profileImageUrl: string

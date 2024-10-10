@@ -12,6 +12,9 @@ import { ref } from "vue"
 const showNoti = ref(false)
 const Icons = [RemindIcon, RejectIcon, ApproveIcon, MoneyIcon, StockCallIcon, StockPutIcon]
 const dicicons: Record<string, number> = { 전체: 0, 대출: 1, 예금: 2, 적금: 3 }
+// 대출 == '대출요청','대출승인','대출거절','대출상환'
+// 적금 == '적금납부','적금만기'
+// 예금 == '예금만기'
 const props = defineProps({
   noti: {
     type: Object,
