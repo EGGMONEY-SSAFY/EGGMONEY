@@ -44,7 +44,7 @@ export const useStockStore = defineStore("stock", () => {
     }
   }
 
-  const getChartData = async () => {
+  const getChartData = async (userId: number) => {
     try {
       const response = await axios({
         headers: {
@@ -52,7 +52,7 @@ export const useStockStore = defineStore("stock", () => {
           "Content-Type": "application/json",
         },
         method: "get",
-        url: `${API_URL}/stock/user/portfolio`,
+        url: `${API_URL}/stock/user/${userId}/portfolio`,
       })
       return response.data
     } catch (error) {
@@ -194,7 +194,7 @@ export const useStockStore = defineStore("stock", () => {
     }
   }
 
-  const getMyStock = async () => {
+  const getMyStock = async (userId: number) => {
     try {
       const response = await axios({
         headers: {
@@ -202,7 +202,7 @@ export const useStockStore = defineStore("stock", () => {
           "Content-Type": "application/json",
         },
         method: "get",
-        url: `${API_URL}/stock/user/portfolio`,
+        url: `${API_URL}/stock/user/${userId}/portfolio`,
       })
       return response.data
     } catch (error) {
@@ -210,7 +210,7 @@ export const useStockStore = defineStore("stock", () => {
     }
   }
 
-  const getMoneyInfo = async () => {
+  const getMoneyInfo = async (userId: number) => {
     try {
       const response = await axios({
         headers: {
@@ -218,10 +218,10 @@ export const useStockStore = defineStore("stock", () => {
           "Content-Type": "application/json",
         },
         method: "get",
-        url: `${API_URL}/stock/user/available-balance`,
+        url: `${API_URL}/stock/user/${userId}/available-balance`,
       })
-      console.log(response.data);
-      
+      console.log(response.data)
+
       return response.data
     } catch (error) {
       console.error(error)

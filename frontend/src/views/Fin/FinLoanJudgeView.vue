@@ -62,11 +62,7 @@ onMounted(async () => {
             이용자들의 <span class="underline underline-offset-2">평균 이율</span>은 아래와 같아요!
           </h1>
         </div>
-        <div
-        v-for="(data, index) in avgLoanData"
-          :key="index"
-          class="mt-3 rounded-lg grid px-3"
-        >
+        <div v-for="(data, index) in avgLoanData" :key="index" class="mt-3 rounded-lg grid px-3">
           <div class="flex justify-between px-2 pe-4">
             <h1
               class="text-white text-sm bg-blue-500 rounded-xl p-1 px-2"

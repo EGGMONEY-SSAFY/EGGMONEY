@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useStockStore } from "@/stores/stock"
+import { useUserStore, type User } from "@/stores/user";
 import { computed, onMounted, ref } from "vue"
 import { useRoute } from "vue-router"
 
@@ -36,10 +37,41 @@ const stockList = ref<StockList[]>([])
 const route = useRoute()
 const name = route.params.stockName as string
 
+
+const userSelect = ref<User | null>(null)
+const userStore = useUserStore()
+onMounted(async () => {
+  // 유저 조회해서 유저 정보(역할, 자식 목록) 가져오기
+
+  // console.log("가져온 familyId:", userStore.familyId)
+
+  //  자녀가 로그인한 경우
+  if (userStore.user && userStore.user.role === "자녀") {
+    userSelect.value = userStore.user
+  }
+
+  // 부모가 로그인한 경우
+  else {
+    // console.log("부모 로그인")
+    // 자식이 없다면 null, 자식이 있다면 첫 번째 자식으로 userSelect
+    if (userSelect.value == null && userStore.children.length > 0) {
+      // console.log("자식 1명 이상")
+      userSelect.value =
+        userStore.children && userStore.children.length > 0 ? userStore.children[0] : null
+    } else {
+      // console.log("가족 미구성")
+    }
+  }
+})
+
+
+
+
+
 onMounted(async () => {
   const fetchedStockPrice = await storeStock.getStockPrice()
   stockList.value = fetchedStockPrice
-  myStock.value = await storeStock.getMoneyInfo()
+  myStock.value = await storeStock.getMoneyInfo(userSelect.value?.userId)
   myStockB.value = myStock.value.balance.toLocaleString()
   myStockI.value = myStock.value.investablePrice.toLocaleString()
 })
