@@ -47,7 +47,7 @@ const handleListClick = () => {
           <img src="@/assets/fin/loan.png" alt="로딩중" />
         </div>
         <div class="flex justify-center items-center">
-          <div class="grid gap-3 text-center">
+          <div class="grid gap-1 text-center">
             <div>대출이 필요한 경우,</div>
             <div>부모님께 돈을 요청할 수 있어요</div>
             <div>대출금은 납기 기한 내에</div>

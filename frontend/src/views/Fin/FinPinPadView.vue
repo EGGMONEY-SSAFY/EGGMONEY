@@ -59,7 +59,8 @@ const handleFail = () => {
 }
 </script>
 <template>
-  <div class="fixed inset-0 z-20">
+  <div class="fixed inset-0 z-20 mt-20">
+  
     <SimplePinPadComponent
       @pin-success="handleSuccess"
       @pinFail="handleFail"
