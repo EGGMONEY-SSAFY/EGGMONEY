@@ -11,6 +11,7 @@ import com.ssafy.eggmoney.notification.dto.request.NotificationRequest;
 import com.ssafy.eggmoney.notification.entity.NotificationType;
 import com.ssafy.eggmoney.notification.service.NotificationService;
 import com.ssafy.eggmoney.user.entity.User;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,7 @@ public class AllowanceService {
         allowanceRepository.delete(allowance);
     }
 
-    public AllowanceUpdateResponseDto updateAllowance(Long allowanceId, AllowanceUpdateResponseDto updateDto){
+    public AllowanceUpdateResponseDto updateAllowance(Long allowanceId, AllowanceUpdateResponseDto updateDto, User user){
           Allowance allowance = allowanceRepository.findById(allowanceId)
                   .orElseThrow(() -> new IllegalArgumentException("해당 ID의 용돈 정보가 존재하지 않습니다."));
 //        Allowance allowance = allowanceRepository.findByChildId(childId)
@@ -55,14 +56,17 @@ public class AllowanceService {
         allowance.setAllowancePeriod(AllowancePeriod.valueOf(updateDto.getAllowancePeriod()));
         allowanceRepository.save(allowance);
 
+
+        Long userId = allowance.getChild().getId();
         NotificationRequest notificationRequest = NotificationRequest.builder()
+                .receiveUserId(userId)
                 .notificationType(NotificationType.용돈변경)
                 .message("용돈이 변경되었습니다.")
                 .build();
 
 //        allowanceId에서 해당하는 userId를 찾는다
-        Long userId = allowance.getChild().getId();
-        notificationService.saveNotification(userId, notificationRequest);
+
+        notificationService.saveNotification(user.getId(), notificationRequest);
 
         return new AllowanceUpdateResponseDto(allowance);
     }
