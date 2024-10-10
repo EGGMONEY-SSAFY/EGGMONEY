@@ -38,7 +38,7 @@ public class StockPendingController {
                 throw new IllegalArgumentException("[증권] 지정 매수 금액은 투자 가능 금액이나 잔액 보다 클 수 없습니다.");
             }
 
-            stockPendingService.saveStockPending(pendingReq, TradeType.BUY, 1L);
+            stockPendingService.saveStockPending(pendingReq, TradeType.BUY, userId);
 
             return ResponseEntity.ok().build();
         } else {
