@@ -16,8 +16,8 @@ store.setTitle("전체")
   <div class="main-container bg-gray-200">
     <div className="mt-16">
       <BoxAllSetting />
-      <BoxAllFamily />
       <BoxAllEvent />
+      <BoxAllFamily />
       <BoxAllAssets />
       <BoxAllFinance />
       <BoxAllStock />
