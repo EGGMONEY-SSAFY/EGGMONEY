@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from utils import create_spark_session, get_avg_loan_data
+from utils import get_avg_loan_data
 from pydantic import BaseModel
 from KMeansService import KMeansService
 from fastapi.middleware.cors import CORSMiddleware
