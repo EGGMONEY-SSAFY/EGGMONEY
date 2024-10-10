@@ -49,9 +49,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="grid grid-cols-1 grid-flow-row py-5" v-if="userSelect">
+  <div class="grid grid-cols-1 grid-flow-row py-5" v-if="userStore.familyId && userSelect">
     <!-- 등록된 가족이 있는 경우 -->
-    <div v-if="userStore.familyId">
+    <div>
       <!-- 부모일 경우 아이 Select Box -->
       <div v-if="userStore.user && userStore.user.role === `부모`" class="p-3 flex justify-between">
         <select

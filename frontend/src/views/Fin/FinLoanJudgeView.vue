@@ -75,7 +75,10 @@ onMounted(async () => {
               원리금균등상환
             </h1>
             <h1 class="text-white text-sm bg-green-700 rounded-xl p-1 px-2" v-else>만기일시상환</h1>
-            <h1 class="text-black text-base font-bold underline underline-offset-2" v-if="data.avg_loan_rate">
+            <h1
+              class="text-black text-base font-bold underline underline-offset-2"
+              v-if="data.avg_loan_rate"
+            >
               {{ data.avg_loan_rate.toFixed(2) }} %
             </h1>
           </div>

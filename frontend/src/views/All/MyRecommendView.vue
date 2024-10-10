@@ -140,43 +140,60 @@ onMounted(async () => {
         <IconExplanation></IconExplanation>
         <h1 class="ps-3">{{ props.user.name }} 회원님과 유사한 사용자들의</h1>
       </div>
-      <h1 class="ps-5 pt-1">
+      <h1 class="ps-7 pt-1">
         <span class="underline underline-offset-2">가입 상품</span>은 아래와 같아요!
       </h1>
     </div>
     <hr class="mt-4" />
-    <div class="mt-4 px-3 flex items-center font-bold text-xl justify-between">
-      <h1>사용자 유형</h1>
-      <div class="text-xl font-bold" v-if="bestRate === 0">
-        <h1>초보자</h1>
+    <div class="mt-4 px-3 flex-grow items-center font-bold text-xl justify-between pb-2">
+      <h1>❓ &nbsp;내 유형은?</h1>
+      <div class="mt-6 text-xl font-bold flex items-center justify-center" v-if="bestRate === 0">
+        <img src="@/assets/asset/type_newbie.png" alt="newbie" style="width: 50px; height: 50px" />
+        <h1 class="text-green-700 ps-4">초보자</h1>
       </div>
-      <div class="text-xl font-bold" v-if="bestRate != 0 && bestRate === depositRate">
-        <h1>예금 올인</h1>
+      <div
+        class="mt-6 text-xl font-bold flex items-center justify-center"
+        v-if="bestRate != 0 && bestRate === depositRate"
+      >
+        <img src="@/assets/asset/type_deposit.png" alt="newbie" style="width: 50px; height: 50px" />
+        <h1 class="text-blue-700 ps-4">안전 제일</h1>
       </div>
-      <div class="text-xl font-bold" v-if="bestRate != 0 && bestRate === savingsRate">
-        <h1>적금 올인</h1>
+      <div
+        class="mt-6 text-xl font-bold flex items-center justify-center"
+        v-if="bestRate != 0 && bestRate === savingsRate"
+      >
+        <img src="@/assets/asset/type_savings.png" alt="newbie" style="width: 50px; height: 50px" />
+        <h1 class="text-main-color ps-4">꾸준한 저축가</h1>
       </div>
-      <div class="text-xl font-bold" v-if="bestRate != 0 && bestRate === stockRate">
-        <h1>주식 올인</h1>
+      <div
+        class="mt-6 text-xl font-bold flex items-center justify-center"
+        v-if="bestRate != 0 && bestRate === stockRate"
+      >
+        <img src="@/assets/asset/type_stock.png" alt="newbie" style="width: 50px; height: 50px" />
+        <h1 class="text-red-500 ps-4">미래의 투자가</h1>
       </div>
     </div>
   </div>
   <div
     v-if="recommendDeposit && recommendSavings"
-    class="grid grid-cols-1 grid-flow-row justify-center"
+    class="grid grid-flow-row grid-cols-1 justify-center"
   >
     <div>
-      <div class="">
-        <h1 class="m-4 text-lg font-bold bg-main-color text-white rounded-xl p-2 ps-4">
-          예금 추천 상품
-        </h1>
+      <div
+        class="bg-blue-500 m-4 text-lg font-bold text-white rounded-xl p-2 ps-4 items-center flex"
+      >
+        <img src="@/assets/asset/account_2.png" alt="newbie" style="width: 40px; height: 40px" />
+        <h1 class="text-white ps-5">예금 추천 상품</h1>
       </div>
       <BoxDepositProduct v-if="recommendDeposit" :product="recommendDeposit" />
     </div>
     <div>
-      <h1 class="m-4 text-lg font-bold bg-main-color text-white rounded-xl p-2 ps-4">
-        적금 추천 상품
-      </h1>
+      <div
+        class="bg-yellow-600 m-4 text-lg font-bold text-white rounded-xl p-2 ps-4 items-center flex"
+      >
+        <img src="@/assets/asset/savings_2.png" alt="newbie" style="width: 40px; height: 40px" />
+        <h1 class="text-white ps-5">적금 추천 상품</h1>
+      </div>
       <BoxSavingsProduct
         v-if="recommendSavings"
         :product="recommendSavings"
