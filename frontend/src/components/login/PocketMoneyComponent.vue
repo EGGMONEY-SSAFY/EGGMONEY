@@ -1,7 +1,7 @@
 <template>
   <div class="px-4 py-6" v-if="!isLoading">
     <!-- 자녀 선택 드롭다운 -->
-    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+    <div class="bg-white rounded-lg shadow-md p-4">
       <div class="flex justify-between items-center">
         <select
           v-model="selectedChildId"
@@ -15,7 +15,7 @@
         <i class="fas fa-bell text-orange-500"></i>
         <!-- 알림 아이콘 -->
       </div>
-      <div class="mt-">
+      <div>
         <!-- 자녀 정보 -->
         <span class="font-semibold">{{ parent.name }}님은 현재</span>
         <span class="font-bold text-orange-600">{{ selectedChild?.name }}</span
@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <hr class="my-6" />
+    <hr class="my-3" />
 
     <!-- 용돈 단위 설정 (주, 월) -->
     <div class="bg-white rounded-lg shadow-md p-4 mb-6">
@@ -48,7 +48,7 @@
       </select>
     </div>
 
-    <hr class="my-6" />
+    <!-- <hr class="my-6" /> -->
 
     <!-- 용돈 줄 시기 설정 (요일 혹은 날짜) -->
     <div class="bg-white rounded-lg shadow-md p-4 mb-6">
@@ -85,10 +85,10 @@
       </div>
     </div>
 
-    <hr class="my-6" />
+    <!-- <hr class="my-6" /> -->
 
     <!-- 용돈 설정 -->
-    <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+    <div class="bg-white rounded-lg shadow-md p-4 mb-4">
       <div class="font-semibold text-gray-700 mb-2">
         {{ selectedChild?.name }}에게 줄 용돈을 설정해 주세요
       </div>
