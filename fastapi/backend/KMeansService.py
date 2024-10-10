@@ -7,8 +7,11 @@ from pyspark.sql.window import Window
 
 class KMeansService:
     def __init__(self):
-        # SparkSession을 수동으로 생성하여 SparkContext 초기화
-        self.spark = None  # 초기에는 Spark 세션을 만들지 않음
+        # SparkSession을 명시적으로 생성하여 초기화
+        self.spark = SparkSession.builder \
+            .appName("FastAPI") \
+            .getOrCreate()
+        
         self.model_path = "./kmeans_model"
         self.assembler = VectorAssembler(inputCols=["deposit_ratio", "savings_ratio", "stock_ratio"], outputCol="features")
 
@@ -23,7 +26,7 @@ class KMeansService:
 
     # HDFS에서 데이터를 읽어와 K-Means 학습
     def train_kmeans_model_from_hdfs(self, k: int = 3) -> str:
-        spark = None
+
         try:
             # Spark 세션 생성
             spark = self.get_spark_session()
@@ -87,7 +90,7 @@ class KMeansService:
 
     # 새로운 사용자 클러스터링
     def predict_cluster(self, deposit_ratio: float, savings_ratio: float, stock_ratio: float) -> int:
-        spark = None
+
         try:
             # Spark 세션 생성
             spark = self.get_spark_session()
@@ -112,7 +115,7 @@ class KMeansService:
 
     # 클러스터에 따른 추천 제공
     def recommend_products(self, cluster_id: int) -> dict:
-        spark = None
+
         try:
             # Spark 세션 생성
             spark = self.get_spark_session()
