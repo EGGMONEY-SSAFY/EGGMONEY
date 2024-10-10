@@ -121,7 +121,7 @@ onMounted(async () => {
     await getRecommend(depositRate.value, savingsRate.value, stockRate.value)
   } else {
     bestRate.value = 0
-    await getRecommend(0, 0, 1)    
+    await getRecommend(0, 0, 1)
   }
 })
 </script>

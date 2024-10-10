@@ -30,9 +30,9 @@ export default defineConfig(({ mode }) => {
         srcDir: "public",
         filename: "sw.js",
         manifest: {
-          name: "My Vue App",
-          short_name: "VueApp",
-          description: "My awesome Vue application!",
+          name: "에그머니",
+          short_name: "에그머니",
+          description: "금융활동을 미리 경험해보세요",
           theme_color: "#FF5A00",
           background_color: "#F3F4F6",
           icons: [
