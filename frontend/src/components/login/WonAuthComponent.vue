@@ -123,8 +123,7 @@ const sendWonAuth = async () => {
           },
         }
       )
-      console.log(selectaccount.value, banksend[selectbank.value])
-      console.log(response)
+
       bankselectstep.value += 1
     } catch (error) {
       console.error(error)
@@ -138,7 +137,7 @@ const sendWonAuth = async () => {
 const checkAuthNumber = async () => {
   if (selectaccount.value && checkAuth.value && selectbank.value !== null) {
     try {
-      console.log(token)
+
       //  const token = "HpAwXfMaEpHRVBLX6CvO2-LUlcUMjy1EAAAAAQorDR4AAAGSPfkK3pCBbdpZdq0Z"
       const response = await axios.post(
         "/api/v1/auth/won/check",
@@ -156,8 +155,7 @@ const checkAuthNumber = async () => {
           },
         }
       )
-      console.log(selectaccount.value, banksend[selectbank.value])
-      console.log(response)
+
       bankselectstep.value += 1
     } catch (error) {
       console.error(error)

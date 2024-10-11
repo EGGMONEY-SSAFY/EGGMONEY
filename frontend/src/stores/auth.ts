@@ -23,7 +23,7 @@ async function saveTokensToIndexedDB(accessToken: string, refreshToken: string) 
     },
   })
   await db.put("tokenStore", { accessToken, refreshToken }, "authTokens")
-  console.log(accessToken, refreshToken, db)
+
 }
 
 async function loadTokensFromIndexedDB() {
@@ -57,7 +57,6 @@ export const useAuthStore = defineStore("auth", {
     async setTokens(accessToken: string, refreshToken: string) {
       this.accessToken = accessToken
       this.refreshToken = refreshToken
-      console.log(accessToken, refreshToken)
       await saveTokensToIndexedDB(accessToken, refreshToken)
       // 페이지 새로고침
       window.location.reload()

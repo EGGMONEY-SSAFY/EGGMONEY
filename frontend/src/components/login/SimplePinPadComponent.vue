@@ -81,7 +81,6 @@ const authStore = useAuthStore()
 const fetchPublicKey = async () => {
   try {
     const token = authStore.accessToken
-    console.log(token)
     const response = await axios.get("/api/public-key", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -98,7 +97,6 @@ const fetchPublicKey = async () => {
 const fetchPinPadImage = async () => {
   try {
     const token = authStore.accessToken
-    console.log(token)
     const response = await axios.get("/api/pinpad", {
       //headers: {
       //Authorization: `Bearer ${token}`,
@@ -129,7 +127,6 @@ const onButtonClick = (index: number) => {
     randomButton.value = getRandomIndex(index)
   }
 
-  console.log(clickedButton.value, randomButton.value)
   if (index === 9) {
     if (step.value === 1) firstInput.value.pop()
     else secondInput.value.pop()
@@ -158,7 +155,6 @@ const getRandomIndex = (excludeIndex: number): number => {
   return randomIndex
 }
 const verifyInput = () => {
-  console.log(firstInput.value, secondInput.value)
   const pinString = firstInput.value.toString()
   encryptAndSendPin(pinString)
 }
@@ -190,7 +186,6 @@ const sendToBackend = async (encryptedPin: string) => {
         },
       }
     )
-    console.log(response)
     if (response.data.status === "success") {
       // 상위 프롭스에 이벤트전달 성공 이벤트 전달
       failCount.value = 0 // 성공 시 틀린 횟수 초기화
@@ -199,7 +194,6 @@ const sendToBackend = async (encryptedPin: string) => {
       instructionMessage.value = "비밀번호가 일치하지 않습니다. 다시 시도해주세요."
       resetInput()
       failCount.value += 1 // 실패 시 틀린 횟수 증가
-      console.log(failCount.value)
       if (failCount.value >= 5) {
         emit("pinFail")
         // 5번 틀리면 상위 프롭스에 실패 이벤트 전달

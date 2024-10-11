@@ -18,6 +18,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import FamilyInviteQRCodeComponent from "./FamilyInviteQRCodeComponent.vue"
+import FamilyInviteQconsoleRCodeComponent from "./FamilyInviteQRCodeComponent.vue"
 </script>
 <style></style>

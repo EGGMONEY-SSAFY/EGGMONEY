@@ -14,11 +14,9 @@ const userStore = useUserStore()
 const isLoading = ref(true)
 
 onMounted(async () => {
-  console.log("App.vue Loaded")
   try {
     await authStore.loadTokens(router)
     await userStore.getUser()
-    console.log("App.vue 작업 완료")
   } catch (error) {
     console.error("에러 발생:", error)
     // 에러 처리 로직 추가

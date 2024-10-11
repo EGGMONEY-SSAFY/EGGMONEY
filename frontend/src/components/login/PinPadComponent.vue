@@ -70,7 +70,6 @@ const authStore = useAuthStore()
 const fetchPublicKey = async () => {
   try {
     const token = authStore.accessToken
-    console.log(token)
     const response = await axios.get("/api/public-key", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -87,7 +86,6 @@ const fetchPublicKey = async () => {
 const fetchPinPadImage = async () => {
   try {
     const token = authStore.accessToken
-    console.log(token)
     const response = await axios.get("/api/pinpad", {
       //headers: {
       //Authorization: `Bearer ${token}`,
@@ -95,7 +93,6 @@ const fetchPinPadImage = async () => {
       //}
     })
     const encryptedImage = response.data.encryptedImage
-    console.log(encryptedImage)
     // const decrypt = new JSEncrypt();
     // decrypt.setPrivateKey(''
     //   // `${env.RSA.key}`
@@ -108,7 +105,6 @@ const fetchPinPadImage = async () => {
     const decryptedBase64Image = encryptedImage
     // decrypted.toString(CryptoJS.enc.Base64);
     pinPadImage.value = `data:image/png;base64,${decryptedBase64Image}`
-    console.log(pinPadImage.value)
   } catch (error) {
     console.error("이미지 불러오기 실패:", error)
   }
@@ -160,7 +156,6 @@ const getRandomIndex = (excludeIndex: number): number => {
   return randomIndex
 }
 const verifyInput = () => {
-  console.log(firstInput.value, secondInput.value)
   if (firstInput.value.join("") === secondInput.value.join("")) {
     const pinString = firstInput.value.toString()
     encryptAndSendPin(pinString)

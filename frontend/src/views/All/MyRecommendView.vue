@@ -57,7 +57,6 @@ const getDepsoitProduct = function (id: number): Promise<void> {
   })
     .then((res) => {
       recommendDeposit.value = res.data
-      console.log(res.data)
     })
     .catch((err) => {
       console.error(err)

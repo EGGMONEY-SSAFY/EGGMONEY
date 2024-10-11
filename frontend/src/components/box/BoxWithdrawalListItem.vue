@@ -5,7 +5,6 @@ import { ref } from "vue"
 import { useRouter } from "vue-router"
 
 const props = defineProps<{ user: User; withdrawal: Withdrawal }>()
-const router = useRouter()
 const assetStore = useAssetStore()
 const userStore = useUserStore()
 const isModalOpen = ref(false)
