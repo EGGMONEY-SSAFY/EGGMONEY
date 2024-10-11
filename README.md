@@ -126,7 +126,7 @@ Slack과 유사한 기능을 제공<br/>
 
 | 메인페이지| 회원가입 | 
 | --- | --- | 
-|![메인페이지](readme/main.gif) | ![메인페이지](readme/log.gif) | 
+|![메인페이지](readme/log3.PNG) | ![메인페이지](readme/log.gif) | 
 
 <br>
 </div>
@@ -138,7 +138,7 @@ Slack과 유사한 기능을 제공<br/>
 
 | 적금 | 적금납입 | 
 | --- | --- | 
-| ![메인페이지](readme/jaq1.png) | ![메인페이지](readme/jaqnap.gif) | 
+| ![메인페이지](readme/jaq1.PNG) | ![메인페이지](readme/jaqnap.gif) | 
 
 <br>
 </div>
