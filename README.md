@@ -123,71 +123,51 @@ Slack과 유사한 기능을 제공<br/>
 <br/>
 <summary> 1️⃣ 메인페이지 </summary>
 <div markdown="1">
-	
-![메인페이지](readme/main.png)
-<br>
-</div>
-</details>
-<details>
-<br/>
-<summary> 2️⃣ 회원페이지  </summary>
-<div markdown="1">
-	
-![로그인 페이지](readme/user1.png)
 
-![로그인 페이지](readme/user2.png)
-
-![로그인 페이지](readme/user3.png)
-
-![로그인 페이지](readme/user4.png)
-
-<br><br>회원의 기본 정보 관리
-<br>
-</div>
-</details>
-<details>
-<br/>
-<summary> 3️⃣ 자산페이지   </summary>
-<div markdown="1">
-	
-![자산](readme/deposit1.png)
-![자산](readme/deposit2.png)
+| 메인페이지| 회원가입 | 
+| --- | --- | 
+|![메인페이지](readme/main.gif) | ![메인페이지](readme/log.gif) | 
 
 <br>
 </div>
 </details>
 <details>
 <br/>
-<summary> 4️⃣ 금융페이지  </summary>
+<summary> 2️⃣ 적금 페이지  </summary>
 <div markdown="1">
 
-![증권](readme/stock1.png)
+| 적금 | 적금납입 | 
+| --- | --- | 
+|![메인페이지](readme/main.png) | ![메인페이지](readme/jaqnap.gif) | 
+
+<br>
+</div>
+</details>
+<details>
+<br/>
+<summary> 3️⃣ 대출 페이지   </summary>
+<div markdown="1">
+
+| 대출심사 | 대출상환 | 
+| --- | --- | 
+|![메인페이지](readme/dae1.gif) | ![메인페이지](readme/daeju.gif) | 
+
+<br>
+</div>
+</details>
+<details>
+<br/>
+<summary> 4️⃣ 출금 페이지  </summary>
+<div markdown="1">
+
+| 출금요청 | 출금심사 | 
+| --- | --- | 
+|![메인페이지](readme/r0.gif) | ![메인페이지](readme/r1.gif) | 
+
 
 </div>
 </details>
 
-<details>
-<br/>
-<summary> 5️⃣ 증권페이지  </summary>
-<div markdown="1">
-	
-![증권](readme/stock1.png)
-![증권](readme/stock2.png)
-
- <br>
- </div>
-</details>
-<details>
-<br/>
-<summary> 6️⃣ 전체페이지 </summary>
-<div markdown="1">
-
-![전체](readme/total1.png)
-<br> 
-<br>
- </div>
-</details>
-<br/>
 
 [▶ 에그머니 소개 영상](exec/eggmoney.mp4)
 
