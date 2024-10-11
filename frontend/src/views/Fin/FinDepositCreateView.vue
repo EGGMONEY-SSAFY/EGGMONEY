@@ -10,7 +10,7 @@ import IconExplanation from "@/components/icons/IconExplanation.vue"
 import InputMoney from "@/components/input/InputMoney.vue"
 import { useFinStore } from "@/stores/fin"
 import { useUserStore } from "@/stores/user"
-import { computed, onMounted, ref } from "vue"
+import { onMounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
 const route = useRoute()
 const userStore = useUserStore()

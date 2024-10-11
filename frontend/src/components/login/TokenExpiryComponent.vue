@@ -58,7 +58,7 @@ function startTokenExpiryWatcher() {
 async function refreshToken() {
   const refreshToken = localStorage.getItem("refresh_token")
   if (!refreshToken) {
-    console.error("No refresh token found")
+ 
     return
   }
   try {
@@ -77,7 +77,7 @@ async function refreshToken() {
       tokenExpiryTime = parseJwt(data.accessToken).exp * 1000
       startTokenExpiryWatcher()
       showAlert.value = false
-      console.log("토큰 갱신 완료")
+
     } else {
       console.error("토큰 갱신 실패:", data.message)
     }

@@ -81,7 +81,7 @@ const router = createRouter({
       name: "MainView",
       component: MainView,
       beforeEnter() {
-        console.log("MainView 로드됨")
+
       },
     },
     {
@@ -181,7 +181,7 @@ const router = createRouter({
       name: "AllView",
       component: AllView,
       beforeEnter() {
-        console.log("AllView 로드됨")
+
       },
     },
     {

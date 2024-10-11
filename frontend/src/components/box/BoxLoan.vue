@@ -2,7 +2,7 @@
 import { useUserStore } from "@/stores/user"
 import { useFinStore, type Loan } from "@/stores/fin"
 import { useRouter } from "vue-router"
-import { onMounted, ref } from "vue"
+import {  ref } from "vue"
 
 const userStore = useUserStore()
 const props = defineProps<{ loan: Loan | null }>()
@@ -17,7 +17,6 @@ const goLoanDetail = () => {
 
 // 모달을 여는 함수
 const openModal = () => {
-  console.log(props.loan?.loanId)
   isModalOpen.value = true
 }
 
@@ -28,7 +27,6 @@ const closeModal = () => {
 
 // sendLoan 메소드
 async function sendLoan(loanId: number | null) {
-  console.log(loanId)
   if (loanId) {
     await finStore.sendLoan(loanId)
   }

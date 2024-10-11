@@ -43,7 +43,6 @@ const handleClick = () => {
     return
   } else {
     isValid.value = true
-    console.log("userID", userStore.user?.userId)
     if (userStore.user?.userId) {
       finStore.setLoanCreate(
         reason.value,

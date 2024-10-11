@@ -79,7 +79,6 @@ onMounted(async () => {
   }
   try {
     // const response = await axios.get('/api/v1/family/1/searchchild');
-    console.log(response)
     children.value = response.data
     selectedChild.value = children.value[0]
     selectedStockRatio.value = selectedChild.value?.stockRatio ?? ""
@@ -98,7 +97,6 @@ const updateSelectedChild = () => {
 const sumbitchanges = async () => {
   if (selectedChild.value) {
     try {
-      console.log(selectedChild.value.id, selectedStockRatio.value)
       // const response = await axios.post('/api/allowance', {
       // user_id: selectedChild.value.id,
       // allowance_period: selectedPeriodUnit.value,

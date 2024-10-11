@@ -3,8 +3,6 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, Colors } from "chart.js"
 import { Doughnut } from "vue-chartjs"
 // import * as chartConfig from "./HeldAssetChartConfig.js"
 import { ref, onMounted, watch } from "vue"
-import { useUserStore } from "@/stores/user.js"
-import { useAssetStore } from "@/stores/asset.js"
 import type { ChartData } from "@/stores/asset.js"
 import type { Analytics } from "@/stores/asset.js"
 

@@ -43,7 +43,6 @@ const options = {
 const data = ref()
 const data1 = ref()
 onMounted(async () => {
-  console.log(props.stockId as number)
   data1.value = await stockStore.getDetailStockData(props.stockId as number)
   data.value = {
     labels: data1.value.map((item: { date: string }) => item.date),

@@ -54,7 +54,7 @@ const router = useRouter()
 const role = ref<String>("최초") as Ref<String>
 const selectRole = (selectedRole: String) => {
   role.value = selectedRole
-  console.log(role.value)
+
 }
 const submitExinfo = async () => {
   if (role.value === "최초") {
@@ -74,7 +74,7 @@ const submitExinfo = async () => {
         },
       }
     )
-    console.log(response)
+
     router.push("/won")
   } catch (error) {
     console.error("Error:", error)

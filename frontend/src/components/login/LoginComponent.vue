@@ -29,7 +29,6 @@ function redirectToLogin() {
     .get("/api/kakao/login")
     .then(async (response) => {
       // 성공적으로 로그인 URL을 가져온 경우
-      console.log(response.data)
       window.location.href = response.data
     })
     .catch((error) => {

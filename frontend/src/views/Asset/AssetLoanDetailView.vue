@@ -22,7 +22,6 @@ const formatExpireDate = (expireDate?: string) => {
 
 onMounted(async () => {
   varStore.setTitle("대출 상세내역")
-  console.log(route.params.loanId)
   await finStore.getUserLoan(Number(route.params.loanId))
   if (finStore.loan != null) {
     if (typeof finStore.loan === "object" && "balance" in finStore.loan) {
