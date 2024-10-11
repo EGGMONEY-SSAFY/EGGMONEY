@@ -56,7 +56,7 @@ const matchingStock = computed(() => {
       <span class="font-bold">{{ myStockB }} 알</span>
     </div>
     <div class="mx-6">
-      <span>투자 가능 금액 : </span>
+      <span>투자 가능 한도 : </span>
       <span class="font-bold">{{ myStockI }} 알</span>
     </div>
     <div class="mx-6 mb-4">
