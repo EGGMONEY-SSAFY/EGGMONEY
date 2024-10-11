@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,8 +26,11 @@ public class AccountLogService {
 
 //    메인계좌 로그 조회
     public Page<GetAccountLogResponseDto> getAccountLogs(Long userId, Pageable pageable){
-
-        return accountLogRepository.findLogsByAccountId(userId, pageable)
+        Optional<Account> account = accountRepository.findByUserId(userId);
+        if ( !account.isPresent() ){
+            throw new NoSuchElementException("일치 계좌 없음");
+        }
+        return accountLogRepository.findLogsByAccountId(account.get().getId(), pageable)
                 .map( log -> GetAccountLogResponseDto.builder()
                         .accountId(log.getAccount().getId())
                         .currentBalance(log.getCurrentBalance())
