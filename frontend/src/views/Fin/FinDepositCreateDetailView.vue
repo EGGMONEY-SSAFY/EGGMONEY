@@ -38,7 +38,6 @@ const repayment = computed(() => {
 
   return "0" // Default repayment value when data is invalid
 })
-console.log("repayment", repayment)
 const handleClick = () => {
   router.push({
     name: "FinPinPadView",

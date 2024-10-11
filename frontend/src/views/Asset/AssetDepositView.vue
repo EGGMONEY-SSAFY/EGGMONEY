@@ -23,7 +23,6 @@ watch(
       } else {
         userDeposit.value = null
       }
-      console.log(userDeposit.value)
     }
   },
   { deep: true }

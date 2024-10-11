@@ -66,7 +66,6 @@ function saveReason() {
   } else {
     loanReason.value = ""
   }
-  console.log(loanReason.value)
 }
 
 const formatExpireDate = (expireDate?: string) => {

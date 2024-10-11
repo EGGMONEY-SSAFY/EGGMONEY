@@ -165,7 +165,6 @@ async function createFamily() {
       })
       imageUrl = response.data.imageUrl
     } catch (error) {
-      console.error("이미지 업로드 실패", error)
       alert("이미지 업로드 실패")
       return
     }
@@ -176,7 +175,7 @@ async function createFamily() {
     intro: familyDescription.value,
     profileImageUrl: imageUrl || null,
   }
-  console.log(familyData)
+
   try {
     await axios.post("/api/v1/family/create", familyData, {
       headers: {
