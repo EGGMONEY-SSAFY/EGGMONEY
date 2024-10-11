@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `stock_users` (
   CONSTRAINT `FKk40bs2lrafeke1pj0w6ptqojp` FOREIGN KEY (`stock_id`) REFERENCES `stocks` (`stock_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11012 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- 테이블 데이터 mydatabase.stock_users:~10,012 rows (대략적) 내보내기
+-- 테이블 데이터 mydatabase.stock_users:~10,011 rows (대략적) 내보내기
 INSERT INTO `stock_users` (`amount`, `buy_average`, `created_at`, `stock_id`, `stock_user_id`, `updated_at`, `user_id`) VALUES
 	(13, 2684, '2024-07-26 22:11:52.000000', 1, 1, '2024-10-11 10:36:02.934904', 1),
 	(4, 10000, '2024-10-09 23:28:39.073651', 1, 1000, '2024-10-09 23:28:39.073651', 1000),
@@ -10043,7 +10043,6 @@ INSERT INTO `stock_users` (`amount`, `buy_average`, `created_at`, `stock_id`, `s
 	(2, 1920, '2024-10-10 22:01:55.513634', 3, 11005, '2024-10-10 22:01:55.513634', 5),
 	(7, 893, '2024-10-10 22:02:09.756291', 6, 11006, '2024-10-10 22:02:09.756291', 5),
 	(5, 3109, '2024-10-10 22:24:22.066698', 4, 11007, '2024-10-10 22:24:22.066698', 1),
-	(100, 2599, '2024-10-10 23:03:19.040692', 1, 11009, '2024-10-10 23:03:19.040692', 11005),
 	(11, 860, '2024-04-16 01:07:41.920868', 2, 11010, '2024-04-16 01:07:41.920868', 1),
 	(15, 3394, '2024-07-04 01:16:56.088084', 5, 11011, '2024-07-04 01:16:56.088084', 1);
 

@@ -26,16 +26,17 @@ CREATE TABLE IF NOT EXISTS `withdrawals` (
   PRIMARY KEY (`withdrawal_id`),
   KEY `FKesk6migh8b3x43q3740dh5fja` (`user_id`),
   CONSTRAINT `FKesk6migh8b3x43q3740dh5fja` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- 테이블 데이터 mydatabase.withdrawals:~6 rows (대략적) 내보내기
+-- 테이블 데이터 mydatabase.withdrawals:~7 rows (대략적) 내보내기
 INSERT INTO `withdrawals` (`withdrawal_price`, `created_at`, `updated_at`, `user_id`, `withdrawal_id`, `withdrawal_status`) VALUES
 	(100000, '2024-09-10 14:21:17.132168', '2024-09-10 03:13:31.975546', 1, 9, 'APPROVAL'),
 	(1234, '2024-09-29 11:03:32.835955', '2024-09-30 11:21:09.310568', 5, 14, 'REFUSAL'),
 	(200000, '2024-10-09 02:00:51.137611', '2024-10-10 22:05:35.573730', 1, 19, 'APPROVAL'),
 	(4000, '2024-10-10 22:07:10.482147', '2024-10-10 22:07:10.482147', 11006, 20, 'PROGRESS'),
 	(100000, '2024-10-10 22:13:57.011682', '2024-10-10 23:01:52.811975', 1, 21, 'REFUSAL'),
-	(1000, '2024-10-10 22:35:21.844740', '2024-10-10 22:35:21.844740', 11005, 22, 'PROGRESS');
+	(10000, '2024-10-11 10:03:39.846008', '2024-10-11 10:03:39.846008', 1, 23, 'PROGRESS'),
+	(10000, '2024-10-11 10:39:08.904384', '2024-10-11 10:39:08.904384', 1, 24, 'PROGRESS');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

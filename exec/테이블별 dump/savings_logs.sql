@@ -25,9 +25,9 @@ CREATE TABLE IF NOT EXISTS `savings_logs` (
   PRIMARY KEY (`savings_log_id`),
   KEY `FKsct78jubbnlrc0aq21ng2yytx` (`savings_id`),
   CONSTRAINT `FKsct78jubbnlrc0aq21ng2yytx` FOREIGN KEY (`savings_id`) REFERENCES `savings` (`savings_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- 테이블 데이터 mydatabase.savings_logs:~31 rows (대략적) 내보내기
+-- 테이블 데이터 mydatabase.savings_logs:~33 rows (대략적) 내보내기
 INSERT INTO `savings_logs` (`balance`, `created_at`, `savings_id`, `savings_log_id`, `updated_at`) VALUES
 	(10000, '2024-09-19 03:00:58.000000', 10, 1, '2024-09-19 03:00:58.000000'),
 	(30000, '2024-09-25 16:24:05.368079', 10, 2, '2024-09-25 16:24:05.368079'),
@@ -59,7 +59,9 @@ INSERT INTO `savings_logs` (`balance`, `created_at`, `savings_id`, `savings_log_
 	(180000, '2024-10-07 13:31:54.034529', 10, 28, '2024-10-07 13:31:54.034529'),
 	(3000, '2024-10-10 21:57:40.893848', 11001, 29, '2024-10-10 21:57:40.893848'),
 	(6000, '2024-10-10 22:11:38.714992', 11001, 30, '2024-10-10 22:11:38.714992'),
-	(10000, '2024-10-10 22:38:43.277582', 11002, 31, '2024-10-10 22:38:43.277582');
+	(3000, '2024-10-11 09:45:00.156570', 11003, 32, '2024-10-11 09:45:00.156570'),
+	(750000, '2024-10-11 10:27:48.009760', 5606, 33, '2024-10-11 10:27:48.009760'),
+	(760000, '2024-10-11 10:46:05.023857', 5606, 34, '2024-10-11 10:46:05.023857');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
