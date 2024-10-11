@@ -36,11 +36,8 @@ const updateMoney = (value: number) => {
 
 const router = useRouter()
 const handleClick = () => {
-  console.log(userStore.user?.userId)
   if (userStore.user?.userId) {
-    console.log("setSavings", money.value)
     finStore.setSavingsCreateInfo(money.value, productId, userStore.user?.userId)
-    console.log(finStore.savingsCreateInfo)
   }
 
   router.push({

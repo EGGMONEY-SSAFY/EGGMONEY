@@ -155,7 +155,6 @@ export const useFinStore = defineStore(
       })
         .then((res) => {
           depositProducts.push(...res.data)
-          console.log(res.data)
         })
         .catch((err) => {
           console.error(err)
@@ -175,7 +174,6 @@ export const useFinStore = defineStore(
       })
         .then((res) => {
           savingsProducts.push(...res.data)
-          console.log(res.data)
         })
         .catch((err) => {
           console.error(err)
@@ -314,7 +312,6 @@ export const useFinStore = defineStore(
       })
         .then((res) => {
           deposit.value = res.data
-          console.log(deposit.value)
         })
         .catch((err) => {
           deposit.value = null
@@ -387,7 +384,6 @@ export const useFinStore = defineStore(
             logsArray.push(log)
           })
           loanLogs.value = logsArray
-          console.log(loanLogs.value)
         })
         .catch((err) => {
           console.error(err)

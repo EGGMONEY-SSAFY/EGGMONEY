@@ -68,7 +68,7 @@ const fetchNotifications = async () => {
       })
     notifications.value = response.data
     showNoti.value = notifications.value
-    console.log(response)
+
   } catch (error) {
     console.log(error)
   }

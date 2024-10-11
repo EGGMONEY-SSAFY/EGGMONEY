@@ -175,7 +175,6 @@ onMounted(async () => {
       },
     })
     children.value = response.data
-    console.log(response)
     if (children.value.length > 0) {
       selectedChild.value = children.value[0]
       selectedChildId.value = children.value[0].id
@@ -192,7 +191,6 @@ const getTranslatedPeriod = (period: any) => {
   } else if (period === "MONTH") {
     return "월"
   }
-  console.log(period)
   return period // 기본값 그대로 반환
 }
 const translatePeriodForServer = (period: string) => {
@@ -217,12 +215,6 @@ const sumbitchanges = async () => {
   if (selectedChild.value) {
     try {
       const periodForServer = translatePeriodForServer(selectedPeriodUnit.value)
-      console.log(
-        selectedChild.value.id,
-        selectedPeriodUnit.value,
-        selectedAllowanceDay.value,
-        allowanceAmount.value
-      )
       const response = await axios.post(
         "/api/v1/total/money/update",
         {

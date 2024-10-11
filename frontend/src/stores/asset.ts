@@ -164,7 +164,7 @@ export const useAssetStore = defineStore("asset", () => {
       },
     })
       .then((res) => {
-        console.log(res.data)
+
       })
       .catch((err) => {
         console.error(err)

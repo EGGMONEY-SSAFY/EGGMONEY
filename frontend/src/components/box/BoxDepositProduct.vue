@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useFinStore } from "@/stores/fin"
 import { useUserStore } from "@/stores/user"
 import { RouterLink } from "vue-router"
 
-const finStore = useFinStore()
 const userStore = useUserStore()
 const props = defineProps({
   product: {

@@ -48,7 +48,6 @@ function sumbitchanges() {
     const response = axios.post("api/v1/profile/1/update", {
       name: user.value,
     })
-    console.log(user.value)
 
     showModal.value = true
     setTimeout(() => {

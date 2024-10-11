@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import SimplePinPadComponent from "@/components/login/SimplePinPadComponent.vue"
 import { useStockStore } from "@/stores/stock"
-import { useUserStore } from "@/stores/user"
 import { computed, onMounted, onUnmounted, ref, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
@@ -98,12 +97,10 @@ const handleSuccess = () => {
 }
 const handleFail = () => {
   // 비밀번호 검증 실패 시 처리 로직
-  console.log("비밀번호 검증 실패")
 
   showFailModal.value = true // 모달을 띄움
 
   // 5초 후 비밀번호 재설정 페이지로 이동
-  // TODO: 비밀번호 재설정 페이지 name 알아내서 변경하기.
   const countdownInterval = setInterval(() => {
     remainingTime.value--
     if (remainingTime.value <= 0) {

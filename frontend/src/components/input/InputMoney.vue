@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { watch } from "vue"
-import { isElementAccessExpression } from "typescript"
-import { computed, ref } from "vue"
+import {  ref } from "vue"
 
 const money = ref(0)
 const props = defineProps({
