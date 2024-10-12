@@ -1,8 +1,9 @@
 
-# 🧡🐥 Egg Money🧡
-### 아이를 위한 금융활동 체험 서비스 
+# 🧡🐥 에그머니🧡
 
-![메인페이지](readme/intro.jpg)
+![메인페이지](readme/intro1.jpg)
+
+![메인페이지](readme/intro2.jpg)
 
 ##### 프로젝트 기간 
 ###### 2024.08.19 ~ 2024.10.11 (약 8주)
@@ -59,43 +60,55 @@
 <details>
 <summary>추가 설명</summary>
 <div markdown="1">
-Q. 각 기술을 선택한 이유 ?
-<br/><br/>
-[ Front ]<br/>
-Vue 3.js : 사용자 인터페이스를 구축하기 위한 진보적인 JavaScript 프레임워크.
-재사용성과 유지보수성을 높이는 데 중점을 두고 있음 <br/>
-Tailwind CSS :유틸리티 퍼스트 CSS 프레임워크
-디자인을 빠르게 prototyping하고 사용자 정의 CSS를 줄이는 데 유용함 <br/>
-PWA(Progressive Web App) : 웹 기술을 활용해 만든 애플리케이션. 웹사이트의 장점과 네이티브 애플리케이션의 장점을 결합한 형태 <br/><br/>
+<br/>
 
-[ back ]<br/>
-Spring Boot : Java 기반의 프레임워크. 내장 서버와 자동 구성 기능을 제공하여 개발 생산성을 높임<br/>
-Spring Security : 애플리케이션의 보안을 담당하는 프레임워크로, 인증 및 권한 부여 기능을 제공<br/>
-JPA (Java Persistence API) : 자바에서 데이터베이스와의 상호작용을 간편하게 해주는 ORM(Object-Relational Mapping) 기술. 데이터베이스의 엔티티를 객체 형태로 매핑할 수 있음<br/>
-JWT (JSON Web Token) : 인증 정보를 안전하게 전송하기 위한 토큰 형식. 클라이언트와 서버 간의 인증 및 권한 부여를 간편하게 처리할 수 있도록 도와줌
-<br/><br/>
-[ DB ]<br/>
-MariaDB : MySQL의 포크로, 오픈 소스 관계형 데이터베이스 관리 시스템. 뛰어난 성능과 안정성을 제공함<br/>
+![jira1](readme/why.jpg)
 
-[ Infra ]<br/>
-Node.js : 서버 측 JavaScript 실행 환경으로, 비동기 I/O 모델을 사용하여 높은 성능과 확장성을 제공함. 웹 서버나 API 서버 구축에 적합.<br/>
-Amazon EC2 : 아마존 웹 서비스(AWS)의 클라우드 컴퓨팅 서비스로, 가상 서버를 손쉽게 생성하고 관리할 수 있음. 유연한 스케일링과 비용 효율성을 제공.<br/>
-Nginx : 고성능 웹 서버 및 리버스 프록시 서버로, 정적 파일 제공, 로드 밸런싱, SSL/TLS 지원 등을 통해 웹 애플리케이션의 성능을 개선함.<br/>
-Docker : 애플리케이션을 컨테이너화하여 배포할 수 있는 플랫폼으로, 개발 환경을 일관되게 유지하고 이식성을 높임. 여러 환경에서 동일한 성능을 보장함. <br/>
-Amazon S3: 객체 저장 서비스를 제공하는 플랫폼으로, 대량의 데이터를 안전하게 저장하고 관리할 수 있는 기능을 제공함. 데이터 백업, 복구 및 정적 웹 호스팅 지원. 다양한 애플리케이션과 통합이 용이하여, 필요한 경우 언제든지 데이터를 빠르게 액세스할 수 있음.
+### [ Front ]<br/>
+Vue 3.js : 사용자 인터페이스를 구축하기 위한 진보적인 JavaScript 프레임워크로
+재사용성과 유지보수성을 높이는 데 중점을 두고 있습니다. 팀원들이 백엔드에 집중하고 싶어하는 만큼 1학기 수업 시간에 배웠기 때문에 보다 친숙한 Vue.js를 기술 스택으로 선택했습니다.  <br/> <br/>
+Tailwind CSS : Utility first CSS 프레임워크로,
+디자인을 빠르게 prototyping하고 사용자 정의 CSS를 줄이는 데 유용합니다. 기존에 사용하던  CSS보다 좀 더 쉽고 간편하게 화면을 디자인 할 수 있기 때문에 이 기술을 선택하였습니다.  <br/> <br/>
+PWA(Progressive Web App) : PWA는 웹사이트의 장점과 네이티브 애플리케이션의 장점을 결합한 형태로, 기존 PC 웹 브라우저에서 만든 화면을 좀 더 쉽고 빠르게 모바일로 변형하기 위해 사용하는 기술입니다. 사용자들이 학생들인 만큼 웹사이트에 대한 접근성을 높이기 위해 모바일 형태의 어플이 필요했습니다.  <br/><br/>
+
+---
+### [ back ]<br/>
+Spring Boot : Java 기반의 프레임워크이며, 내장 서버와 자동 구성 기능을 제공하여 개발 생산성을 높일 수 있습니다. 한국에서 보편적으로 사용되고 있는 기술이기 때문에 사용하게 되었습니다. <br/> <br/>
+Spring Security : 애플리케이션의 보안을 담당하는 프레임워크로, 인증 및 권한 부여 기능을 제공하기 위해 사용하였습니다.<br/> <br/>
+JPA (Java Persistence API) : 자바에서 데이터베이스와의 상호작용을 간편하게 해주는 ORM(Object-Relational Mapping) 기술입니다. 데이터베이스의 엔티티를 객체 형태로 매핑하기 위해서 사용하였습니다. <br/> <br/>
+JWT (JSON Web Token) : 인증 정보를 안전하게 전송하기 위한 토큰 형식으로, 클라이언트와 서버 간의 인증 및 권한 부여를 간편하게 처리할 수 있도록 도와주기 위해 사용하였습니다.
+<br/><br/>
+
+---
+### [ DB ]<br/>
+MariaDB : DB를 어떤 걸 사용할까 팀에서 많은 논의가 있었습니다. 그 결과 MySQL과 유사하면서도 오픈소스이기에 무료로 사용할 수 있는 Maria DB를 사용하기로 했습니다. 데이터를 좀 더 쉽게 보기 위해서 Maria DB Workbench를 활용하는 멤버도 있었고, Heidi SQL로 DB에 접근하는 멤버도 있었습니다. 기본적으로 개발을 할 때는 local에서 테스트를 진행한 후, 서버에 업로드 하였습니다. 
+<br/><br/>
+Oracle Cloud : 팀원의 개인 Oracle Cloud입니다. 금융 상품 추천 알고리즘을 구현하기 위해 사용하는 Hadoop, spark, FastAPI를 넣기 위해서 사용했습니다. 메인 EC2 서버에 영향을 최소한으로 주기 위해서 MSA 방식으로 구현을 하는데 사용하였습니다.  
+<br/><br/>
+
+---
+### [ Infra ]<br/>
+Node.js : 서버 측 JavaScript 실행 환경으로, 비동기 I/O 모델을 사용하여 높은 성능과 확장성을 제공합니다. 웹 서버나 API 서버 구축에 적합하여 사용하게 되었습니다. <br/><br/>
+Amazon EC2 : 아마존 웹 서비스(AWS)의 클라우드 컴퓨팅 서비스로, 가상 서버를 손쉽게 생성하고 관리할 수 있습니다. 이 프로젝트에서는 EC2를 2개 사용하였는데, 젠킨스가 올라간 서버는 개인 프리티어 계정 EC2이고, NginX가 올라간 EC2는 아카데미에서 제공해주는 EC2를 사용하였습니다. 이 과정에서 깨닫게 된 것은 EC2 용량에 따라 서버의 성능이 꽤 많이 차이가 난다는 것이었습니다. EC2 프리티어도 좋지만, 이것으로는 충분하지 않을 때가 많다는 것을 경험으로 깨닫게 되었습니다. <br/><br/>
+Nginx : 고성능 웹 서버 및 리버스 프록시 서버로, 정적 파일 제공합니다. 로드 밸런싱, SSL/TLS 지원 등을 통해 웹 애플리케이션의 성능을 개선할 수 있습니다. 저희는 EC2에 NginX 이미지를 띄워서 사용하였습니다.  <br/><br/>
+Docker : 애플리케이션을 컨테이너화하여 배포할 수 있는 플랫폼으로, 개발 환경을 일관되게 유지하고 이식성을 높일 수 있습니다. 배포 환경이 달라지더라도 동일한 성능으로 환경을 다시 설정하기 위해 도입하였습니다. <br/><br/>
+Jenkins : 오픈 소스 자동화 서버로, 소프트웨어 개발 과정에서 지속적인 통합(CI)과 지속적인 배포(CD)를 지원하는 도구입니다. 젠킨스를 활용하여 무중단 자동배포를 구현할 수 있었고,빌드 및 배포 시간을 단축할 수 있었습니다. 
+<br/><br/>
+Amazon S3: 객체 저장 서비스를 제공하는 플랫폼으로, 대량의 데이터를 안전하게 저장하고 관리할 수 있는 기능을 제공합니다. 가족 데이터 관리 시 프로필 이미지를 저장하기 위해 사용하였습니다. 
 
 </div>
 </details>
 <details>
 <summary>협업 도구</summary>
 <div markdown="1">
-1.Git & Github<br/>
+
+### 1. Git & Github<br/>
 분산형 버전 관리 시스템으로<br/>
 코드의 변경 사항을 추적하고 여러 개발자 간의 협업을 용이하게 함<br/><br/>
 
 ![git](readme/git.png)
 
-2.Jira<br/>
+### 2. Jira<br/>
 Atlassian에서 개발한 프로젝트 관리 및 이슈 추적 도구<br/>
 주로 소프트웨어 개발 팀에서 사용되며, Agile 방법론(스크럼, 칸반 등)을 지원<br/>
 
@@ -103,8 +116,8 @@ Atlassian에서 개발한 프로젝트 관리 및 이슈 추적 도구<br/>
 ![jira2](readme/jira2.png)
 ![jira3](readme/jira3.png)
 
-<br/>
-3.Mattermost <br/>
+
+### 3. Mattermost <br/>
 오픈 소스 팀 채팅 및 협업 플랫폼<br/>
 Slack과 유사한 기능을 제공<br/>
 자체 서버에 호스팅할 수 있어 보안 및 프라이버시가 중요할 때 유용<br/>
@@ -119,19 +132,19 @@ Slack과 유사한 기능을 제공<br/>
 ##### 💁 II. 구현 화면
 
 
-1️⃣ 메인페이지 & 로그인, 회원가입 
+### 1️⃣ 메인페이지 & 로그인, 회원가입 
 
 | 메인페이지| 회원가입 | 
 | --- | --- | 
 |![메인페이지](readme/main.gif) | ![로그인](readme/signup.gif) | 
 
-2️⃣ 가족등록 
+### 2️⃣ 가족등록 
 
 | 가족초대 | 가족등록 | 
 | --- | --- | 
 | ![메인페이지](readme/family_invite.gif) | ![메인페이지](readme/familylink.gif) | 
 
- 3️⃣ 예적금 페이지 
+### 3️⃣ 예적금 페이지 
 
 | 예금가입 | 예금해지 | 
 | --- | --- | 
@@ -141,25 +154,25 @@ Slack과 유사한 기능을 제공<br/>
 | --- | --- | 
 | ![메인페이지](readme/jaq1.gif) | ![메인페이지](readme/jaq2.gif) | 
 
-4️⃣ 금융 상품 추천페이지 
+### 4️⃣ 금융 상품 추천페이지 
 
 | 추천1,2 | 추천3,4 | 
 | --- | --- | 
 | ![메인페이지](readme/recommend2.gif) | ![메인페이지](readme/recommend1.gif) | 
 
-5️⃣ 대출 페이지
+### 5️⃣ 대출 페이지
 
 | 대출심사 | 대출상환 | 
 | --- | --- | 
 |![메인페이지](readme/dae1.gif) | ![메인페이지](readme/daeju.gif) | 
 
-6️⃣ 출금 페이지  
+### 6️⃣ 출금 페이지  
 
 | 출금요청 | 출금심사 | 
 | --- | --- | 
 |![메인페이지](readme/r0.gif) | ![메인페이지](readme/r1.gif) | 
 
-7️⃣ 증권 페이지
+### 7️⃣ 증권 페이지
 
 | 현재가 거래 | 지정가 거래 | 
 | --- | --- | 
@@ -169,7 +182,7 @@ Slack과 유사한 기능을 제공<br/>
 | --- | --- | 
 |![메인페이지](readme/stock1.gif) | ![메인페이지](readme/news2.gif) | 
 
-8️⃣ 이벤트  
+### 8️⃣ 이벤트  
 
 | 경제용어 퀴즈 | 행운의 금융 룰렛 | 
 | --- | --- | 
@@ -237,13 +250,14 @@ Slack과 유사한 기능을 제공<br/>
 
 <details>
 <summary> 2️⃣ CI/CD 구축 : Blue/Green 배포</summary>
-<br/>
+
+### Blue/Green 배포란?
+Blue/Green 배포는 애플리케이션의 새로운 버전을 배포할 때 서비스 중단을 최소화하는 전략입니다. 두 개의 환경(Blue와 Green)을 사용하여 안전하고 원활한 배포를 진행합니다. 
 
 ![Spark Graph](readme/blue1.jpg)
 
 ![Spark Graph](readme/blue2.jpg)
 
-Blue/Green 배포는 애플리케이션의 새로운 버전을 배포할 때 서비스 중단을 최소화하는 전략입니다. 두 개의 환경(Blue와 Green)을 사용하여 안전하고 원활한 배포를 진행합니다. 
 
 ### 이 기술을 선택한 이유
 
@@ -406,9 +420,9 @@ Blue/Green 배포는 애플리케이션의 새로운 버전을 배포할 때 서
 
 #### 문제상황
 
-![전체](readme/trouble1.png)
+Merge를 취소하려고, Revert를 여러번 반복해서<br/> back쪽 코드들이 이전으로 돌아가게 되었습니다.
 
-Merge를 취소하려고, Revert를 여러번 반복해서 back쪽 코드들이 이전으로 돌아가게 되었습니다.
+![전체](readme/trouble1.png)
 
 #### 해결방안 
 
@@ -578,13 +592,28 @@ sudo systemctl restart ssh
 <summary>🎨 Figma  </summary>
 <div markdown="1">
 
-[📎 Figma Link  ](https://www.figma.com/design/E4YJ6rv2618zTQV5R0jBPp/C204%ED%8C%80?t=e62ogsR1DgnWEkqL-0).
+### 에그머니의 피그마는?
+저희는 Full Stack 6명이 모인 만큼 피그마도 **멤버들 모두**가 함께 모여서 작성하였습니다. 만들어야 할 페이지들을 6개의 부분으로 나눈 후, 하나로 합치는 과정을 거쳤습니다.
 
+![Architecture](readme/figma0.jpg)
 
-#### 부모님 
+<!-- [📎 Figma Link  ](https://www.figma.com/design/E4YJ6rv2618zTQV5R0jBPp/C204%ED%8C%80?t=e62ogsR1DgnWEkqL-0) -->
+
+|이름|역할|
+|---|---|
+|곽재은|홈, 주식 매수 & 매도<br/> 뉴스 페이지|
+|김신범|입출금 계좌|
+|나경준|가족 생성, 등록, 연결<br/>계좌 출금<br/>404페이지|
+|정소영|예금 적금 가입 & 납입 <br/> 대출 신청, 대출 심사|
+|정지영|전체 페이지<br/>계좌 등록, 간편 비밀번호, 1원 인증 |
+|황우성|메인 페이지<br/>로그인, 로그아웃, 회원가입|
+
+### User Flow에 따른 최종 피그마 배치
+
+#### 부모님 계정
 ![피그마부모](readme/momfig.png)
 
-#### 자녀
+#### 자녀 계정
 ![피그마자녀](readme/childfig.png)
 
 </div>
@@ -593,11 +622,68 @@ sudo systemctl restart ssh
 <details>
 <summary>&#128195; ERD  </summary>
 <div markdown="1">
-<br/>
+
+### 에그머니의 ERD는?
+**6명의 멤버들**이 모두 함께 모여서 작성하였습니다. 서비스의 기능이 다양한 만큼 테이블을 여러개로 구성하였으며, 복잡한 금융 활동을 관리하기 위해 여러번의 피드백 단계를 거쳤습니다. <br/>
+
 
 ![ERD 이미지](readme/ERD.png)
 
+### 주요 엔터티 및 관계
 
+### 1. **User (사용자)**
+- 부모와 자녀 정보를 저장하는 테이블입니다.
+- 필드: `user_id`, `name`, `email`, `password`, `role` (부모/자녀).
+- **관계**: `Family` 테이블을 통해 부모와 자녀 간의 1:N 관계를 가집니다.
+
+### 2. **Account (가상 계좌)**
+- 각 사용자는 가상 계좌를 가지며, `account_id`와 `user_id`로 구별됩니다.
+- 필드: `account_id`, `balance`, `created_at`, 등.
+- **관계**: `User`와 1:1 관계를 가집니다.
+
+### 3. **Transaction (거래 내역)**
+- 각 계좌와 관련된 거래 내역을 기록하는 테이블입니다.
+- 필드: `transaction_id`, `account_id`, `amount`, `transaction_type`, `timestamp`.
+- **관계**: `Account`와 N:1 관계를 가집니다.
+
+### 4. **Loan (대출)**
+- 대출 관련 정보를 저장하는 테이블입니다.
+- 필드: `loan_id`, `user_id`, `loan_amount`, `interest_rate`, `repayment_date`.
+- **관계**: `User`와 N:1 관계를 가집니다.
+
+### 5. **Stock (주식)**
+- 주식 정보를 저장하는 테이블입니다.
+- 필드: `stock_id`, `stock_name`, `current_price`, `created_at`, 등.
+- **관계**: `StockTrade`, `StockPrice`, `StockPending`과 연결되어 주식 매입/매도 활동을 추적합니다.
+
+### 6. **Savings (예금)**
+- 사용자가 가입한 예금 상품 정보를 저장하는 테이블입니다.
+- 필드: `saving_id`, `saving_product_id`, `user_id`, `interest_rate`, 등.
+- **관계**: `User`와 N:1 관계를 가집니다.
+
+### 7. **Deposit (적금)**
+- 정기 적금 상품 정보를 저장하는 테이블입니다.
+- 필드: `deposit_id`, `deposit_product_id`, `user_id`, `balance`, 등.
+
+### 8. **Allowance (용돈)**
+- 부모가 자녀에게 지급하는 용돈 정보를 기록합니다.
+- 필드: `allowance_id`, `user_id`, `amount`, `allowance_period`.
+
+### 9. **Withdrawal (출금)**
+- 사용자의 출금 요청 및 이력을 기록합니다.
+- 필드: `withdrawal_id`, `user_id`, `amount`, `status`.
+
+### 10. **News (뉴스)**
+- 금융 관련 뉴스 데이터를 저장하며, GPT를 통한 요약 기능이 적용될 수 있습니다.
+- 필드: `news_id`, `title`, `content`, `created_at`.
+
+## 관계 요약
+- **User와 Account**: 1:1 관계로, 각 사용자는 고유한 가상 계좌를 가집니다.
+- **User와 Family**: 1:N 관계로, 부모와 자녀가 `Family` 엔터티를 통해 연결됩니다.
+- **Account와 Transaction**: 1:N 관계로, 각 계좌의 여러 거래 내역이 기록됩니다.
+- **User와 Loan/Savings/Deposit**: 1:N 관계로, 사용자는 다양한 금융 상품을 이용할 수 있습니다.
+- **Stock**: 실시간 주식 거래가 구현되어 있으며, `StockPrice`에 가격 변동이 기록되고 `StockTrade`에 매매 활동이 기록됩니다.
+<br/>
 
 </div>
 </details>
@@ -605,26 +691,78 @@ sudo systemctl restart ssh
 <details>
 <summary> &#128217; Architecture  </summary>
 <div markdown="1">
-<br/>
 
-![Architecture](readme/archi2.png)
+### 에그머니 서비스는?
+**Blue-Green 배포** 방식을 활용한 무중단 배포를 실현하고 있으며,<br/> 
+**Docker 기반의 배포 환경** 을 통해 <br/>애플리케이션의 독립적 실행과 관리를 용이하게 만들었습니다.
+
+  ![Architecture Diagram](readme/archi2.png)
+
+
+### 아키텍처 동작 과정
+
+1. **코드 푸시**: 개발자가 GitLab에 코드를 푸시합니다.
+2. **CI/CD 파이프라인 실행**: Jenkins가 이를 감지하여 CI/CD 파이프라인을 실행합니다.
+3. **Docker 이미지 빌드 및 배포**: Jenkins는 Docker 이미지를 빌드하고 Docker Hub에 푸시한 후, Nginx를 통해 Blue/Green 환경에 배포합니다.
+4. **트래픽 라우팅**: Nginx가 트래픽을 Blue 또는 Green 환경으로 라우팅합니다.
+5. **데이터 처리**: FastAPI, Hadoop, Spark는 데이터 처리와 분석 작업을 수행합니다.
+6. **클라우드 자원 연결**: Oracle Cloud와 AWS S3를 사용하여 외부 스토리지 및 클라우드 자원을 활용합니다.
+
+### 장점 및 특징
+
+- **무중단 배포**: Blue-Green 배포 방식을 통해 업데이트 중에도 애플리케이션 서비스가 중단되지 않습니다.
+- **Docker 기반 배포**: Docker로 애플리케이션을 독립적이고 일관성 있게 배포할 수 있습니다.
+- **대규모 데이터 처리**: FastAPI와 Spark를 활용하여, 대량의 데이터를 처리하는 백엔드 시스템을 지원하였습니다.
+
+### 주요 구성 요소
+
+1. **사용자 (Client)** <br/>
+   - 사용자의 요청은 Nginx 서버를 통해 애플리케이션으로 전달됩니다.
+
+2. **Nginx** <br/>
+   - **로드 밸런서**로서 Blue 또는 Green 환경으로 트래픽을 라우팅합니다.
+   - Blue와 Green 두 개의 환경을 번갈아 가며 **무중단 배포**를 수행하며, 하나의 환경이 항상 활성화되어 요청을 처리합니다.
+
+3. **Blue-Green Deployment (Blue와 Green 환경)** <br/>
+   - **Green 환경**: Vue.js 기반 프론트엔드와 Spring Boot 백엔드가 Docker 컨테이너로 실행됩니다.
+   - **Blue 환경**: Green과 동일한 구성으로, 업데이트 또는 유지보수 시 롤링 업데이트와 무중단 배포를 담당합니다.
+   - 두 환경 간 **스위칭**을 통해 업데이트 중에도 서비스가 중단 없이 운영됩니다.
+
+4. **Docker** <br/>
+   - Vue.js 프론트엔드와 Spring Boot 백엔드가 각각 Docker 컨테이너로 실행됩니다.
+   - **Docker Hub**에서 이미지를 가져와 실행하며, 환경 간 일관성과 독립성을 보장합니다.
+
+5. **Jenkins** <br/>
+   - CI/CD 파이프라인을 관리하는 Jenkins가 Docker 컨테이너로 실행 중입니다.
+   - 개발자가 GitLab에 코드를 푸시하면 Jenkins가 이를 감지해 **Docker 이미지**를 빌드, **Docker Hub**에 푸시한 후 배포를 진행합니다.
+   - Blue-Green 배포 전략을 사용하여 **무중단 배포**를 수행합니다.
+
+6. **GitLab** <br/>
+   - 소스 코드 관리를 위해 **GitLab**을 사용하며, 코드 푸시 시 Jenkins가 이를 빌드 및 배포합니다.
+
+7. **FastAPI + Hadoop + Spark (데이터 처리)** <br/>
+   - FastAPI가 백엔드에서 금융 상품 추천 데이터 처리를 위한 API를 제공합니다.
+   - Hadoop과 Spark는 예금 비율, 적금 비율, 주식 비율의 데이터를 가져와 분석한 후 사용자를 4개로 그룹화하기 위해서 사용되었습니다. 
+
+8. **Oracle Cloud** <br/>
+   - Oracle Cloud는 외부 클라우드 인프라로, 금융 상품 추천 서비스의 DB를 운영하는 데 활용됩니다.
+
+9. **AWS S3** <br/>
+   - 가족 프로필 이미지는 **AWS S3**에 저장되며, Nginx를 통해 해당 파일에 접근할 수 있게 구성하였습니다. 
 
 <br/>
 </div>
 </details>
 
-
-
-
 ---
 ##### 🐱 VI. 팀원 소개
-Full Stack 6명
+### Full Stack 6명
 
 ![Architecture](readme/team2.jpg)
 
 | 이름 | 역할 |   
 | --- | --- |
-| 나경준 | [팀장] <br/> 카카오 소셜 로그인 기능 <br/>회원 관리 로직 제작 <br/> QR코드를 활용한 가족 연결 기능<br/>간편 비밀번호 제작 <br/> 입금계좌 등록 및 1원 인증 기능 구현<br/> S3를 활용한 데이터 관리 <br/> 알림 기능 프런트 페이지 (예적금 가입, 대출 심사, 출금 요청 등) <br/>전문가 리뷰 사전질문 및 멘토-멘티 활동일지 작성 <br/>  PPT 제작 및 프로젝트 발표 <br/> 베스트 멤버 선정 | 
+| 나경준 | [팀장] <br/> 카카오 소셜 로그인 기능 <br/>회원 관리 로직 제작 <br/> QR코드를 활용한 가족 연결 기능<br/>간편 비밀번호 제작 <br/> 입금계좌 등록 및 1원 인증 기능 구현<br/> S3를 활용한 이미지 데이터 관리 <br/> 알림 기능 프런트 페이지 (예적금 가입, 대출 심사, 출금 요청 등) <br/>전문가 리뷰 사전질문 및 멘토-멘티 활동일지 작성 <br/>  PPT 제작 및 프로젝트 발표 <br/> 베스트 멤버 선정 | 
 | 곽재은 | 주식 분석 및 종목 확인 기능 (차트 포함) <br/> 주식 매수 및 매도 기능 (거래내역 및 주문현황) <br/> Vue.js 공통 컴포넌트 제작, PWA 설정 <br/> 팀 내 컨벤션 관리 및 Code Formatting 담당 <br/> UCC 서포트| 
 | 김신범 | 주식 분석 및 종목 확인 기능 (차트 포함)  <br/> 주식 매수 및 매도 기능 (거래내역 및 주문현황)<br/>주식 테이블 설계 최적화<br/>지정가 거래 예약 기능<br/>주식 가격 업데이트(CRON 활용, 매일 4시 50분에 자동 진행)  <br/>알림 기능 (저장, 리스트 불러오기, 읽음여부 확인)<br/>  Chat GPT를 활용한 뉴스 요약 (매일 4시55분에 데이터 load 스케줄링 기능 포함) <br/> Jira 관리 및 작성 독려| 
 | 정지영 &nbsp; | 입금 계좌 관리 기능  <br/>출금 신청 및 심사 기능<br/>예금, 적금 가입 및 해지  <br/> 예적금 상품 CRUD  <br/>  대출 신청 및 심사 기능<br/>원리금균등상환, 만기일시상환 기능 구현 <br/> 자산 분석 및 자산추이 그래프 구현 <br/>UCC 제작, ERD 회의 기록 |
