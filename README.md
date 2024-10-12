@@ -195,7 +195,7 @@ Slack과 유사한 기능을 제공<br/>
 
 웹 기술을 활용해 네이티브 앱처럼 작동하는 웹 애플리케이션입니다. PWA 기술을 활용하면 PC에서 뿐 아니라 모바일에서도 서비스에 접근할 수 있게 됩니다. 최근에는 PC보다 모바일을 사용하는 경우가 늘어나고 있는데, 이러한 시대의 변화에 맞춰 자녀가 더욱 편리하게 에그머니 서비스를 이용할 수 있도록 하기 위해 PWA 기술을 도입하였습니다.
 
-![전체](readme/pwa.png)
+![전체](readme/pwa.jpg)
 
 #### 주요 특징 
 
@@ -239,7 +239,9 @@ Slack과 유사한 기능을 제공<br/>
 <summary> 2️⃣ CI/CD 구축 : Blue/Green 배포</summary>
 <br/>
 
-![전체](readme/blue.jpg)
+![Spark Graph](readme/blue1.jpg)
+
+![Spark Graph](readme/blue2.jpg)
 
 Blue/Green 배포는 애플리케이션의 새로운 버전을 배포할 때 서비스 중단을 최소화하는 전략입니다. 두 개의 환경(Blue와 Green)을 사용하여 안전하고 원활한 배포를 진행합니다. 
 
@@ -280,6 +282,8 @@ Blue/Green 배포는 애플리케이션의 새로운 버전을 배포할 때 서
 <summary>3️⃣ 금융상품 추천 알고리즘: 하둡, 스파크, FastAPI</summary>
 
 ### 1. 추천 로직 개요
+
+   ![Spark Graph](readme/kmeans.jpg)
 
 - **정의**: 
   - K-means 알고리즘을 이용하여 3개의 인자(**주식**, **적금**, **예금**)을 사용해서 세 가지 금융 항목에 대한 사용자들의 데이터를 분석합니다. **클러스터링(군집화)**과정이 끝난 후, 군집별 최다 상품을 검색하고 학습이 완료된 모델을 통해 군집별 추천 상품을 제공합니다.
@@ -525,11 +529,21 @@ sudo systemctl restart ssh
 ##### 📑 V. 프로젝트 설계
 
 <details>
-<summary> 프로젝트 기획 배경  </summary>
+<summary> 🗂️ 기획 배경  </summary>
 <div markdown="1">
 <br/>
 
+"실질적인 삶의 문제"를 해결하기 위한 서비스, 에그머니 🐣
+
+![Architecture](readme/pro2.png)
+
+![Architecture](readme/pro3.png)
+
 ![Architecture](readme/pro1.gif)
+
+![Architecture](readme/pro4.jpg)
+
+![Architecture](readme/pro5.jpg)
 
 <br/>
 </div>
@@ -616,17 +630,17 @@ Full Stack 6명
 | 김신범 | 주식 분석 및 종목 확인 기능 (차트 포함)  <br/> 주식 매수 및 매도 기능 (거래내역 및 주문현황)<br/>주식 테이블 설계 최적화<br/>지정가 거래 예약 기능<br/>주식 가격 업데이트(CRON 활용, 매일 4시 50분에 자동 진행)  <br/>알림 기능 (저장, 리스트 불러오기, 읽음여부 확인)<br/>  Chat GPT를 활용한 뉴스 요약 (매일 4시55분에 데이터 load 스케줄링 기능 포함) <br/> Jira 관리 및 작성 독려| 
 | 정지영 &nbsp; | 입금 계좌 관리 기능  <br/>출금 신청 및 심사 기능<br/>예금, 적금 가입 및 해지  <br/> 예적금 상품 CRUD  <br/>  대출 신청 및 심사 기능<br/>원리금균등상환, 만기일시상환 기능 구현 <br/> 자산 분석 및 자산추이 그래프 구현 <br/>UCC 제작, ERD 회의 기록 |
 | 황우성 | 입금 계좌 관리 기능  <br/>출금 신청 및 심사 기능<br/>예금, 적금 가입 및 해지 <br/>예적금 상품 CRUD  <br/> SSAFY 공동망 API 기반 계좌 이체 기능 구현<br/>대출 신청 및 심사 기능<br/> 자산 분석 및 자산추이 그래프 구현 <br/>HADOOP, Spark 기반 개인 맞춤 상품 추천 알고리즘 구현 (빅데이터 분산 처리) <br/>-> K-means 알고리즘 활용 군집화 (초보자, 안전 제일, 꾸준한 저축가, 미래의 투자가)<br/> Oracle Cloud 서버 기반 FASTAPI를 활용한 빅데이터 활용 서비스 제공<br/>경제 용어 퀴즈 백로직 구현<br/>인프라 서포트 |  
-| 정소영 | 인프라 CI/CD 구축<br/>Architecturet설계 및 Porting Manual 작성 <br/> 회원 관리 & 전체 페이지 <br/> 이벤트 담당 (경제 용어 퀴즈, 행운의 금융 룰렛, 돈 먹기 게임, 물가 맞추기 게임)<br/>DailyScrum 및 팀 회의 기록 정리 <br/> README 작성 |  
+| 정소영 | 인프라 CI/CD 구축<br/>Architecturet설계 및 Porting Manual 작성 <br/> 회원 관리& 전체 페이지 <br/> 이벤트 담당 (경제 용어 퀴즈, 행운의 금융 룰렛, 돈 먹기 게임, 물가 맞추기 게임)<br/>DailyScrum 및 팀 회의 기록 정리 <br/> README 작성 |  
 
 ---
 ##### 🙇 VII. 느낀 점 및 참고사항
 
 ![Architecture](readme/team3.jpg)
 <details>
-<summary> 그라운드 룰</summary> 
+<summary> 그라운드 룰 </summary> 
 <div markdown="1">
 
-### 생활 수칙
+### 생활 수칙 🐥❣
 
 1. 아침에 올 때 서로 인사하기
 2. 입실 & 퇴실 챙겨주기
