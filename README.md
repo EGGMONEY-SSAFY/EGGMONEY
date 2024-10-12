@@ -84,7 +84,7 @@ JWT (JSON Web Token) : 인증 정보를 안전하게 전송하기 위한 토큰 
 MariaDB : DB를 어떤 걸 사용할까 팀에서 많은 논의가 있었습니다. 그 결과 MySQL과 유사하면서도 오픈소스이기에 무료로 사용할 수 있는 Maria DB를 사용하기로 했습니다. 데이터를 좀 더 쉽게 보기 위해서 Maria DB Workbench를 활용하는 멤버도 있었고, Heidi SQL로 DB에 접근하는 멤버도 있었습니다. 기본적으로 개발을 할 때는 local에서 테스트를 진행한 후, 서버에 업로드 하였습니다. 
 <br/><br/>
 Oracle Cloud : 팀원의 개인 Oracle Cloud입니다. 금융 상품 추천 알고리즘을 구현하기 위해 사용하는 Hadoop, spark, FastAPI를 넣기 위해서 사용했습니다. 메인 EC2 서버에 영향을 최소한으로 주기 위해서 MSA 방식으로 구현을 하는데 사용하였습니다.  
-<br/><br/>
+<br/>
 
 ---
 ### [ Infra ]<br/>
@@ -593,9 +593,9 @@ sudo systemctl restart ssh
 <div markdown="1">
 
 ### 에그머니의 피그마는?
-저희는 Full Stack 6명이 모인 만큼 피그마도 **멤버들 모두**가 함께 모여서 작성하였습니다. 만들어야 할 페이지들을 6개의 부분으로 나눈 후, 하나로 합치는 과정을 거쳤습니다.
+저희는 Full Stack 6명이 모인 만큼 피그마도 **멤버들 모두**가 함께 모여서 작성하였습니다. 모든 페이지들을 6개의 부분으로 나눈 후, 하나로 합치는 과정을 거쳤습니다. 이 후 이것들을 UserFlow에 따라 정렬한 뒤 Prototype에서 On click Connection을 진행하였습니다.
 
-![Architecture](readme/figma0.jpg)
+![Architecture](readme/figma0.jpg) 
 
 <!-- [📎 Figma Link  ](https://www.figma.com/design/E4YJ6rv2618zTQV5R0jBPp/C204%ED%8C%80?t=e62ogsR1DgnWEkqL-0) -->
 
@@ -608,13 +608,16 @@ sudo systemctl restart ssh
 |정지영|전체 페이지<br/>계좌 등록, 간편 비밀번호, 1원 인증 |
 |황우성|메인 페이지<br/>로그인, 로그아웃, 회원가입|
 
+
 ### User Flow에 따른 최종 피그마 배치
 
-#### 부모님 계정
-![피그마부모](readme/momfig.png)
+|부모님 계정👨‍👩‍👦❣️|
+|---|
+|![피그마부모](readme/momfig.png)|
 
-#### 자녀 계정
-![피그마자녀](readme/childfig.png)
+|자녀 계정👧❣️|
+|---|
+|![피그마자녀](readme/childfig.png)|
 
 </div>
 </details>
