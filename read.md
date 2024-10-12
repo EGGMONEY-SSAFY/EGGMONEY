@@ -1,60 +1,90 @@
 <details>
-<summary>끝장 토론 : 배포 브랜치 정하기</summary>
+<summary> 5️⃣ AI를 활용한 금융 뉴스 요약</summary>
 <div markdown="1">
 
-### Master  vs  Develop 배포 브랜치 정하기
+### 에그머니에서는?
 
-#### 🔵 **Option 1: Master 브랜치에서 배포**
-- **장점:**
-  - 안정성 보장: Master는 가장 안정적인 코드만 포함하고 있으므로 배포 시 위험을 줄일 수 있음.
-  - 배포 프로세스가 명확함: Master에 merge된 코드는 바로 프로덕션에 반영, 개발과 운영 환경을 확실히 분리 가능.
-  
-- **단점:**
-  - 배포 빈도 감소: 버그 픽스나 긴급 변경 사항을 빠르게 반영하려면 절차가 복잡해질 수 있음.
-  - 개발 중인 기능의 통합 속도가 늦어질 수 있음: 기능이 충분히 안정화될 때까지 개발 브랜치에 머물러야 함.
+최신 금융 뉴스를 효율적으로 수집하고 요약하여 에그머니 사용자, 특히 고등학생 자녀에게 제공하는 것을 목표로 합니다. 자동화된 크롤링 및 요약 프로세스를 통해 정보 접근성을 높이며, 복잡한 뉴스를 쉽게 이해할 수 있도록 변환하는 데 기여합니다. 자녀는 언제든지 최신 금융 뉴스에 대한 정보를 간편하게 얻을 수 있어, 금융에 대한 이해도를 높이고 실제 투자 및 금융 활동에 대한 자신감을 키울 수 있습니다.
 
-#### 🔴 **Option 2: Develop 브랜치에서 배포**
-- **장점:**
-  - 빠른 배포 가능: 변경 사항을 빠르게 배포할 수 있어 새로운 기능이나 버그 픽스를 자주 릴리즈할 수 있음.
-  - 피드백 반영이 빠름: 개발 브랜치에서 바로 프로덕션으로 반영하므로 사용자 피드백을 즉각적으로 반영할 수 있음.
+### 1. 뉴스 크롤링
+- **사용 기술**: [Jsoup](https://jsoup.org/)
+- **설명**: Jsoup 라이브러리를 사용하여 네이버 금융 뉴스 섹션(예: `https://news.naver.com/section/101`)에서 최신 뉴스를 크롤링합니다. HTML 문서를 파싱하고, DOM을 탐색하여 뉴스 제목, 링크, 출처를 추출합니다. 이 과정에서 오류가 발생할 수 있는 예외 처리를 포함하여 안정성을 높였습니다.
 
-- **단점:**
-  - 안정성 문제: 테스트가 충분히 이루어지지 않은 코드가 프로덕션으로 배포될 위험이 있음.
-  - 충돌 가능성: 여러 개발자의 기능들이 한꺼번에 통합될 수 있어, 예상치 못한 문제를 일으킬 가능성 있음.
+- **핵심 메서드**: 
+    ```java
+    @Override
+    public List<NewsCrawlResponse> crawlFinanceHeadLineNews() {
+        Document document = Jsoup.connect(FINANCE_URL)
+                .userAgent(USER_AGENT)
+                .get();
+        
+        Elements headLineNewsElements = document
+                .select("div.section_article.as_headline._TEMPLATE ul.sa_list > li");
 
----
+        // 제목, 링크, 출처 추출
+        for (Element headLineElement : headLineNewsElements) {
+            String title = headLineElement.selectFirst("div.sa_text > a").text();
+            String link = headLineElement.selectFirst("div.sa_text > a").attr("href");
+            String press = headLineElement.selectFirst("div.sa_text_press").text();
 
-### 💡 **고려해야 할 사항**
-1. **프로젝트의 성격**: 만약 빠른 배포와 지속적인 사용자 피드백이 중요한 프로젝트라면 `develop` 브랜치에서 배포가 더 적합할 수 있음. 하지만 안정성이 가장 중요한 프로젝트라면 `master`에서 배포하는 것이 더 안전함.
-  
-2. **테스트 환경**: 테스트 자동화가 잘 구축되어 있고, CI/CD 파이프라인이 안정적이라면 `develop`에서 배포하는 것도 고려 가능. 그렇지 않다면 `master` 브랜치를 유지하는 것이 좋음.
+            newsInfos.add(new NewsCrawlResponse(title, link, press));
+        }
 
-3. **배포 빈도**: 배포 빈도가 높을수록 `develop`에서의 배포가 효율적일 수 있음. 하지만 주기적인 릴리즈 사이클을 유지한다면 `master`가 더 적합할 수 있음.
+        return newsInfos;
+    }
+    ```
+- **예외 처리**: 크롤링 과정에서 `IOException`이 발생할 수 있으며, 이를 로깅하여 문제 발생 시 디버깅에 도움을 줍니다. 헤드라인 뉴스가 없는 경우에도 경고 로그를 기록합니다.
 
+### 2. 뉴스 내용 요약
+- **사용 기술**: [OpenAI GPT](https://openai.com/)
+- **설명**: 크롤링한 뉴스의 내용을 OpenAI API를 통해 요약합니다. 사용자가 이해하기 쉬운 형태로 요약하기 위해 "너는 경제 뉴스를 고등학생이 이해할 수 있도록 요약해주는 전문 기자야"라는 프롬프트를 설정합니다. 이 과정을 통해 사용자는 복잡한 금융 뉴스를 간결하게 파악할 수 있습니다.
 
----
+- **핵심 메서드**:
+    ```java
+    @Override
+    public SummarizedContentResponse summarizeNews(String newsContent) {
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("model", "gpt-4o-mini");
+        requestBody.put("max_tokens", 700);
+        requestBody.put("temperature", 0.3);
+        requestBody.put("messages", new Object[] {
+                Map.of("role", "system", "content", "너는 경제 뉴스를 고등학생이 이해할 수 있도록 요약해주는 전문 기자야"),
+                Map.of("role", "user", "content", newsContent)
+        });
 
+        return this.webClient.post()
+                .uri("https://api.openai.com/v1/chat/completions")
+                .header("Authorization", "Bearer " + openAIConfig.getApiKey())
+                .bodyValue(requestBody)
+                .retrieve()
+                .bodyToMono(OpenAIResponse.class)
+                .map(response -> {
+                    String content = response.getChoices().get(0).getMessage().getContent();
+                    return new SummarizedContentResponse(response.getId(), content);
+                })
+                .block();
+    }
+    ```
+- **요약 결과 처리**: 요약된 결과는 사용자가 쉽게 이해할 수 있도록 변환된 후, 저장하거나 사용자에게 전달하는 등의 추가 처리로 이어질 수 있습니다.
 
-### ( 결론 )  배포는 Develop 브랜치에서 진행하기로 함.
+### 3. 스케줄링
+- **사용 기술**: [Spring Scheduler](https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#scheduling)
+- **설명**: Spring의 스케줄링 기능을 활용하여 매일 특정 시간(예: 4시 55분)에 뉴스 크롤링 및 요약 작업을 자동으로 수행합니다. 이를 통해 반복적인 작업을 자동화하고, 사용자가 항상 최신 뉴스를 받을 수 있도록 합니다. CRON 표현식을 사용하여 정확한 시간에 작업을 수행할 수 있습니다.
 
-팀원들과 오랫동안 토론을 해 본 결과, 문제가 생겼을 때마다 오류를 발견하는 것이 중요하다는 결론이 나왔다. 무중단 배포의 장점을 최대한 활용하기 위해 develop 브랜치에서 진행하도록 결정했다. 단, 젠킨스 파이프라인이 완성되기 전까지는 front/infra라는 브랜치를 따로 만들어서, 테스트를 진행하기로 했다. 
+- **핵심 메서드**:
+    ```java
+    @Scheduled(cron = "0 55 4 * * *", zone = "Asia/Seoul")
+    public void scheduledNewsCrawlingAndSummarization() {
+        List<NewsCrawlResponse> newsList = crawlFinanceHeadLineNews();
+        for (NewsCrawlResponse news : newsList) {
+            String content = crawlNewsContent(news.getLink());
+            SummarizedContentResponse summary = summarizeNews(content);
+            // 저장 또는 추가 처리
+        }
+    }
+    ```
+- **유연성**: 스케줄링 설정은 환경에 따라 조정 가능하며, 필요에 따라 다양한 시간 주기로 설정할 수 있습니다.
 
-#### ✅ 추가 고려 사항
-
-1. **테스트 자동화**:
-   - 배포 전에 충분한 테스트를 수행하기 위해 CI/CD 파이프라인을 구축하기 
-   - 자동화된 테스트를 통해 코드 품질을 보장하고, 배포 안정성을 높일 수 있음
-
-2. **배포 정책**:
-   - 개발자 간의 협업을 원활하게 하기 위해 배포 정책을 정리하기
-   - 언제, 어떤 조건에서 `develop` 브랜치를 `master`로 merge할지를 명확히 하는 것이 중요함.
-
-3. **모니터링 및 롤백 전략**:
-   - 배포 후 문제가 발생했을 경우를 대비해 모니터링 시스템을 구축하고, 빠르게 롤백할 수 있는 방법도 마련하기.
-
-4. **문서화**:
-   - 배포 절차와 관련된 모든 내용을 문서화하여 팀원들이 쉽게 접근하고 이해할 수 있도록 하기.
-   - 이는 향후 배포를 다시 진행하게 되었을 때, 도움이 될 수 있음. 
 
 </div>
 </details>
