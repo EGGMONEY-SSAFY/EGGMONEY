@@ -531,9 +531,8 @@ sudo systemctl restart ssh
 <details>
 <summary> 🗂️ 기획 배경  </summary>
 <div markdown="1">
-<br/>
 
-"실질적인 삶의 문제"를 해결하기 위한 서비스, 에그머니 🐣
+### "실질적인 삶의 문제"를 해결하기 위한 서비스, 에그머니 🐣
 
 ![Architecture](readme/pro2.png)
 
