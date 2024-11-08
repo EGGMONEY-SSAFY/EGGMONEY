@@ -964,7 +964,7 @@ GitHub Flow의 단순화된 버전으로, 하나의 **메인 브랜치**와 **�
 ##### 🐱 VI. 팀원 소개
 ### Full Stack 6명
 
-![Architecture](readme/team2.jpg)
+<!-- ![Architecture](readme/team2.jpg) -->
 
 | 이름 | 역할 |   
 | --- | --- |
@@ -978,7 +978,7 @@ GitHub Flow의 단순화된 버전으로, 하나의 **메인 브랜치**와 **�
 ---
 ##### 🙇 VII. 느낀 점 및 참고사항
 
-![Architecture](readme/team3.jpg)
+<!-- ![Architecture](readme/team3.jpg) -->
 <details>
 <summary> 그라운드 룰 </summary> 
 <div markdown="1">
