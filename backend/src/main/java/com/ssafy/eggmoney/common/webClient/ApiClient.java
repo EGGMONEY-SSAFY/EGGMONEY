@@ -57,7 +57,7 @@ public class ApiClient {
         String userKeyUrl = "/ssafy/api/v1/member/search";
         String requestBody = String.format("""
         {
-            "apiKey": "063446596d794b47bb3d4977043e3523",
+            "apiKey": "",
             "userId": "%s"
         }
         """, email);
@@ -77,7 +77,7 @@ public class ApiClient {
                 "fintechAppNo": "001",
                 "apiServiceCode": "inquireDemandDepositAccountList",
                 "institutionTransactionUniqueNo": "%s",
-                "apiKey": "063446596d794b47bb3d4977043e3523",
+                "apiKey": "",
                 "userKey": "%s"
             }
         }
@@ -99,7 +99,7 @@ public class ApiClient {
                 "fintechAppNo": "001",
                 "apiServiceCode": "updateDemandDepositAccountTransfer",
                 "institutionTransactionUniqueNo": "%s",
-                "apiKey": "063446596d794b47bb3d4977043e3523",
+                "apiKey": "",
                 "userKey": "%s"
             },
             "depositAccountNo": "%s",

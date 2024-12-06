@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('ribbon03')
-        MATTERMOST_ENDPOINT = 'https://meeting.ssafy.com/hooks/o4ew547m77rqt873m9j4n3f43a'
+        MATTERMOST_ENDPOINT = ''
         MATTERMOST_CHANNEL = 'Jenkins'
         BACKEND_IMAGE = 'ribbon03/backend'
         FRONTEND_IMAGE = 'ribbon03/frontend'
