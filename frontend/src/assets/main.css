@@ -1,0 +1,13 @@
+/* @import './base.css'; */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+/* @import "flowbite"; */
+
+* {
+  color: #374151;
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
